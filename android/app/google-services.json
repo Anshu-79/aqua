@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1078552236233",
+    "firebase_url": "https://aqua-101-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "aqua-101",
+    "storage_bucket": "aqua-101.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078552236233:android:77d7db5413b64300d73d18",
+        "android_client_info": {
+          "package_name": "com.example.aqua"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuxssitFkpvhLcW4UUiimn7x_egcey1sU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
