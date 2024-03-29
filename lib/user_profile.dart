@@ -34,7 +34,7 @@ class _UserProfileState extends State<UserProfile> {
                   const Text(
                     "Anshumaan Tanwar",
                     style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
@@ -157,16 +157,18 @@ class _UserProfileState extends State<UserProfile> {
             ),
             const SizedBox(height: 30),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
+                  height: 60,
+                  width: 150,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(20),
                     border: Border.all(
                       color: const Color(0xFFF24E1E),
                       width: 3,
                     ),
-                    color: const Color(0xFFFF9A62),
+                    color: const Color(0x73FF9A62),
                   ),
                   child: const Padding(
                     padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
@@ -175,26 +177,164 @@ class _UserProfileState extends State<UserProfile> {
                         Row(
                           children: [
                             Icon(Icons.whatshot_rounded,
-                                color: Color(0xFFF24E1E), size: 40),
+                                color: Color(0xFFF24E1E), size: 30),
                             SizedBox(width: 10),
                             Text(
                               "7",
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 40,
+                                  fontSize: 24,
                                   fontWeight: FontWeight.w900),
                             )
                           ],
                         ),
-                            Row(
-                              children: [
-                                Text("Day Streak",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold)),
-                              ],
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: 35,
                             ),
+                            Text("Day Streak",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: const Color(0xFF699BF7),
+                      width: 3,
+                    ),
+                    color: const Color(0x66699BF7),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.fromLTRB(5, 0, 0, 5),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.local_drink,
+                                color: Color(0xFF699BF7), size: 30),
+                            SizedBox(width: 10),
+                            Text(
+                              "7.9 L",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w900),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(width: 30,),
+                            Text("Weekly Water Intake",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  height: 60,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: const Color(0xFF0FA958),
+                      width: 3,
+                    ),
+                    color: const Color(0x4D0FA958),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.fromLTRB(5, 0, 0, 5),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.water_drop,
+                                color: Color(0xFF0FA958), size: 30),
+                            SizedBox(width: 10),
+                            Text(
+                              "42 L",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w900),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(width: 35,),
+                            Text("Lifetime Intake",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: const Color(0xFFFFC700),
+                      width: 3,
+                    ),
+                    color: const Color(0x4DFFC700),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.fromLTRB(5, 0, 0, 5),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.coffee,
+                                color: Color(0xFFFFC700), size: 30),
+                            SizedBox(width: 10),
+                            Text(
+                              "10 L",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w900),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(width: 35,),
+                            Text("Weekly Fluid Intake",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        ),
                       ],
                     ),
                   ),
