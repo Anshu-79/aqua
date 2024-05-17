@@ -79,14 +79,14 @@ class _UserProfileState extends State<UserProfile> {
                             Text(
                               "18",
                               style: TextStyle(
-                                  fontWeight: FontWeight.w900,
                                   color: Colors.black,
+                                  fontWeight: FontWeight.w900,
                                   fontSize: 30),
                             ),
                             Text("Age",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,
                                     color: Colors.black,
+                                    fontWeight: FontWeight.bold,
                                     fontSize: 12))
                           ],
                         ),
@@ -108,14 +108,14 @@ class _UserProfileState extends State<UserProfile> {
                             Text(
                               "175",
                               style: TextStyle(
-                                  fontWeight: FontWeight.w900,
                                   color: Colors.black,
+                                  fontWeight: FontWeight.w900,
                                   fontSize: 30),
                             ),
                             Text("Height",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,
                                     color: Colors.black,
+                                    fontWeight: FontWeight.bold,
                                     fontSize: 12))
                           ],
                         ),
@@ -137,14 +137,14 @@ class _UserProfileState extends State<UserProfile> {
                             Text(
                               "64",
                               style: TextStyle(
-                                  fontWeight: FontWeight.w900,
                                   color: Colors.black,
+                                  fontWeight: FontWeight.w900,
                                   fontSize: 30),
                             ),
                             Text("Weight",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,
                                     color: Colors.black,
+                                    fontWeight: FontWeight.bold,
                                     fontSize: 12))
                           ],
                         ),
@@ -182,9 +182,7 @@ class _UserProfileState extends State<UserProfile> {
                             Text(
                               "7",
                               style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w900),
+                                  fontSize: 24, fontWeight: FontWeight.w900),
                             )
                           ],
                         ),
@@ -195,9 +193,7 @@ class _UserProfileState extends State<UserProfile> {
                             ),
                             Text("Day Streak",
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold)),
+                                    fontSize: 10, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ],
@@ -227,20 +223,18 @@ class _UserProfileState extends State<UserProfile> {
                             Text(
                               "7.9 L",
                               style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w900),
+                                  fontSize: 24, fontWeight: FontWeight.w900),
                             )
                           ],
                         ),
                         Row(
                           children: [
-                            SizedBox(width: 30,),
+                            SizedBox(
+                              width: 30,
+                            ),
                             Text("Weekly Water Intake",
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold)),
+                                    fontSize: 10, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ],
@@ -276,20 +270,18 @@ class _UserProfileState extends State<UserProfile> {
                             Text(
                               "42 L",
                               style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w900),
+                                  fontSize: 24, fontWeight: FontWeight.w900),
                             )
                           ],
                         ),
                         Row(
                           children: [
-                            SizedBox(width: 35,),
+                            SizedBox(
+                              width: 35,
+                            ),
                             Text("Lifetime Intake",
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold)),
+                                    fontSize: 10, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ],
@@ -319,20 +311,18 @@ class _UserProfileState extends State<UserProfile> {
                             Text(
                               "10 L",
                               style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w900),
+                                  fontSize: 24, fontWeight: FontWeight.w900),
                             )
                           ],
                         ),
                         Row(
                           children: [
-                            SizedBox(width: 35,),
+                            SizedBox(
+                              width: 35,
+                            ),
                             Text("Weekly Fluid Intake",
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold)),
+                                    fontSize: 10, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ],
