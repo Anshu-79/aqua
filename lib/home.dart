@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:aqua/utils.dart' as utils;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -8,105 +9,118 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 125),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Column(
+            const Padding(
+              padding: EdgeInsets.only(top: 50, bottom: 30),
+              child: Text(
+                "Today's Goal",
+                style: utils.ThemeText.screenHeader,
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width - 40,
+              decoration: BoxDecoration(
+                  border: Border.all(width: 4, color: Theme.of(context).primaryColor),
+                  borderRadius: const BorderRadius.all(Radius.circular(35))),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
+                child: Column(
                   children: [
-                    Center(
-                        child: Text(
-                      "Today's Goal",
-                      style: TextStyle(
-                        fontSize: 40,
-                      ),
-                    )),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Center(
-                                child: Text(
-                              "0.00",
-                              style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 76, 170, 246)),
-                            )),
-                            Column(
-                              children: [
-                                SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    Center(
-                                        child: Text(
-                                      "/",
-                                      style: TextStyle(
-                                          fontSize: 60,
-                                          fontWeight: FontWeight.bold),
-                                    )),
-                                    Column(
-                                      children: [
-                                        SizedBox(height: 20),
-                                        Row(
-                                          children: [
-                                            Center(
-                                                child: Text(
-                                              "2.00",
-                                              style: TextStyle(
-                                                  fontSize: 30,
-                                                  color: Colors.blueAccent,
-                                                  fontWeight: FontWeight.bold),
-                                            )),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Center(
-                                                child: Text(
-                                              "L",
-                                              style: TextStyle(
-                                                  fontSize: 70,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color.fromARGB(
-                                                      255, 60, 65, 69)),
-                                            )),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                    Stack(children: [
+                      Text.rich(TextSpan(children: [
+                        TextSpan(
+                          text: "1.50",
+                          style: utils.ThemeText.dailyGoalBorder,
                         ),
+                        TextSpan(
+                          text: " L",
+                          style: utils.ThemeText.dailyGoalFillerText,
+                        )
+                      ])),
+                      Text.rich(TextSpan(children: [
+                        TextSpan(
+                          text: "1.50",
+                          style: utils.ThemeText.dailyGoalConsumed,
+                        ),
+                        TextSpan(
+                          text: " L",
+                          style: utils.ThemeText.dailyGoalFillerText,
+                        )
+                      ])),
+                    ]),
+                    Text(
+                      "of",
+                      style: utils.ThemeText.dailyGoalFillerText,
+                    ),
+                    Stack(
+                      children: [
+                        Text.rich(TextSpan(children: [
+                          TextSpan(
+                            text: "3.00",
+                            style: utils.ThemeText.dailyGoalBorder,
+                          ),
+                          TextSpan(
+                            text: " L",
+                            style: utils.ThemeText.dailyGoalFillerText,
+                          )
+                        ])),
+                        Text.rich(TextSpan(children: [
+                          TextSpan(
+                            text: "3.00",
+                            style: utils.ThemeText.dailyGoalTotal,
+                          ),
+                          TextSpan(
+                            text: " L",
+                            style: utils.ThemeText.dailyGoalFillerText,
+                          )
+                        ])),
                       ],
                     ),
+                    Text(
+                      "consumed",
+                      style: utils.ThemeText.dailyGoalFillerText,
+                    )
                   ],
                 ),
-                Container(
-                  child: AspectRatio(
-                      aspectRatio: 200 / 550,
-                      child: const Image(
-                          image: AssetImage('assets/images/water_bottle.png'),
-                          fit: BoxFit.fill)),
-                  height: 200,
-                )
-              ],
+              ),
             ),
-            const SizedBox(height: 100),
-            const Center(
-                child: Text(
-              "Next reminder in",
-              style: TextStyle(fontSize: 30),
-            )),
-            const Center(
-                child: Text(
-              "20 minutes",
-              style: TextStyle(fontSize: 40, color: Colors.blue),
-            )),
-            const SizedBox(height: 150),
+            Padding(
+              padding: const EdgeInsets.only(top: 25),
+              child: Container(
+                width: MediaQuery.of(context).size.width - 40,
+                decoration: BoxDecoration(
+                    border: Border.all(width: 4, color: Theme.of(context).primaryColor),
+                    borderRadius: const BorderRadius.all(Radius.circular(20))),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 2.5, bottom: 2.5),
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 5, right: 10),
+                        child: Icon(
+                          Icons.alarm,
+                          size: 60,
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Next reminder in",
+                            style: utils.ThemeText.reminderSubText,
+                          ),
+                          Text(
+                            "20 minutes",
+                            style: utils.ThemeText.reminderText,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

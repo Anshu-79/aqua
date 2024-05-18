@@ -5,10 +5,10 @@ import 'package:aqua/home.dart';
 import 'package:aqua/user_profile.dart';
 import 'package:aqua/beverage_menu.dart';
 
-
 void main() {
   runApp(Aqua());
 }
+
 class Aqua extends StatelessWidget {
   Aqua({super.key});
 
@@ -20,24 +20,32 @@ class Aqua extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var systemBrightness = View.of(context).platformDispatcher.platformBrightness;
-    systemBrightness = Brightness.light;
+    
+    //Brightness systemBrightness = MediaQuery.of(context).platformBrightness;
+    Brightness systemBrightness = Brightness.light;
 
+    Color primaryColor = Colors.black;
+    
+    if (systemBrightness == Brightness.dark) {
+      primaryColor = Colors.white;
+    }
+
+    
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-
-      theme: ThemeData(
-        fontFamily: 'CeraPro',
-        brightness: systemBrightness
-      ),
-      //darkTheme: ThemeData.dark(),
-      themeMode: ThemeMode.system,
-      home: Builder(
-        builder: (context) => LiquidSwipe(
-          pages: pages,
-          fullTransitionValue: 600,
-          slideIconWidget: const Icon(Icons.arrow_back_ios_new_rounded),
-          positionSlideIcon: 0.6,),
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'CeraPro',
+          brightness: systemBrightness,
+          primaryColor: primaryColor,
+        ),
+        themeMode: ThemeMode.system,
+        home: Builder(
+          builder: (context) => LiquidSwipe(
+            pages: pages,
+            fullTransitionValue: 600,
+            slideIconWidget: const Icon(Icons.arrow_back_ios_new_rounded),
+            positionSlideIcon: 0.71,
+          ),
         ));
   }
 }

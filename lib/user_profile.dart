@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:aqua/utils.dart' as utils;
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -31,30 +32,24 @@ class _UserProfileState extends State<UserProfile> {
                         color: Colors.white,
                       ),
                       onPressed: () {}),
-                  const Text(
+                  Text(
                     "Anshumaan Tanwar",
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                    style: utils.ThemeText.username,
                   ),
                   const SizedBox(height: 20),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.location_on,
                         color: Colors.white,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Text(
                         "City, State, Country",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                        style: utils.ThemeText.userLocationSubtext,
                       )
                     ],
                   ),
@@ -73,21 +68,14 @@ class _UserProfileState extends State<UserProfile> {
                                     borderRadius: BorderRadius.circular(15),
                                     side: const BorderSide(
                                         color: Colors.white)))),
-                        child: const Column(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               "18",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 30),
+                              style: utils.ThemeText.userInfo,
                             ),
-                            Text("Age",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12))
+                            Text("Age", style: utils.ThemeText.userInfoSubtext)
                           ],
                         ),
                       ),
@@ -102,21 +90,15 @@ class _UserProfileState extends State<UserProfile> {
                                     borderRadius: BorderRadius.circular(15),
                                     side: const BorderSide(
                                         color: Colors.white)))),
-                        child: const Column(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               "175",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 30),
+                              style: utils.ThemeText.userInfo,
                             ),
                             Text("Height",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12))
+                                style: utils.ThemeText.userInfoSubtext)
                           ],
                         ),
                       ),
@@ -131,21 +113,15 @@ class _UserProfileState extends State<UserProfile> {
                                     borderRadius: BorderRadius.circular(15),
                                     side: const BorderSide(
                                         color: Colors.white)))),
-                        child: const Column(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               "64",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 30),
+                              style: utils.ThemeText.userInfo,
                             ),
                             Text("Weight",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12))
+                                style: utils.ThemeText.userInfoSubtext)
                           ],
                         ),
                       )
@@ -170,19 +146,18 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                     color: const Color(0x73FF9A62),
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
                     child: Column(
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.whatshot_rounded,
+                            const Icon(Icons.whatshot_rounded,
                                 color: Color(0xFFF24E1E), size: 30),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Text(
                               "7",
-                              style: TextStyle(
-                                  fontSize: 24, fontWeight: FontWeight.w900),
+                              style: utils.ThemeText.userStats,
                             )
                           ],
                         ),
@@ -192,8 +167,7 @@ class _UserProfileState extends State<UserProfile> {
                               width: 35,
                             ),
                             Text("Day Streak",
-                                style: TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.bold)),
+                                style: utils.ThemeText.userStatsSubtext),
                           ],
                         ),
                       ],
@@ -211,30 +185,28 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                     color: const Color(0x66699BF7),
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.fromLTRB(5, 0, 0, 5),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 5),
                     child: Column(
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.local_drink,
+                            const Icon(Icons.local_drink,
                                 color: Color(0xFF699BF7), size: 30),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Text(
                               "7.9 L",
-                              style: TextStyle(
-                                  fontSize: 24, fontWeight: FontWeight.w900),
+                              style: utils.ThemeText.userStats,
                             )
                           ],
                         ),
                         Row(
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               width: 30,
                             ),
                             Text("Weekly Water Intake",
-                                style: TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.bold)),
+                                style: utils.ThemeText.userStatsSubtext),
                           ],
                         ),
                       ],
@@ -258,30 +230,28 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                     color: const Color(0x4D0FA958),
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.fromLTRB(5, 0, 0, 5),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 5),
                     child: Column(
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.water_drop,
+                            const Icon(Icons.water_drop,
                                 color: Color(0xFF0FA958), size: 30),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Text(
                               "42 L",
-                              style: TextStyle(
-                                  fontSize: 24, fontWeight: FontWeight.w900),
+                              style: utils.ThemeText.userStats,
                             )
                           ],
                         ),
                         Row(
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               width: 35,
                             ),
                             Text("Lifetime Intake",
-                                style: TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.bold)),
+                                style: utils.ThemeText.userStatsSubtext),
                           ],
                         ),
                       ],
@@ -299,30 +269,28 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                     color: const Color(0x4DFFC700),
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.fromLTRB(5, 0, 0, 5),
+                  child:  Padding(
+                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 5),
                     child: Column(
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.coffee,
+                            const Icon(Icons.coffee,
                                 color: Color(0xFFFFC700), size: 30),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Text(
                               "10 L",
-                              style: TextStyle(
-                                  fontSize: 24, fontWeight: FontWeight.w900),
+                              style: utils.ThemeText.userStats,
                             )
                           ],
                         ),
                         Row(
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               width: 35,
                             ),
                             Text("Weekly Fluid Intake",
-                                style: TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.bold)),
+                                style: utils.ThemeText.userStatsSubtext),
                           ],
                         ),
                       ],
