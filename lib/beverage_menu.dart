@@ -68,12 +68,12 @@ class _BeverageMenuState extends State<BeverageMenu> {
         child: FloatingActionButton(
           onPressed: () {},
           tooltip: "Add new beverage",
-          backgroundColor: Colors.black,
+          backgroundColor:  Theme.of(context).primaryColor,
           splashColor: Colors.blue,
           shape: const CircleBorder(eccentricity: 0),
-          child: const Icon(
+          child: Icon(
             Icons.add,
-            color: Colors.white,
+            color: Theme.of(context).canvasColor,
             size: 50,
           ),
         ),

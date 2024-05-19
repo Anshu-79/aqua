@@ -110,6 +110,9 @@ flutter:
       - asset: assets/fonts/CeraPro-Thin.otf
         weight: 100
       
+  - family: icomoon
+    fonts:
+    - asset: assets/fonts/icomoon.ttf
 
   #   - family: Trajan Pro
   #     fonts:

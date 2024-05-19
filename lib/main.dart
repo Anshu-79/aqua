@@ -25,9 +25,11 @@ class Aqua extends StatelessWidget {
     Brightness systemBrightness = Brightness.light;
 
     Color primaryColor = Colors.black;
+    Color canvasColor = Colors.white;
     
     if (systemBrightness == Brightness.dark) {
       primaryColor = Colors.white;
+      canvasColor = Colors.black;
     }
 
     
@@ -37,6 +39,7 @@ class Aqua extends StatelessWidget {
           fontFamily: 'CeraPro',
           brightness: systemBrightness,
           primaryColor: primaryColor,
+          canvasColor: canvasColor,
         ),
         themeMode: ThemeMode.system,
         home: Builder(
