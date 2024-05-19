@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/expandable_fab.dart' as fab;
+import 'package:aqua/icomoon_icons.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -21,7 +24,8 @@ class HomeScreen extends StatelessWidget {
             Container(
               width: MediaQuery.of(context).size.width - 40,
               decoration: BoxDecoration(
-                  border: Border.all(width: 4, color: Theme.of(context).primaryColor),
+                  border: Border.all(
+                      width: 4, color: Theme.of(context).primaryColor),
                   borderRadius: const BorderRadius.all(Radius.circular(35))),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(35, 10, 35, 10),
@@ -90,7 +94,8 @@ class HomeScreen extends StatelessWidget {
               child: Container(
                 width: MediaQuery.of(context).size.width - 40,
                 decoration: BoxDecoration(
-                    border: Border.all(width: 4, color: Theme.of(context).primaryColor),
+                    border: Border.all(
+                        width: 4, color: Theme.of(context).primaryColor),
                     borderRadius: const BorderRadius.all(Radius.circular(20))),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 2.5, bottom: 2.5),
@@ -124,21 +129,22 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: SizedBox(
-        height: 70,
-        width: 70,
-        child: FloatingActionButton(
-          tooltip: "Add water",
-          onPressed: () {},
-          backgroundColor: Colors.black,
-          splashColor: Colors.blue,
-          shape: const CircleBorder(eccentricity: 0),
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 50,
+      floatingActionButton: fab.ExpandableFab(
+        distance: 75,
+        children: [
+          fab.ActionButton(
+            onPressed: () {},
+            icon: const Icon(Icomoon.coffee_cup),
           ),
-        ),
+          fab.ActionButton(
+            onPressed: () {},
+            icon: const Icon(Icomoon.water_glass),
+          ),
+          fab.ActionButton(
+            onPressed: () {},
+            icon: const Icon(Icomoon.water_bottle),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

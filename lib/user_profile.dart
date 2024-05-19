@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'package:aqua/icomoon_icons.dart';
 import 'package:aqua/utils.dart' as utils;
 
 class UserProfile extends StatefulWidget {
@@ -191,7 +193,7 @@ class _UserProfileState extends State<UserProfile> {
                       children: [
                         Row(
                           children: [
-                            const Icon(Icons.local_drink,
+                            const Icon(Icomoon.water_glass,
                                 color: Color(0xFF699BF7), size: 30),
                             const SizedBox(width: 10),
                             Text(
@@ -236,7 +238,7 @@ class _UserProfileState extends State<UserProfile> {
                       children: [
                         Row(
                           children: [
-                            const Icon(Icons.water_drop,
+                            const Icon(Icons.calendar_month_outlined,
                                 color: Color(0xFF0FA958), size: 30),
                             const SizedBox(width: 10),
                             Text(
@@ -275,8 +277,8 @@ class _UserProfileState extends State<UserProfile> {
                       children: [
                         Row(
                           children: [
-                            const Icon(Icons.coffee,
-                                color: Color(0xFFFFC700), size: 30),
+                            const Icon(Icomoon.tea_cup,
+                                color: Color(0xFFFFC700), size: 28),
                             const SizedBox(width: 10),
                             Text(
                               "10 L",
