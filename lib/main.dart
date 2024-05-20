@@ -21,11 +21,12 @@ class Aqua extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    //Brightness systemBrightness = MediaQuery.of(context).platformBrightness;
     Brightness systemBrightness = Brightness.light;
+    //systemBrightness = MediaQuery.of(context).platformBrightness;
 
     Color primaryColor = Colors.black;
     Color canvasColor = Colors.white;
+    Color splashColor = const Color(0xFF44A4EE);
     
     if (systemBrightness == Brightness.dark) {
       primaryColor = Colors.white;
@@ -40,6 +41,7 @@ class Aqua extends StatelessWidget {
           brightness: systemBrightness,
           primaryColor: primaryColor,
           canvasColor: canvasColor,
+          splashColor: splashColor,
         ),
         themeMode: ThemeMode.system,
         home: Builder(

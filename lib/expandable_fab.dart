@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import 'package:aqua/dialog_boxes.dart';
+
 @immutable
 class ExpandableFab extends StatefulWidget {
   const ExpandableFab({
@@ -30,7 +32,7 @@ class _ExpandableFabState extends State<ExpandableFab>
     _open = widget.initialOpen ?? false;
     _controller = AnimationController(
       value: _open ? 1.0 : 0.0,
-      duration: const Duration(milliseconds: 250),
+      duration: const Duration(milliseconds: 125),
       vsync: this,
     );
     _expandAnimation = CurvedAnimation(
@@ -122,28 +124,47 @@ class _ExpandableFabState extends State<ExpandableFab>
     return IgnorePointer(
       ignoring: _open,
       child: AnimatedContainer(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(100)),
         transformAlignment: Alignment.center,
         transform: Matrix4.diagonal3Values(
           _open ? 0.7 : 1.0,
           _open ? 0.7 : 1.0,
           1.0,
         ),
-        duration: const Duration(milliseconds: 250),
+        duration: const Duration(milliseconds: 125),
         curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
         child: AnimatedOpacity(
           opacity: _open ? 0.0 : 1.0,
           curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
-          duration: const Duration(milliseconds: 250),
+          duration: const Duration(milliseconds: 125),
           child: Material(
-            shape: const CircleBorder(eccentricity: 0),
+            borderRadius: BorderRadius.circular(100),
             color: Theme.of(context).primaryColor,
             child: SizedBox(
               width: 70,
               height: 70,
               child: InkWell(
-                //splashColor: Colors.blue,
-                onTap: _toggle,
-                onLongPress: () {},
+                borderRadius: BorderRadius.circular(100),
+                onLongPress: _toggle,
+                onTap: () {
+                  showGeneralDialog(
+                      barrierDismissible: false,
+                      transitionDuration: const Duration(milliseconds: 150),
+                      transitionBuilder: (context, a1, a2, child) {
+                        return ScaleTransition(
+                            scale:
+                                Tween<double>(begin: 0.5, end: 1.0).animate(a1),
+                            child: FadeTransition(
+                              opacity: Tween<double>(begin: 0.5, end: 1.0)
+                                  .animate(a1),
+                              child: AddWaterDialog(),
+                            ));
+                      },
+                      context: context,
+                      pageBuilder: (context, a1, a2) {
+                        return Placeholder();
+                      });
+                },
                 child: Icon(Icons.add,
                     size: 50, color: Theme.of(context).canvasColor),
               ),

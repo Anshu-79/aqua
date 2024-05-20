@@ -36,6 +36,12 @@ abstract class ThemeText {
       color: Color(0xFF44A4EE),
       letterSpacing: 3);
 
+  // Add Drink Dialog Box
+  static TextStyle dialogButtons =
+      const TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+  static TextStyle dialogText = const TextStyle(
+      fontSize: 45, fontWeight: FontWeight.w900, color: Colors.black);
 
   // Beverage Menu
   static TextStyle beverageName =
@@ -46,7 +52,6 @@ abstract class ThemeText {
 
   static TextStyle beverageWaterPercentage =
       const TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
 
   // User Profile
   static TextStyle username = const TextStyle(
@@ -66,5 +71,26 @@ abstract class ThemeText {
 
   static TextStyle userStatsSubtext =
       const TextStyle(fontSize: 10, fontWeight: FontWeight.bold);
-      
+}
+
+class addDrinkDialogButtons extends StatelessWidget {
+  const addDrinkDialogButtons(
+      {super.key, required this.icon, required this.function});
+  final Icon icon;
+  final Function function;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton.filled(
+      icon: icon,
+      iconSize: 50,
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Colors.black),
+        foregroundColor: MaterialStateProperty.all(Colors.white),
+      ),
+      onPressed: () => function(),
+
+      //Text(text, style: ThemeText.dialogButtons,)
+    );
+  }
 }
