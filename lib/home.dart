@@ -142,7 +142,7 @@ class HomeScreen extends StatelessWidget {
           ),
           fab.ActionButton(
             onPressed: () {},
-            icon: const Icon(Icomoon.water_bottle),
+            icon: const Icon(Icomoon.soda_can),
           ),
         ],
       ),
