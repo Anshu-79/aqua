@@ -1,3 +1,4 @@
+import 'package:aqua/dialog_boxes.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/utils.dart' as utils;
@@ -134,15 +135,20 @@ class HomeScreen extends StatelessWidget {
         children: [
           fab.ActionButton(
             onPressed: () {},
-            icon: const Icon(Icomoon.coffee_cup),
+            icon:
+                Icon(Icomoon.coffee_cup, color: Theme.of(context).canvasColor),
+            editDialogBox: editDrinkDialogBox(),
           ),
           fab.ActionButton(
             onPressed: () {},
-            icon: const Icon(Icomoon.water_glass),
+            icon:
+                Icon(Icomoon.water_glass, color: Theme.of(context).canvasColor),
+            editDialogBox: editDrinkDialogBox(),
           ),
           fab.ActionButton(
             onPressed: () {},
-            icon: const Icon(Icomoon.soda_can),
+            icon: Icon(Icomoon.soda_can, color: Theme.of(context).canvasColor),
+            editDialogBox: editDrinkDialogBox(),
           ),
         ],
       ),

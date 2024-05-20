@@ -32,7 +32,7 @@ class _ExpandableFabState extends State<ExpandableFab>
     _open = widget.initialOpen ?? false;
     _controller = AnimationController(
       value: _open ? 1.0 : 0.0,
-      duration: const Duration(milliseconds: 125),
+      duration: const Duration(milliseconds: 250),
       vsync: this,
     );
     _expandAnimation = CurvedAnimation(
@@ -131,12 +131,12 @@ class _ExpandableFabState extends State<ExpandableFab>
           _open ? 0.7 : 1.0,
           1.0,
         ),
-        duration: const Duration(milliseconds: 125),
+        duration: const Duration(milliseconds: 250),
         curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
         child: AnimatedOpacity(
           opacity: _open ? 0.0 : 1.0,
           curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
-          duration: const Duration(milliseconds: 125),
+          duration: const Duration(milliseconds: 250),
           child: Material(
             borderRadius: BorderRadius.circular(100),
             color: Theme.of(context).primaryColor,
@@ -200,7 +200,7 @@ class _ExpandingActionButton extends StatelessWidget {
           progress.value * maxDistance,
         );
         return Positioned(
-          right: (MediaQuery.of(context).size.width / 2) - 29 + offset.dx,
+          right: (MediaQuery.of(context).size.width / 2) - 32 + offset.dx,
           bottom: 4.0 + offset.dy,
           child: Transform.rotate(
             angle: (1.0 - progress.value) * math.pi / 2,
@@ -222,27 +222,45 @@ class ActionButton extends StatelessWidget {
     super.key,
     this.onPressed,
     required this.icon,
+    required this.editDialogBox,
   });
 
   final VoidCallback? onPressed;
   final Widget icon;
+  final Widget editDialogBox;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return SizedBox(
-      height: 60,
-      width: 60,
+      height: 65,
+      width: 65,
       child: Material(
         shape: const CircleBorder(),
         clipBehavior: Clip.antiAlias,
         color: theme.primaryColor,
         elevation: 4,
-        child: IconButton(
-          onPressed: onPressed,
-          icon: icon,
-          color: theme.canvasColor,
-        ),
+        child: GestureDetector(
+            onTap: onPressed,
+            onDoubleTap: () {
+              showGeneralDialog(
+                  barrierDismissible: false,
+                  transitionDuration: const Duration(milliseconds: 125),
+                  transitionBuilder: (context, a1, a2, child) {
+                    return ScaleTransition(
+                        scale: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
+                        child: FadeTransition(
+                          opacity:
+                              Tween<double>(begin: 0.5, end: 1.0).animate(a1),
+                          child: editDialogBox,
+                        ));
+                  },
+                  context: context,
+                  pageBuilder: (context, a1, a2) {
+                    return Placeholder();
+                  });
+            },
+            child: icon),
       ),
     );
   }
