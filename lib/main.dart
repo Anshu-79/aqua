@@ -22,7 +22,7 @@ class Aqua extends StatelessWidget {
   Widget build(BuildContext context) {
     
     Brightness systemBrightness = Brightness.light;
-    //systemBrightness = MediaQuery.of(context).platformBrightness;
+    // systemBrightness = MediaQuery.of(context).platformBrightness;
 
     Color primaryColor = Colors.black;
     Color canvasColor = Colors.white;

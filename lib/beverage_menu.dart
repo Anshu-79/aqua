@@ -1,5 +1,8 @@
+import 'package:aqua/icomoon_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:aqua/utils.dart' as utils;
+
+import 'package:aqua/database/database.dart';
 
 class BeverageMenu extends StatefulWidget {
   const BeverageMenu({super.key});
@@ -9,58 +12,90 @@ class BeverageMenu extends StatefulWidget {
 }
 
 class _BeverageMenuState extends State<BeverageMenu> {
+  late Database _db;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _db = Database();
+  }
+
+  @override
+  void dispose() {
+    _db.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 50, bottom: 30),
-            child: Text(
-              "My Beverages",
-              style: utils.ThemeText.screenHeader,
-            ),
-          ),
-          Card(
-            margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
-            elevation: 0,
-            color: Colors.blue.withOpacity(0.3),
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-                side: BorderSide(color: Colors.blue, width: 5)),
-            child: const _BeverageCard(
-              beverageName: "Water",
-              beverageColor: Colors.blue,
-              waterFraction: 1.0,
-            ),
-          ),
-          Card(
-            margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
-            elevation: 0,
-            color: const Color(0xFFFFC700).withOpacity(0.3),
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-                side: BorderSide(color: Color(0xFFFFC700), width: 5)),
-            child: const _BeverageCard(
-              beverageName: "Coffee",
-              beverageColor: Color(0xFFFFC700),
-              waterFraction: 0.8,
-            ),
-          ),
-          Card(
-            margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
-            elevation: 0,
-            color: const Color(0xFFF24E1E).withOpacity(0.3),
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-                side: BorderSide(color: Color(0xFFF24E1E), width: 5)),
-            child: const _BeverageCard(
-              beverageName: "Cola",
-              beverageColor: Color(0xFFF24E1E),
-              waterFraction: 0.4,
-            ),
-          ),
-        ]),
+      //extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        shape: BeveledRectangleBorder(
+            side: BorderSide.none, borderRadius: BorderRadius.circular(10)),
+        centerTitle: true,
+        surfaceTintColor: Theme.of(context).canvasColor,
+        titleTextStyle: utils.ThemeText.screenHeader,
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 30, top: 20),
+          child: Text("My Beverages",
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor, fontFamily: "CeraPro")),
+        ),
+        foregroundColor: Theme.of(context).primaryColor,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 30),
+        child: FutureBuilder<List<Beverage>>(
+            future: _db.getBeverages(),
+            builder: (context, snapshot) {
+              final List<Beverage>? beverages = snapshot.data;
+
+              if (snapshot.connectionState != ConnectionState.done) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(snapshot.error.toString()),
+                );
+              }
+
+              if (beverages != null) {
+                return ListView.builder(
+                    itemCount: beverages.length,
+                    itemBuilder: (context, index) {
+                      final beverage = beverages[index];
+                      return Card(
+                        margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
+                        elevation: 0,
+                        color: Color(int.parse('0x${beverage.colorCode}'))
+                            .withOpacity(0.3),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(30)),
+                            side: BorderSide(
+                                color:
+                                    Color(int.parse('0x${beverage.colorCode}')),
+                                width: 5)),
+                        child: _BeverageCard(
+                            beverageName: beverage.bevName,
+                            beverageColor: beverage.colorCode,
+                            waterFraction: beverage.waterPercent),
+                      );
+                    });
+              } else {
+                return const Center(
+                    child: Text(
+                  "No beverages found. Try adding some!",
+                  style: utils.ThemeText.screenHeader,
+                ));
+              }
+            }),
       ),
       floatingActionButton: SizedBox(
         height: 70,
@@ -68,8 +103,8 @@ class _BeverageMenuState extends State<BeverageMenu> {
         child: FloatingActionButton(
           onPressed: () {},
           tooltip: "Add new beverage",
-          backgroundColor:  Theme.of(context).primaryColor,
-          splashColor: Colors.blue,
+          backgroundColor: Theme.of(context).primaryColor,
+          splashColor: Theme.of(context).splashColor,
           shape: const CircleBorder(eccentricity: 0),
           child: Icon(
             Icons.add,
@@ -89,15 +124,11 @@ class _BeverageCard extends StatelessWidget {
       required this.beverageColor,
       required this.waterFraction});
   final String beverageName;
-  final Color beverageColor;
-  final double waterFraction;
+  final String beverageColor;
+  final int waterFraction;
 
   Icon beverageIcon({required Color color}) {
-    return Icon(
-      Icons.local_drink,
-      color: color,
-      size: 60,
-    );
+    return Icon(Icomoon.water_glass_pixelart, color: color, size: 60);
   }
 
   @override
@@ -106,7 +137,7 @@ class _BeverageCard extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 5, 20, 10),
       child: Row(
         children: [
-          beverageIcon(color: beverageColor),
+          beverageIcon(color: Color(int.parse("0x$beverageColor"))),
           Padding(
             padding: const EdgeInsets.only(left: 20),
             child: Column(
@@ -121,7 +152,7 @@ class _BeverageCard extends StatelessWidget {
                   style: utils.ThemeText.beverageSubtext,
                 ),
                 Text(
-                  '${(waterFraction * 100).toString()}%',
+                  '${waterFraction.toString()}%',
                   style: utils.ThemeText.beverageWaterPercentage,
                 ),
               ],
