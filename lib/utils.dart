@@ -1,5 +1,16 @@
 import 'package:flutter/material.dart';
 
+Map<String, Color> defaultColors = {
+  'red': Color(0xFFff595e),
+  'orange': Color(0xffff924c),
+  'yellow': Color(0xffffca3a),
+  'green': Color(0xff8ac926),
+  'blue': Color(0xFF44A4EE),
+  'violet': Color(0xFF6a4c93),
+};
+
+List<Color> colorList = defaultColors.values.toList();
+
 abstract class ThemeText {
   static const TextStyle screenHeader =
       TextStyle(fontSize: 45, fontWeight: FontWeight.w900);
@@ -42,6 +53,16 @@ abstract class ThemeText {
 
   static TextStyle dialogText = const TextStyle(
       fontSize: 45, fontWeight: FontWeight.w900, color: Colors.black);
+
+  // Add Beverage Dialog Box
+  static TextStyle dialogSubtext = const TextStyle(
+      fontSize: 45, fontWeight: FontWeight.w900, color: Colors.black);
+
+  static TextStyle textInput = const TextStyle(
+      fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black);
+
+  static TextStyle textInputHint = const TextStyle(
+      fontSize: 25, fontWeight: FontWeight.bold, color: Colors.grey);
 
   // Beverage Menu
   static TextStyle beverageName =

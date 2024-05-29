@@ -69,12 +69,12 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
                 ],
               ),
                Padding(
-                padding: EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    utils.addDrinkDialogButtons(icon: Icon(Icons.check), function:() => {},),
-                    utils.addDrinkDialogButtons(icon: Icon(Icons.close), function: () => Navigator.of(context, rootNavigator: true).pop())
+                    utils.addDrinkDialogButtons(icon: const Icon(Icons.check), function:() => {},),
+                    utils.addDrinkDialogButtons(icon: const Icon(Icons.close), function: () => Navigator.of(context, rootNavigator: true).pop())
                   ],
                 ),
               )
@@ -151,12 +151,12 @@ class _editDrinkDialogBoxState extends State<editDrinkDialogBox> {
                 ],
               ),
                Padding(
-                padding: EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    utils.addDrinkDialogButtons(icon: Icon(Icons.check), function:() => {},),
-                    utils.addDrinkDialogButtons(icon: Icon(Icons.close), function: () => Navigator.of(context, rootNavigator: true).pop())
+                    utils.addDrinkDialogButtons(icon: const Icon(Icons.check), function:() => {},),
+                    utils.addDrinkDialogButtons(icon: const Icon(Icons.close), function: () => Navigator.of(context, rootNavigator: true).pop())
                   ],
                 ),
               )

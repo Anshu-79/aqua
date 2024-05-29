@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:aqua/utils.dart' as utils;
 
 import 'package:aqua/database/database.dart';
+import 'package:aqua/dialog_boxes/beverage_screen.dart';
 
 class BeverageMenu extends StatefulWidget {
   const BeverageMenu({super.key});
@@ -30,7 +31,6 @@ class _BeverageMenuState extends State<BeverageMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
         shape: BeveledRectangleBorder(
@@ -42,7 +42,8 @@ class _BeverageMenuState extends State<BeverageMenu> {
           padding: const EdgeInsets.only(bottom: 30, top: 20),
           child: Text("My Beverages",
               style: TextStyle(
-                  color: Theme.of(context).primaryColor, fontFamily: "CeraPro")),
+                  color: Theme.of(context).primaryColor,
+                  fontFamily: "CeraPro")),
         ),
         foregroundColor: Theme.of(context).primaryColor,
       ),
@@ -54,8 +55,10 @@ class _BeverageMenuState extends State<BeverageMenu> {
               final List<Beverage>? beverages = snapshot.data;
 
               if (snapshot.connectionState != ConnectionState.done) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor
+                  ),
                 );
               }
 
@@ -82,10 +85,18 @@ class _BeverageMenuState extends State<BeverageMenu> {
                                 color:
                                     Color(int.parse('0x${beverage.colorCode}')),
                                 width: 5)),
-                        child: _BeverageCard(
-                            beverageName: beverage.bevName,
-                            beverageColor: beverage.colorCode,
-                            waterFraction: beverage.waterPercent),
+                        child: ListTile(
+                          onTap: () {},
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                          ),
+                          splashColor:
+                              Color(int.parse('0x${beverage.colorCode}')),
+                          title: _BeverageCard(
+                              beverageName: beverage.bevName,
+                              beverageColor: beverage.colorCode,
+                              waterFraction: beverage.waterPercent),
+                        ),
                       );
                     });
               } else {
@@ -101,7 +112,25 @@ class _BeverageMenuState extends State<BeverageMenu> {
         height: 70,
         width: 70,
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            showGeneralDialog(
+                      barrierDismissible: false,
+                      transitionDuration: const Duration(milliseconds: 150),
+                      transitionBuilder: (context, a1, a2, child) {
+                        return ScaleTransition(
+                            scale:
+                                Tween<double>(begin: 0.5, end: 1.0).animate(a1),
+                            child: FadeTransition(
+                              opacity: Tween<double>(begin: 0.5, end: 1.0)
+                                  .animate(a1),
+                              child: AddBeverageDialog(),
+                            ));
+                      },
+                      context: context,
+                      pageBuilder: (context, a1, a2) {
+                        return const Placeholder();
+                      });
+          },
           tooltip: "Add new beverage",
           backgroundColor: Theme.of(context).primaryColor,
           splashColor: Theme.of(context).splashColor,

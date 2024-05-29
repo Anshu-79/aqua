@@ -8,19 +8,20 @@ import 'package:sqlite3/sqlite3.dart';
 import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 
 import 'package:aqua/database/tables.dart';
+import 'package:aqua/utils.dart';
 part 'database.g.dart';
 
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
-    
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(path.join(dbFolder.path, 'aqua.sqlite'));
-    
+
     //if (!await file.exists()) {
-        // Extract the pre-populated database file from assets
+    // Extract the pre-populated database file from assets
     final blob = await rootBundle.load('assets/aqua.db');
     final buffer = blob.buffer;
-    await file.writeAsBytes(buffer.asUint8List(blob.offsetInBytes, blob.lengthInBytes));
+    await file.writeAsBytes(
+        buffer.asUint8List(blob.offsetInBytes, blob.lengthInBytes));
     //}
 
     // Also work around limitations on old Android versions
@@ -39,7 +40,6 @@ LazyDatabase _openConnection() {
   });
 }
 
-
 @DriftDatabase(tables: [Beverages, Drinks, Activities, Workouts, WaterGoals])
 class Database extends _$Database {
   Database() : super(_openConnection());
@@ -52,7 +52,8 @@ class Database extends _$Database {
   }
 
   Future<Activity> getActivity(int id) async {
-    return await (select(activities)..where((tbl) => tbl.activityID.equals(id))).getSingle();
+    return await (select(activities)..where((tbl) => tbl.activityID.equals(id)))
+        .getSingle();
   }
 
   Future<List<Beverage>> getBeverages() async {
@@ -61,24 +62,42 @@ class Database extends _$Database {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-    //beforeOpen: (details) async => await customStatement("PRAGMA foreign_keys = ON"),
-    onCreate: (Migrator m) async {
-      await m.createAll();
-      print("Database created...");
-      
-      await into(beverages).insert(const Beverage(bevID: 1, bevName: "Water", colorCode: "FF44A4EE", waterPercent: 100));
-      await into(beverages).insert(const Beverage(bevID: 2, bevName: "Soda", colorCode: "FFCC2936", waterPercent: 90));
-      await into(beverages).insert(const Beverage(bevID: 3, bevName: "Coffee", colorCode: "FFFB8B24", waterPercent: 50));
-      await into(beverages).insert(const Beverage(bevID: 4, bevName: "Tea", colorCode: "FF9BC53D", waterPercent: 75));
-      await into(beverages).insert(const Beverage(bevID: 5, bevName: "Milk", colorCode: "FFFFD6DE", waterPercent: 88));
-      
-    },
+        //beforeOpen: (details) async => await customStatement("PRAGMA foreign_keys = ON"),
+        onCreate: (Migrator m) async {
+          await m.createAll();
+          print("Database created...");
 
-    onUpgrade: (Migrator m, int from, int to) async {
-      if (from == 1 && to == 2) {
-        // Add new columns, tables, or other schema changes
-      }
-    },
+          await into(beverages).insert(Beverage(
+              bevID: 1,
+              bevName: "Water",
+              colorCode: defaultColors['blue']!.value.toRadixString(16),
+              waterPercent: 100));
+          await into(beverages).insert(Beverage(
+              bevID: 2,
+              bevName: "Soda",
+              colorCode: defaultColors['red']!.value.toRadixString(16),
+              waterPercent: 90));
+          await into(beverages).insert(Beverage(
+              bevID: 3,
+              bevName: "Coffee",
+              colorCode: defaultColors['orange']!.value.toRadixString(16),
+              waterPercent: 50));
+          await into(beverages).insert(const Beverage(
+              bevID: 4,
+              bevName: "Tea",
+              colorCode: "FFc5ca30",
+              waterPercent: 75));
+          await into(beverages).insert(const Beverage(
+              bevID: 5,
+              bevName: "Milk",
+              colorCode: "FFFFD6DE",
+              waterPercent: 88));
+        },
+
+        onUpgrade: (Migrator m, int from, int to) async {
+          if (from == 1 && to == 2) {
+            // Add new columns, tables, or other schema changes
+          }
+        },
       );
 }
-
