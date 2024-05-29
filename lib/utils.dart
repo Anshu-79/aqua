@@ -59,7 +59,7 @@ abstract class ThemeText {
       fontSize: 45, fontWeight: FontWeight.w900, color: Colors.black);
 
   static TextStyle textInput = const TextStyle(
-      fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black);
+      fontSize: 30, fontWeight: FontWeight.w900, color: Colors.black);
 
   static TextStyle textInputHint = const TextStyle(
       fontSize: 25, fontWeight: FontWeight.bold, color: Colors.grey);
