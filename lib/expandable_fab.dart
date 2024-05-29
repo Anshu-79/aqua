@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-import 'package:aqua/dialog_boxes.dart';
+import 'package:aqua/dialog_boxes/home_screen.dart';
 
 @immutable
 class ExpandableFab extends StatefulWidget {
@@ -149,7 +149,7 @@ class _ExpandableFabState extends State<ExpandableFab>
                 onTap: () {
                   showGeneralDialog(
                       barrierDismissible: false,
-                      transitionDuration: const Duration(milliseconds: 150),
+                      transitionDuration: const Duration(milliseconds: 250),
                       transitionBuilder: (context, a1, a2, child) {
                         return ScaleTransition(
                             scale:
@@ -162,7 +162,7 @@ class _ExpandableFabState extends State<ExpandableFab>
                       },
                       context: context,
                       pageBuilder: (context, a1, a2) {
-                        return Placeholder();
+                        return const Placeholder();
                       });
                 },
                 child: Icon(Icons.add,
