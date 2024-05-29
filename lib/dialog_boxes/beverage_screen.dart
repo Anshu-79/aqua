@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:drift/drift.dart' as drift;
 
 import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/database/database.dart';
 
 class AddBeverageDialog extends StatefulWidget {
-  const AddBeverageDialog({super.key});
+  const AddBeverageDialog({super.key, required this.notifyParent});
+
+  final Function() notifyParent;
 
   @override
   State<AddBeverageDialog> createState() => _AddBeverageDialogState();
 }
 
 class _AddBeverageDialogState extends State<AddBeverageDialog> {
-  int _currentValue = 50;
+  late Database _db;
+
+  TextEditingController beverageNameController = TextEditingController();
+
+  int _waterPercent = 50;
 
   void changeColor(Color color) => setState(() {
         currentColor = color;
@@ -23,6 +31,19 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
   //final int _portraitCrossAxisCount = 6;
   final double _borderRadius = 30;
   final double _iconSize = 15;
+
+  @override
+  void initState() {
+    super.initState();
+    _db = Database();
+  }
+
+  @override
+  void dispose() {
+    beverageNameController.dispose();
+    _db.close();
+    super.dispose();
+  }
 
   Widget pickerLayoutBuilder(
       BuildContext context, List<Color> colors, PickerItem child) {
@@ -77,13 +98,14 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
       backgroundColor: currentColor,
       surfaceTintColor: Colors.transparent,
       child: SizedBox(
-        height: 425,
+        height: 450,
         width: MediaQuery.of(context).size.width - 60,
         //alignment: Alignment.bottomCenter,
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 40),
             child: TextField(
+              controller: beverageNameController,
               textCapitalization: TextCapitalization.words,
               textAlign: TextAlign.center,
               style: utils.ThemeText.textInput,
@@ -114,9 +136,8 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
                       fontSize: 20),
                   minValue: 1,
                   maxValue: 100,
-                  value: _currentValue,
-                  onChanged: (value) =>
-                      setState(() => _currentValue = value)),
+                  value: _waterPercent,
+                  onChanged: (value) => setState(() => _waterPercent = value)),
               Padding(
                 padding: const EdgeInsets.only(top: 15),
                 child: Text(
@@ -142,7 +163,18 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
               children: [
                 utils.addDrinkDialogButtons(
                   icon: const Icon(Icons.check),
-                  function: () => {},
+                  function: () {
+                    final beverage = BeveragesCompanion(
+                      bevName: drift.Value(beverageNameController.text),
+                      colorCode:
+                          drift.Value(currentColor!.value.toRadixString(16)),
+                      waterPercent: drift.Value(_waterPercent),
+                    );
+                    _db.insertBeverage(beverage);
+                    print("${beverageNameController.text} added");
+                    Navigator.of(context, rootNavigator: true).pop();
+                    widget.notifyParent();
+                  },
                 ),
                 utils.addDrinkDialogButtons(
                     icon: const Icon(Icons.close),

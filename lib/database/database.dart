@@ -16,13 +16,13 @@ LazyDatabase _openConnection() {
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(path.join(dbFolder.path, 'aqua.sqlite'));
 
-    //if (!await file.exists()) {
+    if (!await file.exists()) {
     // Extract the pre-populated database file from assets
     final blob = await rootBundle.load('assets/aqua.db');
     final buffer = blob.buffer;
     await file.writeAsBytes(
         buffer.asUint8List(blob.offsetInBytes, blob.lengthInBytes));
-    //}
+    }
 
     // Also work around limitations on old Android versions
     if (Platform.isAndroid) {
@@ -47,6 +47,11 @@ class Database extends _$Database {
   @override
   int get schemaVersion => 1;
 
+  Future<int> getUserVersion() async {
+    final result = await customSelect('PRAGMA user_version;').getSingle();
+    return result.data['user_version'] as int;
+  }
+
   Future<List<Activity>> getActivities() async {
     return await select(activities).get();
   }
@@ -60,9 +65,12 @@ class Database extends _$Database {
     return await select(beverages).get();
   }
 
+  Future<int> insertBeverage(BeveragesCompanion entity) async {
+    return await into(beverages).insert(entity);
+  }
+
   @override
   MigrationStrategy get migration => MigrationStrategy(
-        //beforeOpen: (details) async => await customStatement("PRAGMA foreign_keys = ON"),
         onCreate: (Migrator m) async {
           await m.createAll();
           print("Database created...");
@@ -93,11 +101,12 @@ class Database extends _$Database {
               colorCode: "FFFFD6DE",
               waterPercent: 88));
         },
-
-        onUpgrade: (Migrator m, int from, int to) async {
-          if (from == 1 && to == 2) {
-            // Add new columns, tables, or other schema changes
-          }
+        beforeOpen: (details) async {
+          print("beforeOpen executed...");
+            await customStatement("PRAGMA foreign_keys = ON");},
+        onUpgrade: (m, from, to) async {
+          print("onUpgrade executed");
+          await customStatement('PRAGMA foreign_keys = OFF');
         },
       );
 }

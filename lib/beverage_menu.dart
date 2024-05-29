@@ -15,10 +15,14 @@ class BeverageMenu extends StatefulWidget {
 class _BeverageMenuState extends State<BeverageMenu> {
   late Database _db;
 
+  refresh() {
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
-
+    //print("Beverage page loaded...");
     _db = Database();
   }
 
@@ -53,12 +57,12 @@ class _BeverageMenuState extends State<BeverageMenu> {
             future: _db.getBeverages(),
             builder: (context, snapshot) {
               final List<Beverage>? beverages = snapshot.data;
-
+              
+              print(beverages);
               if (snapshot.connectionState != ConnectionState.done) {
                 return Center(
                   child: CircularProgressIndicator(
-                    color: Theme.of(context).primaryColor
-                  ),
+                      color: Theme.of(context).primaryColor),
                 );
               }
 
@@ -114,22 +118,21 @@ class _BeverageMenuState extends State<BeverageMenu> {
         child: FloatingActionButton(
           onPressed: () {
             showGeneralDialog(
-                      barrierDismissible: false,
-                      transitionDuration: const Duration(milliseconds: 150),
-                      transitionBuilder: (context, a1, a2, child) {
-                        return ScaleTransition(
-                            scale:
-                                Tween<double>(begin: 0.5, end: 1.0).animate(a1),
-                            child: FadeTransition(
-                              opacity: Tween<double>(begin: 0.5, end: 1.0)
-                                  .animate(a1),
-                              child: AddBeverageDialog(),
-                            ));
-                      },
-                      context: context,
-                      pageBuilder: (context, a1, a2) {
-                        return const Placeholder();
-                      });
+                barrierDismissible: false,
+                transitionDuration: const Duration(milliseconds: 150),
+                transitionBuilder: (context, a1, a2, child) {
+                  return ScaleTransition(
+                      scale: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
+                      child: FadeTransition(
+                        opacity:
+                            Tween<double>(begin: 0.5, end: 1.0).animate(a1),
+                        child: AddBeverageDialog(notifyParent: refresh,),
+                      ));
+                },
+                context: context,
+                pageBuilder: (context, a1, a2) {
+                  return const Placeholder();
+                });
           },
           tooltip: "Add new beverage",
           backgroundColor: Theme.of(context).primaryColor,
@@ -162,33 +165,33 @@ class _BeverageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 5, 20, 10),
-      child: Row(
-        children: [
-          beverageIcon(color: Color(int.parse("0x$beverageColor"))),
-          Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  beverageName,
-                  style: utils.ThemeText.beverageName,
-                ),
-                Text(
-                  "Water Percentage",
-                  style: utils.ThemeText.beverageSubtext,
-                ),
-                Text(
-                  '${waterFraction.toString()}%',
-                  style: utils.ThemeText.beverageWaterPercentage,
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
+    return Row(
+      children: [
+        Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: beverageIcon(color: Color(int.parse("0x$beverageColor")))),
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                beverageName,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: utils.ThemeText.beverageName,
+              ),
+              Text(
+                "Water Percentage",
+                style: utils.ThemeText.beverageSubtext,
+              ),
+              Text(
+                '${waterFraction.toString()}%',
+                style: utils.ThemeText.beverageWaterPercentage,
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 }

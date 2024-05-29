@@ -149,7 +149,7 @@ class _ExpandableFabState extends State<ExpandableFab>
                 onTap: () {
                   showGeneralDialog(
                       barrierDismissible: false,
-                      transitionDuration: const Duration(milliseconds: 250),
+                      transitionDuration: const Duration(milliseconds: 200),
                       transitionBuilder: (context, a1, a2, child) {
                         return ScaleTransition(
                             scale:
