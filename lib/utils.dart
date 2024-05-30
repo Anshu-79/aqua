@@ -9,6 +9,34 @@ Map<String, Color> defaultColors = {
   'violet': Color(0xFF6a4c93),
 };
 
+Color toColor(String colorCode) => Color(int.parse('0x$colorCode'));
+
+String toHexString(Color color) => color.value.toRadixString(16);
+
+/// Darken a color by [percent] amount (100 = black)
+Color darken(Color c, [int percent = 10]) {
+    assert(1 <= percent && percent <= 100);
+    var f = 1 - percent / 100;
+    return Color.fromARGB(
+        c.alpha,
+        (c.red * f).round(),
+        (c.green  * f).round(),
+        (c.blue * f).round()
+    );
+}
+
+/// Lighten a color by [percent] amount (100 = white)
+Color lighten(Color c, [int percent = 10]) {
+    assert(1 <= percent && percent <= 100);
+    var p = percent / 100;
+    return Color.fromARGB(
+        c.alpha,
+        c.red + ((255 - c.red) * p).round(),
+        c.green + ((255 - c.green) * p).round(),
+        c.blue + ((255 - c.blue) * p).round()
+    );
+}
+
 List<Color> colorList = defaultColors.values.toList();
 
 abstract class ThemeText {
@@ -54,12 +82,19 @@ abstract class ThemeText {
   static TextStyle dialogText = const TextStyle(
       fontSize: 45, fontWeight: FontWeight.w900, color: Colors.black);
 
-  // Add Beverage Dialog Box
+  // List Beverage Dialog Box
+  static TextStyle ListBeverageName = const TextStyle(
+      fontSize: 45, fontWeight: FontWeight.w900, color: Colors.black);
+  
+  static TextStyle ListBeverageTitle = const TextStyle(
+      fontSize: 30, fontWeight: FontWeight.bold, fontFamily: 'CeraPro');
+  
+  // Beverage Dialog Boxes
   static TextStyle dialogSubtext = const TextStyle(
       fontSize: 45, fontWeight: FontWeight.w900, color: Colors.black);
 
   static TextStyle textInput = const TextStyle(
-      fontSize: 30, fontWeight: FontWeight.w900, color: Colors.black);
+      fontSize: 40, fontWeight: FontWeight.w900, color: Colors.black);
 
   static TextStyle textInputHint = const TextStyle(
       fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey);

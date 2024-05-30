@@ -58,7 +58,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
             future: _db.getBeverages(),
             builder: (context, snapshot) {
               final List<Beverage>? beverages = snapshot.data;
-            
+
               //print(beverages);
               if (snapshot.connectionState != ConnectionState.done) {
                 return Center(
@@ -81,14 +81,14 @@ class _BeverageMenuState extends State<BeverageMenu> {
                       return Card(
                         margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
                         elevation: 0,
-                        color: Color(int.parse('0x${beverage.colorCode}'))
-                            .withOpacity(0.3),
+                        color:
+                            utils.toColor(beverage.colorCode).withOpacity(0.3),
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(30)),
                             side: BorderSide(
                                 color:
-                                    Color(int.parse('0x${beverage.colorCode}')),
+                                    utils.toColor(beverage.colorCode),
                                 width: 5)),
                         child: ListTile(
                           onTap: () {
@@ -119,7 +119,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                             borderRadius: BorderRadius.all(Radius.circular(30)),
                           ),
                           splashColor:
-                              Color(int.parse('0x${beverage.colorCode}')),
+                              utils.toColor(beverage.colorCode),
                           title: _BeverageCard(
                               beverageName: beverage.bevName,
                               beverageColor: beverage.colorCode,
@@ -195,7 +195,7 @@ class _BeverageCard extends StatelessWidget {
       children: [
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: beverageIcon(color: Color(int.parse("0x$beverageColor")))),
+            child: beverageIcon(color: utils.toColor(beverageColor))),
         Flexible(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
