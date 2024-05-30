@@ -17,11 +17,11 @@ LazyDatabase _openConnection() {
     final file = File(path.join(dbFolder.path, 'aqua.sqlite'));
 
     if (!await file.exists()) {
-    // Extract the pre-populated database file from assets
-    final blob = await rootBundle.load('assets/aqua.db');
-    final buffer = blob.buffer;
-    await file.writeAsBytes(
-        buffer.asUint8List(blob.offsetInBytes, blob.lengthInBytes));
+      // Extract the pre-populated database file from assets
+      final blob = await rootBundle.load('assets/aqua.db');
+      final buffer = blob.buffer;
+      await file.writeAsBytes(
+          buffer.asUint8List(blob.offsetInBytes, blob.lengthInBytes));
     }
 
     // Also work around limitations on old Android versions
@@ -65,8 +65,17 @@ class Database extends _$Database {
     return await select(beverages).get();
   }
 
-  Future<int> insertBeverage(BeveragesCompanion entity) async {
-    return await into(beverages).insert(entity);
+  Future<Beverage> getBeverage(int id) async {
+    return await (select(beverages)..where((tbl) => tbl.bevID.equals(id)))
+        .getSingle();
+  }
+
+  Future<int> insertOrUpdateBeverage(BeveragesCompanion entity) async {
+    return await into(beverages).insertOnConflictUpdate(entity);
+  }
+
+  Future<int> deleteBeverage(int id) async {
+    return await (delete(beverages)..where((tbl) => tbl.bevID.equals(id))).go();
   }
 
   @override
@@ -74,28 +83,27 @@ class Database extends _$Database {
         onCreate: (Migrator m) async {
           await m.createAll();
           print("Database created...");
-
-          await into(beverages).insert(Beverage(
+          await into(beverages).insertOnConflictUpdate(Beverage(
               bevID: 1,
               bevName: "Water",
               colorCode: defaultColors['blue']!.value.toRadixString(16),
               waterPercent: 100));
-          await into(beverages).insert(Beverage(
+          await into(beverages).insertOnConflictUpdate(Beverage(
               bevID: 2,
               bevName: "Soda",
               colorCode: defaultColors['red']!.value.toRadixString(16),
               waterPercent: 90));
-          await into(beverages).insert(Beverage(
+          await into(beverages).insertOnConflictUpdate(Beverage(
               bevID: 3,
               bevName: "Coffee",
               colorCode: defaultColors['orange']!.value.toRadixString(16),
               waterPercent: 50));
-          await into(beverages).insert(const Beverage(
+          await into(beverages).insertOnConflictUpdate(const Beverage(
               bevID: 4,
               bevName: "Tea",
               colorCode: "FFc5ca30",
               waterPercent: 75));
-          await into(beverages).insert(const Beverage(
+          await into(beverages).insertOnConflictUpdate(const Beverage(
               bevID: 5,
               bevName: "Milk",
               colorCode: "FFFFD6DE",
@@ -103,7 +111,8 @@ class Database extends _$Database {
         },
         beforeOpen: (details) async {
           print("beforeOpen executed...");
-            await customStatement("PRAGMA foreign_keys = ON");},
+          await customStatement("PRAGMA foreign_keys = ON");
+        },
         onUpgrade: (m, from, to) async {
           print("onUpgrade executed");
           await customStatement('PRAGMA foreign_keys = OFF');
