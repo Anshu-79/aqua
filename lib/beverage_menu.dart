@@ -33,6 +33,23 @@ class _BeverageMenuState extends State<BeverageMenu> {
     super.dispose();
   }
 
+  void showDefaultBevSnackBar(Color color) {
+    final snackbar = SnackBar(
+      content: const Text(
+        "Changes cannot be made to Water",
+        style: TextStyle(color: Colors.white),
+      ),
+      backgroundColor: color,
+      action: SnackBarAction(
+        label: 'Dismiss',
+        textColor: Colors.white,
+        onPressed: () {},
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,6 +109,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                                 width: 5)),
                         child: ListTile(
                           onTap: () {
+                            if (beverage.bevID != 1) {
                             showGeneralDialog(
                                 barrierDismissible: false,
                                 transitionDuration:
@@ -113,7 +131,9 @@ class _BeverageMenuState extends State<BeverageMenu> {
                                 context: context,
                                 pageBuilder: (context, a1, a2) {
                                   return const Placeholder();
-                                });
+                                });} else {
+                                  showDefaultBevSnackBar(utils.toColor(beverage.colorCode));
+                                }
                           },
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(30)),

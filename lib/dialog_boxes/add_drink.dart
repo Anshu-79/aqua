@@ -33,25 +33,33 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: () async {
-                  Beverage? val = await showDialog(
-                      barrierDismissible: false,
-                      context: context,
-                      builder: (context) {
-                        return const ListBeverages();
-                      });
-                  _beverageName = val!.bevName;
-                  _color = utils.toColor(val.colorCode);
-                },
-                style: ButtonStyle(
-                    elevation: MaterialStateProperty.all(7),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20))),
-                    backgroundColor: MaterialStateProperty.all(Colors.white)),
-                child: Text(
-                  _beverageName,
-                  style: utils.ThemeText.dialogText,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Tooltip(
+                  message: _beverageName,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      Beverage? val = await showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (context) {
+                            return const ListBeverages();
+                          });
+                      _beverageName = val!.bevName;
+                      _color = utils.toColor(val.colorCode);
+                    },
+                    style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(7),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20))),
+                        backgroundColor: MaterialStateProperty.all(Colors.white)),
+                    child: Text(
+                      _beverageName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: utils.ThemeText.dialogText,
+                    ),
+                  ),
                 ),
               ),
               Row(
