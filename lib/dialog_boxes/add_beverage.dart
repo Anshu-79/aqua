@@ -197,12 +197,12 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
                         final beverage = BeveragesCompanion(
                           bevName: drift.Value(beverageNameController.text),
                           colorCode: drift.Value(
-                              currentColor!.value.toRadixString(16)),
+                              utils.toHexString(currentColor!)),
                           waterPercent: drift.Value(_waterPercent),
                         );
                         _db.insertOrUpdateBeverage(beverage);
                         print("${beverageNameController.text} added");
-                        Navigator.of(context, rootNavigator: true).pop();
+                        Navigator.of(context).pop();
                         widget.notifyParent();
                         showSnackBar(currentColor!);
                       }

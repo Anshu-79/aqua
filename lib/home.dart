@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/expandable_fab.dart' as fab;
 import 'package:aqua/icomoon_icons.dart';
-import 'package:aqua/dialog_boxes/home_screen.dart';
+import 'package:aqua/dialog_boxes/edit_drink.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
