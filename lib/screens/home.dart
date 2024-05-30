@@ -10,6 +10,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    utils.setPrefs();
     return Scaffold(
       body: Center(
         child: Column(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 
-import 'package:aqua/home.dart';
-import 'package:aqua/user_profile.dart';
-import 'package:aqua/beverage_menu.dart';
+import 'package:aqua/screens/home.dart';
+import 'package:aqua/screens/user_profile.dart';
+import 'package:aqua/screens/beverage_menu.dart';
 
 void main() {
   runApp(Aqua());
@@ -13,27 +13,25 @@ class Aqua extends StatelessWidget {
   Aqua({super.key});
 
   final pages = [
-    HomeScreen(),
-    UserProfile(),
-    BeverageMenu(),
+    const HomeScreen(),
+    const UserProfile(),
+    const BeverageMenu(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    
     Brightness systemBrightness = Brightness.light;
     // systemBrightness = MediaQuery.of(context).platformBrightness;
 
     Color primaryColor = Colors.black;
     Color canvasColor = Colors.white;
     Color splashColor = const Color(0xFF44A4EE);
-    
+
     if (systemBrightness == Brightness.dark) {
       primaryColor = Colors.white;
       canvasColor = Colors.black;
     }
 
-    
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

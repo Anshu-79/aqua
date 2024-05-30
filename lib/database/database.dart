@@ -52,6 +52,7 @@ class Database extends _$Database {
     return result.data['user_version'] as int;
   }
 
+  // Activities Actions
   Future<List<Activity>> getActivities() async {
     return await select(activities).get();
   }
@@ -61,6 +62,7 @@ class Database extends _$Database {
         .getSingle();
   }
 
+  // Beverages Actions
   Future<List<Beverage>> getBeverages() async {
     return await select(beverages).get();
   }
@@ -77,6 +79,14 @@ class Database extends _$Database {
   Future<int> deleteBeverage(int id) async {
     return await (delete(beverages)..where((tbl) => tbl.bevID.equals(id))).go();
   }
+
+  // Drinks Actions
+  Future<int> insertOrUpdateDrink(DrinksCompanion entity) async {
+    return await into(drinks).insertOnConflictUpdate(entity);
+  }
+
+  // Water Goals Actions
+  
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
