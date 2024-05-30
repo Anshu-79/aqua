@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:drift/drift.dart' as drift;
 import 'package:numberpicker/numberpicker.dart';
 
 import 'package:aqua/utils.dart' as utils;
@@ -13,9 +14,10 @@ class AddWaterDialog extends StatefulWidget {
 }
 
 class _AddWaterDialogState extends State<AddWaterDialog> {
-  int _currentValue = 200;
+  int _bevID = 1;
   String _beverageName = "Water";
   Color _color = utils.defaultColors['blue']!;
+  int _volume = 200;
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +47,16 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
                           builder: (context) {
                             return const ListBeverages();
                           });
-                      _beverageName = val!.bevName;
+                      _bevID = val!.bevID;
+                      _beverageName = val.bevName;
                       _color = utils.toColor(val.colorCode);
                     },
                     style: ButtonStyle(
                         elevation: MaterialStateProperty.all(7),
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20))),
-                        backgroundColor: MaterialStateProperty.all(Colors.white)),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white)),
                     child: Text(
                       _beverageName,
                       maxLines: 1,
@@ -80,9 +84,8 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
                       minValue: 25,
                       step: 25,
                       maxValue: 1000,
-                      value: _currentValue,
-                      onChanged: (value) =>
-                          setState(() => _currentValue = value)),
+                      value: _volume,
+                      onChanged: (value) => setState(() => _volume = value)),
                   Text(
                     "mL",
                     style: utils.ThemeText.dialogText,
@@ -96,7 +99,13 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
                   children: [
                     utils.addDrinkDialogButtons(
                       icon: const Icon(Icons.check),
-                      function: () => {},
+                      function: () {
+                        final drink = DrinksCompanion(
+                            bevID: drift.Value(_bevID),
+                            volume: drift.Value(_volume),
+                            datetime: drift.Value(DateTime.now()));
+                        Navigator.pop(context, drink);
+                      },
                     ),
                     utils.addDrinkDialogButtons(
                         icon: const Icon(Icons.close),

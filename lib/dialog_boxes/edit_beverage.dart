@@ -18,8 +18,6 @@ class EditBeverageDialog extends StatefulWidget {
 }
 
 class _EditBeverageDialogState extends State<EditBeverageDialog> {
-  late Database _db;
-
   final formKey = GlobalKey<FormState>();
 
   late int _waterPercent;
@@ -36,7 +34,6 @@ class _EditBeverageDialogState extends State<EditBeverageDialog> {
 
   @override
   void initState() {
-    _db = Database();
     _waterPercent = widget.beverage.waterPercent;
     _currentColor = Color(int.parse('0x${widget.beverage.colorCode}'));
     beverageNameController.text = widget.beverage.bevName;
@@ -46,14 +43,13 @@ class _EditBeverageDialogState extends State<EditBeverageDialog> {
   @override
   void dispose() {
     beverageNameController.dispose();
-    _db.close();
     super.dispose();
   }
 
   void showEditSnackBar(Color color) {
     final snackbar = SnackBar(
       content: const Text(
-        "Beverage edited! List will be updated soon.",
+        "Beverage edited!",
         style: TextStyle(color: Colors.white),
       ),
       backgroundColor: color,
@@ -70,7 +66,7 @@ class _EditBeverageDialogState extends State<EditBeverageDialog> {
   void showDeleteSnackBar(Color color) {
     final snackbar = SnackBar(
       content: const Text(
-        "Beverage deleted! List will be updated soon.",
+        "Beverage deleted!",
         style: TextStyle(color: Colors.white),
       ),
       backgroundColor: color,
@@ -218,25 +214,21 @@ class _EditBeverageDialogState extends State<EditBeverageDialog> {
                         final beverage = BeveragesCompanion(
                           bevID: drift.Value(widget.beverage.bevID),
                           bevName: drift.Value(beverageNameController.text),
-                          colorCode: drift.Value(
-                              utils.toHexString(_currentColor)),
+                          colorCode:
+                              drift.Value(utils.toHexString(_currentColor)),
                           waterPercent: drift.Value(_waterPercent),
                         );
 
-                        _db.insertOrUpdateBeverage(beverage);
                         print("BevID: ${widget.beverage.bevID} edited");
-
-                        Navigator.of(context, rootNavigator: true).pop();
                         widget.notifyParent();
+                        Navigator.pop(context, [0, beverage]);
                         showEditSnackBar(_currentColor);
                       }
                     },
                   ),
                   utils.addDrinkDialogButtons(
                     function: () {
-                      _db.deleteBeverage(widget.beverage.bevID);
-
-                      Navigator.of(context, rootNavigator: true).pop();
+                      Navigator.pop(context, [1, widget.beverage.bevID]);
                       widget.notifyParent();
                       showDeleteSnackBar(_currentColor);
                     },
@@ -244,8 +236,7 @@ class _EditBeverageDialogState extends State<EditBeverageDialog> {
                   ),
                   utils.addDrinkDialogButtons(
                       icon: const Icon(Icons.close),
-                      function: () =>
-                          Navigator.of(context, rootNavigator: true).pop())
+                      function: () => Navigator.pop(context, [2, null]))
                 ],
               ),
             )
