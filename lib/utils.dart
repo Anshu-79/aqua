@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+void setPrefs() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setDouble('wakeTime', 8);
+  prefs.setDouble('sleepTime', 2.5);
+}
 
 Map<String, Color> defaultColors = {
   'red': const Color(0xFFff595e),
@@ -15,26 +22,21 @@ String toHexString(Color color) => color.value.toRadixString(16);
 
 /// Darken a color by [percent] amount (100 = black)
 Color darken(Color c, [int percent = 10]) {
-    assert(1 <= percent && percent <= 100);
-    var f = 1 - percent / 100;
-    return Color.fromARGB(
-        c.alpha,
-        (c.red * f).round(),
-        (c.green  * f).round(),
-        (c.blue * f).round()
-    );
+  assert(1 <= percent && percent <= 100);
+  var f = 1 - percent / 100;
+  return Color.fromARGB(c.alpha, (c.red * f).round(), (c.green * f).round(),
+      (c.blue * f).round());
 }
 
 /// Lighten a color by [percent] amount (100 = white)
 Color lighten(Color c, [int percent = 10]) {
-    assert(1 <= percent && percent <= 100);
-    var p = percent / 100;
-    return Color.fromARGB(
-        c.alpha,
-        c.red + ((255 - c.red) * p).round(),
-        c.green + ((255 - c.green) * p).round(),
-        c.blue + ((255 - c.blue) * p).round()
-    );
+  assert(1 <= percent && percent <= 100);
+  var p = percent / 100;
+  return Color.fromARGB(
+      c.alpha,
+      c.red + ((255 - c.red) * p).round(),
+      c.green + ((255 - c.green) * p).round(),
+      c.blue + ((255 - c.blue) * p).round());
 }
 
 List<Color> colorList = defaultColors.values.toList();
@@ -85,10 +87,10 @@ abstract class ThemeText {
   // List Beverage Dialog Box
   static TextStyle ListBeverageName = const TextStyle(
       fontSize: 45, fontWeight: FontWeight.w900, color: Colors.black);
-  
+
   static TextStyle ListBeverageTitle = const TextStyle(
       fontSize: 30, fontWeight: FontWeight.bold, fontFamily: 'CeraPro');
-  
+
   // Beverage Dialog Boxes
   static TextStyle dialogSubtext = const TextStyle(
       fontSize: 45, fontWeight: FontWeight.w900, color: Colors.black);

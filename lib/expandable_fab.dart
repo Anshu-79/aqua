@@ -1,3 +1,4 @@
+import 'package:aqua/database/database.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
@@ -26,9 +27,12 @@ class _ExpandableFabState extends State<ExpandableFab>
   late final Animation<double> _expandAnimation;
   bool _open = false;
 
+  late Database _db;
+
   @override
   void initState() {
     super.initState();
+    _db = Database();
     _open = widget.initialOpen ?? false;
     _controller = AnimationController(
       value: _open ? 1.0 : 0.0,
@@ -45,6 +49,7 @@ class _ExpandableFabState extends State<ExpandableFab>
   @override
   void dispose() {
     _controller.dispose();
+    _db.close();
     super.dispose();
   }
 
@@ -146,8 +151,8 @@ class _ExpandableFabState extends State<ExpandableFab>
               child: InkWell(
                 borderRadius: BorderRadius.circular(100),
                 onLongPress: _toggle,
-                onTap: () {
-                  showGeneralDialog(
+                onTap: () async {
+                  DrinksCompanion? drink = await showGeneralDialog(
                       barrierDismissible: false,
                       transitionDuration: const Duration(milliseconds: 200),
                       transitionBuilder: (context, a1, a2, child) {
@@ -157,13 +162,14 @@ class _ExpandableFabState extends State<ExpandableFab>
                             child: FadeTransition(
                               opacity: Tween<double>(begin: 0.5, end: 1.0)
                                   .animate(a1),
-                              child: AddWaterDialog(),
+                              child: const AddWaterDialog(),
                             ));
                       },
                       context: context,
                       pageBuilder: (context, a1, a2) {
                         return const Placeholder();
                       });
+                  await _db.insertOrUpdateDrink(drink!);
                 },
                 child: Icon(Icons.add,
                     size: 50, color: Theme.of(context).canvasColor),
