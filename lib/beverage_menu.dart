@@ -104,42 +104,48 @@ class _BeverageMenuState extends State<BeverageMenu> {
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(30)),
                             side: BorderSide(
-                                color:
-                                    utils.toColor(beverage.colorCode),
+                                color: utils.toColor(beverage.colorCode),
                                 width: 5)),
                         child: ListTile(
-                          onTap: () {
+                          onTap: () async {
                             if (beverage.bevID != 1) {
-                            showGeneralDialog(
-                                barrierDismissible: false,
-                                transitionDuration:
-                                    const Duration(milliseconds: 150),
-                                transitionBuilder: (context, a1, a2, child) {
-                                  return ScaleTransition(
-                                      scale: Tween<double>(begin: 0.5, end: 1.0)
-                                          .animate(a1),
-                                      child: FadeTransition(
-                                        opacity:
+                              List? output = await showGeneralDialog(
+                                  barrierDismissible: false,
+                                  transitionDuration:
+                                      const Duration(milliseconds: 150),
+                                  transitionBuilder: (context, a1, a2, child) {
+                                    return ScaleTransition(
+                                        scale:
                                             Tween<double>(begin: 0.5, end: 1.0)
                                                 .animate(a1),
-                                        child: EditBeverageDialog(
-                                          beverage: beverage,
-                                          notifyParent: refresh,
-                                        ),
-                                      ));
-                                },
-                                context: context,
-                                pageBuilder: (context, a1, a2) {
-                                  return const Placeholder();
-                                });} else {
-                                  showDefaultBevSnackBar(utils.toColor(beverage.colorCode));
-                                }
+                                        child: FadeTransition(
+                                          opacity: Tween<double>(
+                                                  begin: 0.5, end: 1.0)
+                                              .animate(a1),
+                                          child: EditBeverageDialog(
+                                            beverage: beverage,
+                                            notifyParent: refresh,
+                                          ),
+                                        ));
+                                  },
+                                  context: context,
+                                  pageBuilder: (context, a1, a2) {
+                                    return const Placeholder();
+                                  });
+                              if (output![0] == 0) {
+                                await _db.insertOrUpdateBeverage(output[1]);
+                              } else if (output[0] == 1) {
+                                await _db.deleteBeverage(output[1]);
+                              }
+                            } else {
+                              showDefaultBevSnackBar(
+                                  utils.toColor(beverage.colorCode));
+                            }
                           },
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(30)),
                           ),
-                          splashColor:
-                              utils.toColor(beverage.colorCode),
+                          splashColor: utils.toColor(beverage.colorCode),
                           title: _BeverageCard(
                               beverageName: beverage.bevName,
                               beverageColor: beverage.colorCode,
@@ -160,8 +166,8 @@ class _BeverageMenuState extends State<BeverageMenu> {
         height: 70,
         width: 70,
         child: FloatingActionButton(
-          onPressed: () {
-            showGeneralDialog(
+          onPressed: () async {
+            BeveragesCompanion? addedBeverage = await showGeneralDialog(
                 barrierDismissible: false,
                 transitionDuration: const Duration(milliseconds: 150),
                 transitionBuilder: (context, a1, a2, child) {
@@ -179,6 +185,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                 pageBuilder: (context, a1, a2) {
                   return const Placeholder();
                 });
+            await _db.insertOrUpdateBeverage(addedBeverage!);
           },
           tooltip: "Add new beverage",
           backgroundColor: Theme.of(context).primaryColor,

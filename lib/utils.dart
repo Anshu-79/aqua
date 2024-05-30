@@ -94,7 +94,7 @@ abstract class ThemeText {
       fontSize: 45, fontWeight: FontWeight.w900, color: Colors.black);
 
   static TextStyle textInput = const TextStyle(
-      fontSize: 40, fontWeight: FontWeight.w900, color: Colors.black);
+      fontSize: 35, fontWeight: FontWeight.w900, color: Colors.black);
 
   static TextStyle textInputHint = const TextStyle(
       fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey);

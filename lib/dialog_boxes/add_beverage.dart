@@ -16,7 +16,6 @@ class AddBeverageDialog extends StatefulWidget {
 }
 
 class _AddBeverageDialogState extends State<AddBeverageDialog> {
-  late Database _db;
 
   final formKey = GlobalKey<FormState>();
   TextEditingController beverageNameController = TextEditingController();
@@ -33,23 +32,10 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
   final double _borderRadius = 30;
   final double _iconSize = 15;
 
-  @override
-  void initState() {
-    super.initState();
-    _db = Database();
-  }
-
-  @override
-  void dispose() {
-    beverageNameController.dispose();
-    _db.close();
-    super.dispose();
-  }
-
   void showSnackBar(Color color) {
     final snackbar = SnackBar(
       content: const Text(
-        "Beverage added! List will be updated soon.",
+        "Beverage added!",
         style: TextStyle(color: Colors.white),
       ),
       backgroundColor: color,
@@ -168,7 +154,7 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
                     onChanged: (value) =>
                         setState(() => _waterPercent = value)),
                 Padding(
-                  padding: const EdgeInsets.only(top: 15),
+                  padding: const EdgeInsets.only(top: 15, right: 10),
                   child: Text(
                     "% water",
                     style: utils.ThemeText.dialogSubtext,
@@ -200,9 +186,8 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
                               utils.toHexString(currentColor!)),
                           waterPercent: drift.Value(_waterPercent),
                         );
-                        _db.insertOrUpdateBeverage(beverage);
                         print("${beverageNameController.text} added");
-                        Navigator.of(context).pop();
+                        Navigator.pop(context, beverage);
                         widget.notifyParent();
                         showSnackBar(currentColor!);
                       }
