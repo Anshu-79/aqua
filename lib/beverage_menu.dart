@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:aqua/utils.dart' as utils;
 
 import 'package:aqua/database/database.dart';
-import 'package:aqua/dialog_boxes/beverage_screen.dart';
+import 'package:aqua/dialog_boxes/add_beverage.dart';
+import 'package:aqua/dialog_boxes/edit_beverage.dart';
 
 class BeverageMenu extends StatefulWidget {
   const BeverageMenu({super.key});
@@ -57,8 +58,8 @@ class _BeverageMenuState extends State<BeverageMenu> {
             future: _db.getBeverages(),
             builder: (context, snapshot) {
               final List<Beverage>? beverages = snapshot.data;
-              
-              print(beverages);
+            
+              //print(beverages);
               if (snapshot.connectionState != ConnectionState.done) {
                 return Center(
                   child: CircularProgressIndicator(
@@ -90,7 +91,30 @@ class _BeverageMenuState extends State<BeverageMenu> {
                                     Color(int.parse('0x${beverage.colorCode}')),
                                 width: 5)),
                         child: ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            showGeneralDialog(
+                                barrierDismissible: false,
+                                transitionDuration:
+                                    const Duration(milliseconds: 150),
+                                transitionBuilder: (context, a1, a2, child) {
+                                  return ScaleTransition(
+                                      scale: Tween<double>(begin: 0.5, end: 1.0)
+                                          .animate(a1),
+                                      child: FadeTransition(
+                                        opacity:
+                                            Tween<double>(begin: 0.5, end: 1.0)
+                                                .animate(a1),
+                                        child: EditBeverageDialog(
+                                          beverage: beverage,
+                                          notifyParent: refresh,
+                                        ),
+                                      ));
+                                },
+                                context: context,
+                                pageBuilder: (context, a1, a2) {
+                                  return const Placeholder();
+                                });
+                          },
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(30)),
                           ),
@@ -126,7 +150,9 @@ class _BeverageMenuState extends State<BeverageMenu> {
                       child: FadeTransition(
                         opacity:
                             Tween<double>(begin: 0.5, end: 1.0).animate(a1),
-                        child: AddBeverageDialog(notifyParent: refresh,),
+                        child: AddBeverageDialog(
+                          notifyParent: refresh,
+                        ),
                       ));
                 },
                 context: context,

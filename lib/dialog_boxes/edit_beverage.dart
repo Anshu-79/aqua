@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:drift/drift.dart' as drift;
 
-import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/database/database.dart';
+import 'package:aqua/utils.dart' as utils;
 
-class AddBeverageDialog extends StatefulWidget {
-  const AddBeverageDialog({super.key, required this.notifyParent});
+class EditBeverageDialog extends StatefulWidget {
+  const EditBeverageDialog(
+      {super.key, required this.notifyParent, required this.beverage});
 
   final Function() notifyParent;
+  final Beverage beverage;
 
   @override
-  State<AddBeverageDialog> createState() => _AddBeverageDialogState();
+  State<EditBeverageDialog> createState() => _EditBeverageDialogState();
 }
 
-class _AddBeverageDialogState extends State<AddBeverageDialog> {
+class _EditBeverageDialogState extends State<EditBeverageDialog> {
   late Database _db;
 
-  TextEditingController beverageNameController = TextEditingController();
-
-  int _waterPercent = 50;
-
+  late int _waterPercent;
+  late Color _currentColor;
   void changeColor(Color color) => setState(() {
-        currentColor = color;
+        _currentColor = color;
       });
 
-  Color? currentColor = utils.defaultColors['blue'];
+  TextEditingController beverageNameController = TextEditingController();
 
   //final int _portraitCrossAxisCount = 6;
   final double _borderRadius = 30;
@@ -34,8 +34,11 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
 
   @override
   void initState() {
-    super.initState();
     _db = Database();
+    _waterPercent = widget.beverage.waterPercent;
+    _currentColor = Color(int.parse('0x${widget.beverage.colorCode}'));
+    beverageNameController.text = widget.beverage.bevName;
+    super.initState();
   }
 
   @override
@@ -43,6 +46,40 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
     beverageNameController.dispose();
     _db.close();
     super.dispose();
+  }
+
+  void showEditSnackBar(Color color) {
+    final snackbar = SnackBar(
+      content: const Text(
+        "Beverage edited! List will be updated soon.",
+        style: TextStyle(color: Colors.white),
+      ),
+      backgroundColor: color,
+      action: SnackBarAction(
+        label: 'Dismiss',
+        textColor: Colors.white,
+        onPressed: () {},
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
+
+  void showDeleteSnackBar(Color color) {
+    final snackbar = SnackBar(
+      content: const Text(
+        "Beverage deleted! List will be updated soon.",
+        style: TextStyle(color: Colors.white),
+      ),
+      backgroundColor: color,
+      action: SnackBarAction(
+        label: 'Dismiss',
+        textColor: Colors.white,
+        onPressed: () {},
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
   Widget pickerLayoutBuilder(
@@ -57,7 +94,7 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
   }
 
   Widget pickerItemBuilder(
-      Color color, bool isCurrentColor, void Function() changeColor) {
+      Color color, bool isCurrentcolor, void Function() changeColor) {
     return Container(
       height: 35,
       width: 35,
@@ -75,7 +112,7 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
           borderRadius: BorderRadius.circular(_borderRadius),
           child: AnimatedOpacity(
             duration: const Duration(milliseconds: 250),
-            opacity: isCurrentColor ? 1 : 0,
+            opacity: isCurrentcolor ? 1 : 0,
             child: Icon(
               Icons.check,
               size: _iconSize,
@@ -95,7 +132,7 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
         borderRadius: BorderRadius.circular(40),
         side: BorderSide(width: 3, color: Theme.of(context).primaryColor),
       ),
-      backgroundColor: currentColor,
+      backgroundColor: _currentColor,
       surfaceTintColor: Colors.transparent,
       child: SizedBox(
         height: 450,
@@ -153,7 +190,7 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
                 layoutBuilder: pickerLayoutBuilder,
                 itemBuilder: pickerItemBuilder,
                 availableColors: utils.colorList,
-                pickerColor: currentColor,
+                pickerColor: _currentColor,
                 onColorChanged: changeColor),
           ),
           Padding(
@@ -165,16 +202,30 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
                   icon: const Icon(Icons.check),
                   function: () {
                     final beverage = BeveragesCompanion(
+                      bevID: drift.Value(widget.beverage.bevID),
                       bevName: drift.Value(beverageNameController.text),
                       colorCode:
-                          drift.Value(currentColor!.value.toRadixString(16)),
+                          drift.Value(_currentColor.value.toRadixString(16)),
                       waterPercent: drift.Value(_waterPercent),
                     );
-                    _db.insertBeverage(beverage);
-                    print("${beverageNameController.text} added");
+
+                    _db.insertOrUpdateBeverage(beverage);
+                    print("BevID: ${widget.beverage.bevID} edited");
+
                     Navigator.of(context, rootNavigator: true).pop();
                     widget.notifyParent();
+                    showEditSnackBar(_currentColor);
                   },
+                ),
+                utils.addDrinkDialogButtons(
+                  function: () {
+                    _db.deleteBeverage(widget.beverage.bevID);
+
+                    Navigator.of(context, rootNavigator: true).pop();
+                    widget.notifyParent();
+                    showDeleteSnackBar(_currentColor);
+                  },
+                  icon: const Icon(Icons.delete_forever_outlined),
                 ),
                 utils.addDrinkDialogButtons(
                     icon: const Icon(Icons.close),
