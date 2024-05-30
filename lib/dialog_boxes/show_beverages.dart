@@ -72,25 +72,32 @@ class _ListBeveragesState extends State<ListBeverages> {
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context, beverage);
-                          },
-                          style: ButtonStyle(
-                              //elevation: MaterialStateProperty.all(5),
-                              shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                      side: BorderSide(
-                                          color:
-                                              utils.toColor(beverage.colorCode),
-                                          width: 5),
-                                      borderRadius: BorderRadius.circular(20))),
-                              backgroundColor: MaterialStateProperty.all(
-                                  utils.lighten(
-                                      utils.toColor(beverage.colorCode), 50))),
-                          child: Text(
-                            beverage.bevName,
-                            style: utils.ThemeText.ListBeverageName,
+                        child: Tooltip(
+                          message: beverage.bevName,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context, beverage);
+                            },
+                            style: ButtonStyle(
+                                //elevation: MaterialStateProperty.all(5),
+                                shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            color: utils
+                                                .toColor(beverage.colorCode),
+                                            width: 5),
+                                        borderRadius:
+                                            BorderRadius.circular(20))),
+                                backgroundColor: MaterialStateProperty.all(
+                                    utils.lighten(
+                                        utils.toColor(beverage.colorCode),
+                                        50))),
+                            child: Text(
+                              beverage.bevName,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: utils.ThemeText.ListBeverageName,
+                            ),
                           ),
                         ),
                       );

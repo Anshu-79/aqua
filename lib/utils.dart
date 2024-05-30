@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 Map<String, Color> defaultColors = {
-  'red': Color(0xFFff595e),
-  'orange': Color(0xffff924c),
-  'yellow': Color(0xffffca3a),
-  'green': Color(0xff8ac926),
-  'blue': Color(0xFF44A4EE),
-  'violet': Color(0xFF6a4c93),
+  'red': const Color(0xFFff595e),
+  'orange': const Color(0xffff924c),
+  'yellow': const Color(0xffffca3a),
+  'green': const Color(0xff8ac926),
+  'blue': const Color(0xFF44A4EE),
+  'violet': const Color(0xFF6a4c93),
 };
 
 Color toColor(String colorCode) => Color(int.parse('0x$colorCode'));
