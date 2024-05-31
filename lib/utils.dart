@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-void setPrefs() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setDouble('wakeTime', 8);
-  prefs.setDouble('sleepTime', 2.5);
-}
 
 Map<String, Color> defaultColors = {
   'red': const Color(0xFFff595e),

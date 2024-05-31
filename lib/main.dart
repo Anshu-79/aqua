@@ -1,16 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/screens/home.dart';
 import 'package:aqua/screens/user_profile.dart';
 import 'package:aqua/screens/beverage_menu.dart';
+import 'package:aqua/timers.dart';
 
-void main() {
-  runApp(Aqua());
+Future<SharedPreferences> setPrefs() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setDouble('wakeTime', 8);
+  prefs.setDouble('sleepTime', 2.5);
+
+  return prefs;
 }
 
-class Aqua extends StatelessWidget {
-  Aqua({super.key});
+
+void main() {
+  runApp(const Aqua());
+}
+
+class Aqua extends StatefulWidget {
+  const Aqua({super.key});
+
+  @override
+  State<Aqua> createState() => _AquaState();
+}
+
+class _AquaState extends State<Aqua> {
+  late double? wakeTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPrefs();
+  }
+
+  void _loadPrefs() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  setState(() {
+    wakeTime = prefs.getDouble('wakeTime');
+  });
+}
 
   final pages = [
     const HomeScreen(),
@@ -31,6 +62,8 @@ class Aqua extends StatelessWidget {
       primaryColor = Colors.white;
       canvasColor = Colors.black;
     }
+
+    dayChanger(wakeTime!);
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
