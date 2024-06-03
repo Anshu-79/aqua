@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aqua/screens/home.dart';
 import 'package:aqua/screens/user_profile.dart';
 import 'package:aqua/screens/beverage_menu.dart';
+import 'package:aqua/screens/activity_menu.dart';
 import 'package:aqua/timers.dart';
 
 Future<SharedPreferences> setPrefs() async {
@@ -47,6 +48,7 @@ class _AquaState extends State<Aqua> {
     const HomeScreen(),
     const UserProfile(),
     const BeverageMenu(),
+    const ActivityMenu(),
   ];
 
   @override
@@ -73,6 +75,7 @@ class _AquaState extends State<Aqua> {
           primaryColor: primaryColor,
           canvasColor: canvasColor,
           splashColor: splashColor,
+          scaffoldBackgroundColor: canvasColor
         ),
         themeMode: ThemeMode.system,
         home: Builder(
