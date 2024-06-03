@@ -37,6 +37,8 @@ class _ActivityMenuState extends State<ActivityMenu> {
         child: Padding(
           padding: const EdgeInsets.only(bottom: 40),
           child: AppBar(
+            surfaceTintColor: Theme.of(context).canvasColor,
+            backgroundColor: Theme.of(context).canvasColor,
             elevation: 0,
             shape: BeveledRectangleBorder(
                 side: BorderSide.none, borderRadius: BorderRadius.circular(10)),

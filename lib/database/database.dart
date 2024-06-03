@@ -80,13 +80,28 @@ class Database extends _$Database {
     return await (delete(beverages)..where((tbl) => tbl.bevID.equals(id))).go();
   }
 
+  // Workouts Actions
+  Future<List<Workout>> getTodaysWorkouts() async {
+    final now = DateTime.now();
+    final todayStart = DateTime(now.year, now.month, now.day);
+    final todayEnd = DateTime(now.year, now.month, now.day, 23, 59, 59, 999);
+
+    final query = select(workouts)
+      ..where((tbl) => tbl.datetime.isBetweenValues(todayStart, todayEnd));
+
+    return query.get();
+  }
+
+  Future<int> insertOrUpdateWorkout(WorkoutsCompanion entity) async {
+    return await into(workouts).insertOnConflictUpdate(entity);
+  }
+
   // Drinks Actions
   Future<int> insertOrUpdateDrink(DrinksCompanion entity) async {
     return await into(drinks).insertOnConflictUpdate(entity);
   }
 
   // Water Goals Actions
-  
 
   @override
   MigrationStrategy get migration => MigrationStrategy(

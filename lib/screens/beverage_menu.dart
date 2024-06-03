@@ -16,9 +16,9 @@ class BeverageMenu extends StatefulWidget {
 class _BeverageMenuState extends State<BeverageMenu> {
   late Database _db;
 
-  refresh() {
-    setState(() {});
-  }
+  Color screenTheme = utils.defaultColors['red']!;
+
+  refresh() => setState(() {});
 
   @override
   void initState() {
@@ -53,31 +53,38 @@ class _BeverageMenuState extends State<BeverageMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        shape: BeveledRectangleBorder(
-            side: BorderSide.none, borderRadius: BorderRadius.circular(10)),
-        centerTitle: true,
-        surfaceTintColor: Theme.of(context).canvasColor,
-        titleTextStyle: utils.ThemeText.screenHeader,
-        title: Padding(
-          padding: const EdgeInsets.only(bottom: 30, top: 20),
-          child: Text("My Beverages",
-              style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontFamily: "CeraPro")),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 30),
+          child: AppBar(
+            surfaceTintColor: Theme.of(context).canvasColor,
+            backgroundColor: Theme.of(context).canvasColor,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+                side: BorderSide.none, borderRadius: BorderRadius.circular(25)),
+            centerTitle: true,
+            titleTextStyle: utils.ThemeText.screenHeader,
+            title: Padding(
+              padding: const EdgeInsets.only(bottom: 30, top: 20),
+              child: Text("My Beverages",
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontFamily: "CeraPro")),
+            ),
+            foregroundColor: Theme.of(context).primaryColor,
+          ),
         ),
-        foregroundColor: Theme.of(context).primaryColor,
       ),
       body: Padding(
         padding: const EdgeInsets.only(bottom: 30),
         child: FutureBuilder<List<Beverage>>(
             future: _db.getBeverages(),
             builder: (context, snapshot) {
-              final List<Beverage>? beverages = snapshot.data;
+              final List<Beverage> beverages = snapshot.data ?? [];
 
               //print(beverages);
-              if (snapshot.connectionState != ConnectionState.done) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: CircularProgressIndicator(
                       color: Theme.of(context).primaryColor),
@@ -90,7 +97,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                 );
               }
 
-              if (beverages != null) {
+              else {
                 return ListView.builder(
                     itemCount: beverages.length,
                     itemBuilder: (context, index) {
@@ -153,13 +160,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                         ),
                       );
                     });
-              } else {
-                return const Center(
-                    child: Text(
-                  "No beverages found. Try adding some!",
-                  style: utils.ThemeText.screenHeader,
-                ));
-              }
+              } 
             }),
       ),
       floatingActionButton: SizedBox(
