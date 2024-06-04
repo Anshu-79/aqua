@@ -111,6 +111,7 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 40),
               child: TextFormField(
+                cursorColor: Theme.of(context).primaryColor,
                 validator: (value) {
                   if (value!.trim().isEmpty) {
                     return "Name cannot be empty";

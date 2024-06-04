@@ -38,33 +38,33 @@ Color lighten(Color c, [int percent = 10]) {
 
 // Icon Utilities
 const Map<String, IconData> icomoonMap = {
-    'Bicycling': Icomoon.Bicycling,
-    'Conditioning Exercise': Icomoon.Conditioning_Exercise,
-    'Dancing': Icomoon.Dancing,
-    'Fishing & Hunting': Icomoon.Fishing_and_Hunting,
-    'Home Activities': Icomoon.Home_Activities,
-    'Home Repair': Icomoon.Home_Repair,
-    'Inactivity': Icomoon.Inactivity,
-    'Lawn & Garden': Icomoon.Lawn_and_Garden,
-    'Miscellaneous': Icomoon.Miscellaneous,
-    'Music Playing': Icomoon.Music_Playing,
-    'Occupation': Icomoon.Occupation,
-    'Running': Icomoon.Running,
-    'Self Care': Icomoon.Self_Care,
-    'Sexual Activity': Icomoon.Sexual_Activity,
-    'Sports': Icomoon.Sports,
-    'Walking': Icomoon.Walking,
-    'Water Activities': Icomoon.Water_Activities,
-    'Winter Activities': Icomoon.Winter_Activities,
-    'Religious Activities': Icomoon.Religious_Activities,
-    'Volunteer Activities': Icomoon.Volunteer_Activities,
-    'Video Games': Icomoon.Video_Games,
-  };
+  'Bicycling': Icomoon.Bicycling,
+  'Conditioning Exercise': Icomoon.Conditioning_Exercise,
+  'Dancing': Icomoon.Dancing,
+  'Fishing & Hunting': Icomoon.Fishing_and_Hunting,
+  'Home Activities': Icomoon.Home_Activities,
+  'Home Repair': Icomoon.Home_Repair,
+  'Inactivity': Icomoon.Inactivity,
+  'Lawn & Garden': Icomoon.Lawn_and_Garden,
+  'Miscellaneous': Icomoon.Miscellaneous,
+  'Music Playing': Icomoon.Music_Playing,
+  'Occupation': Icomoon.Occupation,
+  'Running': Icomoon.Running,
+  'Self Care': Icomoon.Self_Care,
+  'Sexual Activity': Icomoon.Sexual_Activity,
+  'Sports': Icomoon.Sports,
+  'Walking': Icomoon.Walking,
+  'Water Activities': Icomoon.Water_Activities,
+  'Winter Activities': Icomoon.Winter_Activities,
+  'Religious Activities': Icomoon.Religious_Activities,
+  'Volunteer Activities': Icomoon.Volunteer_Activities,
+  'Video Games': Icomoon.Video_Games,
+};
 
-  IconData getWorkoutIcon(int activityID) {
-    int categoryCode = (activityID ~/ 1000) - 1;
-    return icomoonMap.values.toList()[categoryCode];
-  } 
+IconData getWorkoutIcon(int activityID) {
+  int categoryCode = (activityID ~/ 1000) - 1;
+  return icomoonMap.values.toList()[categoryCode];
+}
 
 // Font Utilities
 abstract class ThemeText {
@@ -157,8 +157,15 @@ abstract class ThemeText {
       const TextStyle(fontSize: 10, fontWeight: FontWeight.bold);
 
   // Workout Screen
-  static TextStyle emptyScreenText = 
-    const TextStyle(fontSize: 20, fontWeight: FontWeight.w600); 
+  static TextStyle emptyScreenText =
+      const TextStyle(fontSize: 20, fontWeight: FontWeight.w600);
+
+  // Workout Dialog Boxes
+  static TextStyle searchLabelText =
+      const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+
+  static TextStyle listTileTitle = const TextStyle(
+      fontWeight: FontWeight.bold);
 }
 
 class addDrinkDialogButtons extends StatelessWidget {

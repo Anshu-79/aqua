@@ -1,4 +1,3 @@
-import 'package:aqua/icomoon_icons.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/database/database.dart';
