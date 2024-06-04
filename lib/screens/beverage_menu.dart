@@ -220,7 +220,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                                     bevList.map((bev) => bev.bevName).toList();
 
                                 if (bevNames
-                                    .contains(output[1].bevName.value)) {
+                                    .contains(output[1].bevName.value) && beverage.bevName != output[1].bevName.value) {
                                   showExistingBevSnackbar();
                                 } else {
                                   showEditSnackBar(utils.toColor(output[1].colorCode.value));

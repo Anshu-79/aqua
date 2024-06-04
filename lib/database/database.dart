@@ -63,6 +63,7 @@ class Database extends _$Database {
   }
 
   // Beverages Actions
+
   Future<List<Beverage>> getBeverages() async {
     return await select(beverages).get();
   }
