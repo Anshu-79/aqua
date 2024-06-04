@@ -48,6 +48,7 @@ dependencies:
   shared_preferences: ^2.2.3
   cron: ^0.6.0
   searchable_listview: ^2.14.0
+  random_color: ^1.0.6-nullsafety
 
 dev_dependencies:
   drift_dev: ^2.15.0
