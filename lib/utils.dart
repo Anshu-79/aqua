@@ -1,6 +1,23 @@
 import 'package:flutter/material.dart';
 import 'icomoon_icons.dart';
 
+// Duration Utilities
+String getInText(int duration) {
+  if (duration < 60) {
+    return "$duration minutes";
+  } else {
+    int hrs = duration ~/ 60;
+    int minutes = duration % 60;
+
+    if (minutes == 0) {
+      return "$hrs hours";
+    } else {
+      return "$hrs hours $minutes minutes";
+    } 
+  }
+}
+
+
 // Color Utilities
 Map<String, Color> defaultColors = {
   'red': const Color(0xFFff595e),
@@ -64,6 +81,11 @@ const Map<String, IconData> icomoonMap = {
 IconData getWorkoutIcon(int activityID) {
   int categoryCode = (activityID ~/ 1000) - 1;
   return icomoonMap.values.toList()[categoryCode];
+}
+
+String getWorkoutCategory(int activityID) {
+  int categoryCode = (activityID ~/ 1000) - 1;
+  return icomoonMap.keys.toList()[categoryCode];
 }
 
 // Font Utilities
