@@ -32,9 +32,9 @@ class _ActivityMenuState extends State<ActivityMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
+        preferredSize: const Size.fromHeight(90),
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 40),
+          padding: const EdgeInsets.only(bottom: 30),
           child: AppBar(
             surfaceTintColor: Theme.of(context).canvasColor,
             backgroundColor: Theme.of(context).canvasColor,
@@ -57,7 +57,7 @@ class _ActivityMenuState extends State<ActivityMenu> {
         future: _db.getTodaysWorkouts(),
         builder: (context, snapshot) {
           final List<Workout>? workouts = snapshot.data;
-          // print(workouts);
+          print(workouts);
 
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(
@@ -74,13 +74,41 @@ class _ActivityMenuState extends State<ActivityMenu> {
 
           if (workouts != null && workouts.isNotEmpty) {
             return GridView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2),
               itemCount: workouts.length,
               itemBuilder: (context, index) {
                 final workout = workouts[index];
-                return Container(
-                    child: Icon(utils.getWorkoutIcon(workout.activityID)));
+                return Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                            color: Theme.of(context).primaryColor, width: 3)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Icon(
+                            utils.getWorkoutIcon(workout.activityID),
+                            size: 50,
+                          ),
+                          FittedBox(
+                              fit: BoxFit.contain,
+                              child: Text(
+                                utils.getWorkoutCategory(workout.activityID),
+                                style: utils.ThemeText.workoutTitle,
+                              )),
+                          Text(utils.getInText(workout.duration)),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
               },
             );
           } else {
@@ -124,7 +152,7 @@ class _ActivityMenuState extends State<ActivityMenu> {
         width: 70,
         child: FloatingActionButton(
           onPressed: () async {
-            WorkoutsCompanion? addedWorkout = await showGeneralDialog(
+            await showGeneralDialog(
                 barrierDismissible: false,
                 transitionDuration: const Duration(milliseconds: 150),
                 transitionBuilder: (context, a1, a2, child) {
@@ -135,6 +163,7 @@ class _ActivityMenuState extends State<ActivityMenu> {
                             Tween<double>(begin: 0.5, end: 1.0).animate(a1),
                         child: AddWorkoutDialog(
                           notifyParent: refresh,
+                          activities: _db.getActivities(),
                         ),
                       ));
                 },
@@ -142,9 +171,8 @@ class _ActivityMenuState extends State<ActivityMenu> {
                 pageBuilder: (context, a1, a2) {
                   return const Placeholder();
                 });
-            await _db.insertOrUpdateWorkout(addedWorkout!);
           },
-          tooltip: "Add new beverage",
+          tooltip: "Add new workout",
           backgroundColor: Theme.of(context).primaryColor,
           splashColor: Theme.of(context).splashColor,
           shape: const CircleBorder(eccentricity: 0),

@@ -6,8 +6,9 @@ import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/dialog_boxes/customize_workout.dart';
 
 class AddWorkoutDialog extends StatefulWidget {
-  const AddWorkoutDialog({super.key, required this.notifyParent});
+  const AddWorkoutDialog({super.key, required this.notifyParent, required this.activities});
   final Function() notifyParent;
+  final Future<List<Activity>> activities;
 
   @override
   State<AddWorkoutDialog> createState() => _AddWorkoutDialogState();
@@ -15,6 +16,8 @@ class AddWorkoutDialog extends StatefulWidget {
 
 class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
   late Database _db;
+
+  refresh() => setState(() {});
 
   @override
   void initState() {
@@ -42,17 +45,54 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
             closeKeyboardWhenScrolling: true,
             searchFieldEnabled: true,
             asyncListCallback: () async {
-              final Future<List<Activity>> activities = _db.getActivities();
-              return activities;
+              return widget.activities;
             },
             asyncListFilter: (q, list) {
               return list
-                  .where((element) => element.description.contains(q))
+                  .where((element) =>
+                      element.category
+                          .toLowerCase()
+                          .contains(q.toLowerCase()) ||
+                      element.description
+                          .toLowerCase()
+                          .contains(q.toLowerCase()))
                   .toList();
             },
-            itemBuilder: (Activity activity) => ActivityItem(
-              activity: activity,
-              database: _db,
+            itemBuilder: (Activity activity) => ListTile(
+              textColor: Theme.of(context).primaryColor,
+              leading: Icon(
+                utils.icomoonMap[activity.category],
+                size: 35,
+              ),
+              title: Text(activity.category),
+              titleTextStyle: utils.ThemeText.listTileTitle,
+              subtitle: Text(activity.description),
+              isThreeLine: true,
+              onTap: () async {
+                Navigator.pop(context);
+                WorkoutsCompanion? addedWorkout = await showGeneralDialog(
+                    barrierDismissible: false,
+                    transitionDuration: const Duration(milliseconds: 150),
+                    transitionBuilder: (context, a1, a2, child) {
+                      return ScaleTransition(
+                          scale:
+                              Tween<double>(begin: 0.5, end: 1.0).animate(a1),
+                          child: FadeTransition(
+                            opacity:
+                                Tween<double>(begin: 0.5, end: 1.0).animate(a1),
+                            child: CustomizeWorkout(
+                              activity: activity,
+                              notifyParent: refresh,
+                            ),
+                          ));
+                    },
+                    context: context,
+                    pageBuilder: (context, a1, a2) {
+                      return const Placeholder();
+                    });
+                await _db.insertOrUpdateWorkout(addedWorkout!);
+                widget.notifyParent();
+              },
             ),
             emptyWidget: const Center(
               child: Column(
@@ -119,47 +159,6 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
-  }
-}
-
-class ActivityItem extends StatelessWidget {
-  const ActivityItem(
-      {super.key, required this.activity, required this.database});
-  final Activity activity;
-  final Database database;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      textColor: Theme.of(context).primaryColor,
-      leading: Icon(
-        utils.icomoonMap[activity.category],
-        size: 35,
-      ),
-      title: Text(activity.category),
-      titleTextStyle: utils.ThemeText.listTileTitle,
-      subtitle: Text(activity.description),
-      isThreeLine: true,
-      onTap: () async {
-        WorkoutsCompanion? addedWorkout = await showGeneralDialog(
-            barrierDismissible: false,
-            transitionDuration: const Duration(milliseconds: 150),
-            transitionBuilder: (context, a1, a2, child) {
-              return ScaleTransition(
-                  scale: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
-                  child: FadeTransition(
-                    opacity: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
-                    child: CustomizeWorkout(
-                      activity: activity,
-                    ),
-                  ));
-            },
-            context: context,
-            pageBuilder: (context, a1, a2) {
-              return const Placeholder();
-            });
-      },
     );
   }
 }

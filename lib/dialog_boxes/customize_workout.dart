@@ -6,8 +6,9 @@ import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/database/database.dart';
 
 class CustomizeWorkout extends StatefulWidget {
-  const CustomizeWorkout({super.key, required this.activity});
+  const CustomizeWorkout({super.key, required this.activity, required this.notifyParent});
   final Activity? activity;
+  final Function notifyParent;
 
   @override
   State<CustomizeWorkout> createState() => _CustomizeWorkoutState();
@@ -24,7 +25,7 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
           borderRadius: BorderRadius.circular(40),
           side: BorderSide(width: 5, color: Theme.of(context).primaryColor)),
       surfaceTintColor: Colors.transparent,
-      child: Container(
+      child: SizedBox(
         height: 475,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
@@ -89,12 +90,12 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
                         duration: drift.Value(_duration),
                       );
                       Navigator.pop(context, workout);
+                      widget.notifyParent();
                     },
                   ),
                   utils.addDrinkDialogButtons(
                       icon: const Icon(Icons.close),
-                      function: () =>
-                          Navigator.of(context, rootNavigator: true).pop())
+                      function: () => Navigator.pop(context))
                 ],
               )
             ],
