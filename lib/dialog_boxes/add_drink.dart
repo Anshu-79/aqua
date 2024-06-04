@@ -35,69 +35,70 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
           alignment: Alignment.bottomCenter,
           height: 400,
           width: 150,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Tooltip(
-                  message: _selectedBeverage.bevName,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      Beverage? val = await showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (context) {
-                            return const ListBeverages();
-                          });
-
-                      setState(() {
-                        _selectedBeverage = val!;
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                        elevation: 7,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        backgroundColor: Colors.white),
-                    child: Text(
-                      _selectedBeverage.bevName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: utils.ThemeText.dialogText,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Tooltip(
+                    message: _selectedBeverage.bevName,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        Beverage? val = await showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) {
+                              return const ListBeverages();
+                            });
+            
+                        setState(() {
+                          _selectedBeverage = val!;
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                          elevation: 7,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          backgroundColor: Colors.white),
+                      child: Text(
+                        _selectedBeverage.bevName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: utils.ThemeText.dialogText,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  NumberPicker(
-                      itemHeight: 60,
-                      itemWidth: 120,
-                      selectedTextStyle: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 50),
-                      textStyle: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                      axis: Axis.vertical,
-                      minValue: 25,
-                      step: 25,
-                      maxValue: 1000,
-                      value: _volume,
-                      onChanged: (value) => setState(() => _volume = value)),
-                  Text(
-                    "mL",
-                    style: utils.ThemeText.dialogText,
-                  )
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Row(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    NumberPicker(
+                        itemHeight: 60,
+                        itemWidth: 120,
+                        selectedTextStyle: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 50),
+                        textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                        axis: Axis.vertical,
+                        minValue: 25,
+                        step: 25,
+                        maxValue: 1000,
+                        value: _volume,
+                        onChanged: (value) => setState(() => _volume = value)),
+                    Text(
+                      "mL",
+                      style: utils.ThemeText.dialogText,
+                    )
+                  ],
+                ),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     utils.addDrinkDialogButtons(
@@ -115,9 +116,9 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
                         function: () =>
                             Navigator.of(context, rootNavigator: true).pop())
                   ],
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ));
   }
