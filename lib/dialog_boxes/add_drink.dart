@@ -14,9 +14,12 @@ class AddWaterDialog extends StatefulWidget {
 }
 
 class _AddWaterDialogState extends State<AddWaterDialog> {
-  int _bevID = 1;
-  String _beverageName = "Water";
-  Color _color = utils.defaultColors['blue']!;
+  Beverage _selectedBeverage = Beverage(
+      bevID: 1,
+      bevName: "Water",
+      colorCode: utils.toHexString(utils.defaultColors['blue']!),
+      waterPercent: 100);
+
   int _volume = 200;
 
   @override
@@ -26,7 +29,7 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40),
             side: BorderSide(width: 5, color: Theme.of(context).primaryColor)),
-        backgroundColor: _color,
+        backgroundColor: utils.toColor(_selectedBeverage.colorCode),
         surfaceTintColor: Colors.transparent,
         child: Container(
           alignment: Alignment.bottomCenter,
@@ -38,7 +41,7 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Tooltip(
-                  message: _beverageName,
+                  message: _selectedBeverage.bevName,
                   child: ElevatedButton(
                     onPressed: () async {
                       Beverage? val = await showDialog(
@@ -47,18 +50,18 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
                           builder: (context) {
                             return const ListBeverages();
                           });
-                      _bevID = val!.bevID;
-                      _beverageName = val.bevName;
-                      _color = utils.toColor(val.colorCode);
+
+                      setState(() {
+                        _selectedBeverage = val!;
+                      });
                     },
-                    style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(7),
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20))),
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white)),
+                    style: ElevatedButton.styleFrom(
+                        elevation: 7,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        backgroundColor: Colors.white),
                     child: Text(
-                      _beverageName,
+                      _selectedBeverage.bevName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: utils.ThemeText.dialogText,
@@ -101,7 +104,7 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
                       icon: const Icon(Icons.check),
                       function: () {
                         final drink = DrinksCompanion(
-                            bevID: drift.Value(_bevID),
+                            bevID: drift.Value(_selectedBeverage.bevID),
                             volume: drift.Value(_volume),
                             datetime: drift.Value(DateTime.now()));
                         Navigator.pop(context, drink);
