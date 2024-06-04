@@ -164,8 +164,13 @@ abstract class ThemeText {
   static TextStyle searchLabelText =
       const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 
-  static TextStyle listTileTitle = const TextStyle(
-      fontWeight: FontWeight.bold);
+  static TextStyle listTileTitle = const TextStyle(fontWeight: FontWeight.bold);
+
+  static TextStyle workoutTitle =
+      const TextStyle(fontSize: 40, fontWeight: FontWeight.w900);
+
+  static TextStyle durationSubtext =
+      const TextStyle(fontSize: 30, fontWeight: FontWeight.w900);
 }
 
 class addDrinkDialogButtons extends StatelessWidget {
