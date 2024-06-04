@@ -61,15 +61,11 @@ class _UserProfileState extends State<UserProfile> {
                     children: [
                       TextButton(
                         onPressed: () {},
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.white),
-                            shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    side: const BorderSide(
-                                        color: Colors.white)))),
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                side: const BorderSide(color: Colors.white))),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -83,15 +79,11 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                       TextButton(
                         onPressed: () {},
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.white),
-                            shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    side: const BorderSide(
-                                        color: Colors.white)))),
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                side: const BorderSide(color: Colors.white))),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -106,15 +98,11 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                       TextButton(
                         onPressed: () {},
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.white),
-                            shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                    side: const BorderSide(
-                                        color: Colors.white)))),
+                        style: TextButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                side: const BorderSide(color: Colors.white))),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -165,7 +153,7 @@ class _UserProfileState extends State<UserProfile> {
                         ),
                         Row(
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               width: 35,
                             ),
                             Text("Day Streak",
@@ -271,7 +259,7 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                     color: const Color(0x4DFFC700),
                   ),
-                  child:  Padding(
+                  child: Padding(
                     padding: const EdgeInsets.fromLTRB(5, 0, 0, 5),
                     child: Column(
                       children: [
