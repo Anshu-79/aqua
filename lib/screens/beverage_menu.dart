@@ -33,16 +33,91 @@ class _BeverageMenuState extends State<BeverageMenu> {
     super.dispose();
   }
 
-  void showDefaultBevSnackBar(Color color) {
+  void showEditSnackBar(Color color) {
     final snackbar = SnackBar(
+      duration: const Duration(seconds: 1),
       content: const Text(
-        "Changes cannot be made to Water",
+        "Beverage edited!",
         style: TextStyle(color: Colors.white),
       ),
       backgroundColor: color,
       action: SnackBarAction(
         label: 'Dismiss',
         textColor: Colors.white,
+        onPressed: () {},
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
+
+  void showDeleteSnackBar() {
+    final snackbar = SnackBar(
+      duration: const Duration(seconds: 1),
+      content: const Text(
+        "Beverage deleted!",
+        style: TextStyle(color: Colors.white),
+      ),
+      backgroundColor: Theme.of(context).primaryColor,
+      action: SnackBarAction(
+        label: 'Dismiss',
+        textColor: Colors.white,
+        onPressed: () {},
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
+
+  void showDefaultBevSnackBar(Color color) {
+    final snackbar = SnackBar(
+      duration: const Duration(seconds: 1),
+      content: const Text(
+        "Water cannot be edited",
+        style: TextStyle(color: Colors.white),
+      ),
+      backgroundColor: color,
+      action: SnackBarAction(
+        label: 'Dismiss',
+        textColor: Colors.white,
+        onPressed: () {},
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
+
+  void addBeverageSnackbar(Color color) {
+    final snackbar = SnackBar(
+      duration: const Duration(seconds: 1),
+      content: const Text(
+        "Beverage added!",
+        style: TextStyle(color: Colors.white),
+      ),
+      backgroundColor: color,
+      action: SnackBarAction(
+        label: 'Dismiss',
+        textColor: Colors.white,
+        onPressed: () {},
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
+
+  void showExistingBevSnackbar() {
+    final snackbar = SnackBar(
+      duration: const Duration(seconds: 1),
+      content: Text(
+        "This beverage already exists",
+        style: TextStyle(
+          color: Theme.of(context).canvasColor,
+        ),
+      ),
+      backgroundColor: Theme.of(context).primaryColor,
+      action: SnackBarAction(
+        label: 'Dismiss',
+        textColor: Theme.of(context).canvasColor,
         onPressed: () {},
       ),
     );
@@ -95,9 +170,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                 return Center(
                   child: Text(snapshot.error.toString()),
                 );
-              }
-
-              else {
+              } else {
                 return ListView.builder(
                     itemCount: beverages.length,
                     itemBuilder: (context, index) {
@@ -139,9 +212,22 @@ class _BeverageMenuState extends State<BeverageMenu> {
                                   pageBuilder: (context, a1, a2) {
                                     return const Placeholder();
                                   });
+                              
                               if (output![0] == 0) {
-                                await _db.insertOrUpdateBeverage(output[1]);
+                                List<Beverage> bevList =
+                                    await _db.getBeverages();
+                                List<String> bevNames =
+                                    bevList.map((bev) => bev.bevName).toList();
+
+                                if (bevNames
+                                    .contains(output[1].bevName.value)) {
+                                  showExistingBevSnackbar();
+                                } else {
+                                  showEditSnackBar(utils.toColor(output[1].colorCode.value));
+                                  await _db.insertOrUpdateBeverage(output[1]);
+                                }
                               } else if (output[0] == 1) {
+                                showDeleteSnackBar();
                                 await _db.deleteBeverage(output[1]);
                               }
                             } else {
@@ -160,7 +246,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                         ),
                       );
                     });
-              } 
+              }
             }),
       ),
       floatingActionButton: SizedBox(
@@ -186,7 +272,15 @@ class _BeverageMenuState extends State<BeverageMenu> {
                 pageBuilder: (context, a1, a2) {
                   return const Placeholder();
                 });
-            await _db.insertOrUpdateBeverage(addedBeverage!);
+            List<Beverage> bevList = await _db.getBeverages();
+            List<String> bevNames = bevList.map((bev) => bev.bevName).toList();
+
+            if (bevNames.contains(addedBeverage!.bevName.value)) {
+              showExistingBevSnackbar();
+            } else {
+              addBeverageSnackbar(utils.toColor(addedBeverage.colorCode.value));
+              await _db.insertOrUpdateBeverage(addedBeverage);
+            }
           },
           tooltip: "Add new beverage",
           backgroundColor: Theme.of(context).primaryColor,

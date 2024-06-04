@@ -32,22 +32,7 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
   final double _borderRadius = 30;
   final double _iconSize = 15;
 
-  void showSnackBar(Color color) {
-    final snackbar = SnackBar(
-      content: const Text(
-        "Beverage added!",
-        style: TextStyle(color: Colors.white),
-      ),
-      backgroundColor: color,
-      action: SnackBarAction(
-        label: 'Dismiss',
-        textColor: Colors.white,
-        onPressed: () {},
-      ),
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(snackbar);
-  }
+  
 
   Widget pickerLayoutBuilder(
       BuildContext context, List<Color> colors, PickerItem child) {
@@ -190,7 +175,6 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
                         print("${beverageNameController.text} added");
                         Navigator.pop(context, beverage);
                         widget.notifyParent();
-                        showSnackBar(currentColor!);
                       }
                     },
                   ),

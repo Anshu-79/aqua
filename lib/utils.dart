@@ -119,7 +119,7 @@ abstract class ThemeText {
 
   // Beverage Dialog Boxes
   static TextStyle dialogSubtext = const TextStyle(
-      fontSize: 45, fontWeight: FontWeight.w900, color: Colors.black);
+      fontSize: 40, fontWeight: FontWeight.w900, color: Colors.black);
 
   static TextStyle textInput = const TextStyle(
       fontSize: 35, fontWeight: FontWeight.w900, color: Colors.black);
