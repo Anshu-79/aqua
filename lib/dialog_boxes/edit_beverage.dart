@@ -46,40 +46,6 @@ class _EditBeverageDialogState extends State<EditBeverageDialog> {
     super.dispose();
   }
 
-  void showEditSnackBar(Color color) {
-    final snackbar = SnackBar(
-      content: const Text(
-        "Beverage edited!",
-        style: TextStyle(color: Colors.white),
-      ),
-      backgroundColor: color,
-      action: SnackBarAction(
-        label: 'Dismiss',
-        textColor: Colors.white,
-        onPressed: () {},
-      ),
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(snackbar);
-  }
-
-  void showDeleteSnackBar(Color color) {
-    final snackbar = SnackBar(
-      content: const Text(
-        "Beverage deleted!",
-        style: TextStyle(color: Colors.white),
-      ),
-      backgroundColor: color,
-      action: SnackBarAction(
-        label: 'Dismiss',
-        textColor: Colors.white,
-        onPressed: () {},
-      ),
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(snackbar);
-  }
-
   Widget pickerLayoutBuilder(
       BuildContext context, List<Color> colors, PickerItem child) {
     return Row(
@@ -223,7 +189,6 @@ class _EditBeverageDialogState extends State<EditBeverageDialog> {
                         print("BevID: ${widget.beverage.bevID} edited");
                         widget.notifyParent();
                         Navigator.pop(context, [0, beverage]);
-                        showEditSnackBar(_currentColor);
                       }
                     },
                   ),
@@ -231,7 +196,6 @@ class _EditBeverageDialogState extends State<EditBeverageDialog> {
                     function: () {
                       Navigator.pop(context, [1, widget.beverage.bevID]);
                       widget.notifyParent();
-                      showDeleteSnackBar(_currentColor);
                     },
                     icon: const Icon(Icons.delete_forever_outlined),
                   ),
