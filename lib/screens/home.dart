@@ -4,9 +4,31 @@ import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/expandable_fab.dart' as fab;
 import 'package:aqua/icomoon_icons.dart';
 import 'package:aqua/dialog_boxes/edit_drink.dart';
+import 'package:aqua/database/database.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late Database _db;
+
+  refresh() => setState(() {});
+
+  @override
+  void initState() {
+    _db = Database();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _db.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +153,7 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: fab.ExpandableFab(
+        notifyParent: refresh,
         distance: 75,
         children: [
           fab.ActionButton(

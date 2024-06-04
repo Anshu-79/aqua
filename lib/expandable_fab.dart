@@ -11,11 +11,13 @@ class ExpandableFab extends StatefulWidget {
     this.initialOpen,
     required this.distance,
     required this.children,
+    required this.notifyParent,
   });
 
   final bool? initialOpen;
   final double distance;
   final List<Widget> children;
+  final Function notifyParent;
 
   @override
   State<ExpandableFab> createState() => _ExpandableFabState();
@@ -152,6 +154,7 @@ class _ExpandableFabState extends State<ExpandableFab>
                 borderRadius: BorderRadius.circular(100),
                 onLongPress: _toggle,
                 onTap: () async {
+                  List<Beverage> beverages = await _db.getBeverages();
                   DrinksCompanion? drink = await showGeneralDialog(
                       barrierDismissible: false,
                       transitionDuration: const Duration(milliseconds: 200),
@@ -162,13 +165,17 @@ class _ExpandableFabState extends State<ExpandableFab>
                             child: FadeTransition(
                               opacity: Tween<double>(begin: 0.5, end: 1.0)
                                   .animate(a1),
-                              child: const AddWaterDialog(),
+                              child: AddWaterDialog(
+                                beverages: beverages,
+                                notifyParent: widget.notifyParent,
+                              ),
                             ));
                       },
                       context: context,
                       pageBuilder: (context, a1, a2) {
                         return const Placeholder();
                       });
+                  print(drink);
                   await _db.insertOrUpdateDrink(drink!);
                 },
                 child: Icon(Icons.add,
