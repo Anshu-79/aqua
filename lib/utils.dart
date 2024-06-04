@@ -179,9 +179,9 @@ class addDrinkDialogButtons extends StatelessWidget {
     return IconButton.filled(
       icon: icon,
       iconSize: 50,
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(Colors.black),
-        foregroundColor: MaterialStateProperty.all(Colors.white),
+      style: IconButton.styleFrom(
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
       ),
       onPressed: () => function(),
 

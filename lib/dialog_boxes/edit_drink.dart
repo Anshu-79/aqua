@@ -31,11 +31,11 @@ class _editDrinkDialogBoxState extends State<editDrinkDialogBox> {
             children: [
               ElevatedButton(
                 onPressed: () {},
-                style: ButtonStyle(
-                    elevation: MaterialStateProperty.all(0),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20))),
-                    backgroundColor: MaterialStateProperty.all(Colors.white)),
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    backgroundColor: Colors.white),
                 child: Text(
                   "Water",
                   style: utils.ThemeText.dialogText,
@@ -68,13 +68,19 @@ class _editDrinkDialogBoxState extends State<editDrinkDialogBox> {
                   )
                 ],
               ),
-               Padding(
+              Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    utils.addDrinkDialogButtons(icon: const Icon(Icons.check), function:() => {},),
-                    utils.addDrinkDialogButtons(icon: const Icon(Icons.close), function: () => Navigator.of(context, rootNavigator: true).pop())
+                    utils.addDrinkDialogButtons(
+                      icon: const Icon(Icons.check),
+                      function: () => {},
+                    ),
+                    utils.addDrinkDialogButtons(
+                        icon: const Icon(Icons.close),
+                        function: () =>
+                            Navigator.of(context, rootNavigator: true).pop())
                   ],
                 ),
               )
