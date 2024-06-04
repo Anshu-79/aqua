@@ -38,7 +38,7 @@ class _editDrinkDialogBoxState extends State<editDrinkDialogBox> {
                     backgroundColor: Colors.white),
                 child: Text(
                   "Water",
-                  style: utils.ThemeText.dialogText,
+                  style: utils.ThemeText.addDrinkDialogText,
                 ),
               ),
               Row(
@@ -64,7 +64,7 @@ class _editDrinkDialogBoxState extends State<editDrinkDialogBox> {
                           setState(() => _currentValue = value)),
                   Text(
                     "mL",
-                    style: utils.ThemeText.dialogText,
+                    style: utils.ThemeText.addDrinkDialogText,
                   )
                 ],
               ),

@@ -13,10 +13,9 @@ String getInText(int duration) {
       return "$hrs hours";
     } else {
       return "$hrs hours $minutes minutes";
-    } 
+    }
   }
 }
-
 
 // Color Utilities
 Map<String, Color> defaultColors = {
@@ -129,7 +128,13 @@ abstract class ThemeText {
   static TextStyle dialogButtons =
       const TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  static TextStyle dialogText = const TextStyle(
+  static TextStyle addDrinkBeverageName = const TextStyle(
+    fontSize: 45,
+    fontWeight: FontWeight.w900,
+    color: Colors.black,
+  );
+
+  static TextStyle addDrinkDialogText = const TextStyle(
       fontSize: 45, fontWeight: FontWeight.w900, color: Colors.black);
 
   // List Beverage Dialog Box

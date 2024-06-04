@@ -4,22 +4,20 @@ import 'package:numberpicker/numberpicker.dart';
 
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/database/database.dart';
-import 'package:aqua/dialog_boxes/show_beverages.dart';
 
 class AddWaterDialog extends StatefulWidget {
-  const AddWaterDialog({super.key});
+  const AddWaterDialog(
+      {super.key, required this.beverages, required this.notifyParent});
+
+  final List<Beverage> beverages;
+  final Function notifyParent;
 
   @override
   State<AddWaterDialog> createState() => _AddWaterDialogState();
 }
 
 class _AddWaterDialogState extends State<AddWaterDialog> {
-  Beverage _selectedBeverage = Beverage(
-      bevID: 1,
-      bevName: "Water",
-      colorCode: utils.toHexString(utils.defaultColors['blue']!),
-      waterPercent: 100);
-
+  int _bevIndex = 0;
   int _volume = 200;
 
   @override
@@ -29,7 +27,7 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40),
             side: BorderSide(width: 5, color: Theme.of(context).primaryColor)),
-        backgroundColor: utils.toColor(_selectedBeverage.colorCode),
+        backgroundColor: utils.toColor(widget.beverages[_bevIndex].colorCode),
         surfaceTintColor: Colors.transparent,
         child: Container(
           alignment: Alignment.bottomCenter,
@@ -42,34 +40,61 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Tooltip(
-                    message: _selectedBeverage.bevName,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        Beverage? val = await showDialog(
-                            barrierDismissible: false,
-                            context: context,
-                            builder: (context) {
-                              return const ListBeverages();
-                            });
-            
-                        setState(() {
-                          _selectedBeverage = val!;
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                          elevation: 7,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          backgroundColor: Colors.white),
-                      child: Text(
-                        _selectedBeverage.bevName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: utils.ThemeText.dialogText,
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: IconButton(
+                            padding: const EdgeInsets.only(left: 10),
+                            color: Colors.black,
+                            onPressed: () {
+                              if (_bevIndex == 0) {
+                                setState(() =>
+                                    (_bevIndex = widget.beverages.length - 1));
+                              } else {
+                                setState(() => _bevIndex -= 1);
+                              }
+                            },
+                            icon: const Icon(Icons.arrow_back_ios)),
                       ),
-                    ),
+                      SizedBox(
+                        width: 150,
+                        height: 80,
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          clipBehavior: Clip.antiAlias,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.white),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                widget.beverages[_bevIndex].bevName,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: utils.ThemeText.addDrinkBeverageName,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: IconButton(
+                            color: Colors.black,
+                            onPressed: () {
+                              if (_bevIndex == widget.beverages.length - 1) {
+                                setState(() => _bevIndex = 0);
+                              } else {
+                                setState(() => _bevIndex += 1);
+                              }
+                            },
+                            icon: const Icon(Icons.arrow_forward_ios)),
+                      ),
+                    ],
                   ),
                 ),
                 Row(
@@ -94,7 +119,7 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
                         onChanged: (value) => setState(() => _volume = value)),
                     Text(
                       "mL",
-                      style: utils.ThemeText.dialogText,
+                      style: utils.ThemeText.addDrinkDialogText,
                     )
                   ],
                 ),
@@ -105,7 +130,8 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
                       icon: const Icon(Icons.check),
                       function: () {
                         final drink = DrinksCompanion(
-                            bevID: drift.Value(_selectedBeverage.bevID),
+                            bevID:
+                                drift.Value(widget.beverages[_bevIndex].bevID),
                             volume: drift.Value(_volume),
                             datetime: drift.Value(DateTime.now()));
                         Navigator.pop(context, drink);
