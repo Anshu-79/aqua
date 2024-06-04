@@ -94,118 +94,126 @@ class _EditBeverageDialogState extends State<EditBeverageDialog> {
       //insetPadding: const EdgeInsets.only(top: 100),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(40),
-        side: BorderSide(width: 3, color: Theme.of(context).primaryColor),
+        side: BorderSide(width: 5, color: Theme.of(context).primaryColor),
       ),
       backgroundColor: _currentColor,
       surfaceTintColor: Colors.transparent,
       child: Form(
         key: formKey,
         child: SizedBox(
-          height: 475,
+          height: 435,
           //width: MediaQuery.of(context).size.width - 60,
           //alignment: Alignment.bottomCenter,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 40),
-              child: TextFormField(
-                cursorColor: Theme.of(context).primaryColor,
-                validator: (value) {
-                  if (value!.trim().isEmpty) {
-                    return "Name cannot be empty";
-                  } else {
-                    return null;
-                  }
-                },
-                controller: beverageNameController,
-                textCapitalization: TextCapitalization.words,
-                textAlign: TextAlign.center,
-                style: utils.ThemeText.textInput,
-                decoration: InputDecoration(
-                  errorStyle: const TextStyle(color: Colors.white),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide.none),
-                  hintText: "Beverage Name",
-                  hintStyle: utils.ThemeText.textInputHint,
-                  fillColor: Colors.white,
-                  filled: true,
-                ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                NumberPicker(
-                    itemHeight: 55,
-                    itemWidth: 90,
-                    selectedTextStyle: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 50),
-                    textStyle: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
-                    minValue: 1,
-                    maxValue: 100,
-                    value: _waterPercent,
-                    onChanged: (value) =>
-                        setState(() => _waterPercent = value)),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: Text(
-                    "% water",
-                    style: utils.ThemeText.dialogSubtext,
-                  ),
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: BlockPicker(
-                  layoutBuilder: pickerLayoutBuilder,
-                  itemBuilder: pickerItemBuilder,
-                  availableColors: utils.colorList,
-                  pickerColor: _currentColor,
-                  onColorChanged: changeColor),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Row(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  utils.addDrinkDialogButtons(
-                    icon: const Icon(Icons.check),
-                    function: () {
-                      if (formKey.currentState!.validate()) {
-                        final beverage = BeveragesCompanion(
-                          bevID: drift.Value(widget.beverage.bevID),
-                          bevName: drift.Value(beverageNameController.text),
-                          colorCode:
-                              drift.Value(utils.toHexString(_currentColor)),
-                          waterPercent: drift.Value(_waterPercent),
-                        );
-
-                        print("BevID: ${widget.beverage.bevID} edited");
-                        widget.notifyParent();
-                        Navigator.pop(context, [0, beverage]);
-                      }
-                    },
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 40),
+                    child: TextFormField(
+                      cursorColor: Theme.of(context).primaryColor,
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return "Name cannot be empty";
+                        } else {
+                          return null;
+                        }
+                      },
+                      controller: beverageNameController,
+                      textCapitalization: TextCapitalization.words,
+                      textAlign: TextAlign.center,
+                      style: utils.ThemeText.textInput,
+                      decoration: InputDecoration(
+                        errorStyle: const TextStyle(color: Colors.white),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide.none),
+                        hintText: "Beverage Name",
+                        hintStyle: utils.ThemeText.textInputHint,
+                        fillColor: Colors.white,
+                        filled: true,
+                      ),
+                    ),
                   ),
-                  utils.addDrinkDialogButtons(
-                    function: () {
-                      Navigator.pop(context, [1, widget.beverage.bevID]);
-                      widget.notifyParent();
-                    },
-                    icon: const Icon(Icons.delete_forever_outlined),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      NumberPicker(
+                          itemHeight: 55,
+                          itemWidth: 90,
+                          selectedTextStyle: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 50),
+                          textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                          minValue: 1,
+                          maxValue: 100,
+                          value: _waterPercent,
+                          onChanged: (value) =>
+                              setState(() => _waterPercent = value)),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15, right: 10),
+                        child: Text(
+                          "% water",
+                          style: utils.ThemeText.dialogSubtext,
+                        ),
+                      )
+                    ],
                   ),
-                  utils.addDrinkDialogButtons(
-                      icon: const Icon(Icons.close),
-                      function: () => Navigator.pop(context, [2, null]))
-                ],
-              ),
-            )
-          ]),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10),
+                    child: BlockPicker(
+                        layoutBuilder: pickerLayoutBuilder,
+                        itemBuilder: pickerItemBuilder,
+                        availableColors: utils.colorList,
+                        pickerColor: _currentColor,
+                        onColorChanged: changeColor),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        utils.addDrinkDialogButtons(
+                          icon: const Icon(Icons.check),
+                          function: () {
+                            if (formKey.currentState!.validate()) {
+                              final beverage = BeveragesCompanion(
+                                bevID: drift.Value(widget.beverage.bevID),
+                                bevName: drift.Value(beverageNameController.text),
+                                colorCode:
+                                    drift.Value(utils.toHexString(_currentColor)),
+                                waterPercent: drift.Value(_waterPercent),
+                              );
+                                
+                              print("BevID: ${widget.beverage.bevID} edited");
+                              widget.notifyParent();
+                              Navigator.pop(context, [0, beverage]);
+                            }
+                          },
+                        ),
+                        utils.addDrinkDialogButtons(
+                          function: () {
+                            Navigator.pop(context, [1, widget.beverage.bevID]);
+                            widget.notifyParent();
+                          },
+                          icon: const Icon(Icons.delete_forever_outlined),
+                        ),
+                        utils.addDrinkDialogButtons(
+                            icon: const Icon(Icons.close),
+                            function: () => Navigator.pop(context, [2, null]))
+                      ],
+                    ),
+                  )
+                ]),
+          ),
         ),
       ),
     );

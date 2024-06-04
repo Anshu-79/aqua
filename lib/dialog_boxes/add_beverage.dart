@@ -82,84 +82,87 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
       //insetPadding: const EdgeInsets.only(top: 100),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(40),
-        side: BorderSide(width: 3, color: Theme.of(context).primaryColor),
+        side: BorderSide(width: 5, color: Theme.of(context).primaryColor),
       ),
       backgroundColor: currentColor,
       surfaceTintColor: Colors.transparent,
       child: Form(
         key: formKey,
-        child: SizedBox(
-          height: 475,
-          //width: MediaQuery.of(context).size.width - 40,
-          //alignment: Alignment.bottomCenter,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 40),
-              child: TextFormField(
-                cursorColor: Theme.of(context).primaryColor,
-                validator: (value) {
-                  if (value!.trim().isEmpty) {
-                    return "Name cannot be empty";
-                  } else {
-                    return null;
-                  }
-                },
-                controller: beverageNameController,
-                textCapitalization: TextCapitalization.words,
-                textAlign: TextAlign.center,
-                style: utils.ThemeText.textInput,
-                decoration: InputDecoration(
-                  errorStyle: const TextStyle(color: Colors.white),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide.none),
-                  hintText: "Beverage Name",
-                  hintStyle: utils.ThemeText.textInputHint,
-                  fillColor: Colors.white,
-                  filled: true,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: SizedBox(
+            height: 425,
+            //width: MediaQuery.of(context).size.width - 40,
+            //alignment: Alignment.bottomCenter,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+               children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: TextFormField(
+                  cursorColor: Theme.of(context).primaryColor,
+                  validator: (value) {
+                    if (value!.trim().isEmpty) {
+                      return "Name cannot be empty";
+                    } else {
+                      return null;
+                    }
+                  },
+                  controller: beverageNameController,
+                  textCapitalization: TextCapitalization.words,
+                  textAlign: TextAlign.center,
+                  style: utils.ThemeText.textInput,
+                  decoration: InputDecoration(
+                    errorStyle: const TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none),
+                    hintText: "Beverage Name",
+                    hintStyle: utils.ThemeText.textInputHint,
+                    fillColor: Colors.white,
+                    filled: true,
+                  ),
                 ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                NumberPicker(
-                    itemHeight: 55,
-                    itemWidth: 90,
-                    selectedTextStyle: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 50),
-                    textStyle: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
-                    minValue: 1,
-                    maxValue: 100,
-                    value: _waterPercent,
-                    onChanged: (value) =>
-                        setState(() => _waterPercent = value)),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15, right: 10),
-                  child: Text(
-                    "% water",
-                    style: utils.ThemeText.dialogSubtext,
-                  ),
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: BlockPicker(
-                  layoutBuilder: pickerLayoutBuilder,
-                  itemBuilder: pickerItemBuilder,
-                  availableColors: utils.colorList,
-                  pickerColor: currentColor,
-                  onColorChanged: changeColor),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Row(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  NumberPicker(
+                      itemHeight: 55,
+                      itemWidth: 90,
+                      selectedTextStyle: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 50),
+                      textStyle: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                      minValue: 1,
+                      maxValue: 100,
+                      value: _waterPercent,
+                      onChanged: (value) =>
+                          setState(() => _waterPercent = value)),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15, right: 10),
+                    child: Text(
+                      "% water",
+                      style: utils.ThemeText.dialogSubtext,
+                    ),
+                  )
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: BlockPicker(
+                    layoutBuilder: pickerLayoutBuilder,
+                    itemBuilder: pickerItemBuilder,
+                    availableColors: utils.colorList,
+                    pickerColor: currentColor,
+                    onColorChanged: changeColor),
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   utils.addDrinkDialogButtons(
@@ -183,9 +186,9 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
                       function: () =>
                           Navigator.of(context, rootNavigator: true).pop())
                 ],
-              ),
-            )
-          ]),
+              )
+            ]),
+          ),
         ),
       ),
     );
