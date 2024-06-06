@@ -19,12 +19,16 @@ String getInText(int duration) {
 
 // Color Utilities
 Map<String, Color> defaultColors = {
+  'pink': const Color(0xFFFF789C),
   'red': const Color(0xFFff595e),
   'orange': const Color(0xffff924c),
   'yellow': const Color(0xffffca3a),
+  'lime': const Color(0xFFCBD039),
   'green': const Color(0xff8ac926),
+  'mint': const Color(0xFF4EA675),
   'blue': const Color(0xFF44A4EE),
-  'violet': const Color(0xFF6a4c93),
+  'dark blue': const Color(0xFF6C4FFF),
+  'violet': const Color(0xFF9042F0),
 };
 
 List<Color> colorList = defaultColors.values.toList();
@@ -69,6 +73,7 @@ const Map<String, IconData> icomoonMap = {
   'Self Care': Icomoon.Self_Care,
   'Sexual Activity': Icomoon.Sexual_Activity,
   'Sports': Icomoon.Sports,
+  'Transportation': Icomoon.Transportation,
   'Walking': Icomoon.Walking,
   'Water Activities': Icomoon.Water_Activities,
   'Winter Activities': Icomoon.Winter_Activities,
