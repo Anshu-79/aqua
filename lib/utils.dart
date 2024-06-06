@@ -240,3 +240,19 @@ class addDrinkDialogButtons extends StatelessWidget {
     );
   }
 }
+
+SnackBar coloredSnackBar(Color color, String text) {
+  return SnackBar(
+      duration: const Duration(seconds: 1),
+      content: Text(
+        text,
+        style: const TextStyle(color: Colors.white),
+      ),
+      backgroundColor: color,
+      action: SnackBarAction(
+        label: 'Dismiss',
+        textColor: Colors.white,
+        onPressed: () {},
+      ),
+    );
+}
