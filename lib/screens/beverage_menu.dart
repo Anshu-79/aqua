@@ -129,26 +129,23 @@ class _BeverageMenuState extends State<BeverageMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80),
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 30),
-          child: AppBar(
-            surfaceTintColor: Theme.of(context).canvasColor,
-            backgroundColor: Theme.of(context).canvasColor,
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-                side: BorderSide.none, borderRadius: BorderRadius.circular(25)),
-            centerTitle: true,
-            titleTextStyle: utils.ThemeText.screenHeader,
-            title: Padding(
-              padding: const EdgeInsets.only(bottom: 30, top: 20),
-              child: Text("My Beverages",
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontFamily: "CeraPro")),
-            ),
-            foregroundColor: Theme.of(context).primaryColor,
+        preferredSize: const Size.fromHeight(60),
+        child: AppBar(
+          surfaceTintColor: Theme.of(context).canvasColor,
+          backgroundColor: Theme.of(context).canvasColor,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+              side: BorderSide.none, borderRadius: BorderRadius.circular(25)),
+          centerTitle: true,
+          titleTextStyle: utils.ThemeText.screenHeader,
+          title: Padding(
+            padding: const EdgeInsets.only(bottom: 30, top: 20),
+            child: Text("My Beverages",
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontFamily: "CeraPro")),
           ),
+          foregroundColor: Theme.of(context).primaryColor,
         ),
       ),
       body: Padding(
