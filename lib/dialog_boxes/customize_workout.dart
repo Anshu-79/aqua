@@ -6,7 +6,8 @@ import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/database/database.dart';
 
 class CustomizeWorkout extends StatefulWidget {
-  const CustomizeWorkout({super.key, required this.activity, required this.notifyParent});
+  const CustomizeWorkout(
+      {super.key, required this.activity, required this.notifyParent});
   final Activity? activity;
   final Function notifyParent;
 
@@ -90,6 +91,11 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
                         duration: drift.Value(_duration),
                       );
                       Navigator.pop(context, workout);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          utils.coloredSnackBar(
+                              utils
+                                  .getWorkoutColor(widget.activity!.activityID),
+                              "Activity Added"));
                       widget.notifyParent();
                     },
                   ),

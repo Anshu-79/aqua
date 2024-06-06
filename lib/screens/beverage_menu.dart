@@ -33,95 +33,8 @@ class _BeverageMenuState extends State<BeverageMenu> {
     super.dispose();
   }
 
-  void showEditSnackBar(Color color) {
-    final snackbar = SnackBar(
-      duration: const Duration(seconds: 1),
-      content: const Text(
-        "Beverage edited!",
-        style: TextStyle(color: Colors.white),
-      ),
-      backgroundColor: color,
-      action: SnackBarAction(
-        label: 'Dismiss',
-        textColor: Colors.white,
-        onPressed: () {},
-      ),
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(snackbar);
-  }
-
-  void showDeleteSnackBar() {
-    final snackbar = SnackBar(
-      duration: const Duration(seconds: 1),
-      content: const Text(
-        "Beverage deleted!",
-        style: TextStyle(color: Colors.white),
-      ),
-      backgroundColor: Theme.of(context).primaryColor,
-      action: SnackBarAction(
-        label: 'Dismiss',
-        textColor: Colors.white,
-        onPressed: () {},
-      ),
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(snackbar);
-  }
-
-  void showDefaultBevSnackBar(Color color) {
-    final snackbar = SnackBar(
-      duration: const Duration(seconds: 1),
-      content: const Text(
-        "Water cannot be edited",
-        style: TextStyle(color: Colors.white),
-      ),
-      backgroundColor: color,
-      action: SnackBarAction(
-        label: 'Dismiss',
-        textColor: Colors.white,
-        onPressed: () {},
-      ),
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(snackbar);
-  }
-
-  void addBeverageSnackbar(Color color) {
-    final snackbar = SnackBar(
-      duration: const Duration(seconds: 1),
-      content: const Text(
-        "Beverage added!",
-        style: TextStyle(color: Colors.white),
-      ),
-      backgroundColor: color,
-      action: SnackBarAction(
-        label: 'Dismiss',
-        textColor: Colors.white,
-        onPressed: () {},
-      ),
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(snackbar);
-  }
-
-  void showExistingBevSnackbar() {
-    final snackbar = SnackBar(
-      duration: const Duration(seconds: 1),
-      content: Text(
-        "This beverage already exists",
-        style: TextStyle(
-          color: Theme.of(context).canvasColor,
-        ),
-      ),
-      backgroundColor: Theme.of(context).primaryColor,
-      action: SnackBarAction(
-        label: 'Dismiss',
-        textColor: Theme.of(context).canvasColor,
-        onPressed: () {},
-      ),
-    );
-
+  void showBevMenuSnackBar(Color color, String text) {
+    final snackbar = utils.coloredSnackBar(color, text);
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
@@ -209,7 +122,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                                   pageBuilder: (context, a1, a2) {
                                     return const Placeholder();
                                   });
-                              
+
                               if (output![0] == 0) {
                                 List<Beverage> bevList =
                                     await _db.getBeverages();
@@ -217,19 +130,29 @@ class _BeverageMenuState extends State<BeverageMenu> {
                                     bevList.map((bev) => bev.bevName).toList();
 
                                 if (bevNames
-                                    .contains(output[1].bevName.value) && beverage.bevName != output[1].bevName.value) {
-                                  showExistingBevSnackbar();
+                                        .contains(output[1].bevName.value) &&
+                                    beverage.bevName !=
+                                        output[1].bevName.value) {
+                                  showBevMenuSnackBar(
+                                      Theme.of(context).primaryColor,
+                                      'This beverage already exists');
                                 } else {
-                                  showEditSnackBar(utils.toColor(output[1].colorCode.value));
-                                  await _db.insertOrUpdateBeverage(output[1]);
+                                  BeveragesCompanion beverage = output[1];
+                                  showBevMenuSnackBar(
+                                      utils.toColor(beverage.colorCode.value),
+                                      'Beverage Edited');
+                                  await _db.insertOrUpdateBeverage(beverage);
                                 }
                               } else if (output[0] == 1) {
-                                showDeleteSnackBar();
+                                showBevMenuSnackBar(
+                                    Theme.of(context).primaryColor,
+                                    'Beverage Deleted');
                                 await _db.deleteBeverage(output[1]);
                               }
                             } else {
-                              showDefaultBevSnackBar(
-                                  utils.toColor(beverage.colorCode));
+                              showBevMenuSnackBar(
+                                  utils.toColor(beverage.colorCode),
+                                  '${beverage.bevName} cannot be edited');
                             }
                           },
                           shape: const RoundedRectangleBorder(
@@ -273,9 +196,11 @@ class _BeverageMenuState extends State<BeverageMenu> {
             List<String> bevNames = bevList.map((bev) => bev.bevName).toList();
 
             if (bevNames.contains(addedBeverage!.bevName.value)) {
-              showExistingBevSnackbar();
+              showBevMenuSnackBar(Theme.of(context).primaryColor,
+                  'This beverage already exists');
             } else {
-              addBeverageSnackbar(utils.toColor(addedBeverage.colorCode.value));
+              showBevMenuSnackBar(utils.toColor(addedBeverage.colorCode.value),
+                  'Beverage Added');
               await _db.insertOrUpdateBeverage(addedBeverage);
             }
           },

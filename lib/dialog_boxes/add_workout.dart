@@ -81,6 +81,7 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                     isThreeLine: true,
                     onTap: () async {
                       Navigator.pop(context);
+                      
                       WorkoutsCompanion? addedWorkout = await showGeneralDialog(
                           barrierDismissible: false,
                           transitionDuration: const Duration(milliseconds: 150),
@@ -101,6 +102,7 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                           pageBuilder: (context, a1, a2) {
                             return const Placeholder();
                           });
+
                       await _db.insertOrUpdateWorkout(addedWorkout!);
                       widget.notifyParent();
                     },
