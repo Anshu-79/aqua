@@ -36,12 +36,15 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
 
   Widget pickerLayoutBuilder(
       BuildContext context, List<Color> colors, PickerItem child) {
-    return Row(
-      //crossAxisCount: _portraitCrossAxisCount,
-      //crossAxisSpacing: 2,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      mainAxisSize: MainAxisSize.max,
-      children: [for (Color color in colors) child(color)],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        //crossAxisCount: _portraitCrossAxisCount,
+        //crossAxisSpacing: 2,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.max,
+        children: [for (Color color in colors) child(color)],
+      ),
     );
   }
 

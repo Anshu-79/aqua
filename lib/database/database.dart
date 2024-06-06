@@ -121,18 +121,18 @@ class Database extends _$Database {
               waterPercent: 90));
           await into(beverages).insertOnConflictUpdate(Beverage(
               bevID: 3,
+              bevName: "Tea",
+              colorCode: defaultColors['green']!.value.toRadixString(16),
+              waterPercent: 75));
+          await into(beverages).insertOnConflictUpdate(Beverage(
+              bevID: 4,
               bevName: "Coffee",
               colorCode: defaultColors['orange']!.value.toRadixString(16),
               waterPercent: 50));
-          await into(beverages).insertOnConflictUpdate(const Beverage(
-              bevID: 4,
-              bevName: "Tea",
-              colorCode: "FFc5ca30",
-              waterPercent: 75));
-          await into(beverages).insertOnConflictUpdate(const Beverage(
+          await into(beverages).insertOnConflictUpdate(Beverage(
               bevID: 5,
               bevName: "Milk",
-              colorCode: "FFFFD6DE",
+              colorCode: defaultColors['pink']!.value.toRadixString(16),
               waterPercent: 88));
         },
         beforeOpen: (details) async {
