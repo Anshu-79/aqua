@@ -6,7 +6,8 @@ import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/dialog_boxes/customize_workout.dart';
 
 class AddWorkoutDialog extends StatefulWidget {
-  const AddWorkoutDialog({super.key, required this.notifyParent, required this.activities});
+  const AddWorkoutDialog(
+      {super.key, required this.notifyParent, required this.activities});
   final Function() notifyParent;
   final Future<List<Activity>> activities;
 
@@ -37,105 +38,118 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
       body: Dialog.fullscreen(
         backgroundColor: Theme.of(context).canvasColor,
         child: Padding(
-          padding: const EdgeInsets.only(top: 40, right: 10, left: 10),
-          child: SearchableList<Activity>.async(
-            spaceBetweenSearchAndList: 5,
-            displaySearchIcon: false,
-            cursorColor: Theme.of(context).primaryColor,
-            closeKeyboardWhenScrolling: true,
-            searchFieldEnabled: true,
-            asyncListCallback: () async {
-              return widget.activities;
-            },
-            asyncListFilter: (q, list) {
-              return list
-                  .where((element) =>
-                      element.category
-                          .toLowerCase()
-                          .contains(q.toLowerCase()) ||
-                      element.description
-                          .toLowerCase()
-                          .contains(q.toLowerCase()))
-                  .toList();
-            },
-            itemBuilder: (Activity activity) => ListTile(
-              textColor: Theme.of(context).primaryColor,
-              leading: Icon(
-                utils.icomoonMap[activity.category],
-                size: 35,
-              ),
-              title: Text(activity.category),
-              titleTextStyle: utils.ThemeText.listTileTitle,
-              subtitle: Text(activity.description),
-              isThreeLine: true,
-              onTap: () async {
-                Navigator.pop(context);
-                WorkoutsCompanion? addedWorkout = await showGeneralDialog(
-                    barrierDismissible: false,
-                    transitionDuration: const Duration(milliseconds: 150),
-                    transitionBuilder: (context, a1, a2, child) {
-                      return ScaleTransition(
-                          scale:
-                              Tween<double>(begin: 0.5, end: 1.0).animate(a1),
-                          child: FadeTransition(
-                            opacity:
-                                Tween<double>(begin: 0.5, end: 1.0).animate(a1),
-                            child: CustomizeWorkout(
-                              activity: activity,
-                              notifyParent: refresh,
-                            ),
-                          ));
-                    },
-                    context: context,
-                    pageBuilder: (context, a1, a2) {
-                      return const Placeholder();
-                    });
-                await _db.insertOrUpdateWorkout(addedWorkout!);
-                widget.notifyParent();
+          padding: const EdgeInsets.only(top: 60, right: 10, left: 10),
+          child: Scrollbar(
+            trackVisibility: true,
+            child: SearchableList<Activity>.async(
+              spaceBetweenSearchAndList: 10,
+              displaySearchIcon: false,
+              cursorColor: Theme.of(context).primaryColor,
+              searchFieldEnabled: true,
+              asyncListCallback: () async {
+                return widget.activities;
               },
-            ),
-            emptyWidget: const Center(
-              child: Column(
+              asyncListFilter: (q, list) {
+                q = q.trim().toLowerCase();
+                return list
+                    .where((element) =>
+                        element.category.toLowerCase().contains(q) ||
+                        element.description.toLowerCase().contains(q))
+                    .toList();
+              },
+              itemBuilder: (Activity activity) => Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Card(
+                  elevation: 1,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: ListTile(
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Theme.of(context).primaryColor),
+                        borderRadius: BorderRadius.circular(20)),
+                    splashColor: utils.getWorkoutColor(activity.activityID),
+                    textColor: Theme.of(context).primaryColor,
+                    tileColor: utils.lighten(
+                        utils.getWorkoutColor(activity.activityID), 50),
+                    leading: Icon(
+                      utils.icomoonMap[activity.category]![0],
+                      size: 35,
+                    ),
+                    title: Text(activity.category),
+                    titleTextStyle: utils.ThemeText.listTileTitle,
+                    subtitle: Text(activity.description),
+                    isThreeLine: true,
+                    onTap: () async {
+                      Navigator.pop(context);
+                      WorkoutsCompanion? addedWorkout = await showGeneralDialog(
+                          barrierDismissible: false,
+                          transitionDuration: const Duration(milliseconds: 150),
+                          transitionBuilder: (context, a1, a2, child) {
+                            return ScaleTransition(
+                                scale: Tween<double>(begin: 0.5, end: 1.0)
+                                    .animate(a1),
+                                child: FadeTransition(
+                                  opacity: Tween<double>(begin: 0.5, end: 1.0)
+                                      .animate(a1),
+                                  child: CustomizeWorkout(
+                                    activity: activity,
+                                    notifyParent: refresh,
+                                  ),
+                                ));
+                          },
+                          context: context,
+                          pageBuilder: (context, a1, a2) {
+                            return const Placeholder();
+                          });
+                      await _db.insertOrUpdateWorkout(addedWorkout!);
+                      widget.notifyParent();
+                    },
+                  ),
+                ),
+              ),
+              emptyWidget: const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // TODO: Replace with mascot
+                    Icon(
+                      Icons.sentiment_dissatisfied_outlined,
+                      size: 60,
+                    ),
+                    Text("Nothing in here!"),
+                  ],
+                ),
+              ),
+              onRefresh: () async {},
+              onItemSelected: (Activity item) {},
+              inputDecoration: InputDecoration(
+                prefixIcon: const Icon(Icons.search),
+                floatingLabelStyle:
+                    TextStyle(color: Theme.of(context).primaryColor),
+                labelStyle: utils.ThemeText.searchLabelText,
+                labelText: "Search Activity",
+                fillColor: Colors.white,
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    color: Colors.blue,
+                    width: 1.0,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+              errorWidget: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // TODO: Replace with mascot
                   Icon(
-                    Icons.sentiment_dissatisfied_outlined,
-                    size: 60,
+                    Icons.error,
+                    color: Colors.red,
                   ),
-                  Text("Nothing in here!"),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text('Error while fetching actors')
                 ],
               ),
-            ),
-            onRefresh: () async {},
-            onItemSelected: (Activity item) {},
-            inputDecoration: InputDecoration(
-              prefixIcon: const Icon(Icons.search),
-              floatingLabelStyle:
-                  TextStyle(color: Theme.of(context).primaryColor),
-              labelStyle: utils.ThemeText.searchLabelText,
-              labelText: "Search Activity",
-              fillColor: Colors.white,
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: Colors.blue,
-                  width: 1.0,
-                ),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-            ),
-            errorWidget: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.error,
-                  color: Colors.red,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text('Error while fetching actors')
-              ],
             ),
           ),
         ),

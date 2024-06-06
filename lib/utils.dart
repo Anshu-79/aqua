@@ -57,34 +57,48 @@ Color lighten(Color c, [int percent = 10]) {
 }
 
 // Icon Utilities
-const Map<String, IconData> icomoonMap = {
-  'Bicycling': Icomoon.Bicycling,
-  'Conditioning Exercise': Icomoon.Conditioning_Exercise,
-  'Dancing': Icomoon.Dancing,
-  'Fishing & Hunting': Icomoon.Fishing_and_Hunting,
-  'Home Activities': Icomoon.Home_Activities,
-  'Home Repair': Icomoon.Home_Repair,
-  'Inactivity': Icomoon.Inactivity,
-  'Lawn & Garden': Icomoon.Lawn_and_Garden,
-  'Miscellaneous': Icomoon.Miscellaneous,
-  'Music Playing': Icomoon.Music_Playing,
-  'Occupation': Icomoon.Occupation,
-  'Running': Icomoon.Running,
-  'Self Care': Icomoon.Self_Care,
-  'Sexual Activity': Icomoon.Sexual_Activity,
-  'Sports': Icomoon.Sports,
-  'Transportation': Icomoon.Transportation,
-  'Walking': Icomoon.Walking,
-  'Water Activities': Icomoon.Water_Activities,
-  'Winter Activities': Icomoon.Winter_Activities,
-  'Religious Activities': Icomoon.Religious_Activities,
-  'Volunteer Activities': Icomoon.Volunteer_Activities,
-  'Video Games': Icomoon.Video_Games,
+Map<String, List<dynamic>> icomoonMap = {
+  'Bicycling': [Icomoon.Bicycling, defaultColors['green']],
+  'Conditioning Exercise': [
+    Icomoon.Conditioning_Exercise,
+    defaultColors['blue']
+  ],
+  'Dancing': [Icomoon.Dancing, defaultColors['red']],
+  'Fishing & Hunting': [Icomoon.Fishing_and_Hunting, defaultColors['mint']],
+  'Home Activities': [Icomoon.Home_Activities, defaultColors['yellow']],
+  'Home Repair': [Icomoon.Home_Repair, defaultColors['red']],
+  'Inactivity': [Icomoon.Inactivity, defaultColors['lime']],
+  'Lawn & Garden': [Icomoon.Lawn_and_Garden, defaultColors['green']],
+  'Miscellaneous': [Icomoon.Miscellaneous, defaultColors['mint']],
+  'Music Playing': [Icomoon.Music_Playing, defaultColors['violet']],
+  'Occupation': [Icomoon.Occupation, defaultColors['dark blue']],
+  'Running': [Icomoon.Running, defaultColors['orange']],
+  'Self Care': [Icomoon.Self_Care, defaultColors['pink']],
+  'Sexual Activity': [Icomoon.Sexual_Activity, defaultColors['red']],
+  'Sports': [Icomoon.Sports, defaultColors['blue']],
+  'Transportation': [Icomoon.Transportation, defaultColors['yellow']],
+  'Walking': [Icomoon.Walking, defaultColors['green']],
+  'Water Activities': [Icomoon.Water_Activities, defaultColors['blue']],
+  'Winter Activities': [Icomoon.Winter_Activities, defaultColors['dark blue']],
+  'Religious Activities': [
+    Icomoon.Religious_Activities,
+    defaultColors['violet']
+  ],
+  'Volunteer Activities': [
+    Icomoon.Volunteer_Activities,
+    defaultColors['green']
+  ],
+  'Video Games': [Icomoon.Video_Games, defaultColors['blue']],
 };
 
 IconData getWorkoutIcon(int activityID) {
   int categoryCode = (activityID ~/ 1000) - 1;
-  return icomoonMap.values.toList()[categoryCode];
+  return icomoonMap.values.toList()[categoryCode][0];
+}
+
+Color getWorkoutColor(int activityID) {
+  int categoryCode = (activityID ~/ 1000) - 1;
+  return icomoonMap.values.toList()[categoryCode][1];
 }
 
 String getWorkoutCategory(int activityID) {
@@ -198,8 +212,8 @@ abstract class ThemeText {
 
   static TextStyle listTileTitle = const TextStyle(fontWeight: FontWeight.bold);
 
-  static TextStyle workoutTitle =
-      const TextStyle(fontSize: 40, fontWeight: FontWeight.w900);
+  static TextStyle workoutTitle = const TextStyle(
+      fontSize: 40, fontWeight: FontWeight.w900, color: Colors.black);
 
   static TextStyle durationSubtext =
       const TextStyle(fontSize: 30, fontWeight: FontWeight.w900);

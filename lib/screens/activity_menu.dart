@@ -80,10 +80,12 @@ class _ActivityMenuState extends State<ActivityMenu> {
               itemCount: workouts.length,
               itemBuilder: (context, index) {
                 final workout = workouts[index];
+
                 return Padding(
                   padding: const EdgeInsets.all(10),
                   child: Container(
                     decoration: BoxDecoration(
+                        color: utils.lighten(utils.getWorkoutColor(workout.activityID),30),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                             color: Theme.of(context).primaryColor, width: 3)),
@@ -95,6 +97,7 @@ class _ActivityMenuState extends State<ActivityMenu> {
                         children: [
                           Icon(
                             utils.getWorkoutIcon(workout.activityID),
+                            color: Colors.black,
                             size: 50,
                           ),
                           FittedBox(
@@ -103,7 +106,7 @@ class _ActivityMenuState extends State<ActivityMenu> {
                                 utils.getWorkoutCategory(workout.activityID),
                                 style: utils.ThemeText.workoutTitle,
                               )),
-                          Text(utils.getInText(workout.duration)),
+                          Text(utils.getInText(workout.duration), style: const TextStyle(color: Colors.black),),
                         ],
                       ),
                     ),
