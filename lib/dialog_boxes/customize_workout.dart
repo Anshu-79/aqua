@@ -20,7 +20,7 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Theme.of(context).canvasColor,
+      backgroundColor: utils.getWorkoutColor(widget.activity!.activityID),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(40),
           side: BorderSide(width: 5, color: Theme.of(context).primaryColor)),
