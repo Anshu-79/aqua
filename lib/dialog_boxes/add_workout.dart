@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 
@@ -69,8 +71,13 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                         borderRadius: BorderRadius.circular(20)),
                     splashColor: utils.getWorkoutColor(activity.activityID),
                     textColor: Theme.of(context).primaryColor,
-                    tileColor: utils.lighten(
-                        utils.getWorkoutColor(activity.activityID), 50),
+                    tileColor:
+                        (Theme.of(context).brightness ==
+                                Brightness.dark)
+                            ? utils.darken(
+                                utils.getWorkoutColor(activity.activityID), 50)
+                            : utils.lighten(
+                                utils.getWorkoutColor(activity.activityID), 50),
                     leading: Icon(
                       utils.icomoonMap[activity.category]![0],
                       size: 35,
@@ -81,7 +88,7 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                     isThreeLine: true,
                     onTap: () async {
                       Navigator.pop(context);
-                      
+
                       WorkoutsCompanion? addedWorkout = await showGeneralDialog(
                           barrierDismissible: false,
                           transitionDuration: const Duration(milliseconds: 150),

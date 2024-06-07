@@ -16,7 +16,6 @@ Future<SharedPreferences> setPrefs() async {
   return prefs;
 }
 
-
 void main() {
   runApp(const Aqua());
 }
@@ -38,11 +37,11 @@ class _AquaState extends State<Aqua> {
   }
 
   void _loadPrefs() async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  setState(() {
-    wakeTime = prefs.getDouble('wakeTime');
-  });
-}
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      wakeTime = prefs.getDouble('wakeTime');
+    });
+  }
 
   final pages = [
     const HomeScreen(),
@@ -54,7 +53,7 @@ class _AquaState extends State<Aqua> {
   @override
   Widget build(BuildContext context) {
     Brightness systemBrightness = Brightness.light;
-    // systemBrightness = MediaQuery.of(context).platformBrightness;
+    // systemBrightness = PlatformDispatcher.instance.platformBrightness;
 
     Color primaryColor = Colors.black;
     Color canvasColor = Colors.white;
