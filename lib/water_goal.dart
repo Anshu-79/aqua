@@ -128,7 +128,7 @@ class _WaterGoalWidgetState extends State<WaterGoalWidget>
     return Stack(
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(35),
+          borderRadius: BorderRadius.circular(30), // Border radius = BorderRadius(widget.child) - 5
           child: CustomPaint(
             painter: WaterPainter(
               firstAnimation.value,
@@ -161,11 +161,22 @@ class WaterPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    var paint = Paint()
-      ..color = utils.defaultColors['blue']!.withOpacity(0.5)
-      ..style = PaintingStyle.fill;
-
     double waterHeight = size.height * (1 - fillValue);
+
+    var gradient = LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        utils.defaultColors['blue']!.withOpacity(0.5), 
+        utils.defaultColors['blue']!.withOpacity(1.0) 
+      ],
+    );
+
+    var rect =
+        Rect.fromLTWH(0, waterHeight, size.width, size.height - waterHeight);
+    var paint = Paint()
+      ..shader = gradient.createShader(rect)
+      ..style = PaintingStyle.fill;
 
     var path = Path()
       ..moveTo(0, waterHeight + 20 * sin(firstValue))
