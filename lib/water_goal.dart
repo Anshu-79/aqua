@@ -179,14 +179,14 @@ class WaterPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     var path = Path()
-      ..moveTo(0, waterHeight + 20 * sin(firstValue))
+      ..moveTo(0, waterHeight + 10 * sin(firstValue))
       ..cubicTo(
           size.width * 0.25,
-          waterHeight + 20 * sin(secondValue + pi / 2),
+          waterHeight + 10 * sin(secondValue + pi / 2),
           size.width * 0.75,
-          waterHeight + 20 * sin(thirdValue + pi),
+          waterHeight + 10 * sin(thirdValue + pi),
           size.width,
-          waterHeight + 20 * sin(fourthValue + 3 * pi / 2))
+          waterHeight + 10 * sin(fourthValue + 3 * pi / 2))
       ..lineTo(size.width, size.height)
       ..lineTo(0, size.height)
       ..close();
