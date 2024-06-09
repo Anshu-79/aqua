@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,7 +55,7 @@ class _AquaState extends State<Aqua> {
   @override
   Widget build(BuildContext context) {
     Brightness systemBrightness = Brightness.light;
-    // systemBrightness = PlatformDispatcher.instance.platformBrightness;
+     systemBrightness = PlatformDispatcher.instance.platformBrightness;
 
     Color primaryColor = Colors.black;
     Color canvasColor = Colors.white;

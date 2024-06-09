@@ -14,19 +14,16 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.blue,
-                  border: Border.all(
-                    color: Colors.blue,
-                  ),
-                  borderRadius: const BorderRadius.all(Radius.circular(35))),
+      body: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                color: utils.defaultColors['blue'],
+                borderRadius: const BorderRadius.all(Radius.circular(35))),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: Column(
                 children: [
-                  const SizedBox(height: 50),
                   IconButton(
                       iconSize: 100,
                       icon: const Icon(
@@ -41,6 +38,7 @@ class _UserProfileState extends State<UserProfile> {
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Icon(
                         Icons.location_on,
@@ -59,239 +57,214 @@ class _UserProfileState extends State<UserProfile> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                side: const BorderSide(color: Colors.white))),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "18",
-                              style: utils.ThemeText.userInfo,
-                            ),
-                            Text("Age", style: utils.ThemeText.userInfoSubtext)
-                          ],
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                side: const BorderSide(color: Colors.white))),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "175",
-                              style: utils.ThemeText.userInfo,
-                            ),
-                            Text("Height",
-                                style: utils.ThemeText.userInfoSubtext)
-                          ],
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                                side: const BorderSide(color: Colors.white))),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "64",
-                              style: utils.ThemeText.userInfo,
-                            ),
-                            Text("Weight",
-                                style: utils.ThemeText.userInfoSubtext)
-                          ],
-                        ),
-                      )
+                      BiometricButton(
+                          text: "18", subtext: "Age", callback: () {}),
+                      BiometricButton(
+                          text: "175", subtext: "Height", callback: () {}),
+                      BiometricButton(
+                          text: "64", subtext: "Weight", callback: () {})
                     ],
                   ),
-                  const SizedBox(height: 30)
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SleepScheduleButton(
+                          icon: Icon(
+                            Icons.sunny,
+                            color: utils.defaultColors['yellow'],
+                          ),
+                          time: "8:00 AM",
+                          callback: () {}),
+                      SleepScheduleButton(
+                          icon: Icon(
+                            Icons.bedtime,
+                            color: utils.defaultColors['dark blue'],
+                          ),
+                          time: "2:00 AM",
+                          callback: () {})
+                    ],
+                  ),
                 ],
               ),
             ),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  height: 60,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: const Color(0xFFF24E1E),
-                      width: 3,
-                    ),
-                    color: const Color(0x73FF9A62),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            const Icon(Icons.whatshot_rounded,
-                                color: Color(0xFFF24E1E), size: 30),
-                            const SizedBox(width: 10),
-                            Text(
-                              "7",
-                              style: utils.ThemeText.userStats,
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const SizedBox(
-                              width: 35,
-                            ),
-                            Text("Day Streak",
-                                style: utils.ThemeText.userStatsSubtext),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 60,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: const Color(0xFF699BF7),
-                      width: 3,
-                    ),
-                    color: const Color(0x66699BF7),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 5),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            const Icon(Icomoon.water_glass,
-                                color: Color(0xFF699BF7), size: 30),
-                            const SizedBox(width: 10),
-                            Text(
-                              "7.9 L",
-                              style: utils.ThemeText.userStats,
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const SizedBox(
-                              width: 30,
-                            ),
-                            Text("Weekly Water Intake",
-                                style: utils.ThemeText.userStatsSubtext),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  height: 60,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: const Color(0xFF0FA958),
-                      width: 3,
-                    ),
-                    color: const Color(0x4D0FA958),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 5),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            const Icon(Icons.calendar_month_outlined,
-                                color: Color(0xFF0FA958), size: 30),
-                            const SizedBox(width: 10),
-                            Text(
-                              "42 L",
-                              style: utils.ThemeText.userStats,
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const SizedBox(
-                              width: 35,
-                            ),
-                            Text("Lifetime Intake",
-                                style: utils.ThemeText.userStatsSubtext),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 60,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: const Color(0xFFFFC700),
-                      width: 3,
-                    ),
-                    color: const Color(0x4DFFC700),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 5),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            const Icon(Icomoon.tea_cup,
-                                color: Color(0xFFFFC700), size: 28),
-                            const SizedBox(width: 10),
-                            Text(
-                              "10 L",
-                              style: utils.ThemeText.userStats,
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const SizedBox(
-                              width: 35,
-                            ),
-                            Text("Weekly Fluid Intake",
-                                style: utils.ThemeText.userStatsSubtext),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            )
-          ],
-        ),
+          ),
+          const SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              StatsSummary(
+                color: utils.defaultColors['red']!,
+                stats: "7",
+                statsSubtext: "Day Streak",
+                icondata: Icons.whatshot,
+              ),
+              StatsSummary(
+                  color: utils.defaultColors['blue']!,
+                  stats: "7.9 L",
+                  statsSubtext: "Water per Week",
+                  icondata: Icomoon.water_bottle)
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              StatsSummary(
+                  color: utils.defaultColors['mint']!,
+                  stats: "42 L",
+                  statsSubtext: "Lifetime Intake",
+                  icondata: Icons.calendar_month_sharp),
+              StatsSummary(
+                  color: utils.defaultColors['yellow']!,
+                  stats: "10 L",
+                  statsSubtext: "Fluids per Week",
+                  icondata: Icomoon.iced_liquid)
+            ],
+          )
+        ],
       ),
     );
+  }
+}
+
+class BiometricButton extends StatefulWidget {
+  const BiometricButton(
+      {super.key,
+      required this.text,
+      required this.subtext,
+      required this.callback});
+
+  final String text;
+  final String subtext;
+  final VoidCallback callback;
+
+  @override
+  State<BiometricButton> createState() => _BiometricButtonState();
+}
+
+class _BiometricButtonState extends State<BiometricButton> {
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: widget.callback,
+      style: TextButton.styleFrom(
+          elevation: 3,
+          shadowColor: Colors.black,
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          )),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            widget.text,
+            style: utils.ThemeText.biometricInfo,
+          ),
+          Text(
+            widget.subtext,
+            style: utils.ThemeText.biometricInfoSubtext,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class SleepScheduleButton extends StatefulWidget {
+  const SleepScheduleButton(
+      {super.key,
+      required this.icon,
+      required this.time,
+      required this.callback});
+
+  final Icon icon;
+  final String time;
+  final VoidCallback callback;
+
+  @override
+  State<SleepScheduleButton> createState() => _SleepScheduleButtonState();
+}
+
+class _SleepScheduleButtonState extends State<SleepScheduleButton> {
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: widget.callback,
+      style: TextButton.styleFrom(
+          backgroundColor: Colors.white,
+          elevation: 3,
+          shadowColor: Colors.black,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          widget.icon,
+          const SizedBox(
+            width: 5,
+          ),
+          Text(
+            widget.time,
+            style: utils.ThemeText.sleepInfo,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class StatsSummary extends StatefulWidget {
+  const StatsSummary(
+      {super.key,
+      required this.color,
+      required this.stats,
+      required this.statsSubtext,
+      required this.icondata});
+
+  final Color color;
+  final IconData icondata;
+  final String stats;
+  final String statsSubtext;
+
+  @override
+  State<StatsSummary> createState() => StatsSummaryState();
+}
+
+class StatsSummaryState extends State<StatsSummary> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        height: 65,
+        width: 150,
+        decoration: BoxDecoration(
+            color: widget.color.withOpacity(0.4),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: widget.color, width: 3)),
+        child: Row(
+          children: [
+            Icon(widget.icondata, size: 30, color: widget.color),
+            const SizedBox(
+              width: 10,
+            ),
+            Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.stats,
+                    style: utils.ThemeText.userStats,
+                  ),
+                  Text(
+                    widget.statsSubtext,
+                    style: utils.ThemeText.userStatsSubtext,
+                  )
+                ])
+          ],
+        ));
   }
 }

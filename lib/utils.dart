@@ -190,11 +190,15 @@ abstract class ThemeText {
   static TextStyle userLocationSubtext = const TextStyle(
       fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white);
 
-  static TextStyle userInfo = const TextStyle(
+  static TextStyle biometricInfo = const TextStyle(
       color: Colors.black, fontWeight: FontWeight.w900, fontSize: 30);
 
-  static TextStyle userInfoSubtext = const TextStyle(
+  static TextStyle biometricInfoSubtext = const TextStyle(
       color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12);
+
+  static TextStyle sleepInfo = const TextStyle(
+      color: Colors.black, fontWeight: FontWeight.w900, fontSize: 20);
+
 
   static TextStyle userStats =
       const TextStyle(fontSize: 24, fontWeight: FontWeight.w900);
