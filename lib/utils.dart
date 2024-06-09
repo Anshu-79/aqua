@@ -31,6 +31,15 @@ Map<String, Color> defaultColors = {
   'violet': const Color(0xFF9042F0),
 };
 
+List<Color> textColorizeColors = [
+  Colors.blue,
+  Colors.purple,
+  Colors.pink,
+  Colors.red,
+  Colors.orange,
+  Colors.yellow,
+];
+
 List<Color> colorList = defaultColors.values.toList();
 
 Color toColor(String colorCode) => Color(int.parse('0x$colorCode'));
@@ -198,7 +207,6 @@ abstract class ThemeText {
 
   static TextStyle sleepInfo = const TextStyle(
       color: Colors.black, fontWeight: FontWeight.w900, fontSize: 20);
-
 
   static TextStyle userStats =
       const TextStyle(fontSize: 24, fontWeight: FontWeight.w900);

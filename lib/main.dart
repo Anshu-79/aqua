@@ -1,3 +1,4 @@
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -8,7 +9,9 @@ import 'package:aqua/screens/home.dart';
 import 'package:aqua/screens/user_profile.dart';
 import 'package:aqua/screens/beverage_menu.dart';
 import 'package:aqua/screens/activity_menu.dart';
+import 'package:aqua/screens/onboarding/onboarding.dart';
 import 'package:aqua/timers.dart';
+import 'package:aqua/utils.dart' as utils;
 
 Future<SharedPreferences> setPrefs() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -55,7 +58,7 @@ class _AquaState extends State<Aqua> {
   @override
   Widget build(BuildContext context) {
     Brightness systemBrightness = Brightness.light;
-     systemBrightness = PlatformDispatcher.instance.platformBrightness;
+    // systemBrightness = PlatformDispatcher.instance.platformBrightness;
 
     Color primaryColor = Colors.black;
     Color canvasColor = Colors.white;
@@ -76,16 +79,17 @@ class _AquaState extends State<Aqua> {
           primaryColor: primaryColor,
           canvasColor: canvasColor,
           splashColor: splashColor,
-          scaffoldBackgroundColor: canvasColor
+          scaffoldBackgroundColor: canvasColor,
         ),
         themeMode: ThemeMode.system,
         home: Builder(
-          builder: (context) => LiquidSwipe(
-            pages: pages,
-            fullTransitionValue: 600,
-            slideIconWidget: const Icon(Icons.arrow_back_ios_new_rounded),
-            positionSlideIcon: 0.71,
-          ),
+          builder: (context) => const OnboardingView()
+          // LiquidSwipe(
+          //   pages: pages,
+          //   fullTransitionValue: 600,
+          //   slideIconWidget: const Icon(Icons.arrow_back_ios_new_rounded),
+          //   positionSlideIcon: 0.71,
+          // ),
         ));
   }
 }
