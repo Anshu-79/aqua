@@ -6,7 +6,6 @@ import 'package:aqua/screens/onboarding/welcome.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/screens/home.dart';
@@ -18,7 +17,8 @@ class OnboardingView extends StatefulWidget {
   State<OnboardingView> createState() => _OnboardingViewState();
 }
 
-class _OnboardingViewState extends State<OnboardingView> {
+class _OnboardingViewState extends State<OnboardingView>
+    with SingleTickerProviderStateMixin {
   final screens = [
     Beach(builder: (context) => const WelcomeScreen()),
     Beach(builder: (context) => const GoalScreen()),
@@ -26,58 +26,49 @@ class _OnboardingViewState extends State<OnboardingView> {
     Beach(builder: (context) => const ProgressScreen()),
     Beach(builder: (context) => const CongratsScreen()),
   ];
-  final pageController = PageController();
+
   final coastController = CoastController();
   bool isLastPage = false;
+  late AnimationController _animationController;
+  late Animation<Offset> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 750),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _animation = Tween<Offset>(
+      begin: const Offset(0, 0),
+      end: const Offset(0, 0.2),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomSheet: Container(
-        color: Theme.of(context).canvasColor,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: isLastPage
-            ? getStarted()
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  //Skip Button
-                  TextButton(
-                      onPressed: () =>
-                          pageController.jumpToPage(screens.length - 1),
-                      child: const Text("Skip")),
-
-                  //Indicator
-                  SmoothPageIndicator(
-                    controller: pageController,
-                    count: screens.length,
-                    onDotClicked: (index) => pageController.animateToPage(index,
-                        duration: const Duration(milliseconds: 600),
-                        curve: Curves.easeIn),
-                    effect: WormEffect(
-                      dotHeight: 12,
-                      dotWidth: 12,
-                      activeDotColor: utils.defaultColors['blue']!,
-                    ),
-                  ),
-
-                  //Next Button
-                  TextButton(
-                      onPressed: () => pageController.nextPage(
-                          duration: const Duration(milliseconds: 600),
-                          curve: Curves.easeIn),
-                      child: const Text("Next")),
-                ],
-              ),
-      ),
       body: Container(
           margin: const EdgeInsets.symmetric(horizontal: 20),
           child: Coast(
               onPageChanged: (index) =>
                   setState(() => isLastPage = screens.length - 1 == index),
               controller: coastController,
+              scrollDirection: Axis.vertical,
               observers: [CrabController()],
               beaches: screens)),
+      floatingActionButton: isLastPage ? getStarted() : scrollDown(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -86,6 +77,17 @@ class _OnboardingViewState extends State<OnboardingView> {
   // so lets do one time onboarding
 
   //Get started button
+
+  Widget scrollDown() {
+    return SlideTransition(
+        position: _animation,
+        child: Icon(
+          Icons.expand_more,
+          size: 70,
+          color: Theme.of(context).primaryColor,
+        ),
+      );
+  }
 
   Widget getStarted() {
     return Container(
