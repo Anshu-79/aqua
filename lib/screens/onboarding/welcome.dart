@@ -13,6 +13,23 @@ class WelcomeScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFF0264e1), width: 5),
+          ),
+          height: 90,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Crab(
+              tag: 'logo',
+              child: Image.asset(
+                'assets/images/logo.png',
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+        ),
         AnimatedTextKit(repeatForever: true, animatedTexts: [
           ColorizeAnimatedText(
             "AQUA",
@@ -22,11 +39,14 @@ class WelcomeScreen extends StatelessWidget {
             speed: const Duration(milliseconds: 1000),
           )
         ]),
-        const SizedBox(height: 40,),
+        const SizedBox(
+          height: 40,
+        ),
         const Text(
           "Welcome to Aqua! We're here to help you prioritize your health by staying hydrated. Let's get started!",
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 17, fontWeight: FontWeight.normal, color: Colors.grey),
+          style: TextStyle(
+              fontSize: 17, fontWeight: FontWeight.normal, color: Colors.grey),
         )
       ],
     );

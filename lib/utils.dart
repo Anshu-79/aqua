@@ -32,7 +32,7 @@ Map<String, Color> defaultColors = {
 };
 
 List<Color> textColorizeColors = [
-  Colors.blue,
+  const Color(0xFF0264e1),
   Colors.purple,
   Colors.pink,
   Colors.red,

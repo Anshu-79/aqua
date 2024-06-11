@@ -50,7 +50,6 @@ dependencies:
   searchable_listview: ^2.14.0
   random_color: ^1.0.6-nullsafety
   animated_text_kit: ^4.2.2
-  smooth_page_indicator: ^1.1.0
   confetti: ^0.7.0
   coast: ^2.0.2
 
