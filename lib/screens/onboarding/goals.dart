@@ -14,7 +14,7 @@ class GoalScreen extends StatefulWidget {
 
 class _GoalScreenState extends State<GoalScreen> {
   final PageController _pageController =
-      PageController(viewportFraction: 0.3, initialPage: 1);
+      PageController(viewportFraction: 0.4, initialPage: 1);
   int _currentPage = 1;
   final int _pageCount = 9;
   Timer? _timer;
@@ -53,7 +53,7 @@ class _GoalScreenState extends State<GoalScreen> {
           alignment: Alignment.center,
           children: [
             Positioned(
-              top: 175,
+              top: 130,
               child: SizedBox(
                 height: 20,
                 child: Crab(
