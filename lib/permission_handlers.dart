@@ -12,3 +12,15 @@ Future<void> requestNotificationPermission() async {
         "Reminders are key to AQUA's functioning. Do you wish to continue without reminders?");
   }
 }
+
+Future<void> requestLocationPermission() async {
+  var status = await Permission.location.request();
+  if (status.isGranted) {
+    print("Location permission granted");
+  } else if (status.isDenied) {
+    // Permission is denied
+    print('Location permission denied.');
+    utils.GlobalNavigator.showAlertDialog(
+        "Accessing your location allows us to calculate your water intake more accurately. Do you wish to continue without providing location access?");
+  }
+}

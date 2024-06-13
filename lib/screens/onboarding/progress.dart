@@ -3,7 +3,7 @@ import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/utils.dart' as utils;
-import 'package:aqua/permission_handlers/notifications.dart';
+import 'package:aqua/permission_handlers.dart';
 
 class ProgressScreen extends StatelessWidget {
   const ProgressScreen({super.key});

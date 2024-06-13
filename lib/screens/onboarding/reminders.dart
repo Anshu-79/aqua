@@ -3,12 +3,14 @@ import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/permission_handlers.dart';
 
 class ReminderScreen extends StatelessWidget {
   const ReminderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    requestLocationPermission();
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
