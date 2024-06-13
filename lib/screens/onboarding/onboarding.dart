@@ -1,4 +1,3 @@
-
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,6 +8,7 @@ import 'package:aqua/screens/onboarding/goals.dart';
 import 'package:aqua/screens/onboarding/progress.dart';
 import 'package:aqua/screens/onboarding/reminders.dart';
 import 'package:aqua/screens/onboarding/welcome.dart';
+import 'package:aqua/screens/onboarding/location.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
@@ -26,10 +26,12 @@ class _OnboardingViewState extends State<OnboardingView>
   late Image person1;
   late Image person2;
   late Image person3;
+  late Image globe;
 
   final screens = [
     Beach(builder: (context) => const WelcomeScreen()),
     Beach(builder: (context) => const GoalScreen()),
+    Beach(builder: (context) => const LocationScreen()),
     Beach(builder: (context) => const ReminderScreen()),
     Beach(builder: (context) => const ProgressScreen()),
     Beach(builder: (context) => const CongratsScreen()),
@@ -63,6 +65,7 @@ class _OnboardingViewState extends State<OnboardingView>
     person1 = Image.asset('assets/images/person1.png');
     person2 = Image.asset('assets/images/person2.png');
     person3 = Image.asset('assets/images/person3.png');
+    globe = Image.asset('assets/images/globe.gif');
   }
 
   @override
@@ -74,12 +77,14 @@ class _OnboardingViewState extends State<OnboardingView>
     precacheImage(person1.image, context);
     precacheImage(person2.image, context);
     precacheImage(person3.image, context);
+    precacheImage(globe.image, context);
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    coastController.dispose();
     super.dispose();
   }
 
