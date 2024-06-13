@@ -13,7 +13,7 @@ class CongratsScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Crab(tag: 'logo',
+        Crab(tag: 'graphic',
         child: Image.asset("assets/images/congrats.gif")),
         AnimatedTextKit(repeatForever: true, animatedTexts: [
           ColorizeAnimatedText(

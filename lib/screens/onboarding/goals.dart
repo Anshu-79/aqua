@@ -57,7 +57,7 @@ class _GoalScreenState extends State<GoalScreen> {
               child: SizedBox(
                 height: 20,
                 child: Crab(
-                  tag: 'logo',
+                  tag: 'graphic',
                   child: Image.asset(
                     'assets/images/logo.png',
                     fit: BoxFit.contain,

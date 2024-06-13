@@ -3,18 +3,20 @@ import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/permission_handlers/notifications.dart';
 
 class ProgressScreen extends StatelessWidget {
   const ProgressScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    requestNotificationPermission();
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Crab(
-          tag: 'logo',
+          tag: 'graphic',
           child: Image.asset("assets/images/progress.gif")),
           const SizedBox(height: 50,),
         AnimatedTextKit(repeatForever: true, animatedTexts: [

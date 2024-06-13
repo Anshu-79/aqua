@@ -17,7 +17,7 @@ class ReminderScreen extends StatelessWidget {
         children: [
           Center(
               child: Crab(
-                  tag: 'logo',
+                  tag: 'graphic',
                   child: Image.asset("assets/images/reminder.gif"))),
           AnimatedTextKit(repeatForever: true, animatedTexts: [
             ColorizeAnimatedText(
