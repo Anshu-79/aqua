@@ -20,7 +20,7 @@ class CongratsScreen extends StatelessWidget {
             "Congrats!",
             textAlign: TextAlign.center,
             textStyle:
-                const TextStyle(fontSize: 50, fontWeight: FontWeight.w900),
+                const TextStyle(fontSize: 65, fontWeight: FontWeight.w900),
             colors: utils.textColorizeColors,
             speed: const Duration(milliseconds: 500),
           )

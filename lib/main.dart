@@ -9,22 +9,13 @@ import 'package:aqua/screens/user_profile.dart';
 import 'package:aqua/screens/beverage_menu.dart';
 import 'package:aqua/screens/activity_menu.dart';
 import 'package:aqua/screens/onboarding/onboarding.dart';
-import 'package:aqua/timers.dart';
 import 'package:aqua/utils.dart' as utils;
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-Future<SharedPreferences> setPrefs() async {
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setDouble('wakeTime', 8);
-  prefs.setDouble('sleepTime', 2.5);
-
-  return prefs;
-}
-
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
   runApp(const Aqua());
 }
 
@@ -36,20 +27,12 @@ class Aqua extends StatefulWidget {
 }
 
 class _AquaState extends State<Aqua> {
-  late double? wakeTime;
 
   @override
   void initState() {
     super.initState();
-    _loadPrefs();
   }
 
-  void _loadPrefs() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      wakeTime = prefs.getDouble('wakeTime');
-    });
-  }
 
   final pages = [
     const HomeScreen(),
@@ -71,8 +54,6 @@ class _AquaState extends State<Aqua> {
       primaryColor = Colors.white;
       canvasColor = Colors.black;
     }
-
-    dayChanger(wakeTime!);
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
