@@ -1,9 +1,7 @@
 import 'dart:math';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
 import 'package:aqua/utils.dart' as utils;
 
