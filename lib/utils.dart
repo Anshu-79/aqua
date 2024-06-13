@@ -1,4 +1,6 @@
+import 'package:aqua/main.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'icomoon_icons.dart';
 
 // Duration Utilities
@@ -278,4 +280,29 @@ Stack borderedText(String text, TextStyle style, TextStyle borderStyle) {
       TextSpan(text: text, style: style),
     ])),
   ]);
+}
+
+class GlobalNavigator {
+  static showAlertDialog(String text) {
+    showDialog(
+        context: navigatorKey.currentContext!,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Permission denied"),
+            content: Text(text),
+            actions: [
+              TextButton(
+                  onPressed: () async {
+                    await openAppSettings();
+                  },
+                  child: const Text("Open Settings")),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Continue")),
+            ],
+          );
+        });
+  }
 }

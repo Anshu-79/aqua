@@ -23,6 +23,9 @@ class _OnboardingViewState extends State<OnboardingView>
   late Image reminderIcon;
   late Image progressIcon;
   late Image congratsIcon;
+  late Image person1;
+  late Image person2;
+  late Image person3;
 
   final screens = [
     Beach(builder: (context) => const WelcomeScreen()),
@@ -57,6 +60,9 @@ class _OnboardingViewState extends State<OnboardingView>
     reminderIcon = Image.asset('assets/images/reminder.gif');
     progressIcon = Image.asset('assets/images/progress.gif');
     congratsIcon = Image.asset('assets/images/congrats.gif');
+    person1 = Image.asset('assets/images/person1.png');
+    person2 = Image.asset('assets/images/person2.png');
+    person3 = Image.asset('assets/images/person3.png');
   }
 
   @override
@@ -65,6 +71,9 @@ class _OnboardingViewState extends State<OnboardingView>
     precacheImage(reminderIcon.image, context);
     precacheImage(progressIcon.image, context);
     precacheImage(congratsIcon.image, context);
+    precacheImage(person1.image, context);
+    precacheImage(person2.image, context);
+    precacheImage(person3.image, context);
     super.didChangeDependencies();
   }
 
@@ -91,7 +100,6 @@ class _OnboardingViewState extends State<OnboardingView>
     );
   }
 
-
   Widget scrollDown() {
     return SlideTransition(
       position: _animation,
@@ -115,8 +123,6 @@ class _OnboardingViewState extends State<OnboardingView>
             final pres = await SharedPreferences.getInstance();
             pres.setBool("onboarding", true);
 
-            //After we press get started button this onboarding value become true
-            // same key
             if (!mounted) return;
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const HomeScreen()));

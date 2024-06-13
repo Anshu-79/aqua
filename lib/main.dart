@@ -13,6 +13,8 @@ import 'package:aqua/screens/onboarding/onboarding.dart';
 import 'package:aqua/timers.dart';
 import 'package:aqua/utils.dart' as utils;
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 Future<SharedPreferences> setPrefs() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setDouble('wakeTime', 8);
@@ -58,7 +60,7 @@ class _AquaState extends State<Aqua> {
   @override
   Widget build(BuildContext context) {
     Brightness systemBrightness = Brightness.light;
-     systemBrightness = PlatformDispatcher.instance.platformBrightness;
+    // systemBrightness = PlatformDispatcher.instance.platformBrightness;
 
     Color primaryColor = Colors.black;
     Color canvasColor = Colors.white;
@@ -82,6 +84,7 @@ class _AquaState extends State<Aqua> {
           scaffoldBackgroundColor: canvasColor,
         ),
         themeMode: ThemeMode.system,
+        navigatorKey: navigatorKey,
         home: Builder(
           builder: (context) => const OnboardingView()
           // LiquidSwipe(

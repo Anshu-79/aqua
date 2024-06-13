@@ -22,7 +22,7 @@ class WelcomeScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Crab(
-              tag: 'logo',
+              tag: 'graphic',
               child: Image.asset(
                 'assets/images/logo.png',
                 fit: BoxFit.contain,
