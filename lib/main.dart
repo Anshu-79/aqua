@@ -1,6 +1,5 @@
 
-import 'dart:ui';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,7 +22,9 @@ Future<SharedPreferences> setPrefs() async {
   return prefs;
 }
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const Aqua());
 }
 
@@ -85,14 +86,13 @@ class _AquaState extends State<Aqua> {
         ),
         themeMode: ThemeMode.system,
         navigatorKey: navigatorKey,
-        home: Builder(
-          builder: (context) => const OnboardingView()
-          // LiquidSwipe(
-          //   pages: pages,
-          //   fullTransitionValue: 600,
-          //   slideIconWidget: const Icon(Icons.arrow_back_ios_new_rounded),
-          //   positionSlideIcon: 0.71,
-          // ),
-        ));
+        home: Builder(builder: (context) => const OnboardingView()
+            // LiquidSwipe(
+            //   pages: pages,
+            //   fullTransitionValue: 600,
+            //   slideIconWidget: const Icon(Icons.arrow_back_ios_new_rounded),
+            //   positionSlideIcon: 0.71,
+            // ),
+            ));
   }
 }
