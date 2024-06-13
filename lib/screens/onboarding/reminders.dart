@@ -15,7 +15,10 @@ class ReminderScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Crab(tag: 'img', child: Image.asset("assets/images/pick_glass.gif")),
+          Center(
+              child: Crab(
+                  tag: 'logo',
+                  child: Image.asset("assets/images/reminder.gif"))),
           AnimatedTextKit(repeatForever: true, animatedTexts: [
             ColorizeAnimatedText(
               "Friendly Reminders",

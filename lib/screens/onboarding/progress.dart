@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/utils.dart' as utils;
@@ -12,13 +13,16 @@ class ProgressScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image.asset("assets/images/pick_glass.gif"),
+        Crab(
+          tag: 'logo',
+          child: Image.asset("assets/images/progress.gif")),
+          const SizedBox(height: 50,),
         AnimatedTextKit(repeatForever: true, animatedTexts: [
           ColorizeAnimatedText(
-            "Track Progress",
+            "See Growth",
             textAlign: TextAlign.center,
             textStyle:
-                const TextStyle(fontSize: 50, fontWeight: FontWeight.w900),
+                const TextStyle(fontSize: 55, fontWeight: FontWeight.w900),
             colors: utils.textColorizeColors,
             speed: const Duration(milliseconds: 500),
           )

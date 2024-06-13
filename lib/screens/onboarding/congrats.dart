@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/utils.dart' as utils;
@@ -12,7 +13,8 @@ class CongratsScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image.asset("assets/images/pick_glass.gif"),
+        Crab(tag: 'logo',
+        child: Image.asset("assets/images/congrats.gif")),
         AnimatedTextKit(repeatForever: true, animatedTexts: [
           ColorizeAnimatedText(
             "Congrats!",

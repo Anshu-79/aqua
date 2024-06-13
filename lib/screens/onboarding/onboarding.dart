@@ -1,14 +1,14 @@
+
+import 'package:coast/coast.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:aqua/screens/home.dart';
 import 'package:aqua/screens/onboarding/congrats.dart';
 import 'package:aqua/screens/onboarding/goals.dart';
 import 'package:aqua/screens/onboarding/progress.dart';
 import 'package:aqua/screens/onboarding/reminders.dart';
 import 'package:aqua/screens/onboarding/welcome.dart';
-import 'package:coast/coast.dart';
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:aqua/utils.dart' as utils;
-import 'package:aqua/screens/home.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
@@ -19,6 +19,11 @@ class OnboardingView extends StatefulWidget {
 
 class _OnboardingViewState extends State<OnboardingView>
     with SingleTickerProviderStateMixin {
+  late Image logo;
+  late Image reminderIcon;
+  late Image progressIcon;
+  late Image congratsIcon;
+
   final screens = [
     Beach(builder: (context) => const WelcomeScreen()),
     Beach(builder: (context) => const GoalScreen()),
@@ -47,6 +52,20 @@ class _OnboardingViewState extends State<OnboardingView>
       parent: _animationController,
       curve: Curves.easeInOut,
     ));
+
+    logo = Image.asset('assets/images/logo.png');
+    reminderIcon = Image.asset('assets/images/reminder.gif');
+    progressIcon = Image.asset('assets/images/progress.gif');
+    congratsIcon = Image.asset('assets/images/congrats.gif');
+  }
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(logo.image, context);
+    precacheImage(reminderIcon.image, context);
+    precacheImage(progressIcon.image, context);
+    precacheImage(congratsIcon.image, context);
+    super.didChangeDependencies();
   }
 
   @override
@@ -72,28 +91,23 @@ class _OnboardingViewState extends State<OnboardingView>
     );
   }
 
-  //Now the problem is when press get started button
-  // after re run the app we see again the onboarding screen
-  // so lets do one time onboarding
-
-  //Get started button
 
   Widget scrollDown() {
     return SlideTransition(
-        position: _animation,
-        child: Icon(
-          Icons.expand_more,
-          size: 70,
-          color: Theme.of(context).primaryColor,
-        ),
-      );
+      position: _animation,
+      child: Icon(
+        Icons.expand_more,
+        size: 70,
+        color: Theme.of(context).primaryColor,
+      ),
+    );
   }
 
   Widget getStarted() {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: utils.defaultColors['blue']!),
+          color: const Color(0xFF0264e1)),
       width: MediaQuery.of(context).size.width * .9,
       height: 55,
       child: TextButton(
