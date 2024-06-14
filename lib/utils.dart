@@ -44,6 +44,14 @@ List<Color> textColorizeColors = [
 
 List<Color> colorList = defaultColors.values.toList();
 
+List<Color> shapeColors = [
+  defaultColors['red']!,
+  defaultColors['orange']!,
+  defaultColors['yellow']!,
+  defaultColors['green']!,
+  defaultColors['blue']!,
+];
+
 Color toColor(String colorCode) => Color(int.parse('0x$colorCode'));
 
 String toHexString(Color color) => color.value.toRadixString(16);
@@ -121,6 +129,14 @@ String getWorkoutCategory(int activityID) {
 abstract class ThemeText {
   static const TextStyle screenHeader =
       TextStyle(fontSize: 45, fontWeight: FontWeight.w900);
+
+  // Onboarding Screens
+
+  static const TextStyle nameInputField =
+      TextStyle(fontSize: 40, fontWeight: FontWeight.w900);
+
+  static TextStyle formHint = const TextStyle(
+      fontSize: 40, fontWeight: FontWeight.bold, color: Colors.grey);
 
   // Home Screen
   static TextStyle dailyGoalConsumed = const TextStyle(

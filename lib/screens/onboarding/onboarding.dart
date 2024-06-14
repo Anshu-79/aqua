@@ -2,7 +2,7 @@ import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:aqua/screens/home.dart';
+import 'package:aqua/screens/onboarding/form/name.dart';
 import 'package:aqua/screens/onboarding/congrats.dart';
 import 'package:aqua/screens/onboarding/goals.dart';
 import 'package:aqua/screens/onboarding/progress.dart';
@@ -130,7 +130,7 @@ class _OnboardingViewState extends State<OnboardingView>
 
             if (!mounted) return;
             Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const HomeScreen()));
+                MaterialPageRoute(builder: (context) => const NameInputScreen()));
           },
           child: const Text(
             "Get started",
