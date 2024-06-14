@@ -2,13 +2,13 @@ import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:aqua/screens/onboarding/form/name.dart';
 import 'package:aqua/screens/onboarding/congrats.dart';
 import 'package:aqua/screens/onboarding/goals.dart';
 import 'package:aqua/screens/onboarding/progress.dart';
 import 'package:aqua/screens/onboarding/reminders.dart';
 import 'package:aqua/screens/onboarding/welcome.dart';
 import 'package:aqua/screens/onboarding/location.dart';
+import 'package:aqua/screens/onboarding/form/form.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
@@ -129,8 +129,7 @@ class _OnboardingViewState extends State<OnboardingView>
             pres.setBool("onboarding", true);
 
             if (!mounted) return;
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const NameInputScreen()));
+            await Navigator.of(context).push(OnboardingFlow.route());
           },
           child: const Text(
             "Get started",

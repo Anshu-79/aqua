@@ -68,7 +68,7 @@ class _AquaState extends State<Aqua> {
         ),
         themeMode: ThemeMode.system,
         navigatorKey: navigatorKey,
-        home: Builder(builder: (context) => const NameInputScreen()
+        home: Builder(builder: (context) => const OnboardingView()
             // LiquidSwipe(
             //   pages: pages,
             //   fullTransitionValue: 600,

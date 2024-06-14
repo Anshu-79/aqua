@@ -1,5 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:aqua/screens/onboarding/form/name.dart';
+import 'package:aqua/screens/onboarding/form/profile.dart';
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 
@@ -80,7 +82,7 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton.filled(
-              icon: const Icon(Icons.arrow_back),
+              icon: const Icon(Icons.chevron_left),
               iconSize: 50,
               style: IconButton.styleFrom(
                 backgroundColor: Colors.black,
@@ -94,7 +96,7 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
               },
             ),
             IconButton.filled(
-              icon: const Icon(Icons.arrow_forward),
+              icon: const Icon(Icons.chevron_right),
               iconSize: 50,
               style: IconButton.styleFrom(
                 backgroundColor: Colors.black,
@@ -103,6 +105,7 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
               onPressed: () {
                 if (formKey.currentState!.validate()) {
                   final email = emailController.text;
+                  context.flow<Profile>().update((profile) => profile.copyWith(email: email));
                 }
               },
             ),

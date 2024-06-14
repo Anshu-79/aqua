@@ -1304,6 +1304,7 @@ class WaterGoalsCompanion extends UpdateCompanion<WaterGoal> {
 
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
+  _$DatabaseManager get managers => _$DatabaseManager(this);
   late final $BeveragesTable beverages = $BeveragesTable(this);
   late final $DrinksTable drinks = $DrinksTable(this);
   late final $ActivitiesTable activities = $ActivitiesTable(this);
@@ -1315,4 +1316,673 @@ abstract class _$Database extends GeneratedDatabase {
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
       [beverages, drinks, activities, workouts, waterGoals];
+}
+
+typedef $$BeveragesTableInsertCompanionBuilder = BeveragesCompanion Function({
+  Value<int> bevID,
+  required String bevName,
+  required String colorCode,
+  required int waterPercent,
+});
+typedef $$BeveragesTableUpdateCompanionBuilder = BeveragesCompanion Function({
+  Value<int> bevID,
+  Value<String> bevName,
+  Value<String> colorCode,
+  Value<int> waterPercent,
+});
+
+class $$BeveragesTableTableManager extends RootTableManager<
+    _$Database,
+    $BeveragesTable,
+    Beverage,
+    $$BeveragesTableFilterComposer,
+    $$BeveragesTableOrderingComposer,
+    $$BeveragesTableProcessedTableManager,
+    $$BeveragesTableInsertCompanionBuilder,
+    $$BeveragesTableUpdateCompanionBuilder> {
+  $$BeveragesTableTableManager(_$Database db, $BeveragesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$BeveragesTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$BeveragesTableOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$BeveragesTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> bevID = const Value.absent(),
+            Value<String> bevName = const Value.absent(),
+            Value<String> colorCode = const Value.absent(),
+            Value<int> waterPercent = const Value.absent(),
+          }) =>
+              BeveragesCompanion(
+            bevID: bevID,
+            bevName: bevName,
+            colorCode: colorCode,
+            waterPercent: waterPercent,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> bevID = const Value.absent(),
+            required String bevName,
+            required String colorCode,
+            required int waterPercent,
+          }) =>
+              BeveragesCompanion.insert(
+            bevID: bevID,
+            bevName: bevName,
+            colorCode: colorCode,
+            waterPercent: waterPercent,
+          ),
+        ));
+}
+
+class $$BeveragesTableProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    $BeveragesTable,
+    Beverage,
+    $$BeveragesTableFilterComposer,
+    $$BeveragesTableOrderingComposer,
+    $$BeveragesTableProcessedTableManager,
+    $$BeveragesTableInsertCompanionBuilder,
+    $$BeveragesTableUpdateCompanionBuilder> {
+  $$BeveragesTableProcessedTableManager(super.$state);
+}
+
+class $$BeveragesTableFilterComposer
+    extends FilterComposer<_$Database, $BeveragesTable> {
+  $$BeveragesTableFilterComposer(super.$state);
+  ColumnFilters<int> get bevID => $state.composableBuilder(
+      column: $state.table.bevID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get bevName => $state.composableBuilder(
+      column: $state.table.bevName,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get colorCode => $state.composableBuilder(
+      column: $state.table.colorCode,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get waterPercent => $state.composableBuilder(
+      column: $state.table.waterPercent,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ComposableFilter drinksRefs(
+      ComposableFilter Function($$DrinksTableFilterComposer f) f) {
+    final $$DrinksTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.bevID,
+        referencedTable: $state.db.drinks,
+        getReferencedColumn: (t) => t.bevID,
+        builder: (joinBuilder, parentComposers) => $$DrinksTableFilterComposer(
+            ComposerState(
+                $state.db, $state.db.drinks, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+}
+
+class $$BeveragesTableOrderingComposer
+    extends OrderingComposer<_$Database, $BeveragesTable> {
+  $$BeveragesTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get bevID => $state.composableBuilder(
+      column: $state.table.bevID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get bevName => $state.composableBuilder(
+      column: $state.table.bevName,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get colorCode => $state.composableBuilder(
+      column: $state.table.colorCode,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get waterPercent => $state.composableBuilder(
+      column: $state.table.waterPercent,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$DrinksTableInsertCompanionBuilder = DrinksCompanion Function({
+  Value<int> drinkID,
+  required int bevID,
+  required int volume,
+  required DateTime datetime,
+});
+typedef $$DrinksTableUpdateCompanionBuilder = DrinksCompanion Function({
+  Value<int> drinkID,
+  Value<int> bevID,
+  Value<int> volume,
+  Value<DateTime> datetime,
+});
+
+class $$DrinksTableTableManager extends RootTableManager<
+    _$Database,
+    $DrinksTable,
+    Drink,
+    $$DrinksTableFilterComposer,
+    $$DrinksTableOrderingComposer,
+    $$DrinksTableProcessedTableManager,
+    $$DrinksTableInsertCompanionBuilder,
+    $$DrinksTableUpdateCompanionBuilder> {
+  $$DrinksTableTableManager(_$Database db, $DrinksTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$DrinksTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$DrinksTableOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) => $$DrinksTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> drinkID = const Value.absent(),
+            Value<int> bevID = const Value.absent(),
+            Value<int> volume = const Value.absent(),
+            Value<DateTime> datetime = const Value.absent(),
+          }) =>
+              DrinksCompanion(
+            drinkID: drinkID,
+            bevID: bevID,
+            volume: volume,
+            datetime: datetime,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> drinkID = const Value.absent(),
+            required int bevID,
+            required int volume,
+            required DateTime datetime,
+          }) =>
+              DrinksCompanion.insert(
+            drinkID: drinkID,
+            bevID: bevID,
+            volume: volume,
+            datetime: datetime,
+          ),
+        ));
+}
+
+class $$DrinksTableProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    $DrinksTable,
+    Drink,
+    $$DrinksTableFilterComposer,
+    $$DrinksTableOrderingComposer,
+    $$DrinksTableProcessedTableManager,
+    $$DrinksTableInsertCompanionBuilder,
+    $$DrinksTableUpdateCompanionBuilder> {
+  $$DrinksTableProcessedTableManager(super.$state);
+}
+
+class $$DrinksTableFilterComposer
+    extends FilterComposer<_$Database, $DrinksTable> {
+  $$DrinksTableFilterComposer(super.$state);
+  ColumnFilters<int> get drinkID => $state.composableBuilder(
+      column: $state.table.drinkID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get volume => $state.composableBuilder(
+      column: $state.table.volume,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get datetime => $state.composableBuilder(
+      column: $state.table.datetime,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $$BeveragesTableFilterComposer get bevID {
+    final $$BeveragesTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.bevID,
+        referencedTable: $state.db.beverages,
+        getReferencedColumn: (t) => t.bevID,
+        builder: (joinBuilder, parentComposers) =>
+            $$BeveragesTableFilterComposer(ComposerState(
+                $state.db, $state.db.beverages, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+class $$DrinksTableOrderingComposer
+    extends OrderingComposer<_$Database, $DrinksTable> {
+  $$DrinksTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get drinkID => $state.composableBuilder(
+      column: $state.table.drinkID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get volume => $state.composableBuilder(
+      column: $state.table.volume,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get datetime => $state.composableBuilder(
+      column: $state.table.datetime,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $$BeveragesTableOrderingComposer get bevID {
+    final $$BeveragesTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.bevID,
+        referencedTable: $state.db.beverages,
+        getReferencedColumn: (t) => t.bevID,
+        builder: (joinBuilder, parentComposers) =>
+            $$BeveragesTableOrderingComposer(ComposerState(
+                $state.db, $state.db.beverages, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $$ActivitiesTableInsertCompanionBuilder = ActivitiesCompanion Function({
+  Value<int> activityID,
+  required String category,
+  required double met,
+  required String description,
+});
+typedef $$ActivitiesTableUpdateCompanionBuilder = ActivitiesCompanion Function({
+  Value<int> activityID,
+  Value<String> category,
+  Value<double> met,
+  Value<String> description,
+});
+
+class $$ActivitiesTableTableManager extends RootTableManager<
+    _$Database,
+    $ActivitiesTable,
+    Activity,
+    $$ActivitiesTableFilterComposer,
+    $$ActivitiesTableOrderingComposer,
+    $$ActivitiesTableProcessedTableManager,
+    $$ActivitiesTableInsertCompanionBuilder,
+    $$ActivitiesTableUpdateCompanionBuilder> {
+  $$ActivitiesTableTableManager(_$Database db, $ActivitiesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$ActivitiesTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$ActivitiesTableOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$ActivitiesTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> activityID = const Value.absent(),
+            Value<String> category = const Value.absent(),
+            Value<double> met = const Value.absent(),
+            Value<String> description = const Value.absent(),
+          }) =>
+              ActivitiesCompanion(
+            activityID: activityID,
+            category: category,
+            met: met,
+            description: description,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> activityID = const Value.absent(),
+            required String category,
+            required double met,
+            required String description,
+          }) =>
+              ActivitiesCompanion.insert(
+            activityID: activityID,
+            category: category,
+            met: met,
+            description: description,
+          ),
+        ));
+}
+
+class $$ActivitiesTableProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    $ActivitiesTable,
+    Activity,
+    $$ActivitiesTableFilterComposer,
+    $$ActivitiesTableOrderingComposer,
+    $$ActivitiesTableProcessedTableManager,
+    $$ActivitiesTableInsertCompanionBuilder,
+    $$ActivitiesTableUpdateCompanionBuilder> {
+  $$ActivitiesTableProcessedTableManager(super.$state);
+}
+
+class $$ActivitiesTableFilterComposer
+    extends FilterComposer<_$Database, $ActivitiesTable> {
+  $$ActivitiesTableFilterComposer(super.$state);
+  ColumnFilters<int> get activityID => $state.composableBuilder(
+      column: $state.table.activityID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get category => $state.composableBuilder(
+      column: $state.table.category,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<double> get met => $state.composableBuilder(
+      column: $state.table.met,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ComposableFilter workoutsRefs(
+      ComposableFilter Function($$WorkoutsTableFilterComposer f) f) {
+    final $$WorkoutsTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.activityID,
+        referencedTable: $state.db.workouts,
+        getReferencedColumn: (t) => t.activityID,
+        builder: (joinBuilder, parentComposers) =>
+            $$WorkoutsTableFilterComposer(ComposerState(
+                $state.db, $state.db.workouts, joinBuilder, parentComposers)));
+    return f(composer);
+  }
+}
+
+class $$ActivitiesTableOrderingComposer
+    extends OrderingComposer<_$Database, $ActivitiesTable> {
+  $$ActivitiesTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get activityID => $state.composableBuilder(
+      column: $state.table.activityID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get category => $state.composableBuilder(
+      column: $state.table.category,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<double> get met => $state.composableBuilder(
+      column: $state.table.met,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<String> get description => $state.composableBuilder(
+      column: $state.table.description,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+typedef $$WorkoutsTableInsertCompanionBuilder = WorkoutsCompanion Function({
+  Value<int> workoutID,
+  required int activityID,
+  required DateTime datetime,
+  required int duration,
+});
+typedef $$WorkoutsTableUpdateCompanionBuilder = WorkoutsCompanion Function({
+  Value<int> workoutID,
+  Value<int> activityID,
+  Value<DateTime> datetime,
+  Value<int> duration,
+});
+
+class $$WorkoutsTableTableManager extends RootTableManager<
+    _$Database,
+    $WorkoutsTable,
+    Workout,
+    $$WorkoutsTableFilterComposer,
+    $$WorkoutsTableOrderingComposer,
+    $$WorkoutsTableProcessedTableManager,
+    $$WorkoutsTableInsertCompanionBuilder,
+    $$WorkoutsTableUpdateCompanionBuilder> {
+  $$WorkoutsTableTableManager(_$Database db, $WorkoutsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$WorkoutsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$WorkoutsTableOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$WorkoutsTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<int> workoutID = const Value.absent(),
+            Value<int> activityID = const Value.absent(),
+            Value<DateTime> datetime = const Value.absent(),
+            Value<int> duration = const Value.absent(),
+          }) =>
+              WorkoutsCompanion(
+            workoutID: workoutID,
+            activityID: activityID,
+            datetime: datetime,
+            duration: duration,
+          ),
+          getInsertCompanionBuilder: ({
+            Value<int> workoutID = const Value.absent(),
+            required int activityID,
+            required DateTime datetime,
+            required int duration,
+          }) =>
+              WorkoutsCompanion.insert(
+            workoutID: workoutID,
+            activityID: activityID,
+            datetime: datetime,
+            duration: duration,
+          ),
+        ));
+}
+
+class $$WorkoutsTableProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    $WorkoutsTable,
+    Workout,
+    $$WorkoutsTableFilterComposer,
+    $$WorkoutsTableOrderingComposer,
+    $$WorkoutsTableProcessedTableManager,
+    $$WorkoutsTableInsertCompanionBuilder,
+    $$WorkoutsTableUpdateCompanionBuilder> {
+  $$WorkoutsTableProcessedTableManager(super.$state);
+}
+
+class $$WorkoutsTableFilterComposer
+    extends FilterComposer<_$Database, $WorkoutsTable> {
+  $$WorkoutsTableFilterComposer(super.$state);
+  ColumnFilters<int> get workoutID => $state.composableBuilder(
+      column: $state.table.workoutID,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<DateTime> get datetime => $state.composableBuilder(
+      column: $state.table.datetime,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get duration => $state.composableBuilder(
+      column: $state.table.duration,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  $$ActivitiesTableFilterComposer get activityID {
+    final $$ActivitiesTableFilterComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.activityID,
+        referencedTable: $state.db.activities,
+        getReferencedColumn: (t) => t.activityID,
+        builder: (joinBuilder, parentComposers) =>
+            $$ActivitiesTableFilterComposer(ComposerState($state.db,
+                $state.db.activities, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+class $$WorkoutsTableOrderingComposer
+    extends OrderingComposer<_$Database, $WorkoutsTable> {
+  $$WorkoutsTableOrderingComposer(super.$state);
+  ColumnOrderings<int> get workoutID => $state.composableBuilder(
+      column: $state.table.workoutID,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<DateTime> get datetime => $state.composableBuilder(
+      column: $state.table.datetime,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get duration => $state.composableBuilder(
+      column: $state.table.duration,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  $$ActivitiesTableOrderingComposer get activityID {
+    final $$ActivitiesTableOrderingComposer composer = $state.composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.activityID,
+        referencedTable: $state.db.activities,
+        getReferencedColumn: (t) => t.activityID,
+        builder: (joinBuilder, parentComposers) =>
+            $$ActivitiesTableOrderingComposer(ComposerState($state.db,
+                $state.db.activities, joinBuilder, parentComposers)));
+    return composer;
+  }
+}
+
+typedef $$WaterGoalsTableInsertCompanionBuilder = WaterGoalsCompanion Function({
+  required DateTime date,
+  required int totalVolume,
+  required int consumedVolume,
+  required int reminderGap,
+  Value<int> rowid,
+});
+typedef $$WaterGoalsTableUpdateCompanionBuilder = WaterGoalsCompanion Function({
+  Value<DateTime> date,
+  Value<int> totalVolume,
+  Value<int> consumedVolume,
+  Value<int> reminderGap,
+  Value<int> rowid,
+});
+
+class $$WaterGoalsTableTableManager extends RootTableManager<
+    _$Database,
+    $WaterGoalsTable,
+    WaterGoal,
+    $$WaterGoalsTableFilterComposer,
+    $$WaterGoalsTableOrderingComposer,
+    $$WaterGoalsTableProcessedTableManager,
+    $$WaterGoalsTableInsertCompanionBuilder,
+    $$WaterGoalsTableUpdateCompanionBuilder> {
+  $$WaterGoalsTableTableManager(_$Database db, $WaterGoalsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          filteringComposer:
+              $$WaterGoalsTableFilterComposer(ComposerState(db, table)),
+          orderingComposer:
+              $$WaterGoalsTableOrderingComposer(ComposerState(db, table)),
+          getChildManagerBuilder: (p) =>
+              $$WaterGoalsTableProcessedTableManager(p),
+          getUpdateCompanionBuilder: ({
+            Value<DateTime> date = const Value.absent(),
+            Value<int> totalVolume = const Value.absent(),
+            Value<int> consumedVolume = const Value.absent(),
+            Value<int> reminderGap = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              WaterGoalsCompanion(
+            date: date,
+            totalVolume: totalVolume,
+            consumedVolume: consumedVolume,
+            reminderGap: reminderGap,
+            rowid: rowid,
+          ),
+          getInsertCompanionBuilder: ({
+            required DateTime date,
+            required int totalVolume,
+            required int consumedVolume,
+            required int reminderGap,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              WaterGoalsCompanion.insert(
+            date: date,
+            totalVolume: totalVolume,
+            consumedVolume: consumedVolume,
+            reminderGap: reminderGap,
+            rowid: rowid,
+          ),
+        ));
+}
+
+class $$WaterGoalsTableProcessedTableManager extends ProcessedTableManager<
+    _$Database,
+    $WaterGoalsTable,
+    WaterGoal,
+    $$WaterGoalsTableFilterComposer,
+    $$WaterGoalsTableOrderingComposer,
+    $$WaterGoalsTableProcessedTableManager,
+    $$WaterGoalsTableInsertCompanionBuilder,
+    $$WaterGoalsTableUpdateCompanionBuilder> {
+  $$WaterGoalsTableProcessedTableManager(super.$state);
+}
+
+class $$WaterGoalsTableFilterComposer
+    extends FilterComposer<_$Database, $WaterGoalsTable> {
+  $$WaterGoalsTableFilterComposer(super.$state);
+  ColumnFilters<DateTime> get date => $state.composableBuilder(
+      column: $state.table.date,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get totalVolume => $state.composableBuilder(
+      column: $state.table.totalVolume,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get consumedVolume => $state.composableBuilder(
+      column: $state.table.consumedVolume,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get reminderGap => $state.composableBuilder(
+      column: $state.table.reminderGap,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+}
+
+class $$WaterGoalsTableOrderingComposer
+    extends OrderingComposer<_$Database, $WaterGoalsTable> {
+  $$WaterGoalsTableOrderingComposer(super.$state);
+  ColumnOrderings<DateTime> get date => $state.composableBuilder(
+      column: $state.table.date,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get totalVolume => $state.composableBuilder(
+      column: $state.table.totalVolume,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get consumedVolume => $state.composableBuilder(
+      column: $state.table.consumedVolume,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get reminderGap => $state.composableBuilder(
+      column: $state.table.reminderGap,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+}
+
+class _$DatabaseManager {
+  final _$Database _db;
+  _$DatabaseManager(this._db);
+  $$BeveragesTableTableManager get beverages =>
+      $$BeveragesTableTableManager(_db, _db.beverages);
+  $$DrinksTableTableManager get drinks =>
+      $$DrinksTableTableManager(_db, _db.drinks);
+  $$ActivitiesTableTableManager get activities =>
+      $$ActivitiesTableTableManager(_db, _db.activities);
+  $$WorkoutsTableTableManager get workouts =>
+      $$WorkoutsTableTableManager(_db, _db.workouts);
+  $$WaterGoalsTableTableManager get waterGoals =>
+      $$WaterGoalsTableTableManager(_db, _db.waterGoals);
 }
