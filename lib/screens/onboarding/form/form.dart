@@ -6,26 +6,11 @@ import 'package:aqua/screens/onboarding/form/email.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/screens/onboarding/form/sex.dart';
 
-class OnboardingForm extends StatefulWidget {
-  const OnboardingForm({super.key});
-
-  @override
-  State<OnboardingForm> createState() => _OnboardingFormState();
-}
-
-class _OnboardingFormState extends State<OnboardingForm> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: const Placeholder(),
-    );
-  }
-}
-
 List<Page<dynamic>> onGenerateProfilePages(
   Profile profile,
   List<Page<dynamic>> pages,
 ) {
+  // print(profile);
   return [
     const MaterialPage<void>(child: NameInputScreen(), name: '/profile'),
     if (profile.name != null)

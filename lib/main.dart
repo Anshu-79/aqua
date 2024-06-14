@@ -1,4 +1,6 @@
 
+import 'dart:ui';
+
 import 'package:aqua/screens/onboarding/form/name.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

@@ -1,12 +1,11 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:aqua/screens/onboarding/form/email.dart';
-import 'package:aqua/screens/onboarding/form/profile.dart';
-import 'package:aqua/screens/onboarding/onboarding.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/shape_painter.dart';
+import 'package:aqua/screens/onboarding/form/profile.dart';
+import 'package:aqua/screens/onboarding/onboarding.dart';
 
 class NameInputScreen extends StatefulWidget {
   const NameInputScreen({super.key});
@@ -65,6 +64,8 @@ class _NameInputScreenState extends State<NameInputScreen> {
                     validator: (value) {
                       if (value!.trim().isEmpty) {
                         return "Name cannot be empty";
+                      } else if (value.length > 100) {
+                        return "Please enter a valid name";
                       } else {
                         return null;
                       }
@@ -85,8 +86,8 @@ class _NameInputScreenState extends State<NameInputScreen> {
               icon: const Icon(Icons.chevron_left),
               iconSize: 50,
               style: IconButton.styleFrom(
-                backgroundColor: Colors.black,
-                foregroundColor: Colors.white,
+                backgroundColor: Theme.of(context).primaryColor,
+                foregroundColor: Theme.of(context).canvasColor,
               ),
               onPressed: () {
                 Navigator.push(
@@ -99,17 +100,15 @@ class _NameInputScreenState extends State<NameInputScreen> {
               icon: const Icon(Icons.chevron_right),
               iconSize: 50,
               style: IconButton.styleFrom(
-                backgroundColor: Colors.black,
-                foregroundColor: Colors.white,
+                backgroundColor: Theme.of(context).primaryColor,
+                foregroundColor: Theme.of(context).canvasColor,
               ),
               onPressed: () {
                 if (formKey.currentState!.validate()) {
                   final name = nameController.text;
-                  context.flow<Profile>().update((profile) => profile.copyWith(name: name));
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EmailInputScreen(name: name)));
+                  context
+                      .flow<Profile>()
+                      .update((profile) => profile.copyWith(name: name));
                 }
               },
             ),
