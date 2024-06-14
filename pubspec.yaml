@@ -55,6 +55,7 @@ dependencies:
   permission_handler: ^11.3.1
   cloud_firestore: ^4.17.5
   firebase_storage: ^11.7.7
+  email_validator: ^2.1.17
 
 dev_dependencies:
   drift_dev: ^2.15.0
