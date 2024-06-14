@@ -1,21 +1,19 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:aqua/screens/onboarding/form/email.dart';
-import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/screens/onboarding/onboarding.dart';
-import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/shape_painter.dart';
 
-class NameInputScreen extends StatefulWidget {
-  const NameInputScreen({super.key});
+class SexInputScreen extends StatefulWidget {
+  const SexInputScreen({super.key});
 
   @override
-  State<NameInputScreen> createState() => _NameInputScreenState();
+  State<SexInputScreen> createState() => _SexInputScreenState();
 }
 
-class _NameInputScreenState extends State<NameInputScreen> {
+class _SexInputScreenState extends State<SexInputScreen> {
   final formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
 
@@ -105,7 +103,6 @@ class _NameInputScreenState extends State<NameInputScreen> {
               onPressed: () {
                 if (formKey.currentState!.validate()) {
                   final name = nameController.text;
-                  context.flow<Profile>().update((profile) => profile.copyWith(name: name));
                   Navigator.push(
                       context,
                       MaterialPageRoute(
