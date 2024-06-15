@@ -19,6 +19,7 @@ mixin _$Profile {
   String? get name => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   int? get currentPage => throw _privateConstructorUsedError;
+  String? get sex => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProfileCopyWith<Profile> get copyWith => throw _privateConstructorUsedError;
@@ -29,7 +30,7 @@ abstract class $ProfileCopyWith<$Res> {
   factory $ProfileCopyWith(Profile value, $Res Function(Profile) then) =
       _$ProfileCopyWithImpl<$Res, Profile>;
   @useResult
-  $Res call({String? name, String? email, int? currentPage});
+  $Res call({String? name, String? email, int? currentPage, String? sex});
 }
 
 /// @nodoc
@@ -48,6 +49,7 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
     Object? name = freezed,
     Object? email = freezed,
     Object? currentPage = freezed,
+    Object? sex = freezed,
   }) {
     return _then(_value.copyWith(
       name: freezed == name
@@ -62,6 +64,10 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
           ? _value.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
               as int?,
+      sex: freezed == sex
+          ? _value.sex
+          : sex // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -73,7 +79,7 @@ abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       __$$ProfileImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? name, String? email, int? currentPage});
+  $Res call({String? name, String? email, int? currentPage, String? sex});
 }
 
 /// @nodoc
@@ -90,6 +96,7 @@ class __$$ProfileImplCopyWithImpl<$Res>
     Object? name = freezed,
     Object? email = freezed,
     Object? currentPage = freezed,
+    Object? sex = freezed,
   }) {
     return _then(_$ProfileImpl(
       name: freezed == name
@@ -104,6 +111,10 @@ class __$$ProfileImplCopyWithImpl<$Res>
           ? _value.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
               as int?,
+      sex: freezed == sex
+          ? _value.sex
+          : sex // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -111,7 +122,7 @@ class __$$ProfileImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ProfileImpl implements _Profile {
-  const _$ProfileImpl({this.name, this.email, this.currentPage});
+  const _$ProfileImpl({this.name, this.email, this.currentPage, this.sex});
 
   @override
   final String? name;
@@ -119,10 +130,12 @@ class _$ProfileImpl implements _Profile {
   final String? email;
   @override
   final int? currentPage;
+  @override
+  final String? sex;
 
   @override
   String toString() {
-    return 'Profile(name: $name, email: $email, currentPage: $currentPage)';
+    return 'Profile(name: $name, email: $email, currentPage: $currentPage, sex: $sex)';
   }
 
   @override
@@ -133,11 +146,12 @@ class _$ProfileImpl implements _Profile {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.currentPage, currentPage) ||
-                other.currentPage == currentPage));
+                other.currentPage == currentPage) &&
+            (identical(other.sex, sex) || other.sex == sex));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, name, email, currentPage);
+  int get hashCode => Object.hash(runtimeType, name, email, currentPage, sex);
 
   @JsonKey(ignore: true)
   @override
@@ -150,7 +164,8 @@ abstract class _Profile implements Profile {
   const factory _Profile(
       {final String? name,
       final String? email,
-      final int? currentPage}) = _$ProfileImpl;
+      final int? currentPage,
+      final String? sex}) = _$ProfileImpl;
 
   @override
   String? get name;
@@ -158,6 +173,8 @@ abstract class _Profile implements Profile {
   String? get email;
   @override
   int? get currentPage;
+  @override
+  String? get sex;
   @override
   @JsonKey(ignore: true)
   _$$ProfileImplCopyWith<_$ProfileImpl> get copyWith =>
