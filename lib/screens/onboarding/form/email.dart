@@ -90,16 +90,13 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
             ),
           ],
         ),
-        bottomNavigationBar: NavButtons(
-            navBack: () {
-              context.flow<Profile>().update(
-                  (profile) => profile.updateWith(const Profile()).decrementPage());
-            },
-            navForward: () {
-              if (formKey.currentState!.validate()) {
-                context.flow<Profile>().update((profile) =>
-                    profile.updateWith(Profile(email: emailController.text)).incrementPage());
-              }
-            }));
+        bottomNavigationBar: NavButtons(navBack: () {
+          context.flow<Profile>().update((profile) => profile.decrementPage());
+        }, navForward: () {
+          if (formKey.currentState!.validate()) {
+            context.flow<Profile>().update((profile) =>
+                profile.copyWith(email: emailController.text).incrementPage());
+          }
+        }));
   }
 }
