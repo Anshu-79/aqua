@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Profile {
   String? get name => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
-  int get currentPage => throw _privateConstructorUsedError;
+  int? get currentPage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProfileCopyWith<Profile> get copyWith => throw _privateConstructorUsedError;
@@ -29,7 +29,7 @@ abstract class $ProfileCopyWith<$Res> {
   factory $ProfileCopyWith(Profile value, $Res Function(Profile) then) =
       _$ProfileCopyWithImpl<$Res, Profile>;
   @useResult
-  $Res call({String? name, String? email, int currentPage});
+  $Res call({String? name, String? email, int? currentPage});
 }
 
 /// @nodoc
@@ -47,7 +47,7 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
   $Res call({
     Object? name = freezed,
     Object? email = freezed,
-    Object? currentPage = null,
+    Object? currentPage = freezed,
   }) {
     return _then(_value.copyWith(
       name: freezed == name
@@ -58,10 +58,10 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String?,
-      currentPage: null == currentPage
+      currentPage: freezed == currentPage
           ? _value.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ) as $Val);
   }
 }
@@ -73,7 +73,7 @@ abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       __$$ProfileImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? name, String? email, int currentPage});
+  $Res call({String? name, String? email, int? currentPage});
 }
 
 /// @nodoc
@@ -89,7 +89,7 @@ class __$$ProfileImplCopyWithImpl<$Res>
   $Res call({
     Object? name = freezed,
     Object? email = freezed,
-    Object? currentPage = null,
+    Object? currentPage = freezed,
   }) {
     return _then(_$ProfileImpl(
       name: freezed == name
@@ -100,10 +100,10 @@ class __$$ProfileImplCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String?,
-      currentPage: null == currentPage
+      currentPage: freezed == currentPage
           ? _value.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ));
   }
 }
@@ -111,14 +111,14 @@ class __$$ProfileImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ProfileImpl implements _Profile {
-  const _$ProfileImpl({this.name, this.email, required this.currentPage});
+  const _$ProfileImpl({this.name, this.email, this.currentPage});
 
   @override
   final String? name;
   @override
   final String? email;
   @override
-  final int currentPage;
+  final int? currentPage;
 
   @override
   String toString() {
@@ -150,14 +150,14 @@ abstract class _Profile implements Profile {
   const factory _Profile(
       {final String? name,
       final String? email,
-      required final int currentPage}) = _$ProfileImpl;
+      final int? currentPage}) = _$ProfileImpl;
 
   @override
   String? get name;
   @override
   String? get email;
   @override
-  int get currentPage;
+  int? get currentPage;
   @override
   @JsonKey(ignore: true)
   _$$ProfileImplCopyWith<_$ProfileImpl> get copyWith =>
