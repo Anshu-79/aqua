@@ -83,20 +83,6 @@ class _NameInputScreenState extends State<NameInputScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton.filled(
-              icon: const Icon(Icons.chevron_left),
-              iconSize: 50,
-              style: IconButton.styleFrom(
-                backgroundColor: Theme.of(context).primaryColor,
-                foregroundColor: Theme.of(context).canvasColor,
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const OnboardingView()));
-              },
-            ),
-            IconButton.filled(
               icon: const Icon(Icons.chevron_right),
               iconSize: 50,
               style: IconButton.styleFrom(
@@ -107,7 +93,7 @@ class _NameInputScreenState extends State<NameInputScreen> {
                 if (formKey.currentState!.validate()) {
                   final name = nameController.text;
                   context.flow<Profile>().update((profile) =>
-                      profile.copyWith(name: name, currentPage: 2));
+                      profile.copyWith(name: name).incrementPage());
                 }
               },
             ),
