@@ -46,7 +46,6 @@ List<Color> colorList = defaultColors.values.toList();
 
 List<Color> shapeColors = [
   defaultColors['red']!,
-  defaultColors['orange']!,
   defaultColors['yellow']!,
   defaultColors['green']!,
   defaultColors['blue']!,

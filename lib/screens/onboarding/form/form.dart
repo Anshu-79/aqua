@@ -10,15 +10,16 @@ List<Page<dynamic>> onGenerateProfilePages(
   Profile profile,
   List<Page<dynamic>> pages,
 ) {
-  // print(profile);
+  print(profile);
   return [
-    const MaterialPage<void>(child: NameInputScreen(), name: '/profile'),
-    if (profile.name != null)
+    if (profile.currentPage == 1)
+      const MaterialPage<void>(child: NameInputScreen(), name: '/profile'),
+    if (profile.currentPage == 2)
       MaterialPage<void>(
           child: EmailInputScreen(
         name: profile.name!,
       )),
-    if (profile.email != null)
+    if (profile.currentPage == 3)
       const MaterialPage<void>(child: SexInputScreen()),
   ];
 }
@@ -34,7 +35,7 @@ class OnboardingFlow extends StatelessWidget {
   Widget build(BuildContext context) {
     return const FlowBuilder(
       onGeneratePages: onGenerateProfilePages,
-      state: Profile(),
+      state: Profile(currentPage: 1),
     );
   }
 }

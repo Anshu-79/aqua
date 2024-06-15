@@ -101,10 +101,9 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
                 foregroundColor: Theme.of(context).canvasColor,
               ),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const NameInputScreen()));
+                context
+                    .flow<Profile>()
+                    .update((profile) => profile.copyWith(currentPage: 1));
               },
             ),
             IconButton.filled(
@@ -119,7 +118,7 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
                   final email = emailController.text;
                   context
                       .flow<Profile>()
-                      .update((profile) => profile.copyWith(email: email));
+                      .update((profile) => profile.copyWith(email: email, currentPage: 3));
                 }
               },
             ),

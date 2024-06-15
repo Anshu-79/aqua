@@ -7,6 +7,7 @@ abstract class Profile with _$Profile {
   const factory Profile({
     String? name,
     String? email,
+    required int currentPage,
     
   }) = _Profile;
 }
