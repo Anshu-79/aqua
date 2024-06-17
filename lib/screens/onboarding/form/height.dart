@@ -6,6 +6,7 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
+import 'package:aqua/utils.dart' as utils;
 
 class HeightInputScreen extends StatefulWidget {
   const HeightInputScreen({super.key});
@@ -57,10 +58,10 @@ class _HeightInputScreenState extends State<HeightInputScreen> {
                               itemWidth: 200,
                               textStyle: const TextStyle(
                                   fontWeight: FontWeight.w900, fontSize: 50),
-                              selectedTextStyle: const TextStyle(
+                              selectedTextStyle: TextStyle(
                                   fontWeight: FontWeight.w900,
                                   fontSize: 100,
-                                  color: Color(0xFF0264e1)),
+                                  color: utils.defaultColors['dark blue']),
                               haptics: true,
                               itemCount: 3,
                               minValue: 50,

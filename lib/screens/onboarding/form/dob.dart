@@ -6,6 +6,7 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
+import 'package:aqua/utils.dart' as utils;
 
 class DobInputScreen extends StatefulWidget {
   const DobInputScreen({super.key});
@@ -56,16 +57,16 @@ class _DobInputScreenState extends State<DobInputScreen> {
                             config: CalendarDatePicker2Config(
                                 daySplashColor: const Color(0x440264e1),
                                 selectedDayHighlightColor:
-                                    const Color(0xFF0264e1),
+                                    utils.defaultColors['dark blue'],
                                 lastDate: _safeDate,
                                 firstDate: DateTime(1920, 1, 1),
                                 controlsTextStyle: const TextStyle(
                                     fontWeight: FontWeight.w900),
                                 dayTextStyle: const TextStyle(
                                     fontWeight: FontWeight.bold),
-                                weekdayLabelTextStyle: const TextStyle(
+                                weekdayLabelTextStyle: TextStyle(
                                     fontWeight: FontWeight.w900,
-                                    color: Color(0xFF0264e1))),
+                                    color: utils.defaultColors['dark blue'])),
                             value: [_selectedDate],
                             onValueChanged: (date) => _selectedDate = date[0]!,
                           )),

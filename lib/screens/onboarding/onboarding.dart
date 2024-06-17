@@ -9,6 +9,7 @@ import 'package:aqua/screens/onboarding/reminders.dart';
 import 'package:aqua/screens/onboarding/welcome.dart';
 import 'package:aqua/screens/onboarding/location.dart';
 import 'package:aqua/screens/onboarding/form/form.dart';
+import 'package:aqua/utils.dart' as utils;
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
@@ -120,7 +121,7 @@ class _OnboardingViewState extends State<OnboardingView>
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: const Color(0xFF0264e1)),
+          color: utils.defaultColors['dark blue']),
       width: MediaQuery.of(context).size.width * .9,
       height: 55,
       child: TextButton(

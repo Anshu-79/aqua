@@ -18,7 +18,7 @@ class _UserProfileState extends State<UserProfile> {
         children: [
           Container(
             decoration: BoxDecoration(
-                color: utils.defaultColors['blue'],
+                color: utils.defaultColors['dark blue'],
                 borderRadius: const BorderRadius.all(Radius.circular(35))),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
@@ -80,7 +80,7 @@ class _UserProfileState extends State<UserProfile> {
                       SleepScheduleButton(
                           icon: Icon(
                             Icons.bedtime,
-                            color: utils.defaultColors['dark blue'],
+                            color: utils.defaultColors['violet'],
                           ),
                           time: "2:00 AM",
                           callback: () {})

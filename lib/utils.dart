@@ -3,6 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'icomoon_icons.dart';
 
+// Theme Utilities
+ThemeData lightTheme = ThemeData(
+    fontFamily: 'CeraPro',
+    primaryColor: Colors.black,
+    canvasColor: Colors.white,
+    splashColor: defaultColors['blue'],
+    scaffoldBackgroundColor: Colors.white,
+    brightness: Brightness.light,
+    colorScheme: ColorScheme.fromSeed(
+        seedColor: defaultColors['dark blue']!.toMaterialColor(),
+        brightness: Brightness.light));
+
+ThemeData darkTheme = ThemeData(
+    fontFamily: 'CeraPro',
+    primaryColor: Colors.white,
+    canvasColor: Colors.black,
+    splashColor: defaultColors['blue'],
+    scaffoldBackgroundColor: Colors.black,
+    brightness: Brightness.dark,
+    colorScheme: ColorScheme.fromSeed(
+        seedColor: defaultColors['dark blue']!.toMaterialColor(),
+        brightness: Brightness.dark));
+
 // Duration Utilities
 String getInText(int duration) {
   if (duration < 60) {
@@ -29,12 +52,12 @@ Map<String, Color> defaultColors = {
   'green': const Color(0xff8ac926),
   'mint': const Color(0xFF4EA675),
   'blue': const Color(0xFF44A4EE),
-  'dark blue': const Color(0xFF6C4FFF),
+  'dark blue': const Color(0xFF0264e1),
   'violet': const Color(0xFF9042F0),
 };
 
 List<Color> textColorizeColors = [
-  const Color(0xFF0264e1),
+  defaultColors['dark blue']!,
   Colors.purple,
   Colors.pink,
   Colors.red,
@@ -72,6 +95,28 @@ Color lighten(Color c, [int percent = 10]) {
       c.red + ((255 - c.red) * p).round(),
       c.green + ((255 - c.green) * p).round(),
       c.blue + ((255 - c.blue) * p).round());
+}
+
+extension ColorExt on Color {
+  MaterialColor toMaterialColor() {
+    final int red = this.red;
+    final int green = this.green;
+    final int blue = this.blue;
+
+    final Map<int, Color> shades = {
+      50: Color.fromRGBO(red, green, blue, .1),
+      100: Color.fromRGBO(red, green, blue, .2),
+      200: Color.fromRGBO(red, green, blue, .3),
+      300: Color.fromRGBO(red, green, blue, .4),
+      400: Color.fromRGBO(red, green, blue, .5),
+      500: Color.fromRGBO(red, green, blue, .6),
+      600: Color.fromRGBO(red, green, blue, .7),
+      700: Color.fromRGBO(red, green, blue, .8),
+      800: Color.fromRGBO(red, green, blue, .9),
+      900: Color.fromRGBO(red, green, blue, 1),
+    };
+    return MaterialColor(value, shades);
+  }
 }
 
 // Icon Utilities
@@ -142,7 +187,7 @@ abstract class ThemeText {
       fontSize: 100, fontWeight: FontWeight.w900, color: Color(0xFF44A4EE));
 
   static TextStyle dailyGoalTotal = TextStyle(
-      color: const Color(0xFF2286D3),
+      color: defaultColors['dark blue'],
       fontSize: dailyGoalConsumed.fontSize,
       fontWeight: FontWeight.w900);
 

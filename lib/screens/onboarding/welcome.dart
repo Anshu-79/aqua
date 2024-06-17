@@ -16,7 +16,7 @@ class WelcomeScreen extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: const Color(0xFF0264e1), width: 5),
+            border: Border.all(color: utils.defaultColors['dark blue']!, width: 5),
           ),
           height: 90,
           child: Padding(
