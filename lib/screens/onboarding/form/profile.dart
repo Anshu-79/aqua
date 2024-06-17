@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'profile.freezed.dart';
@@ -14,6 +15,7 @@ abstract class Profile with _$Profile {
     int? weight,
     int? sleepTime,
     int? wakeTime,
+    File? picture,
   }) = _Profile;
 }
 

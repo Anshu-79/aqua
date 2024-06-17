@@ -1,3 +1,4 @@
+import 'package:aqua/screens/onboarding/form/profile_picture.dart';
 import 'package:aqua/screens/onboarding/form/sleep_schedule.dart';
 import 'package:aqua/screens/onboarding/form/weight.dart';
 import 'package:flow_builder/flow_builder.dart';
@@ -33,6 +34,8 @@ List<Page<dynamic>> onGenerateProfilePages(
       const MaterialPage<void>(child: WeightInputScreen()),
     if (profile.currentPage == 7)
       const MaterialPage<void>(child: SleepScheduleInputScreen()),
+    if (profile.currentPage == 8)
+      const MaterialPage<void>(child: PictureInputScreen()),
   ];
 }
 

@@ -25,6 +25,7 @@ mixin _$Profile {
   int? get weight => throw _privateConstructorUsedError;
   int? get sleepTime => throw _privateConstructorUsedError;
   int? get wakeTime => throw _privateConstructorUsedError;
+  File? get picture => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProfileCopyWith<Profile> get copyWith => throw _privateConstructorUsedError;
@@ -44,7 +45,8 @@ abstract class $ProfileCopyWith<$Res> {
       int? height,
       int? weight,
       int? sleepTime,
-      int? wakeTime});
+      int? wakeTime,
+      File? picture});
 }
 
 /// @nodoc
@@ -69,6 +71,7 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
     Object? weight = freezed,
     Object? sleepTime = freezed,
     Object? wakeTime = freezed,
+    Object? picture = freezed,
   }) {
     return _then(_value.copyWith(
       name: freezed == name
@@ -107,6 +110,10 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
           ? _value.wakeTime
           : wakeTime // ignore: cast_nullable_to_non_nullable
               as int?,
+      picture: freezed == picture
+          ? _value.picture
+          : picture // ignore: cast_nullable_to_non_nullable
+              as File?,
     ) as $Val);
   }
 }
@@ -127,7 +134,8 @@ abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       int? height,
       int? weight,
       int? sleepTime,
-      int? wakeTime});
+      int? wakeTime,
+      File? picture});
 }
 
 /// @nodoc
@@ -150,6 +158,7 @@ class __$$ProfileImplCopyWithImpl<$Res>
     Object? weight = freezed,
     Object? sleepTime = freezed,
     Object? wakeTime = freezed,
+    Object? picture = freezed,
   }) {
     return _then(_$ProfileImpl(
       name: freezed == name
@@ -188,6 +197,10 @@ class __$$ProfileImplCopyWithImpl<$Res>
           ? _value.wakeTime
           : wakeTime // ignore: cast_nullable_to_non_nullable
               as int?,
+      picture: freezed == picture
+          ? _value.picture
+          : picture // ignore: cast_nullable_to_non_nullable
+              as File?,
     ));
   }
 }
@@ -204,7 +217,8 @@ class _$ProfileImpl implements _Profile {
       this.height,
       this.weight,
       this.sleepTime,
-      this.wakeTime});
+      this.wakeTime,
+      this.picture});
 
   @override
   final String? name;
@@ -224,10 +238,12 @@ class _$ProfileImpl implements _Profile {
   final int? sleepTime;
   @override
   final int? wakeTime;
+  @override
+  final File? picture;
 
   @override
   String toString() {
-    return 'Profile(name: $name, email: $email, currentPage: $currentPage, sex: $sex, dob: $dob, height: $height, weight: $weight, sleepTime: $sleepTime, wakeTime: $wakeTime)';
+    return 'Profile(name: $name, email: $email, currentPage: $currentPage, sex: $sex, dob: $dob, height: $height, weight: $weight, sleepTime: $sleepTime, wakeTime: $wakeTime, picture: $picture)';
   }
 
   @override
@@ -246,12 +262,13 @@ class _$ProfileImpl implements _Profile {
             (identical(other.sleepTime, sleepTime) ||
                 other.sleepTime == sleepTime) &&
             (identical(other.wakeTime, wakeTime) ||
-                other.wakeTime == wakeTime));
+                other.wakeTime == wakeTime) &&
+            (identical(other.picture, picture) || other.picture == picture));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, name, email, currentPage, sex,
-      dob, height, weight, sleepTime, wakeTime);
+      dob, height, weight, sleepTime, wakeTime, picture);
 
   @JsonKey(ignore: true)
   @override
@@ -270,7 +287,8 @@ abstract class _Profile implements Profile {
       final int? height,
       final int? weight,
       final int? sleepTime,
-      final int? wakeTime}) = _$ProfileImpl;
+      final int? wakeTime,
+      final File? picture}) = _$ProfileImpl;
 
   @override
   String? get name;
@@ -290,6 +308,8 @@ abstract class _Profile implements Profile {
   int? get sleepTime;
   @override
   int? get wakeTime;
+  @override
+  File? get picture;
   @override
   @JsonKey(ignore: true)
   _$$ProfileImplCopyWith<_$ProfileImpl> get copyWith =>
