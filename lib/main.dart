@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:aqua/screens/onboarding/form/height.dart';
+import 'package:aqua/screens/onboarding/form/profile_picture.dart';
 import 'package:aqua/screens/onboarding/form/sleep_schedule.dart';
 import 'package:aqua/screens/onboarding/form/weight.dart';
 import 'package:firebase_core/firebase_core.dart';
