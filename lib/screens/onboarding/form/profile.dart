@@ -10,6 +10,8 @@ abstract class Profile with _$Profile {
     int? currentPage,
     String? sex,
     DateTime? dob,
+    int? height,
+    int? weight,
   }) = _Profile;
 }
 

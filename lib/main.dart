@@ -1,9 +1,8 @@
 
 import 'dart:ui';
 
-import 'package:aqua/screens/onboarding/form/dob.dart';
-import 'package:aqua/screens/onboarding/form/name.dart';
-import 'package:aqua/screens/onboarding/form/sex.dart';
+import 'package:aqua/screens/onboarding/form/height.dart';
+import 'package:aqua/screens/onboarding/form/weight.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
@@ -72,7 +71,7 @@ class _AquaState extends State<Aqua> {
         ),
         themeMode: ThemeMode.system,
         navigatorKey: navigatorKey,
-        home: Builder(builder: (context) => const DobInputScreen()
+        home: Builder(builder: (context) => const WeightInputScreen()
             // LiquidSwipe(
             //   pages: pages,
             //   fullTransitionValue: 600,
