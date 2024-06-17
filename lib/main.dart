@@ -51,13 +51,13 @@ class _AquaState extends State<Aqua> {
       darkTheme: utils.darkTheme,
       themeMode: ThemeMode.system,
       navigatorKey: navigatorKey,
-      home: //Builder(builder: (context) => const PictureInputScreen()
-          LiquidSwipe(
-        pages: pages,
-        fullTransitionValue: 600,
-        slideIconWidget: const Icon(Icons.arrow_back_ios_new_rounded),
-        positionSlideIcon: 0.71,
-      ),
+      home: Builder(builder: (context) => const OnboardingView()
+          //   LiquidSwipe(
+          // pages: pages,
+          // fullTransitionValue: 600,
+          // slideIconWidget: const Icon(Icons.arrow_back_ios_new_rounded),
+          // positionSlideIcon: 0.71,
+          ),
     );
   }
 }

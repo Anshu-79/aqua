@@ -16,26 +16,20 @@ List<Page<dynamic>> onGenerateProfilePages(
   List<Page<dynamic>> pages,
 ) {
   print(profile);
+  final pageList = [
+    const NameInputScreen(),
+    if (profile.name != null) EmailInputScreen(name: profile.name!),
+    const SexInputScreen(),
+    const DobInputScreen(),
+    const HeightInputScreen(),
+    const WeightInputScreen(),
+    const SleepScheduleInputScreen(),
+    const PictureInputScreen(),
+  ];
   return [
-    if (profile.currentPage == 1)
-      const MaterialPage<void>(child: NameInputScreen(), name: '/profile'),
-    if (profile.currentPage == 2)
-      MaterialPage<void>(
-          child: EmailInputScreen(
-        name: profile.name!,
-      )),
-    if (profile.currentPage == 3)
-      const MaterialPage<void>(child: SexInputScreen()),
-    if (profile.currentPage == 4)
-      const MaterialPage<void>(child: DobInputScreen()),
-    if (profile.currentPage == 5)
-      const MaterialPage<void>(child: HeightInputScreen()),
-    if (profile.currentPage == 6)
-      const MaterialPage<void>(child: WeightInputScreen()),
-    if (profile.currentPage == 7)
-      const MaterialPage<void>(child: SleepScheduleInputScreen()),
-    if (profile.currentPage == 8)
-      const MaterialPage<void>(child: PictureInputScreen()),
+    MaterialPage<void>(
+      child: pageList[profile.currentPage!],
+    )
   ];
 }
 
@@ -50,7 +44,7 @@ class OnboardingFlow extends StatelessWidget {
   Widget build(BuildContext context) {
     return const FlowBuilder(
       onGeneratePages: onGenerateProfilePages,
-      state: Profile(currentPage: 1),
+      state: Profile(currentPage: 0),
     );
   }
 }
