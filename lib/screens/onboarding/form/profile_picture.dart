@@ -120,7 +120,7 @@ class _PictureInputScreenState extends State<PictureInputScreen> {
         }, navForward: () {
           context
               .flow<Profile>()
-              .update((profile) => profile.copyWith(picture: _image).incrementPage());
+              .complete((profile) => profile.copyWith(picture: _image).incrementPage());
         }));
   }
 }
