@@ -1,7 +1,7 @@
-
 import 'dart:ui';
 
 import 'package:aqua/screens/onboarding/form/height.dart';
+import 'package:aqua/screens/onboarding/form/sleep_schedule.dart';
 import 'package:aqua/screens/onboarding/form/weight.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +31,10 @@ class Aqua extends StatefulWidget {
 }
 
 class _AquaState extends State<Aqua> {
-
   @override
   void initState() {
     super.initState();
   }
-
 
   final pages = [
     const HomeScreen(),
@@ -71,7 +69,7 @@ class _AquaState extends State<Aqua> {
         ),
         themeMode: ThemeMode.system,
         navigatorKey: navigatorKey,
-        home: Builder(builder: (context) => const WeightInputScreen()
+        home: Builder(builder: (context) => const OnboardingView()
             // LiquidSwipe(
             //   pages: pages,
             //   fullTransitionValue: 600,

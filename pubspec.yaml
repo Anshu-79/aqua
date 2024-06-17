@@ -58,6 +58,7 @@ dependencies:
   flow_builder: ^0.1.0
   freezed_annotation: ^2.4.1
   calendar_date_picker2: ^1.0.6
+  progressive_time_picker: ^1.0.1
 
 dev_dependencies:
   drift_dev: ^2.15.0

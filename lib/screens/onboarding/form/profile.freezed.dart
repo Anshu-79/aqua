@@ -23,6 +23,8 @@ mixin _$Profile {
   DateTime? get dob => throw _privateConstructorUsedError;
   int? get height => throw _privateConstructorUsedError;
   int? get weight => throw _privateConstructorUsedError;
+  int? get sleepTime => throw _privateConstructorUsedError;
+  int? get wakeTime => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProfileCopyWith<Profile> get copyWith => throw _privateConstructorUsedError;
@@ -40,7 +42,9 @@ abstract class $ProfileCopyWith<$Res> {
       String? sex,
       DateTime? dob,
       int? height,
-      int? weight});
+      int? weight,
+      int? sleepTime,
+      int? wakeTime});
 }
 
 /// @nodoc
@@ -63,6 +67,8 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
     Object? dob = freezed,
     Object? height = freezed,
     Object? weight = freezed,
+    Object? sleepTime = freezed,
+    Object? wakeTime = freezed,
   }) {
     return _then(_value.copyWith(
       name: freezed == name
@@ -93,6 +99,14 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
               as int?,
+      sleepTime: freezed == sleepTime
+          ? _value.sleepTime
+          : sleepTime // ignore: cast_nullable_to_non_nullable
+              as int?,
+      wakeTime: freezed == wakeTime
+          ? _value.wakeTime
+          : wakeTime // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -111,7 +125,9 @@ abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       String? sex,
       DateTime? dob,
       int? height,
-      int? weight});
+      int? weight,
+      int? sleepTime,
+      int? wakeTime});
 }
 
 /// @nodoc
@@ -132,6 +148,8 @@ class __$$ProfileImplCopyWithImpl<$Res>
     Object? dob = freezed,
     Object? height = freezed,
     Object? weight = freezed,
+    Object? sleepTime = freezed,
+    Object? wakeTime = freezed,
   }) {
     return _then(_$ProfileImpl(
       name: freezed == name
@@ -162,6 +180,14 @@ class __$$ProfileImplCopyWithImpl<$Res>
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
               as int?,
+      sleepTime: freezed == sleepTime
+          ? _value.sleepTime
+          : sleepTime // ignore: cast_nullable_to_non_nullable
+              as int?,
+      wakeTime: freezed == wakeTime
+          ? _value.wakeTime
+          : wakeTime // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -176,7 +202,9 @@ class _$ProfileImpl implements _Profile {
       this.sex,
       this.dob,
       this.height,
-      this.weight});
+      this.weight,
+      this.sleepTime,
+      this.wakeTime});
 
   @override
   final String? name;
@@ -192,10 +220,14 @@ class _$ProfileImpl implements _Profile {
   final int? height;
   @override
   final int? weight;
+  @override
+  final int? sleepTime;
+  @override
+  final int? wakeTime;
 
   @override
   String toString() {
-    return 'Profile(name: $name, email: $email, currentPage: $currentPage, sex: $sex, dob: $dob, height: $height, weight: $weight)';
+    return 'Profile(name: $name, email: $email, currentPage: $currentPage, sex: $sex, dob: $dob, height: $height, weight: $weight, sleepTime: $sleepTime, wakeTime: $wakeTime)';
   }
 
   @override
@@ -210,12 +242,16 @@ class _$ProfileImpl implements _Profile {
             (identical(other.sex, sex) || other.sex == sex) &&
             (identical(other.dob, dob) || other.dob == dob) &&
             (identical(other.height, height) || other.height == height) &&
-            (identical(other.weight, weight) || other.weight == weight));
+            (identical(other.weight, weight) || other.weight == weight) &&
+            (identical(other.sleepTime, sleepTime) ||
+                other.sleepTime == sleepTime) &&
+            (identical(other.wakeTime, wakeTime) ||
+                other.wakeTime == wakeTime));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, name, email, currentPage, sex, dob, height, weight);
+  int get hashCode => Object.hash(runtimeType, name, email, currentPage, sex,
+      dob, height, weight, sleepTime, wakeTime);
 
   @JsonKey(ignore: true)
   @override
@@ -232,7 +268,9 @@ abstract class _Profile implements Profile {
       final String? sex,
       final DateTime? dob,
       final int? height,
-      final int? weight}) = _$ProfileImpl;
+      final int? weight,
+      final int? sleepTime,
+      final int? wakeTime}) = _$ProfileImpl;
 
   @override
   String? get name;
@@ -248,6 +286,10 @@ abstract class _Profile implements Profile {
   int? get height;
   @override
   int? get weight;
+  @override
+  int? get sleepTime;
+  @override
+  int? get wakeTime;
   @override
   @JsonKey(ignore: true)
   _$$ProfileImplCopyWith<_$ProfileImpl> get copyWith =>

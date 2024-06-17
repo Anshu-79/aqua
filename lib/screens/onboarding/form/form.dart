@@ -1,3 +1,4 @@
+import 'package:aqua/screens/onboarding/form/sleep_schedule.dart';
 import 'package:aqua/screens/onboarding/form/weight.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +29,10 @@ List<Page<dynamic>> onGenerateProfilePages(
       const MaterialPage<void>(child: DobInputScreen()),
     if (profile.currentPage == 5)
       const MaterialPage<void>(child: HeightInputScreen()),
-      if (profile.currentPage == 6)
+    if (profile.currentPage == 6)
       const MaterialPage<void>(child: WeightInputScreen()),
+    if (profile.currentPage == 7)
+      const MaterialPage<void>(child: SleepScheduleInputScreen()),
   ];
 }
 
