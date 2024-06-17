@@ -6,6 +6,7 @@ import 'package:progressive_time_picker/progressive_time_picker.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
+import 'package:aqua/utils.dart' as utils;
 
 class SleepScheduleInputScreen extends StatefulWidget {
   const SleepScheduleInputScreen({super.key});
@@ -75,7 +76,7 @@ class _SleepScheduleInputScreenState extends State<SleepScheduleInputScreen> {
                                       endNumber: 0),
                               baseColor: const Color(0x440264e1),
                               sweepDecoration: TimePickerSweepDecoration(
-                                  pickerColor: const Color(0xFF0264e1),
+                                  pickerColor: utils.defaultColors['dark blue'],
                                   pickerStrokeWidth: 40),
                               initHandlerDecoration:
                                   TimePickerHandlerDecoration(

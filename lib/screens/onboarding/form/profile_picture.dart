@@ -3,11 +3,12 @@ import 'dart:io';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:aqua/utils.dart' as utils;
 
 class PictureInputScreen extends StatefulWidget {
   const PictureInputScreen({super.key});
@@ -72,7 +73,7 @@ class _PictureInputScreenState extends State<PictureInputScreen> {
                     ),
                     TextButton(
                         style: TextButton.styleFrom(
-                          backgroundColor: const Color(0xFF0264e1),
+                          backgroundColor: utils.defaultColors['dark blue'],
                           foregroundColor: Colors.white,
                         ),
                         onPressed: () {
