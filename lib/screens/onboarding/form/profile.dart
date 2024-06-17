@@ -12,6 +12,8 @@ abstract class Profile with _$Profile {
     DateTime? dob,
     int? height,
     int? weight,
+    int? sleepTime,
+    int? wakeTime,
   }) = _Profile;
 }
 
