@@ -20,6 +20,7 @@ mixin _$Profile {
   String? get email => throw _privateConstructorUsedError;
   int? get currentPage => throw _privateConstructorUsedError;
   String? get sex => throw _privateConstructorUsedError;
+  DateTime? get dob => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProfileCopyWith<Profile> get copyWith => throw _privateConstructorUsedError;
@@ -30,7 +31,12 @@ abstract class $ProfileCopyWith<$Res> {
   factory $ProfileCopyWith(Profile value, $Res Function(Profile) then) =
       _$ProfileCopyWithImpl<$Res, Profile>;
   @useResult
-  $Res call({String? name, String? email, int? currentPage, String? sex});
+  $Res call(
+      {String? name,
+      String? email,
+      int? currentPage,
+      String? sex,
+      DateTime? dob});
 }
 
 /// @nodoc
@@ -50,6 +56,7 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
     Object? email = freezed,
     Object? currentPage = freezed,
     Object? sex = freezed,
+    Object? dob = freezed,
   }) {
     return _then(_value.copyWith(
       name: freezed == name
@@ -68,6 +75,10 @@ class _$ProfileCopyWithImpl<$Res, $Val extends Profile>
           ? _value.sex
           : sex // ignore: cast_nullable_to_non_nullable
               as String?,
+      dob: freezed == dob
+          ? _value.dob
+          : dob // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -79,7 +90,12 @@ abstract class _$$ProfileImplCopyWith<$Res> implements $ProfileCopyWith<$Res> {
       __$$ProfileImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? name, String? email, int? currentPage, String? sex});
+  $Res call(
+      {String? name,
+      String? email,
+      int? currentPage,
+      String? sex,
+      DateTime? dob});
 }
 
 /// @nodoc
@@ -97,6 +113,7 @@ class __$$ProfileImplCopyWithImpl<$Res>
     Object? email = freezed,
     Object? currentPage = freezed,
     Object? sex = freezed,
+    Object? dob = freezed,
   }) {
     return _then(_$ProfileImpl(
       name: freezed == name
@@ -115,6 +132,10 @@ class __$$ProfileImplCopyWithImpl<$Res>
           ? _value.sex
           : sex // ignore: cast_nullable_to_non_nullable
               as String?,
+      dob: freezed == dob
+          ? _value.dob
+          : dob // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -122,7 +143,8 @@ class __$$ProfileImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ProfileImpl implements _Profile {
-  const _$ProfileImpl({this.name, this.email, this.currentPage, this.sex});
+  const _$ProfileImpl(
+      {this.name, this.email, this.currentPage, this.sex, this.dob});
 
   @override
   final String? name;
@@ -132,10 +154,12 @@ class _$ProfileImpl implements _Profile {
   final int? currentPage;
   @override
   final String? sex;
+  @override
+  final DateTime? dob;
 
   @override
   String toString() {
-    return 'Profile(name: $name, email: $email, currentPage: $currentPage, sex: $sex)';
+    return 'Profile(name: $name, email: $email, currentPage: $currentPage, sex: $sex, dob: $dob)';
   }
 
   @override
@@ -147,11 +171,13 @@ class _$ProfileImpl implements _Profile {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.currentPage, currentPage) ||
                 other.currentPage == currentPage) &&
-            (identical(other.sex, sex) || other.sex == sex));
+            (identical(other.sex, sex) || other.sex == sex) &&
+            (identical(other.dob, dob) || other.dob == dob));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, name, email, currentPage, sex);
+  int get hashCode =>
+      Object.hash(runtimeType, name, email, currentPage, sex, dob);
 
   @JsonKey(ignore: true)
   @override
@@ -165,7 +191,8 @@ abstract class _Profile implements Profile {
       {final String? name,
       final String? email,
       final int? currentPage,
-      final String? sex}) = _$ProfileImpl;
+      final String? sex,
+      final DateTime? dob}) = _$ProfileImpl;
 
   @override
   String? get name;
@@ -175,6 +202,8 @@ abstract class _Profile implements Profile {
   int? get currentPage;
   @override
   String? get sex;
+  @override
+  DateTime? get dob;
   @override
   @JsonKey(ignore: true)
   _$$ProfileImplCopyWith<_$ProfileImpl> get copyWith =>

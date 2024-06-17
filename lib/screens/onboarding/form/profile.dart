@@ -9,6 +9,7 @@ abstract class Profile with _$Profile {
     String? email,
     int? currentPage,
     String? sex,
+    DateTime? dob,
   }) = _Profile;
 }
 
