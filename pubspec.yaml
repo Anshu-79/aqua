@@ -48,7 +48,6 @@ dependencies:
   shared_preferences: ^2.2.3
   cron: ^0.6.0
   searchable_listview: ^2.14.0
-  random_color: ^1.0.6-nullsafety
   animated_text_kit: ^4.2.2
   confetti: ^0.7.0
   coast: ^2.0.2
@@ -58,6 +57,7 @@ dependencies:
   email_validator: ^2.1.17
   flow_builder: ^0.1.0
   freezed_annotation: ^2.4.1
+  calendar_date_picker2: ^1.0.6
 
 dev_dependencies:
   drift_dev: ^2.15.0

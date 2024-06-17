@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
-import 'package:aqua/screens/onboarding/onboarding.dart';
 
 class NameInputScreen extends StatefulWidget {
   const NameInputScreen({super.key});

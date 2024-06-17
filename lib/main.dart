@@ -1,6 +1,7 @@
 
 import 'dart:ui';
 
+import 'package:aqua/screens/onboarding/form/dob.dart';
 import 'package:aqua/screens/onboarding/form/name.dart';
 import 'package:aqua/screens/onboarding/form/sex.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -71,7 +72,7 @@ class _AquaState extends State<Aqua> {
         ),
         themeMode: ThemeMode.system,
         navigatorKey: navigatorKey,
-        home: Builder(builder: (context) => const OnboardingView()
+        home: Builder(builder: (context) => const DobInputScreen()
             // LiquidSwipe(
             //   pages: pages,
             //   fullTransitionValue: 600,
