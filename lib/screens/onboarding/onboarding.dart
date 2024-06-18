@@ -109,10 +109,13 @@ class _OnboardingViewState extends State<OnboardingView>
   Widget scrollDown() {
     return SlideTransition(
       position: _animation,
-      child: Icon(
-        Icons.expand_more,
-        size: 70,
-        color: Theme.of(context).primaryColor,
+      child: Tooltip(
+        message: 'Swipe down to continue',
+        child: Icon(
+          Icons.expand_more,
+          size: 70,
+          color: Theme.of(context).primaryColor,
+        ),
       ),
     );
   }

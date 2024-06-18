@@ -43,8 +43,6 @@ class _AquaState extends State<Aqua> {
 
   @override
   Widget build(BuildContext context) {
-    // Color splashColor = const Color(0xFF44A4EE);
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: utils.lightTheme,

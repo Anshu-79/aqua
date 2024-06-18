@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 
@@ -27,18 +26,8 @@ class _NameInputScreenState extends State<NameInputScreen> {
             margin: const EdgeInsets.all(10),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              AnimatedTextKit(
-                repeatForever: true,
-                animatedTexts: [
-                  TypewriterAnimatedText(
-                    "What do we call you?",
-                    textStyle: const TextStyle(
-                        fontSize: 50, fontWeight: FontWeight.w800),
-                    textAlign: TextAlign.center,
-                    cursor: '|',
-                    speed: const Duration(milliseconds: 100),
-                  ),
-                ],
+              const utils.OnboardingQuestion(
+                text: "What do we call you?",
               ),
               const SizedBox(
                 height: 75,

@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -30,21 +29,9 @@ class _HeightInputScreenState extends State<HeightInputScreen> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 200,
-                      child: AnimatedTextKit(
-                        totalRepeatCount: 1,
-                        animatedTexts: [
-                          TypewriterAnimatedText(
-                            "How tall are you?",
-                            textStyle: const TextStyle(
-                                fontSize: 50, fontWeight: FontWeight.w800),
-                            textAlign: TextAlign.center,
-                            cursor: '|',
-                            speed: const Duration(milliseconds: 100),
-                          ),
-                        ],
-                      ),
+                      child: utils.OnboardingQuestion(text: "How tall are you?",)
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
