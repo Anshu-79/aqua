@@ -18,10 +18,13 @@ class EmailInputScreen extends StatefulWidget {
 
 class _EmailInputScreenState extends State<EmailInputScreen> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final Profile profile = context.flow<Profile>().state;
+    TextEditingController emailController =
+        TextEditingController(text: profile.email ?? "");
+
     return Scaffold(
         body: Stack(
           children: [

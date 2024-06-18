@@ -18,10 +18,11 @@ class DobInputScreen extends StatefulWidget {
 final DateTime _safeDate = DateTime.now().subtract(const Duration(days: 365));
 
 class _DobInputScreenState extends State<DobInputScreen> {
-  DateTime _selectedDate = _safeDate;
-
   @override
   Widget build(BuildContext context) {
+    final Profile profile = context.flow<Profile>().state;
+    DateTime selectedDate = profile.dob ?? _safeDate;
+
     return Scaffold(
         body: Stack(
           children: [
@@ -72,9 +73,9 @@ class _DobInputScreenState extends State<DobInputScreen> {
                                 weekdayLabelTextStyle: TextStyle(
                                     fontWeight: FontWeight.w900,
                                     color: utils.defaultColors['dark blue'])),
-                            value: [_selectedDate],
+                            value: [selectedDate],
                             onValueChanged: (dates) =>
-                                _selectedDate = dates[0]!,
+                                selectedDate = dates[0]!,
                           )),
                     ),
                     const SizedBox(
@@ -88,7 +89,7 @@ class _DobInputScreenState extends State<DobInputScreen> {
           context.flow<Profile>().update((profile) => profile.decrementPage());
         }, navForward: () {
           context.flow<Profile>().update((profile) =>
-              profile.copyWith(dob: _selectedDate).incrementPage());
+              profile.copyWith(dob: selectedDate).incrementPage());
         }));
   }
 }

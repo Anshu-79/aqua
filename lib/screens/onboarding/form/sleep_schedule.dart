@@ -16,11 +16,12 @@ class SleepScheduleInputScreen extends StatefulWidget {
 }
 
 class _SleepScheduleInputScreenState extends State<SleepScheduleInputScreen> {
-  int _sleepTime = 0;
-  int _wakeTime = 8;
-
   @override
   Widget build(BuildContext context) {
+    final Profile profile = context.flow<Profile>().state;
+    int sleepTime = profile.sleepTime ?? 0;
+    int wakeTime = profile.wakeTime ?? 8;
+
     return Scaffold(
         body: Stack(
           children: [
@@ -41,12 +42,12 @@ class _SleepScheduleInputScreenState extends State<SleepScheduleInputScreen> {
                         child: TimePicker(
                           height: 350,
                           width: 350,
-                          initTime: PickedTime(h: _sleepTime, m: 0),
-                          endTime: PickedTime(h: _wakeTime, m: 0),
+                          initTime: PickedTime(h: sleepTime, m: 0),
+                          endTime: PickedTime(h: wakeTime, m: 0),
                           onSelectionChange: (start, end, isDisableRange) {},
                           onSelectionEnd: (start, end, isDisableRange) {
-                            _sleepTime = start.h;
-                            _wakeTime = end.h;
+                            sleepTime = start.h;
+                            wakeTime = end.h;
                           },
                           decoration: TimePickerDecoration(
                               clockNumberDecoration:
@@ -87,7 +88,7 @@ class _SleepScheduleInputScreenState extends State<SleepScheduleInputScreen> {
           context.flow<Profile>().update((profile) => profile.decrementPage());
         }, navForward: () {
           context.flow<Profile>().update((profile) => profile
-              .copyWith(sleepTime: _sleepTime, wakeTime: _wakeTime)
+              .copyWith(sleepTime: sleepTime, wakeTime: wakeTime)
               .incrementPage());
         }));
   }
