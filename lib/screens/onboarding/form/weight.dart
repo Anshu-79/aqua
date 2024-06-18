@@ -15,7 +15,20 @@ class WeightInputScreen extends StatefulWidget {
 }
 
 class _WeightInputScreenState extends State<WeightInputScreen> {
-  int _weight = 60;
+  late int _weight;
+
+  @override
+  void initState() {
+    _weight = 60;
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    final Profile profile = context.flow<Profile>().state;
+    _weight = profile.weight ?? _weight;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +43,10 @@ class _WeightInputScreenState extends State<WeightInputScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(
-                      height: 200,
-                      child: utils.OnboardingQuestion(text: "How much do you weigh?",)
-                    ),
+                        height: 200,
+                        child: utils.OnboardingQuestion(
+                          text: "How much do you weigh?",
+                        )),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: Row(
@@ -45,7 +59,7 @@ class _WeightInputScreenState extends State<WeightInputScreen> {
                               itemWidth: 200,
                               textStyle: const TextStyle(
                                   fontWeight: FontWeight.w900, fontSize: 50),
-                              selectedTextStyle:  TextStyle(
+                              selectedTextStyle: TextStyle(
                                   fontWeight: FontWeight.w900,
                                   fontSize: 100,
                                   color: utils.defaultColors['dark blue']),
@@ -54,8 +68,7 @@ class _WeightInputScreenState extends State<WeightInputScreen> {
                               minValue: 10,
                               maxValue: 650,
                               value: _weight,
-                              onChanged: (val) =>
-                                  setState(() => _weight = val)),
+                              onChanged: (val) => setState(() => _weight = val)),
                           const Text(
                             "kg",
                             style: TextStyle(

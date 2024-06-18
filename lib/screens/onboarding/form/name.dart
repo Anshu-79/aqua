@@ -14,10 +14,13 @@ class NameInputScreen extends StatefulWidget {
 
 class _NameInputScreenState extends State<NameInputScreen> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final Profile profile = context.flow<Profile>().state;
+    TextEditingController nameController =
+        TextEditingController(text: profile.name ?? "");
+
     return Scaffold(
       body: Stack(
         children: [
@@ -80,6 +83,7 @@ class _NameInputScreenState extends State<NameInputScreen> {
               onPressed: () {
                 if (formKey.currentState!.validate()) {
                   final name = nameController.text;
+
                   context.flow<Profile>().update((profile) =>
                       profile.copyWith(name: name).incrementPage());
                 }

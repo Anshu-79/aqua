@@ -15,7 +15,20 @@ class HeightInputScreen extends StatefulWidget {
 }
 
 class _HeightInputScreenState extends State<HeightInputScreen> {
-  int _height = 150;
+  late int _height;
+
+  @override
+  void initState() {
+    super.initState();
+    _height = 150;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final Profile profile = context.flow<Profile>().state;
+    _height = profile.height ?? _height;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +43,10 @@ class _HeightInputScreenState extends State<HeightInputScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(
-                      height: 200,
-                      child: utils.OnboardingQuestion(text: "How tall are you?",)
-                    ),
+                        height: 200,
+                        child: utils.OnboardingQuestion(
+                          text: "How tall are you?",
+                        )),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: Row(
