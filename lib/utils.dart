@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:aqua/main.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -364,5 +365,32 @@ class GlobalNavigator {
             ],
           );
         });
+  }
+}
+
+class OnboardingQuestion extends StatefulWidget {
+  const OnboardingQuestion({super.key, required this.text});
+
+  final String text;
+
+  @override
+  State<OnboardingQuestion> createState() => _OnboardingQuestionState();
+}
+
+class _OnboardingQuestionState extends State<OnboardingQuestion> {
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedTextKit(
+      totalRepeatCount: 1,
+      animatedTexts: [
+        TypewriterAnimatedText(
+          widget.text,
+          textStyle: const TextStyle(fontSize: 50, fontWeight: FontWeight.w800),
+          textAlign: TextAlign.center,
+          cursor: '|',
+          speed: const Duration(milliseconds: 100),
+        ),
+      ],
+    );
   }
 }

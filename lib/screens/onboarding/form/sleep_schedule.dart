@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_time_picker/progressive_time_picker.dart';
@@ -32,22 +31,11 @@ class _SleepScheduleInputScreenState extends State<SleepScheduleInputScreen> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 200,
-                      child: AnimatedTextKit(
-                        totalRepeatCount: 1,
-                        animatedTexts: [
-                          TypewriterAnimatedText(
-                            "What's your sleep schedule like?",
-                            textStyle: const TextStyle(
-                                fontSize: 40, fontWeight: FontWeight.w800),
-                            textAlign: TextAlign.center,
-                            cursor: '|',
-                            speed: const Duration(milliseconds: 100),
-                          ),
-                        ],
-                      ),
-                    ),
+                    const SizedBox(
+                        height: 200,
+                        child: utils.OnboardingQuestion(
+                          text: "What's your sleep schedule?",
+                        )),
                     Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         child: TimePicker(

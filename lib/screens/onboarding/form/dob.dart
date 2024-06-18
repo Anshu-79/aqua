@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
@@ -33,22 +32,11 @@ class _DobInputScreenState extends State<DobInputScreen> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      height: 200,
-                      child: AnimatedTextKit(
-                        totalRepeatCount: 1,
-                        animatedTexts: [
-                          TypewriterAnimatedText(
-                            "When were you born?",
-                            textStyle: const TextStyle(
-                                fontSize: 50, fontWeight: FontWeight.w800),
-                            textAlign: TextAlign.center,
-                            cursor: '|',
-                            speed: const Duration(milliseconds: 100),
-                          ),
-                        ],
-                      ),
-                    ),
+                    const SizedBox(
+                        height: 200,
+                        child: utils.OnboardingQuestion(
+                          text: "When were you born?",
+                        )),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: SizedBox(

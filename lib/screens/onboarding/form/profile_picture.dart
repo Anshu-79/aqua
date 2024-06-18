@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -47,20 +46,12 @@ class _PictureInputScreenState extends State<PictureInputScreen> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    AnimatedTextKit(
-                      totalRepeatCount: 1,
-                      animatedTexts: [
-                        TypewriterAnimatedText(
-                          "Mind sharing your photo?",
-                          textStyle: const TextStyle(
-                              fontSize: 40, fontWeight: FontWeight.w800),
-                          textAlign: TextAlign.center,
-                          cursor: '|',
-                          speed: const Duration(milliseconds: 100),
-                        ),
-                      ],
+                    const utils.OnboardingQuestion(
+                      text: "Mind sharing your photo?",
                     ),
-                    const SizedBox(height: 10,),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: CircleAvatar(
@@ -118,9 +109,8 @@ class _PictureInputScreenState extends State<PictureInputScreen> {
         bottomNavigationBar: NavButtons(navBack: () {
           context.flow<Profile>().update((profile) => profile.decrementPage());
         }, navForward: () {
-          context
-              .flow<Profile>()
-              .complete((profile) => profile.copyWith(picture: _image).incrementPage());
+          context.flow<Profile>().complete(
+              (profile) => profile.copyWith(picture: _image).incrementPage());
         }));
   }
 }
