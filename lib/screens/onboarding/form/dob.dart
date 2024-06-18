@@ -32,10 +32,27 @@ class _DobInputScreenState extends State<DobInputScreen> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(
+                    SizedBox(
                         height: 200,
-                        child: utils.OnboardingQuestion(
-                          text: "When were you born?",
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Expanded(
+                              child: utils.OnboardingQuestion(
+                                text: "When were you born?",
+                              ),
+                            ),
+                            IconButton(
+                                tooltip:
+                                    "Age is crucial for calculating Adequate Water Intake (AWI)",
+                                style: IconButton.styleFrom(
+                                    backgroundColor:
+                                        Theme.of(context).primaryColor,
+                                    foregroundColor:
+                                        Theme.of(context).canvasColor),
+                                onPressed: () {},
+                                icon: const Icon(Icons.question_mark))
+                          ],
                         )),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -56,7 +73,8 @@ class _DobInputScreenState extends State<DobInputScreen> {
                                     fontWeight: FontWeight.w900,
                                     color: utils.defaultColors['dark blue'])),
                             value: [_selectedDate],
-                            onValueChanged: (date) => _selectedDate = date[0]!,
+                            onValueChanged: (dates) =>
+                                _selectedDate = dates[0]!,
                           )),
                     ),
                     const SizedBox(
