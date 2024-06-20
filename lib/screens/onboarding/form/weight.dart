@@ -8,17 +8,9 @@ import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/utils.dart' as utils;
 
-int toLbs(int kg) {
-  int lbs = (kg * 2.20462).toInt();
-  if (lbs < 22) return 22;
-  return lbs;
-}
+int toLbs(int kg) => (kg * 2.20462).round();
 
-int toKg(int lb) {
-  int kgs = (lb / 2.20462).toInt();
-  if (kgs < 10) return 10;
-  return kgs;
-}
+int toKg(int lb) => (lb / 2.20462).round();
 
 class WeightInputScreen extends StatefulWidget {
   const WeightInputScreen({super.key});
@@ -96,7 +88,7 @@ class _WeightInputScreenState extends State<WeightInputScreen> {
                   })),
           Text(
             unit,
-            style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
           ),
         ],
       );
@@ -115,7 +107,7 @@ class _WeightInputScreenState extends State<WeightInputScreen> {
                     const utils.OnboardingQuestion(
                         text: "How much do you weigh?"),
                     isMetric
-                        ? weightPicker('kg', 10, 650)
+                        ? weightPicker('kg', 10, 651)
                         : weightPicker('lb', 22, 1435),
                     const SizedBox(height: 20),
                     unitsToggle(),
