@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:aqua/screens/onboarding/form/height.dart';
 import 'package:aqua/screens/onboarding/form/profile_picture.dart';
+import 'package:aqua/screens/onboarding/form/sex.dart';
 import 'package:aqua/screens/onboarding/form/weight.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +52,7 @@ class _AquaState extends State<Aqua> {
       darkTheme: utils.darkTheme,
       themeMode: ThemeMode.system,
       navigatorKey: navigatorKey,
-      home: Builder(builder: (context) => const OnboardingView()
+      home: Builder(builder: (context) => const SexInputScreen()
           //   LiquidSwipe(
           // pages: pages,
           // fullTransitionValue: 600,

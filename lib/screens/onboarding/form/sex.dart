@@ -24,8 +24,8 @@ class _SexInputScreenState extends State<SexInputScreen> {
 
   @override
   void didChangeDependencies() {
-    final Profile profile = context.flow<Profile>().state;
-    selectedSex = profile.sex ?? selectedSex;
+    // final Profile profile = context.flow<Profile>().state;
+    // selectedSex = profile.sex ?? selectedSex;
     super.didChangeDependencies();
   }
 
@@ -61,31 +61,23 @@ class _SexInputScreenState extends State<SexInputScreen> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(
-                      height: 200,
-                      child: utils.OnboardingQuestion(
-                        text: "And what is your sex?",
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const utils.OnboardingQuestion(
+                        text: "And what is your sex?"),
+                    const SizedBox(height: 30),
                     Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            sexRadioButton(
-                                'M', Colors.blue, const Icon(Icons.male)),
-                            sexRadioButton('F', Colors.pink.shade400,
+                            sexRadioButton('M', Colors.blue.shade600,
+                                const Icon(Icons.male)),
+                            sexRadioButton('F', Colors.pink.shade600,
                                 const Icon(Icons.female)),
                           ],
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        sexRadioButton(
-                            'O', Colors.purple, const Icon(Icons.transgender))
+                        const SizedBox(height: 20),
+                        sexRadioButton('O', Colors.purple.shade600,
+                            const Icon(Icons.transgender)),
                       ],
                     ),
                   ]),
