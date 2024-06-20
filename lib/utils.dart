@@ -1,7 +1,8 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:aqua/main.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import 'package:aqua/main.dart';
 import 'icomoon_icons.dart';
 
 // Theme Utilities
