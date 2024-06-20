@@ -24,8 +24,8 @@ class _SexInputScreenState extends State<SexInputScreen> {
 
   @override
   void didChangeDependencies() {
-    // final Profile profile = context.flow<Profile>().state;
-    // selectedSex = profile.sex ?? selectedSex;
+    final Profile profile = context.flow<Profile>().state;
+    selectedSex = profile.sex ?? selectedSex;
     super.didChangeDependencies();
   }
 
