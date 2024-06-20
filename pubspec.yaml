@@ -60,6 +60,7 @@ dependencies:
   calendar_date_picker2: ^1.0.6
   progressive_time_picker: ^1.0.1
   image_picker: ^1.1.2
+  animated_toggle_switch: ^0.8.2
 
 dev_dependencies:
   drift_dev: ^2.15.0
