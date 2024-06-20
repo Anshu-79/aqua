@@ -8,6 +8,71 @@ import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/utils.dart' as utils;
 
+class EmailInputField extends StatefulWidget {
+  const EmailInputField(
+      {super.key, required this.formKey, required this.controller});
+
+  final GlobalKey<FormState> formKey;
+  final TextEditingController controller;
+
+  @override
+  State<EmailInputField> createState() => _EmailInputFieldState();
+}
+
+class _EmailInputFieldState extends State<EmailInputField> {
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: widget.formKey,
+      child: TextFormField(
+        keyboardType: TextInputType.emailAddress,
+        style: utils.ThemeText.nameInputField,
+        controller: widget.controller,
+        textAlign: TextAlign.center,
+        decoration: InputDecoration(
+          hintText: "Your Email",
+          hintStyle: utils.ThemeText.formHint,
+          filled: false,
+          border: UnderlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).primaryColor)),
+        ),
+        validator: (value) {
+          if (!EmailValidator.validate(value!)) {
+            return "Please enter a valid email address";
+          }
+          return null;
+        },
+      ),
+    );
+  }
+}
+
+// Displays the user's name using a shiny animation
+class UserName extends StatelessWidget {
+  const UserName({super.key, required this.name});
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return FittedBox(
+      fit: BoxFit.contain,
+      child: AnimatedTextKit(
+        repeatForever: true,
+        animatedTexts: [
+          ColorizeAnimatedText(
+            name,
+            textStyle:
+                const TextStyle(fontSize: 60, fontWeight: FontWeight.w900),
+            textAlign: TextAlign.center,
+            colors: utils.textColorizeColors,
+            speed: const Duration(milliseconds: 500),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class EmailInputScreen extends StatefulWidget {
   const EmailInputScreen({super.key, required this.name});
   final String name;
@@ -34,61 +99,13 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        const Text(
-                          "Nice to have you,",
-                          style: TextStyle(
-                              fontSize: 40, fontWeight: FontWeight.w900),
-                        ),
-                        FittedBox(
-                          fit: BoxFit.contain,
-                          child: AnimatedTextKit(
-                            repeatForever: true,
-                            animatedTexts: [
-                              ColorizeAnimatedText(
-                                widget.name,
-                                textStyle: const TextStyle(
-                                    fontSize: 60, fontWeight: FontWeight.w900),
-                                textAlign: TextAlign.center,
-                                colors: utils.textColorizeColors,
-                                speed: const Duration(milliseconds: 500),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 75,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Form(
-                        key: formKey,
-                        child: TextFormField(
-                          keyboardType: TextInputType.emailAddress,
-                          style: utils.ThemeText.nameInputField,
-                          controller: emailController,
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                            hintText: "Your Email",
-                            hintStyle: utils.ThemeText.formHint,
-                            filled: false,
-                            border: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Theme.of(context).primaryColor)),
-                          ),
-                          validator: (value) {
-                            if (!EmailValidator.validate(value!)) {
-                              return "Please enter a valid email address";
-                            } else {
-                              return null;
-                            }
-                          },
-                        ),
-                      ),
-                    ),
+                    const Text("Nice to have you,",
+                        style: TextStyle(
+                            fontSize: 40, fontWeight: FontWeight.w900)),
+                    UserName(name: widget.name),
+                    const SizedBox(height: 75),
+                    EmailInputField(
+                        formKey: formKey, controller: emailController),
                   ]),
             ),
           ],
