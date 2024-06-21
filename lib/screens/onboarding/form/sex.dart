@@ -18,7 +18,7 @@ class _SexInputScreenState extends State<SexInputScreen> {
 
   @override
   void initState() {
-    selectedSex = 'M';
+    selectedSex = 'F';
     super.initState();
   }
 
