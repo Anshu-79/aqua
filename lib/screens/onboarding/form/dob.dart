@@ -7,6 +7,21 @@ import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/utils.dart' as utils;
 
+class AgeTooltip extends StatelessWidget {
+  const AgeTooltip({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        tooltip: "Age is crucial for calculating Adequate Water Intake (AWI)",
+        style: IconButton.styleFrom(
+            backgroundColor: Theme.of(context).primaryColor,
+            foregroundColor: Theme.of(context).canvasColor),
+        onPressed: () {},
+        icon: const Icon(Icons.question_mark));
+  }
+}
+
 class DobInputScreen extends StatefulWidget {
   const DobInputScreen({super.key});
 
@@ -23,6 +38,23 @@ class _DobInputScreenState extends State<DobInputScreen> {
     final Profile profile = context.flow<Profile>().state;
     DateTime selectedDate = profile.dob ?? _safeDate;
 
+    Widget datePicker() {
+      return CalendarDatePicker2(
+        config: CalendarDatePicker2Config(
+            daySplashColor: const Color(0x440264e1),
+            selectedDayHighlightColor: utils.defaultColors['dark blue'],
+            lastDate: _safeDate,
+            firstDate: DateTime(1920, 1, 1),
+            controlsTextStyle: const TextStyle(fontWeight: FontWeight.w900),
+            dayTextStyle: const TextStyle(fontWeight: FontWeight.bold),
+            weekdayLabelTextStyle: TextStyle(
+                fontWeight: FontWeight.w900,
+                color: utils.defaultColors['dark blue'])),
+        value: [selectedDate],
+        onValueChanged: (dates) => selectedDate = dates[0]!,
+      );
+    }
+
     return Scaffold(
         body: Stack(
           children: [
@@ -33,54 +65,17 @@ class _DobInputScreenState extends State<DobInputScreen> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                        height: 200,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Expanded(
-                              child: utils.OnboardingQuestion(
-                                text: "When were you born?",
-                              ),
-                            ),
-                            IconButton(
-                                tooltip:
-                                    "Age is crucial for calculating Adequate Water Intake (AWI)",
-                                style: IconButton.styleFrom(
-                                    backgroundColor:
-                                        Theme.of(context).primaryColor,
-                                    foregroundColor:
-                                        Theme.of(context).canvasColor),
-                                onPressed: () {},
-                                icon: const Icon(Icons.question_mark))
-                          ],
+                    const Row(
+                      children: [
+                        Expanded(
+                            child: utils.OnboardingQuestion(
+                          text: "When were you born?",
                         )),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: SizedBox(
-                          height: 250,
-                          child: CalendarDatePicker2(
-                            config: CalendarDatePicker2Config(
-                                daySplashColor: const Color(0x440264e1),
-                                selectedDayHighlightColor:
-                                    utils.defaultColors['dark blue'],
-                                lastDate: _safeDate,
-                                firstDate: DateTime(1920, 1, 1),
-                                controlsTextStyle: const TextStyle(
-                                    fontWeight: FontWeight.w900),
-                                dayTextStyle: const TextStyle(
-                                    fontWeight: FontWeight.bold),
-                                weekdayLabelTextStyle: TextStyle(
-                                    fontWeight: FontWeight.w900,
-                                    color: utils.defaultColors['dark blue'])),
-                            value: [selectedDate],
-                            onValueChanged: (dates) =>
-                                selectedDate = dates[0]!,
-                          )),
+                        AgeTooltip(),
+                      ],
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 40),
+                    datePicker()
                   ]),
             ),
           ],
@@ -88,8 +83,8 @@ class _DobInputScreenState extends State<DobInputScreen> {
         bottomNavigationBar: NavButtons(navBack: () {
           context.flow<Profile>().update((profile) => profile.decrementPage());
         }, navForward: () {
-          context.flow<Profile>().update((profile) =>
-              profile.copyWith(dob: selectedDate).incrementPage());
+          context.flow<Profile>().update(
+              (profile) => profile.copyWith(dob: selectedDate).incrementPage());
         }));
   }
 }
