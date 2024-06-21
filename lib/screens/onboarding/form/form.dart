@@ -18,7 +18,7 @@ List<Page<dynamic>> onGenerateProfilePages(
   print(profile);
   final pageList = [
     const NameInputScreen(),
-    if (profile.name != null) EmailInputScreen(name: profile.name!),
+    const EmailInputScreen(),
     const SexInputScreen(),
     const DobInputScreen(),
     const HeightInputScreen(),

@@ -74,8 +74,7 @@ class UserName extends StatelessWidget {
 }
 
 class EmailInputScreen extends StatefulWidget {
-  const EmailInputScreen({super.key, required this.name});
-  final String name;
+  const EmailInputScreen({super.key});
 
   @override
   State<EmailInputScreen> createState() => _EmailInputScreenState();
@@ -102,7 +101,7 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
                     const Text("Nice to have you,",
                         style: TextStyle(
                             fontSize: 40, fontWeight: FontWeight.w900)),
-                    UserName(name: widget.name),
+                    UserName(name: profile.name!),
                     const SizedBox(height: 75),
                     EmailInputField(
                         formKey: formKey, controller: emailController),
