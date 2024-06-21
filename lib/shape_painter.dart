@@ -78,7 +78,7 @@ class _ColoredShapesBackgroundState extends State<ColoredShapesBackground> with 
     super.initState();
 
     // Initialize shapes
-    while (shapes.length < 20) {
+    while (shapes.length < 40) {
       double size = random.nextDouble() * 30 + 10; // Decrease size
       double xPos = random.nextDouble() * 500;
       double yPos;
@@ -93,7 +93,7 @@ class _ColoredShapesBackgroundState extends State<ColoredShapesBackground> with 
       Offset newPosition = Offset(xPos, yPos);
       ShapeType type = ShapeType.values[random.nextInt(ShapeType.values.length)];
       Color color = colorList[random.nextInt(colorList.length)];
-      double speed = random.nextDouble() * 1 + 5; // Random speed between 1 and 3
+      double speed = random.nextDouble() * 0.5 + 2; // Random speed between 1 and 3
 
       Shape newShape = Shape(newPosition, color, type, size, speed);
 
