@@ -7,6 +7,26 @@ import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/utils.dart' as utils;
 
+TimePickerDecoration decoration(textColor) {
+  return TimePickerDecoration(
+      clockNumberDecoration: TimePickerClockNumberDecoration(
+          defaultTextColor: textColor,
+          defaultFontSize: 35,
+          textScaleFactor: 0.8,
+          scaleFactor: 1,
+          positionFactor: 0.45,
+          clockIncrementHourFormat: ClockIncrementHourFormat.three,
+          clockIncrementTimeFormat: ClockIncrementTimeFormat.sixtyMin,
+          endNumber: 0),
+      baseColor: const Color(0x440264e1),
+      sweepDecoration: TimePickerSweepDecoration(
+          pickerColor: utils.defaultColors['dark blue'], pickerStrokeWidth: 40),
+      initHandlerDecoration: TimePickerHandlerDecoration(
+          icon: const Icon(Icons.bedtime), color: Colors.transparent),
+      endHandlerDecoration: TimePickerHandlerDecoration(
+          icon: const Icon(Icons.wb_sunny), color: Colors.transparent));
+}
+
 class SleepScheduleInputScreen extends StatefulWidget {
   const SleepScheduleInputScreen({super.key});
 
@@ -37,49 +57,19 @@ class _SleepScheduleInputScreenState extends State<SleepScheduleInputScreen> {
                         child: utils.OnboardingQuestion(
                           text: "What's your sleep schedule?",
                         )),
-                    Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: TimePicker(
-                          height: 350,
-                          width: 350,
-                          initTime: PickedTime(h: sleepTime, m: 0),
-                          endTime: PickedTime(h: wakeTime, m: 0),
-                          onSelectionChange: (start, end, isDisableRange) {},
-                          onSelectionEnd: (start, end, isDisableRange) {
-                            sleepTime = start.h;
-                            wakeTime = end.h;
-                          },
-                          decoration: TimePickerDecoration(
-                              clockNumberDecoration:
-                                  TimePickerClockNumberDecoration(
-                                      defaultTextColor:
-                                          Theme.of(context).primaryColor,
-                                      defaultFontSize: 35,
-                                      textScaleFactor: 0.8,
-                                      scaleFactor: 1,
-                                      positionFactor: 0.45,
-                                      clockIncrementHourFormat:
-                                          ClockIncrementHourFormat.three,
-                                      clockIncrementTimeFormat:
-                                          ClockIncrementTimeFormat.sixtyMin,
-                                      endNumber: 0),
-                              baseColor: const Color(0x440264e1),
-                              sweepDecoration: TimePickerSweepDecoration(
-                                  pickerColor: utils.defaultColors['dark blue'],
-                                  pickerStrokeWidth: 40),
-                              initHandlerDecoration:
-                                  TimePickerHandlerDecoration(
-                                icon: const Icon(Icons.bedtime),
-                                color: Colors.transparent,
-                              ),
-                              endHandlerDecoration: TimePickerHandlerDecoration(
-                                icon: const Icon(Icons.wb_sunny),
-                                color: Colors.transparent,
-                              )),
-                        )),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 30),
+                    TimePicker(
+                        height: 350,
+                        width: 350,
+                        initTime: PickedTime(h: sleepTime, m: 0),
+                        endTime: PickedTime(h: wakeTime, m: 0),
+                        onSelectionChange: (start, end, isDisableRange) {},
+                        onSelectionEnd: (start, end, isDisableRange) {
+                          sleepTime = start.h;
+                          wakeTime = end.h;
+                        },
+                        decoration: decoration(Theme.of(context).primaryColor)),
+                    const SizedBox(height: 20),
                   ]),
             ),
           ],
