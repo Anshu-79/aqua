@@ -43,10 +43,7 @@ class _SexInputScreenState extends State<SexInputScreen> {
           style: IconButton.styleFrom(
               backgroundColor: isSelected ? color : utils.lighten(color, 30),
               foregroundColor: Colors.white,
-              side: BorderSide(
-                color: color,
-                width: 5,
-              )),
+              side: BorderSide(color: color, width: 5)),
         ),
       );
     }
@@ -64,18 +61,14 @@ class _SexInputScreenState extends State<SexInputScreen> {
                     const utils.OnboardingQuestion(
                         text: "And what is your sex?"),
                     const SizedBox(height: 30),
-                    Column(
+                    Wrap(
+                      spacing: 30,
+                      alignment: WrapAlignment.center,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            sexRadioButton('M', Colors.blue.shade600,
-                                const Icon(Icons.male)),
-                            sexRadioButton('F', Colors.pink.shade600,
-                                const Icon(Icons.female)),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
+                        sexRadioButton(
+                            'M', Colors.blue.shade600, const Icon(Icons.male)),
+                        sexRadioButton('F', Colors.pink.shade600,
+                            const Icon(Icons.female)),
                         sexRadioButton('O', Colors.purple.shade600,
                             const Icon(Icons.transgender)),
                       ],
