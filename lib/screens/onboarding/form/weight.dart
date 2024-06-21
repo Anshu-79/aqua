@@ -8,6 +8,7 @@ import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/utils.dart' as utils;
 
+// Helper functions
 int toLbs(int kg) => (kg * 2.20462).round();
 
 int toKg(int lb) => (lb / 2.20462).round();

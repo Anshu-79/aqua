@@ -8,6 +8,7 @@ import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/utils.dart' as utils;
 
+// Helper functions
 int toCMs(int feet, int inches) {
   int cm = ((inches + feet * 12) * 2.54).toInt();
   if (cm < 61) return 61;
@@ -18,6 +19,7 @@ int toFeet(int height) => (height * 0.3937008 / 12).toInt();
 
 int toInch(int height) =>
     ((height * 0.3937008 / 12 - toFeet(height)) * 12).toInt();
+
 
 class HeightInputScreen extends StatefulWidget {
   const HeightInputScreen({super.key});
