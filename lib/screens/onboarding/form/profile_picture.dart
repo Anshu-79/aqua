@@ -36,6 +36,33 @@ class _PictureInputScreenState extends State<PictureInputScreen> {
       placeholderImg = FileImage(_image!);
     }
 
+    void showImageSourceDialog() {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: const Text("Pick Profile Picture",
+                    style: TextStyle(fontWeight: FontWeight.w900)),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      _pickImage(ImageSource.gallery);
+                    },
+                    child: const Text("Gallery",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      _pickImage(ImageSource.camera);
+                    },
+                    child: const Text("Camera",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  )
+                ],
+              ));
+    }
+
     return Scaffold(
         body: Stack(
           children: [
@@ -47,61 +74,20 @@ class _PictureInputScreenState extends State<PictureInputScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const utils.OnboardingQuestion(
-                      text: "Mind sharing your photo?",
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: CircleAvatar(
-                          radius: 150,
-                          backgroundColor: Theme.of(context).canvasColor,
-                          backgroundImage: placeholderImg),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                        text: "Mind sharing your photo?"),
+                    const SizedBox(height: 10),
+                    CircleAvatar(
+                        radius: 150,
+                        backgroundColor: Theme.of(context).canvasColor,
+                        backgroundImage: placeholderImg),
+                    const SizedBox(height: 10),
                     TextButton(
+                        onPressed: () => showImageSourceDialog(),
                         style: TextButton.styleFrom(
-                          backgroundColor: utils.defaultColors['dark blue'],
-                          foregroundColor: Colors.white,
-                        ),
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    title: const Text(
-                                      "Pick Profile Picture",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w900),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                          _pickImage(ImageSource.gallery);
-                                        },
-                                        child: const Text("Gallery",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                          _pickImage(ImageSource.camera);
-                                        },
-                                        child: const Text("Camera",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
-                                      )
-                                    ],
-                                  ));
-                        },
+                            backgroundColor: utils.defaultColors['dark blue'],
+                            foregroundColor: Colors.white),
                         child: const Text("Choose a picture")),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                   ]),
             ),
           ],
