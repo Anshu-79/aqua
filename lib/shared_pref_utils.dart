@@ -18,9 +18,6 @@ Future<void> createUser(Profile profile, List<double?> location) async {
   prefs.setDouble('longitude', location[1]!);
   prefs.setDouble('altitude', location[2] ?? 0);
   prefs.setBool('onboard', true);
-
-  Set<String> keys = prefs.getKeys();
-  print(keys);
 }
 
 class SharedPrefUtils {

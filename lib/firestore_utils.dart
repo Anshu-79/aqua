@@ -20,10 +20,7 @@ Future<void> createUser(Profile profile, List<double?> location) async {
     'wakeTime': profile.wakeTime,
     'streak': 0,
     'location': GeoPoint(location[0]!, location[1]!),
-  }).then((DocumentReference doc) {
-    print(doc.id);
-    SharedPrefUtils.saveStr('uid', doc.id);
-  });
+  }).then((DocumentReference doc) async => SharedPrefUtils.saveStr('uid', doc.id));
 }
 
 Future<void> uploadProfilePicture(File? image, String username) async {

@@ -1,8 +1,4 @@
 import 'package:aqua/firebase_options.dart';
-import 'package:aqua/location_utils.dart';
-import 'package:aqua/screens/onboarding/form/loading.dart';
-import 'package:aqua/screens/onboarding/form/profile.dart';
-import 'package:aqua/shared_pref_utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
@@ -53,9 +49,6 @@ class _AquaState extends State<Aqua> {
   Widget build(BuildContext context) {
     // if the app is running for the first time, onboard key will be null
     bool onboard = widget.sharedPrefs.getBool('onboard') ?? false;
-    onboard = false;
-    // widget.sharedPrefs.clear();
-    print(widget.sharedPrefs.getKeys());
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
