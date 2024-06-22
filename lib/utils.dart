@@ -345,8 +345,9 @@ Stack borderedText(String text, TextStyle style, TextStyle borderStyle) {
 }
 
 class GlobalNavigator {
-  static showAlertDialog(String text) {
-    showDialog(
+  static Future<dynamic>? showAlertDialog(
+      String text, Widget? altDataCollection) async {
+    return await showDialog(
         context: navigatorKey.currentContext!,
         builder: (context) {
           return AlertDialog(
@@ -354,13 +355,22 @@ class GlobalNavigator {
             content: Text(text),
             actions: [
               TextButton(
-                  onPressed: () async {
-                    await openAppSettings();
-                  },
+                  onPressed: () async => await openAppSettings(),
                   child: const Text("Open Settings")),
               TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
+                  onPressed: () async {
+                    if (altDataCollection != null) {
+                      final val = await showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (context) {
+                            return PopScope(
+                                canPop: false, child: altDataCollection);
+                          });
+                      if (context.mounted) Navigator.pop(context, val);
+                    } else {
+                      Navigator.pop(context);
+                    }
                   },
                   child: const Text("Continue")),
             ],
