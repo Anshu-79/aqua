@@ -1,6 +1,7 @@
+import 'package:aqua/screens/onboarding/form/loading.dart';
+import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/screens/onboarding/congrats.dart';
 import 'package:aqua/screens/onboarding/goals.dart';
@@ -129,11 +130,16 @@ class _OnboardingViewState extends State<OnboardingView>
       height: 55,
       child: TextButton(
           onPressed: () async {
-            final pres = await SharedPreferences.getInstance();
-            pres.setBool("onboarding", true);
-
+            final profile =
+                await Navigator.of(context).push(OnboardingFlow.route());
+            // const profile = Profile();
             if (!mounted) return;
-            await Navigator.of(context).push(OnboardingFlow.route());
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => LoadingScreen(
+                          profile: profile!,
+                        )));
           },
           child: const Text(
             "Get started",
