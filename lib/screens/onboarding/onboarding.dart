@@ -1,5 +1,4 @@
 import 'package:aqua/screens/onboarding/form/loading.dart';
-import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 
@@ -132,7 +131,6 @@ class _OnboardingViewState extends State<OnboardingView>
           onPressed: () async {
             final profile =
                 await Navigator.of(context).push(OnboardingFlow.route());
-            // const profile = Profile();
             if (!mounted) return;
             Navigator.pushReplacement(
                 context,

@@ -31,14 +31,9 @@ Future<Coordinates> getCoordinates(String address) async {
     Coordinates coordinates = await geoCode.forwardGeocoding(address: address);
     return coordinates;
   } catch (e) {
-    print(e);
     return Future.error(e);
   }
 }
-
-// showPickCityDialog(BuildContext context) {
-//   showDialog(context: context, builder: (context) => const PickCityDialog());
-// }
 
 class PickCityDialog extends StatefulWidget {
   const PickCityDialog({super.key});

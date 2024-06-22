@@ -55,15 +55,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Future<void> _createUser() async {
     if (!mounted) return;
     final location = await getCurrentLocation();
-    print(location);
+    
     await firestore.createUser(widget.profile, location);
-    print('Firestore written!');
     await shared_prefs.createUser(widget.profile, location);
-    print('Shared Prefs added!');
     await firestore.uploadProfilePicture(
         widget.profile.picture, widget.profile.name!);
-    print('Profile picture uploaded!');
-    await Future.delayed(const Duration(seconds: 1));
+
+    await Future.delayed(const Duration(milliseconds: 500));
     setState(() => _loaded = true);
   }
 
