@@ -1,13 +1,34 @@
-import 'package:aqua/database/database.dart';
-import 'package:flutter/material.dart';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:aqua/database/database.dart';
 import 'package:aqua/icomoon_icons.dart';
 import 'package:aqua/utils.dart' as utils;
 
+class ProfilePicture extends StatelessWidget {
+  const ProfilePicture({super.key, required this.prefs});
+  final SharedPreferences prefs;
+
+  @override
+  Widget build(BuildContext context) {
+    String? imgPath = prefs.getString('photo_path');
+
+    if (imgPath == null) {
+      return const Icon(Icons.person, size: 100);
+    } else {
+      FileImage img = FileImage(File(imgPath));
+      return CircleAvatar(radius: 50, backgroundImage: img);
+    }
+  }
+}
+
 class UserProfile extends StatefulWidget {
-  const UserProfile({super.key, required this.database});
+  const UserProfile({super.key, required this.database, required this.prefs});
 
   final Database database;
+  final SharedPreferences prefs;
 
   @override
   State<UserProfile> createState() => _UserProfileState();
@@ -27,13 +48,7 @@ class _UserProfileState extends State<UserProfile> {
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Column(
                 children: [
-                  IconButton(
-                      iconSize: 100,
-                      icon: const Icon(
-                        Icons.account_circle_outlined,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {}),
+                  ProfilePicture(prefs: widget.prefs),
                   Text(
                     "Anshumaan Tanwar",
                     style: utils.ThemeText.username,
