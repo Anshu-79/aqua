@@ -39,7 +39,7 @@ class _AquaState extends State<Aqua> {
   Widget build(BuildContext context) {
     // if the app is running for the first time, onboard key will be null
     bool onboard = widget.sharedPrefs.getBool('onboard') ?? false;
-
+    onboard = false;
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: utils.lightTheme,
@@ -48,12 +48,14 @@ class _AquaState extends State<Aqua> {
         navigatorKey: navigatorKey,
         home: Builder(
             builder: (context) =>
-                !(onboard) ? const OnboardingView() : const NavBar()));
+                !(onboard) ? const OnboardingView() :  NavBar(prefs: widget.sharedPrefs)));
   }
 }
 
 class NavBar extends StatefulWidget {
-  const NavBar({super.key});
+  const NavBar({super.key, required this.prefs});
+
+  final SharedPreferences prefs;
 
   @override
   State<NavBar> createState() => _NavBarState();
@@ -89,7 +91,7 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     final pages = [
       HomeScreen(database: _db),
-      UserProfile(database: _db),
+      UserProfile(database: _db, prefs: widget.prefs),
       ActivityMenu(database: _db),
       BeverageMenu(database: _db),
     ];

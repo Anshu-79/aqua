@@ -5,6 +5,7 @@ import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/firestore_utils.dart' as firestore;
 import 'package:aqua/shared_pref_utils.dart' as shared_prefs;
 import 'package:aqua/location_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoadingWhales extends StatelessWidget {
   const LoadingWhales({super.key});
@@ -22,9 +23,12 @@ class ContinueButton extends StatelessWidget {
     return TextButton(
         style: TextButton.styleFrom(
             backgroundColor: Colors.black, shape: const CircleBorder()),
-        onPressed: () {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const NavBar()));
+        onPressed: () async {
+          final prefs = await SharedPreferences.getInstance();
+          if (context.mounted) {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => NavBar(prefs: prefs)));
+          }
         },
         child: const Text(
           "Let's go!",
@@ -55,9 +59,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Future<void> _createUser() async {
     if (!mounted) return;
     final location = await getCurrentLocation();
-    
+
     await firestore.createUser(widget.profile, location);
     await shared_prefs.createUser(widget.profile, location);
+
+    await firestore.saveProfilePictureLocally(
+        widget.profile.picture, widget.profile.name!);
     await firestore.uploadProfilePicture(
         widget.profile.picture, widget.profile.name!);
 

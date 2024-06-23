@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:aqua/shared_pref_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:aqua/screens/onboarding/form/profile.dart';
 
@@ -20,7 +21,8 @@ Future<void> createUser(Profile profile, List<double?> location) async {
     'wakeTime': profile.wakeTime,
     'streak': 0,
     'location': GeoPoint(location[0]!, location[1]!),
-  }).then((DocumentReference doc) async => SharedPrefUtils.saveStr('uid', doc.id));
+  }).then(
+      (DocumentReference doc) async => SharedPrefUtils.saveStr('uid', doc.id));
 }
 
 Future<void> uploadProfilePicture(File? image, String username) async {
@@ -37,4 +39,16 @@ Future<void> uploadProfilePicture(File? image, String username) async {
   } on FirebaseException catch (e) {
     Future.error(e);
   }
+}
+
+Future<void> saveProfilePictureLocally(File? image, String username) async {
+  if (image == null) return;
+  
+  final directory = await getApplicationDocumentsDirectory();
+  final filePath = '${directory.path}/$username.png';
+
+  final newfile = await image.copy(filePath);
+
+  SharedPrefUtils.saveStr('photo_path', newfile.path);
+  
 }
