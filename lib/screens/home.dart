@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:aqua/water_goal.dart';
+import 'package:aqua/water_animation.dart';
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/expandable_fab.dart' as fab;
 import 'package:aqua/icomoon_icons.dart';
