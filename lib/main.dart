@@ -1,9 +1,9 @@
-import 'package:aqua/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:aqua/firebase_options.dart';
+import 'package:aqua/icomoon_icons.dart';
 import 'package:aqua/screens/home.dart';
 import 'package:aqua/screens/user_profile.dart';
 import 'package:aqua/screens/beverage_menu.dart';
@@ -19,9 +19,7 @@ Future<void> main() async {
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  runApp(Aqua(
-    sharedPrefs: prefs,
-  ));
+  runApp(Aqua(sharedPrefs: prefs));
 }
 
 class Aqua extends StatefulWidget {
@@ -34,16 +32,7 @@ class Aqua extends StatefulWidget {
 
 class _AquaState extends State<Aqua> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  final pages = [
-    const HomeScreen(),
-    const UserProfile(),
-    const BeverageMenu(),
-    const ActivityMenu(),
-  ];
+  void initState() => super.initState();
 
   @override
   Widget build(BuildContext context) {
@@ -57,14 +46,62 @@ class _AquaState extends State<Aqua> {
         themeMode: ThemeMode.system,
         navigatorKey: navigatorKey,
         home: Builder(
-          builder: (context) => !(onboard)
-              ? const OnboardingView()
-              : LiquidSwipe(
-                  pages: pages,
-                  fullTransitionValue: 600,
-                  slideIconWidget: const Icon(Icons.arrow_back_ios_new_rounded),
-                  positionSlideIcon: 0.71,
-                ),
-        ));
+            builder: (context) =>
+                !(onboard) ? const OnboardingView() : const NavBar()));
+  }
+}
+
+class NavBar extends StatefulWidget {
+  const NavBar({super.key});
+
+  @override
+  State<NavBar> createState() => _NavBarState();
+}
+
+class _NavBarState extends State<NavBar> {
+  int selectedPage = 0;
+  final PageController pageController = PageController();
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      selectedPage = index;
+      pageController.jumpToPage(index);
+    });
+  }
+
+  final pages = [
+    const HomeScreen(),
+    const UserProfile(),
+    const ActivityMenu(),
+    const BeverageMenu(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: PageView(
+        controller: pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: pages,
+      ),
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: _onItemTapped,
+        indicatorColor: utils.defaultColors['dark blue'],
+        selectedIndex: selectedPage,
+        destinations: const [
+          NavigationDestination(label: 'Home', icon: Icon(Icons.home)),
+          NavigationDestination(label: 'Profile', icon: Icon(Icons.person)),
+          NavigationDestination(label: 'Activities', icon: Icon(Icons.hiking)),
+          NavigationDestination(
+              label: 'Beverages', icon: Icon(Icomoon.plastic_cup)),
+        ],
+      ),
+    );
   }
 }
