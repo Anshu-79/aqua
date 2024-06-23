@@ -39,7 +39,7 @@ class _AquaState extends State<Aqua> {
   Widget build(BuildContext context) {
     // if the app is running for the first time, onboard key will be null
     bool onboard = widget.sharedPrefs.getBool('onboard') ?? false;
-    onboard = false;
+    
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: utils.lightTheme,

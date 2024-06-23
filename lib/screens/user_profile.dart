@@ -3,26 +3,24 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:aqua/water_goals.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/icomoon_icons.dart';
 import 'package:aqua/utils.dart' as utils;
 
-class ProfilePicture extends StatelessWidget {
-  const ProfilePicture({super.key, required this.prefs});
-  final SharedPreferences prefs;
 
-  @override
-  Widget build(BuildContext context) {
-    String? imgPath = prefs.getString('photo_path');
-
-    if (imgPath == null) {
-      return const Icon(Icons.person, size: 100);
-    } else {
-      FileImage img = FileImage(File(imgPath));
-      return CircleAvatar(radius: 50, backgroundImage: img);
-    }
-  }
+getWakeTimeText(SharedPreferences prefs) {
+  int wakeTime = prefs.getInt('wakeTime')!;
+  if (wakeTime >= 12) return "$wakeTime:00 PM";
+  return "$wakeTime:00 AM";
 }
+
+getSleepTimeText(SharedPreferences prefs) {
+  int sleepTime = prefs.getInt('sleepTime')!;
+  if (sleepTime >= 12) return "$sleepTime:00 PM";
+  return "$sleepTime:00 AM";
+}
+
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key, required this.database, required this.prefs});
@@ -44,68 +42,31 @@ class _UserProfileState extends State<UserProfile> {
             decoration: BoxDecoration(
                 color: utils.defaultColors['dark blue'],
                 borderRadius: const BorderRadius.all(Radius.circular(35))),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Column(
-                children: [
-                  ProfilePicture(prefs: widget.prefs),
-                  Text(
-                    "Anshumaan Tanwar",
-                    style: utils.ThemeText.username,
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.location_on,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "City, State, Country",
-                        style: utils.ThemeText.userLocationSubtext,
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      BiometricButton(
-                          text: "18", subtext: "Age", callback: () {}),
-                      BiometricButton(
-                          text: "175", subtext: "Height", callback: () {}),
-                      BiometricButton(
-                          text: "64", subtext: "Weight", callback: () {})
-                    ],
-                  ),
-                  const SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SleepScheduleButton(
-                          icon: Icon(
-                            Icons.sunny,
-                            color: utils.defaultColors['yellow'],
-                          ),
-                          time: "8:00 AM",
-                          callback: () {}),
-                      SleepScheduleButton(
-                          icon: Icon(
-                            Icons.bedtime,
-                            color: utils.defaultColors['violet'],
-                          ),
-                          time: "2:00 AM",
-                          callback: () {})
-                    ],
-                  ),
-                ],
-              ),
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                ProfilePicture(prefs: widget.prefs),
+                const SizedBox(height: 10),
+                Text(widget.prefs.getString('name')!,
+                    style: utils.ThemeText.username),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.location_on, color: Colors.white),
+                    const SizedBox(width: 10),
+                    Text(
+                        "City, State, Country", //TODO: Use Weather API to get town name...
+                        style: utils.ThemeText.userLocationSubtext)
+                  ],
+                ),
+                const SizedBox(height: 20),
+                BioButtonsRow(prefs: widget.prefs),
+                const SizedBox(height: 30),
+                SleepButtonsRow(prefs: widget.prefs),
+                const SizedBox(height: 20)
+              ],
             ),
           ),
           const SizedBox(height: 30),
@@ -114,7 +75,7 @@ class _UserProfileState extends State<UserProfile> {
             children: [
               StatsSummary(
                 color: utils.defaultColors['red']!,
-                stats: "7",
+                stats: widget.prefs.getInt('streak')!.toString(),
                 statsSubtext: "Day Streak",
                 icondata: Icons.whatshot,
               ),
@@ -147,14 +108,86 @@ class _UserProfileState extends State<UserProfile> {
   }
 }
 
+class BioButtonsRow extends StatefulWidget {
+  const BioButtonsRow({super.key, required this.prefs});
+  final SharedPreferences prefs;
+
+  @override
+  State<BioButtonsRow> createState() => _BioButtonsRowState();
+}
+
+class _BioButtonsRowState extends State<BioButtonsRow> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+      BiometricButton(
+          metric: calculateAge(widget.prefs.getString('DOB')!),
+          subtext: "Age",
+          callback: () {}),
+      BiometricButton(
+          metric: widget.prefs.getInt('height')!,
+          subtext: "Height",
+          callback: () {}),
+      BiometricButton(
+          metric: widget.prefs.getInt('weight')!,
+          subtext: "Weight",
+          callback: () {})
+    ]);
+  }
+}
+
+class SleepButtonsRow extends StatefulWidget {
+  const SleepButtonsRow({super.key, required this.prefs});
+  final SharedPreferences prefs;
+
+  @override
+  State<SleepButtonsRow> createState() => _SleepButtonsRowState();
+}
+
+class _SleepButtonsRowState extends State<SleepButtonsRow> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SleepScheduleButton(
+              icon: Icon(Icons.sunny, color: utils.defaultColors['yellow']),
+              time: getWakeTimeText(widget.prefs),
+              callback: () {}),
+          SleepScheduleButton(
+              icon: Icon(Icons.bedtime, color: utils.defaultColors['violet']),
+              time: getSleepTimeText(widget.prefs),
+              callback: () {})
+        ]);
+  }
+}
+
+class ProfilePicture extends StatelessWidget {
+  const ProfilePicture({super.key, required this.prefs});
+  final SharedPreferences prefs;
+
+  @override
+  Widget build(BuildContext context) {
+    String? imgPath = prefs.getString('photo_path');
+
+    if (imgPath == null) {
+      return const Icon(Icons.account_circle_rounded,
+          size: 120, color: Colors.white);
+    }
+    FileImage img = FileImage(File(imgPath));
+    return CircleAvatar(radius: 60, backgroundImage: img);
+  }
+}
+
 class BiometricButton extends StatefulWidget {
   const BiometricButton(
       {super.key,
-      required this.text,
+      required this.metric,
       required this.subtext,
       required this.callback});
 
-  final String text;
+  final int metric;
   final String subtext;
   final VoidCallback callback;
 
@@ -166,28 +199,17 @@ class _BiometricButtonState extends State<BiometricButton> {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: widget.callback,
-      style: TextButton.styleFrom(
-          elevation: 3,
-          shadowColor: Colors.black,
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          )),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            widget.text,
-            style: utils.ThemeText.biometricInfo,
-          ),
-          Text(
-            widget.subtext,
-            style: utils.ThemeText.biometricInfoSubtext,
-          )
-        ],
-      ),
-    );
+        onPressed: widget.callback,
+        style: TextButton.styleFrom(
+            elevation: 3,
+            shadowColor: Colors.black,
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15))),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Text(widget.metric.toString(), style: utils.ThemeText.biometricInfo),
+          Text(widget.subtext, style: utils.ThemeText.biometricInfoSubtext)
+        ]));
   }
 }
 
@@ -210,28 +232,21 @@ class _SleepScheduleButtonState extends State<SleepScheduleButton> {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: widget.callback,
-      style: TextButton.styleFrom(
-          backgroundColor: Colors.white,
-          elevation: 3,
-          shadowColor: Colors.black,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          widget.icon,
-          const SizedBox(
-            width: 5,
-          ),
-          Text(
-            widget.time,
-            style: utils.ThemeText.sleepInfo,
-          )
-        ],
-      ),
-    );
+        onPressed: widget.callback,
+        style: TextButton.styleFrom(
+            backgroundColor: Colors.white,
+            elevation: 3,
+            shadowColor: Colors.black,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15))),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              widget.icon,
+              const SizedBox(width: 5),
+              Text(widget.time, style: utils.ThemeText.sleepInfo)
+            ]));
   }
 }
 
@@ -263,26 +278,17 @@ class StatsSummaryState extends State<StatsSummary> {
             color: widget.color.withOpacity(0.4),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: widget.color, width: 3)),
-        child: Row(
-          children: [
-            Icon(widget.icondata, size: 30, color: widget.color),
-            const SizedBox(
-              width: 10,
-            ),
-            Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.stats,
-                    style: utils.ThemeText.userStats,
-                  ),
-                  Text(
-                    widget.statsSubtext,
-                    style: utils.ThemeText.userStatsSubtext,
-                  )
-                ])
-          ],
-        ));
+        child: Row(children: [
+          Icon(widget.icondata, size: 30, color: widget.color),
+          const SizedBox(width: 10),
+          Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(widget.stats, style: utils.ThemeText.userStats),
+                Text(widget.statsSubtext,
+                    style: utils.ThemeText.userStatsSubtext)
+              ])
+        ]));
   }
 }
