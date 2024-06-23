@@ -114,8 +114,7 @@ class _EditBeverageDialogState extends State<EditBeverageDialog> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 40),
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: TextFormField(
                       cursorColor: Theme.of(context).primaryColor,
                       validator: (value) {
@@ -170,8 +169,7 @@ class _EditBeverageDialogState extends State<EditBeverageDialog> {
                     ],
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: BlockPicker(
                         layoutBuilder: pickerLayoutBuilder,
                         itemBuilder: pickerItemBuilder,
@@ -190,12 +188,13 @@ class _EditBeverageDialogState extends State<EditBeverageDialog> {
                             if (formKey.currentState!.validate()) {
                               final beverage = BeveragesCompanion(
                                 bevID: drift.Value(widget.beverage.bevID),
-                                bevName: drift.Value(beverageNameController.text),
-                                colorCode:
-                                    drift.Value(utils.toHexString(_currentColor)),
+                                bevName:
+                                    drift.Value(beverageNameController.text),
+                                colorCode: drift.Value(
+                                    utils.toHexString(_currentColor)),
                                 waterPercent: drift.Value(_waterPercent),
                               );
-                                
+
                               print("BevID: ${widget.beverage.bevID} edited");
                               widget.notifyParent();
                               Navigator.pop(context, [0, beverage]);

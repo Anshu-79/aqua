@@ -1,10 +1,13 @@
+import 'package:aqua/database/database.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/icomoon_icons.dart';
 import 'package:aqua/utils.dart' as utils;
 
 class UserProfile extends StatefulWidget {
-  const UserProfile({super.key});
+  const UserProfile({super.key, required this.database});
+
+  final Database database;
 
   @override
   State<UserProfile> createState() => _UserProfileState();

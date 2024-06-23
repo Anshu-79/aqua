@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:aqua/screens/home.dart';
+import 'package:aqua/main.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/firestore_utils.dart' as firestore;
 import 'package:aqua/shared_pref_utils.dart' as shared_prefs;
@@ -24,7 +24,7 @@ class ContinueButton extends StatelessWidget {
             backgroundColor: Colors.black, shape: const CircleBorder()),
         onPressed: () {
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const HomeScreen()));
+              MaterialPageRoute(builder: (context) => const NavBar()));
         },
         child: const Text(
           "Let's go!",
