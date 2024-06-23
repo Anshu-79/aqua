@@ -5,28 +5,16 @@ import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/dialog_boxes/add_workout.dart';
 
 class ActivityMenu extends StatefulWidget {
-  const ActivityMenu({super.key});
+  const ActivityMenu({super.key, required this.database});
+
+  final Database database;
 
   @override
   State<ActivityMenu> createState() => _ActivityMenuState();
 }
 
 class _ActivityMenuState extends State<ActivityMenu> {
-  late Database _db;
-
   refresh() => setState(() {});
-
-  @override
-  void initState() {
-    _db = Database();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _db.close();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +39,7 @@ class _ActivityMenuState extends State<ActivityMenu> {
         ),
       ),
       body: FutureBuilder<List<Workout>>(
-        future: _db.getTodaysWorkouts(),
+        future: widget.database.getTodaysWorkouts(),
         builder: (context, snapshot) {
           final List<Workout>? workouts = snapshot.data;
           print(workouts);
@@ -82,7 +70,8 @@ class _ActivityMenuState extends State<ActivityMenu> {
                   padding: const EdgeInsets.all(10),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: utils.lighten(utils.getWorkoutColor(workout.activityID),30),
+                        color: utils.lighten(
+                            utils.getWorkoutColor(workout.activityID), 30),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                             color: Theme.of(context).primaryColor, width: 3)),
@@ -103,7 +92,10 @@ class _ActivityMenuState extends State<ActivityMenu> {
                                 utils.getWorkoutCategory(workout.activityID),
                                 style: utils.ThemeText.workoutTitle,
                               )),
-                          Text(utils.getInText(workout.duration), style: const TextStyle(color: Colors.black),),
+                          Text(
+                            utils.getInText(workout.duration),
+                            style: const TextStyle(color: Colors.black),
+                          ),
                         ],
                       ),
                     ),
@@ -163,7 +155,7 @@ class _ActivityMenuState extends State<ActivityMenu> {
                             Tween<double>(begin: 0.5, end: 1.0).animate(a1),
                         child: AddWorkoutDialog(
                           notifyParent: refresh,
-                          activities: _db.getActivities(),
+                          activities: widget.database.getActivities(),
                         ),
                       ));
                 },

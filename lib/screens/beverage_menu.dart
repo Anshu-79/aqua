@@ -7,31 +7,16 @@ import 'package:aqua/dialog_boxes/add_beverage.dart';
 import 'package:aqua/dialog_boxes/edit_beverage.dart';
 
 class BeverageMenu extends StatefulWidget {
-  const BeverageMenu({super.key});
+  const BeverageMenu({super.key, required this.database});
+
+  final Database database;
 
   @override
   State<BeverageMenu> createState() => _BeverageMenuState();
 }
 
 class _BeverageMenuState extends State<BeverageMenu> {
-  late Database _db;
-
-  Color screenTheme = utils.defaultColors['red']!;
-
   refresh() => setState(() {});
-
-  @override
-  void initState() {
-    super.initState();
-    //print("Beverage page loaded...");
-    _db = Database();
-  }
-
-  @override
-  void dispose() {
-    _db.close();
-    super.dispose();
-  }
 
   void showBevMenuSnackBar(Color color, String text) {
     final snackbar = utils.coloredSnackBar(color, text);
@@ -64,7 +49,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
       body: Padding(
         padding: const EdgeInsets.only(bottom: 30),
         child: FutureBuilder<List<Beverage>>(
-            future: _db.getBeverages(),
+            future: widget.database.getBeverages(),
             builder: (context, snapshot) {
               final List<Beverage> beverages = snapshot.data ?? [];
 
@@ -125,7 +110,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
 
                               if (output![0] == 0) {
                                 List<Beverage> bevList =
-                                    await _db.getBeverages();
+                                    await widget.database.getBeverages();
                                 List<String> bevNames =
                                     bevList.map((bev) => bev.bevName).toList();
 
@@ -141,13 +126,14 @@ class _BeverageMenuState extends State<BeverageMenu> {
                                   showBevMenuSnackBar(
                                       utils.toColor(beverage.colorCode.value),
                                       'Beverage Edited');
-                                  await _db.insertOrUpdateBeverage(beverage);
+                                  await widget.database
+                                      .insertOrUpdateBeverage(beverage);
                                 }
                               } else if (output[0] == 1) {
                                 showBevMenuSnackBar(
                                     Theme.of(context).primaryColor,
                                     'Beverage Deleted');
-                                await _db.deleteBeverage(output[1]);
+                                await widget.database.deleteBeverage(output[1]);
                               }
                             } else {
                               showBevMenuSnackBar(
@@ -192,7 +178,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                 pageBuilder: (context, a1, a2) {
                   return const Placeholder();
                 });
-            List<Beverage> bevList = await _db.getBeverages();
+            List<Beverage> bevList = await widget.database.getBeverages();
             List<String> bevNames = bevList.map((bev) => bev.bevName).toList();
 
             if (bevNames.contains(addedBeverage!.bevName.value)) {
@@ -201,7 +187,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
             } else {
               showBevMenuSnackBar(utils.toColor(addedBeverage.colorCode.value),
                   'Beverage Added');
-              await _db.insertOrUpdateBeverage(addedBeverage);
+              await widget.database.insertOrUpdateBeverage(addedBeverage);
             }
           },
           tooltip: "Add new beverage",

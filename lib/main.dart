@@ -1,3 +1,4 @@
+import 'package:aqua/database/database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -59,12 +60,21 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
+  late Database _db;
+
   int selectedPage = 0;
   final PageController pageController = PageController();
 
   @override
+  void initState() {
+    super.initState();
+    _db = Database();
+  }
+
+  @override
   void dispose() {
     pageController.dispose();
+    _db.close();
     super.dispose();
   }
 
@@ -75,15 +85,15 @@ class _NavBarState extends State<NavBar> {
     });
   }
 
-  final pages = [
-    const HomeScreen(),
-    const UserProfile(),
-    const ActivityMenu(),
-    const BeverageMenu(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final pages = [
+      HomeScreen(database: _db),
+      UserProfile(database: _db),
+      ActivityMenu(database: _db),
+      BeverageMenu(database: _db),
+    ];
+
     return Scaffold(
       body: PageView(
         controller: pageController,

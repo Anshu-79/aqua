@@ -16,7 +16,6 @@ class AddBeverageDialog extends StatefulWidget {
 }
 
 class _AddBeverageDialogState extends State<AddBeverageDialog> {
-
   final formKey = GlobalKey<FormState>();
   TextEditingController beverageNameController = TextEditingController();
 
@@ -31,8 +30,6 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
   //final int _portraitCrossAxisCount = 6;
   final double _borderRadius = 30;
   final double _iconSize = 15;
-
-  
 
   Widget pickerLayoutBuilder(
       BuildContext context, List<Color> colors, PickerItem child) {
@@ -98,99 +95,99 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
             //width: MediaQuery.of(context).size.width - 40,
             //alignment: Alignment.bottomCenter,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-               children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: TextFormField(
-                  cursorColor: Theme.of(context).primaryColor,
-                  validator: (value) {
-                    if (value!.trim().isEmpty) {
-                      return "Name cannot be empty";
-                    } else {
-                      return null;
-                    }
-                  },
-                  controller: beverageNameController,
-                  textCapitalization: TextCapitalization.words,
-                  textAlign: TextAlign.center,
-                  style: utils.ThemeText.textInput,
-                  decoration: InputDecoration(
-                    errorStyle: const TextStyle(color: Colors.white),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide.none),
-                    hintText: "Beverage Name",
-                    hintStyle: utils.ThemeText.textInputHint,
-                    fillColor: Colors.white,
-                    filled: true,
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  NumberPicker(
-                      itemHeight: 55,
-                      itemWidth: 90,
-                      selectedTextStyle: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 50),
-                      textStyle: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                      minValue: 1,
-                      maxValue: 100,
-                      value: _waterPercent,
-                      onChanged: (value) =>
-                          setState(() => _waterPercent = value)),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 15, right: 10),
-                    child: Text(
-                      "% water",
-                      style: utils.ThemeText.dialogSubtext,
-                    ),
-                  )
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: BlockPicker(
-                    layoutBuilder: pickerLayoutBuilder,
-                    itemBuilder: pickerItemBuilder,
-                    availableColors: utils.colorList,
-                    pickerColor: currentColor,
-                    onColorChanged: changeColor),
-              ),
-              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  utils.addDrinkDialogButtons(
-                    icon: const Icon(Icons.check),
-                    function: () {
-                      if (formKey.currentState!.validate()) {
-                        final beverage = BeveragesCompanion(
-                          bevName: drift.Value(beverageNameController.text),
-                          colorCode: drift.Value(
-                              utils.toHexString(currentColor!)),
-                          waterPercent: drift.Value(_waterPercent),
-                        );
-                        print("${beverageNameController.text} added");
-                        Navigator.pop(context, beverage);
-                        widget.notifyParent();
-                      }
-                    },
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: TextFormField(
+                      cursorColor: Theme.of(context).primaryColor,
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return "Name cannot be empty";
+                        } else {
+                          return null;
+                        }
+                      },
+                      controller: beverageNameController,
+                      textCapitalization: TextCapitalization.words,
+                      textAlign: TextAlign.center,
+                      style: utils.ThemeText.textInput,
+                      decoration: InputDecoration(
+                        errorStyle: const TextStyle(color: Colors.white),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide.none),
+                        hintText: "Beverage Name",
+                        hintStyle: utils.ThemeText.textInputHint,
+                        fillColor: Colors.white,
+                        filled: true,
+                      ),
+                    ),
                   ),
-                  utils.addDrinkDialogButtons(
-                      icon: const Icon(Icons.close),
-                      function: () =>
-                          Navigator.of(context, rootNavigator: true).pop())
-                ],
-              )
-            ]),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      NumberPicker(
+                          itemHeight: 55,
+                          itemWidth: 90,
+                          selectedTextStyle: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 50),
+                          textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                          minValue: 1,
+                          maxValue: 100,
+                          value: _waterPercent,
+                          onChanged: (value) =>
+                              setState(() => _waterPercent = value)),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15, right: 10),
+                        child: Text(
+                          "% water",
+                          style: utils.ThemeText.dialogSubtext,
+                        ),
+                      )
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: BlockPicker(
+                        layoutBuilder: pickerLayoutBuilder,
+                        itemBuilder: pickerItemBuilder,
+                        availableColors: utils.colorList,
+                        pickerColor: currentColor,
+                        onColorChanged: changeColor),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      utils.addDrinkDialogButtons(
+                        icon: const Icon(Icons.check),
+                        function: () {
+                          if (formKey.currentState!.validate()) {
+                            final beverage = BeveragesCompanion(
+                              bevName: drift.Value(beverageNameController.text),
+                              colorCode:
+                                  drift.Value(utils.toHexString(currentColor!)),
+                              waterPercent: drift.Value(_waterPercent),
+                            );
+                            print("${beverageNameController.text} added");
+                            Navigator.pop(context, beverage);
+                            widget.notifyParent();
+                          }
+                        },
+                      ),
+                      utils.addDrinkDialogButtons(
+                          icon: const Icon(Icons.close),
+                          function: () =>
+                              Navigator.of(context, rootNavigator: true).pop())
+                    ],
+                  )
+                ]),
           ),
         ),
       ),

@@ -37,6 +37,7 @@ Future<int> findTodaysGoal() async {
   return intake;
 }
 
+// TODO: Complete this!
 Future<int> getReminderGap() async {
   final int goal = await findTodaysGoal();
   return 0;
