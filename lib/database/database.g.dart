@@ -1054,15 +1054,8 @@ class $WaterGoalsTable extends WaterGoals
   late final GeneratedColumn<int> consumedVolume = GeneratedColumn<int>(
       'consumed_volume', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _reminderGapMeta =
-      const VerificationMeta('reminderGap');
   @override
-  late final GeneratedColumn<int> reminderGap = GeneratedColumn<int>(
-      'reminder_gap', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  @override
-  List<GeneratedColumn> get $columns =>
-      [date, totalVolume, consumedVolume, reminderGap];
+  List<GeneratedColumn> get $columns => [date, totalVolume, consumedVolume];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1095,14 +1088,6 @@ class $WaterGoalsTable extends WaterGoals
     } else if (isInserting) {
       context.missing(_consumedVolumeMeta);
     }
-    if (data.containsKey('reminder_gap')) {
-      context.handle(
-          _reminderGapMeta,
-          reminderGap.isAcceptableOrUnknown(
-              data['reminder_gap']!, _reminderGapMeta));
-    } else if (isInserting) {
-      context.missing(_reminderGapMeta);
-    }
     return context;
   }
 
@@ -1118,8 +1103,6 @@ class $WaterGoalsTable extends WaterGoals
           .read(DriftSqlType.int, data['${effectivePrefix}total_volume'])!,
       consumedVolume: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}consumed_volume'])!,
-      reminderGap: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}reminder_gap'])!,
     );
   }
 
@@ -1133,19 +1116,16 @@ class WaterGoal extends DataClass implements Insertable<WaterGoal> {
   final DateTime date;
   final int totalVolume;
   final int consumedVolume;
-  final int reminderGap;
   const WaterGoal(
       {required this.date,
       required this.totalVolume,
-      required this.consumedVolume,
-      required this.reminderGap});
+      required this.consumedVolume});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['date'] = Variable<DateTime>(date);
     map['total_volume'] = Variable<int>(totalVolume);
     map['consumed_volume'] = Variable<int>(consumedVolume);
-    map['reminder_gap'] = Variable<int>(reminderGap);
     return map;
   }
 
@@ -1154,7 +1134,6 @@ class WaterGoal extends DataClass implements Insertable<WaterGoal> {
       date: Value(date),
       totalVolume: Value(totalVolume),
       consumedVolume: Value(consumedVolume),
-      reminderGap: Value(reminderGap),
     );
   }
 
@@ -1165,7 +1144,6 @@ class WaterGoal extends DataClass implements Insertable<WaterGoal> {
       date: serializer.fromJson<DateTime>(json['date']),
       totalVolume: serializer.fromJson<int>(json['totalVolume']),
       consumedVolume: serializer.fromJson<int>(json['consumedVolume']),
-      reminderGap: serializer.fromJson<int>(json['reminderGap']),
     );
   }
   @override
@@ -1175,80 +1153,65 @@ class WaterGoal extends DataClass implements Insertable<WaterGoal> {
       'date': serializer.toJson<DateTime>(date),
       'totalVolume': serializer.toJson<int>(totalVolume),
       'consumedVolume': serializer.toJson<int>(consumedVolume),
-      'reminderGap': serializer.toJson<int>(reminderGap),
     };
   }
 
-  WaterGoal copyWith(
-          {DateTime? date,
-          int? totalVolume,
-          int? consumedVolume,
-          int? reminderGap}) =>
+  WaterGoal copyWith({DateTime? date, int? totalVolume, int? consumedVolume}) =>
       WaterGoal(
         date: date ?? this.date,
         totalVolume: totalVolume ?? this.totalVolume,
         consumedVolume: consumedVolume ?? this.consumedVolume,
-        reminderGap: reminderGap ?? this.reminderGap,
       );
   @override
   String toString() {
     return (StringBuffer('WaterGoal(')
           ..write('date: $date, ')
           ..write('totalVolume: $totalVolume, ')
-          ..write('consumedVolume: $consumedVolume, ')
-          ..write('reminderGap: $reminderGap')
+          ..write('consumedVolume: $consumedVolume')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(date, totalVolume, consumedVolume, reminderGap);
+  int get hashCode => Object.hash(date, totalVolume, consumedVolume);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is WaterGoal &&
           other.date == this.date &&
           other.totalVolume == this.totalVolume &&
-          other.consumedVolume == this.consumedVolume &&
-          other.reminderGap == this.reminderGap);
+          other.consumedVolume == this.consumedVolume);
 }
 
 class WaterGoalsCompanion extends UpdateCompanion<WaterGoal> {
   final Value<DateTime> date;
   final Value<int> totalVolume;
   final Value<int> consumedVolume;
-  final Value<int> reminderGap;
   final Value<int> rowid;
   const WaterGoalsCompanion({
     this.date = const Value.absent(),
     this.totalVolume = const Value.absent(),
     this.consumedVolume = const Value.absent(),
-    this.reminderGap = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   WaterGoalsCompanion.insert({
     required DateTime date,
     required int totalVolume,
     required int consumedVolume,
-    required int reminderGap,
     this.rowid = const Value.absent(),
   })  : date = Value(date),
         totalVolume = Value(totalVolume),
-        consumedVolume = Value(consumedVolume),
-        reminderGap = Value(reminderGap);
+        consumedVolume = Value(consumedVolume);
   static Insertable<WaterGoal> custom({
     Expression<DateTime>? date,
     Expression<int>? totalVolume,
     Expression<int>? consumedVolume,
-    Expression<int>? reminderGap,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (date != null) 'date': date,
       if (totalVolume != null) 'total_volume': totalVolume,
       if (consumedVolume != null) 'consumed_volume': consumedVolume,
-      if (reminderGap != null) 'reminder_gap': reminderGap,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1257,13 +1220,11 @@ class WaterGoalsCompanion extends UpdateCompanion<WaterGoal> {
       {Value<DateTime>? date,
       Value<int>? totalVolume,
       Value<int>? consumedVolume,
-      Value<int>? reminderGap,
       Value<int>? rowid}) {
     return WaterGoalsCompanion(
       date: date ?? this.date,
       totalVolume: totalVolume ?? this.totalVolume,
       consumedVolume: consumedVolume ?? this.consumedVolume,
-      reminderGap: reminderGap ?? this.reminderGap,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1280,9 +1241,6 @@ class WaterGoalsCompanion extends UpdateCompanion<WaterGoal> {
     if (consumedVolume.present) {
       map['consumed_volume'] = Variable<int>(consumedVolume.value);
     }
-    if (reminderGap.present) {
-      map['reminder_gap'] = Variable<int>(reminderGap.value);
-    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1295,7 +1253,6 @@ class WaterGoalsCompanion extends UpdateCompanion<WaterGoal> {
           ..write('date: $date, ')
           ..write('totalVolume: $totalVolume, ')
           ..write('consumedVolume: $consumedVolume, ')
-          ..write('reminderGap: $reminderGap, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1851,14 +1808,12 @@ typedef $$WaterGoalsTableInsertCompanionBuilder = WaterGoalsCompanion Function({
   required DateTime date,
   required int totalVolume,
   required int consumedVolume,
-  required int reminderGap,
   Value<int> rowid,
 });
 typedef $$WaterGoalsTableUpdateCompanionBuilder = WaterGoalsCompanion Function({
   Value<DateTime> date,
   Value<int> totalVolume,
   Value<int> consumedVolume,
-  Value<int> reminderGap,
   Value<int> rowid,
 });
 
@@ -1885,28 +1840,24 @@ class $$WaterGoalsTableTableManager extends RootTableManager<
             Value<DateTime> date = const Value.absent(),
             Value<int> totalVolume = const Value.absent(),
             Value<int> consumedVolume = const Value.absent(),
-            Value<int> reminderGap = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               WaterGoalsCompanion(
             date: date,
             totalVolume: totalVolume,
             consumedVolume: consumedVolume,
-            reminderGap: reminderGap,
             rowid: rowid,
           ),
           getInsertCompanionBuilder: ({
             required DateTime date,
             required int totalVolume,
             required int consumedVolume,
-            required int reminderGap,
             Value<int> rowid = const Value.absent(),
           }) =>
               WaterGoalsCompanion.insert(
             date: date,
             totalVolume: totalVolume,
             consumedVolume: consumedVolume,
-            reminderGap: reminderGap,
             rowid: rowid,
           ),
         ));
@@ -1941,11 +1892,6 @@ class $$WaterGoalsTableFilterComposer
       column: $state.table.consumedVolume,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
-
-  ColumnFilters<int> get reminderGap => $state.composableBuilder(
-      column: $state.table.reminderGap,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
 class $$WaterGoalsTableOrderingComposer
@@ -1963,11 +1909,6 @@ class $$WaterGoalsTableOrderingComposer
 
   ColumnOrderings<int> get consumedVolume => $state.composableBuilder(
       column: $state.table.consumedVolume,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
-
-  ColumnOrderings<int> get reminderGap => $state.composableBuilder(
-      column: $state.table.reminderGap,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }
