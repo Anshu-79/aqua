@@ -44,8 +44,12 @@ Future<int> getReminderGap() async {
 }
 
 Future<int> getAge() async {
-  String? dobStr = await SharedPrefUtils.readPrefStr('dob');
-  DateTime dob = DateTime.parse(dobStr!);
+  String? dobStr = await SharedPrefUtils.readPrefStr('DOB');
+  return calculateAge(dobStr!);
+}
+
+int calculateAge(String dobStr) {
+  DateTime dob = DateTime.parse(dobStr);
   DateTime now = DateTime.now();
 
   int age = now.year - dob.year;
