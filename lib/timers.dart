@@ -6,7 +6,7 @@ void dayChanger(double wakeTime) {
 
   int hrs = wakeTime.truncate();
   int minutes = (wakeTime - hrs).ceil() * 30;
-  
+
   cron.schedule(Schedule.parse('$minutes $hrs * * *'),
-      () => print("Cron!"));
+      () async => await Future.delayed(const Duration(seconds: 5)));
 }

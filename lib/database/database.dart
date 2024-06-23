@@ -68,11 +68,6 @@ class Database extends _$Database {
     return await select(beverages).get();
   }
 
-  Future<Beverage> getBeverage(int id) async {
-    return await (select(beverages)..where((tbl) => tbl.bevID.equals(id)))
-        .getSingle();
-  }
-
   Future<int> insertOrUpdateBeverage(BeveragesCompanion entity) async {
     return await into(beverages).insertOnConflictUpdate(entity);
   }
@@ -103,6 +98,22 @@ class Database extends _$Database {
   }
 
   // Water Goals Actions
+  Future<int> insertOrUpdateGoal(WaterGoalsCompanion entity) async {
+    return await into(waterGoals).insertOnConflictUpdate(entity);
+  }
+
+  Future<WaterGoal> getGoal(DateTime id) async {
+    return await (select(waterGoals)..where((tbl) => tbl.date.equals(id)))
+        .getSingle();
+  }
+
+  Future increaseConsumedVolume(DateTime today, int consumedVol) async {
+    final goal = await getGoal(today);
+
+    return (update(waterGoals)..where((t) => t.date.equals(today))).write(
+        WaterGoalsCompanion(
+            consumedVolume: Value(goal.consumedVolume + consumedVol)));
+  }
 
   @override
   MigrationStrategy get migration => MigrationStrategy(

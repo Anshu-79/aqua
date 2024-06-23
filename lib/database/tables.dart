@@ -32,7 +32,6 @@ class WaterGoals extends Table {
   DateTimeColumn get date => dateTime()();
   IntColumn get totalVolume => integer()();
   IntColumn get consumedVolume => integer()();
-  IntColumn get reminderGap => integer()();
 
   @override
   Set<Column> get primaryKey => {date};
