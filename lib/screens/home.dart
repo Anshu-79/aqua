@@ -1,10 +1,10 @@
+import 'package:aqua/dialog_boxes/add_drink.dart';
+import 'package:fab_circular_menu_plus/fab_circular_menu_plus.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/water_animation.dart';
 import 'package:aqua/utils.dart' as utils;
-import 'package:aqua/expandable_fab.dart' as fab;
 import 'package:aqua/icomoon_icons.dart';
-import 'package:aqua/dialog_boxes/edit_drink.dart';
 import 'package:aqua/database/database.dart';
 
 class ReminderBox extends StatelessWidget {
@@ -47,34 +47,38 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        appBar: const utils.UniversalHeader(title: "Today's Goal"),
-        body: Container(
-            margin: const EdgeInsets.all(20),
-            child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  WaterGoalWidget(consumedVol: 1500, totalVol: 3000),
-                  SizedBox(height: 20),
-                  ReminderBox(),
-                ])),
-        floatingActionButton:
-            fab.ExpandableFab(notifyParent: refresh, distance: 75, children: [
-          fab.ActionButton(
-              onPressed: () {},
-              icon: Icon(Icomoon.coffee_cup,
-                  color: Theme.of(context).canvasColor),
-              editDialogBox: editDrinkDialogBox()),
-          fab.ActionButton(
-              onPressed: () {},
-              icon: Icon(Icomoon.water_glass,
-                  color: Theme.of(context).canvasColor),
-              editDialogBox: editDrinkDialogBox()),
-          fab.ActionButton(
-              onPressed: () {},
-              icon:
-                  Icon(Icomoon.soda_can, color: Theme.of(context).canvasColor),
-              editDialogBox: editDrinkDialogBox()),
-        ]));
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      appBar: const utils.UniversalHeader(title: "Today's Goal"),
+      body: Container(
+          margin: const EdgeInsets.all(20),
+          child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                WaterGoalWidget(consumedVol: 1500, totalVol: 3000),
+                SizedBox(height: 20),
+                ReminderBox(),
+              ])),
+      floatingActionButton: FabCircularMenuPlus(
+        animationDuration: const Duration(milliseconds: 200),
+        alignment: Alignment.bottomCenter,
+        fabSize: 70,
+        ringDiameter: 300,
+        ringColor: Theme.of(context).canvasColor.withOpacity(0.8),
+        fabColor: Theme.of(context).splashColor,
+        fabChild: GestureDetector(
+            child: const Icon(Icons.add, size: 30),
+            onLongPress: () async {
+              await utils.GlobalNavigator.showAnimatedDialog(AddDrinkDialog(
+                beverages: await widget.database.getBeverages(),
+                notifyParent: refresh,
+              ));
+            }),
+        children: const [
+          Icon(Icomoon.coffee_cup),
+          Icon(Icomoon.water_glass),
+          Icon(Icomoon.soda_can),
+        ],
+      ),
+    );
   }
 }

@@ -6,10 +6,8 @@ import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/database/database.dart';
 
 class CustomizeWorkout extends StatefulWidget {
-  const CustomizeWorkout(
-      {super.key, required this.activity, required this.notifyParent});
+  const CustomizeWorkout({super.key, required this.activity});
   final Activity? activity;
-  final Function notifyParent;
 
   @override
   State<CustomizeWorkout> createState() => _CustomizeWorkoutState();
@@ -96,7 +94,6 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
                               utils
                                   .getWorkoutColor(widget.activity!.activityID),
                               "Activity Added"));
-                      widget.notifyParent();
                     },
                   ),
                   utils.addDrinkDialogButtons(
