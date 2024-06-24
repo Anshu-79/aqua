@@ -68,6 +68,13 @@ class Database extends _$Database {
     return await select(beverages).get();
   }
 
+  Future<Beverage> getBeverageFromName(String name) async {
+    final query = select(beverages)..where((t) => t.bevName.equals(name));
+    final bevs = await query.get();
+    if (bevs.isEmpty) return getBeverageFromName('Water')!;
+    return bevs[0];
+  }
+
   Future<int> insertOrUpdateBeverage(BeveragesCompanion entity) async {
     return await into(beverages).insertOnConflictUpdate(entity);
   }
