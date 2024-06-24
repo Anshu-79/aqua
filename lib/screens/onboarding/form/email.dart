@@ -114,7 +114,7 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
         }, navForward: () {
           if (formKey.currentState!.validate()) {
             context.flow<Profile>().update((profile) =>
-                profile.copyWith(email: emailController.text).incrementPage());
+                profile.copyWith(email: emailController.text.trim()).incrementPage());
           }
         }));
   }

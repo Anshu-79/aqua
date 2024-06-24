@@ -21,9 +21,7 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
 
   int _waterPercent = 50;
 
-  void changeColor(Color color) => setState(() {
-        currentColor = color;
-      });
+  void changeColor(Color color) => setState(() => currentColor = color);
 
   Color? currentColor = utils.defaultColors['blue'];
 
@@ -170,7 +168,7 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
                         function: () {
                           if (formKey.currentState!.validate()) {
                             final beverage = BeveragesCompanion(
-                              bevName: drift.Value(beverageNameController.text),
+                              bevName: drift.Value(beverageNameController.text.trim()),
                               colorCode:
                                   drift.Value(utils.toHexString(currentColor!)),
                               waterPercent: drift.Value(_waterPercent),
