@@ -58,7 +58,7 @@ class Database extends _$Database {
   }
 
   Future<Activity> getActivity(int id) async {
-    return await (select(activities)..where((tbl) => tbl.activityID.equals(id)))
+    return await (select(activities)..where((tbl) => tbl.id.equals(id)))
         .getSingle();
   }
 
@@ -69,7 +69,7 @@ class Database extends _$Database {
   }
 
   Future<Beverage> getBeverageFromName(String name) async {
-    final query = select(beverages)..where((t) => t.bevName.equals(name));
+    final query = select(beverages)..where((t) => t.name.equals(name));
     final bevs = await query.get();
     if (bevs.isEmpty) return getBeverageFromName('Water');
     return bevs[0];
@@ -80,7 +80,7 @@ class Database extends _$Database {
   }
 
   Future<int> deleteBeverage(int id) async {
-    return await (delete(beverages)..where((tbl) => tbl.bevID.equals(id))).go();
+    return await (delete(beverages)..where((tbl) => tbl.id.equals(id))).go();
   }
 
   // Workouts Actions
@@ -128,30 +128,40 @@ class Database extends _$Database {
           await m.createAll();
           print("Database created...");
           await into(beverages).insertOnConflictUpdate(Beverage(
-              bevID: 1,
-              bevName: "Water",
-              colorCode: defaultColors['blue']!.value.toRadixString(16),
-              waterPercent: 100));
+            id: 1,
+            name: "Water",
+            colorCode: defaultColors['blue']!.value.toRadixString(16),
+            waterPercent: 100,
+            starred: true,
+          ));
           await into(beverages).insertOnConflictUpdate(Beverage(
-              bevID: 2,
-              bevName: "Soda",
-              colorCode: defaultColors['red']!.value.toRadixString(16),
-              waterPercent: 90));
+            id: 2,
+            name: "Soda",
+            colorCode: defaultColors['red']!.value.toRadixString(16),
+            waterPercent: 90,
+            starred: true,
+          ));
           await into(beverages).insertOnConflictUpdate(Beverage(
-              bevID: 3,
-              bevName: "Tea",
-              colorCode: defaultColors['green']!.value.toRadixString(16),
-              waterPercent: 75));
+            id: 3,
+            name: "Coffee",
+            colorCode: defaultColors['orange']!.value.toRadixString(16),
+            waterPercent: 50,
+            starred: false,
+          ));
           await into(beverages).insertOnConflictUpdate(Beverage(
-              bevID: 4,
-              bevName: "Coffee",
-              colorCode: defaultColors['orange']!.value.toRadixString(16),
-              waterPercent: 50));
+            id: 4,
+            name: "Tea",
+            colorCode: defaultColors['green']!.value.toRadixString(16),
+            waterPercent: 75,
+            starred: true,
+          ));
           await into(beverages).insertOnConflictUpdate(Beverage(
-              bevID: 5,
-              bevName: "Milk",
-              colorCode: defaultColors['pink']!.value.toRadixString(16),
-              waterPercent: 88));
+            id: 5,
+            name: "Milk",
+            colorCode: defaultColors['pink']!.value.toRadixString(16),
+            waterPercent: 88,
+            starred: false,
+          ));
         },
         beforeOpen: (details) async {
           print("beforeOpen executed...");

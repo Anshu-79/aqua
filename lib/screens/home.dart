@@ -102,7 +102,7 @@ Widget getFabButton(Database db, String name, Icon icon) {
     onTap: () async {
       Beverage bev = await db.getBeverageFromName(name);
       DrinksCompanion drink = DrinksCompanion(
-          bevID: drift.Value(bev.bevID),
+          bevID: drift.Value(bev.id),
           volume: const drift.Value(200), //TODO: Replace with variable value
           datetime: drift.Value(DateTime.now()));
       // db.insertOrUpdateDrink(entity)

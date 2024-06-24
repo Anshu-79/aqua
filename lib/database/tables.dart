@@ -1,29 +1,30 @@
 import 'package:drift/drift.dart';
 
 class Beverages extends Table {
-  IntColumn get bevID => integer().autoIncrement().named("bev_ID")();
-  TextColumn get bevName => text()();
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get name => text()();
   TextColumn get colorCode => text().withLength(max: 8, min: 8)();
   IntColumn get waterPercent => integer()();
+  BoolColumn get starred => boolean()();
 }
 
 class Drinks extends Table {
-  IntColumn get drinkID => integer().autoIncrement().named("drink_ID")();
-  IntColumn get bevID => integer().references(Beverages, #bevID).named("bev_ID")();
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get bevID => integer().references(Beverages, #id).named("bev_ID")();
   IntColumn get volume => integer()();
   DateTimeColumn get datetime => dateTime()();
 }
 
 class Activities extends Table {
-  IntColumn get activityID => integer().autoIncrement().named("activity_ID")();
+  IntColumn get id => integer().autoIncrement()();
   TextColumn get category => text().withLength(max: 25)();
   RealColumn get met => real().named('MET')();
   TextColumn get description => text()();
 }
 
 class Workouts extends Table {
-  IntColumn get workoutID => integer().autoIncrement().named("workout_ID")();
-  IntColumn get activityID => integer().references(Activities, #activityID).named("activity_ID")();
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get activityID => integer().references(Activities, #id).named("activity_ID")();
   DateTimeColumn get datetime => dateTime()();
   IntColumn get duration => integer()();
 }

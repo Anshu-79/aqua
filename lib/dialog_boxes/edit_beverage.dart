@@ -36,7 +36,7 @@ class _EditBeverageDialogState extends State<EditBeverageDialog> {
   void initState() {
     _waterPercent = widget.beverage.waterPercent;
     _currentColor = Color(int.parse('0x${widget.beverage.colorCode}'));
-    beverageNameController.text = widget.beverage.bevName;
+    beverageNameController.text = widget.beverage.name;
     super.initState();
   }
 
@@ -187,15 +187,15 @@ class _EditBeverageDialogState extends State<EditBeverageDialog> {
                           function: () {
                             if (formKey.currentState!.validate()) {
                               final beverage = BeveragesCompanion(
-                                bevID: drift.Value(widget.beverage.bevID),
-                                bevName:
+                                id: drift.Value(widget.beverage.id),
+                                name:
                                     drift.Value(beverageNameController.text.trim()),
                                 colorCode: drift.Value(
                                     utils.toHexString(_currentColor)),
                                 waterPercent: drift.Value(_waterPercent),
                               );
 
-                              print("BevID: ${widget.beverage.bevID} edited");
+                              print("id: ${widget.beverage.id} edited");
                               widget.notifyParent();
                               Navigator.pop(context, [0, beverage]);
                             }
@@ -203,7 +203,7 @@ class _EditBeverageDialogState extends State<EditBeverageDialog> {
                         ),
                         utils.addDrinkDialogButtons(
                           function: () {
-                            Navigator.pop(context, [1, widget.beverage.bevID]);
+                            Navigator.pop(context, [1, widget.beverage.id]);
                             widget.notifyParent();
                           },
                           icon: const Icon(Icons.delete_forever_outlined),

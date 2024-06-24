@@ -73,7 +73,7 @@ class _AddDrinkDialogState extends State<AddDrinkDialog> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
-                                widget.beverages[_bevIndex].bevName,
+                                widget.beverages[_bevIndex].name,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: utils.ThemeText.addDrinkBeverageName,
@@ -129,7 +129,7 @@ class _AddDrinkDialogState extends State<AddDrinkDialog> {
                       function: () {
                         final drink = DrinksCompanion(
                             bevID:
-                                drift.Value(widget.beverages[_bevIndex].bevID),
+                                drift.Value(widget.beverages[_bevIndex].id),
                             volume: drift.Value(_volume),
                             datetime: drift.Value(DateTime.now()));
                         Navigator.pop(context, drink);
