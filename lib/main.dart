@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/firebase_options.dart';
-import 'package:aqua/icomoon_icons.dart';
 import 'package:aqua/screens/home.dart';
 import 'package:aqua/screens/user_profile.dart';
 import 'package:aqua/screens/beverage_menu.dart';
@@ -104,6 +103,7 @@ class _NavBarState extends State<NavBar> {
         children: pages,
       ),
       bottomNavigationBar: NavigationBar(
+        surfaceTintColor: utils.defaultColors['dark blue'],
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         onDestinationSelected: _onItemTapped,
         indicatorColor: utils.defaultColors['dark blue'],
