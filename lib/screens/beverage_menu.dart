@@ -27,115 +27,112 @@ class _BeverageMenuState extends State<BeverageMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const utils.UniversalHeader(title: "My Beverages"),
-      body: Padding(
-        padding: const EdgeInsets.only(bottom: 30),
-        child: FutureBuilder<List<Beverage>>(
-            future: widget.database.getBeverages(),
-            builder: (context, snapshot) {
-              final List<Beverage> beverages = snapshot.data ?? [];
-
-              //print(beverages);
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(
-                      color: Theme.of(context).primaryColor),
-                );
-              }
-
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text(snapshot.error.toString()),
-                );
-              } else {
-                return ListView.builder(
-                    itemCount: beverages.length,
-                    itemBuilder: (context, index) {
-                      final beverage = beverages[index];
-                      return Card(
-                        margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
-                        elevation: 0,
-                        color:
-                            utils.toColor(beverage.colorCode).withOpacity(0.3),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(30)),
-                            side: BorderSide(
-                                color: utils.toColor(beverage.colorCode),
-                                width: 5)),
-                        child: ListTile(
-                          onTap: () async {
-                            if (beverage.bevID != 1) {
-                              List? output = await showGeneralDialog(
-                                  barrierDismissible: false,
-                                  transitionDuration:
-                                      const Duration(milliseconds: 150),
-                                  transitionBuilder: (context, a1, a2, child) {
-                                    return ScaleTransition(
-                                        scale:
-                                            Tween<double>(begin: 0.5, end: 1.0)
-                                                .animate(a1),
-                                        child: FadeTransition(
-                                          opacity: Tween<double>(
-                                                  begin: 0.5, end: 1.0)
+      body: FutureBuilder<List<Beverage>>(
+          future: widget.database.getBeverages(),
+          builder: (context, snapshot) {
+            final List<Beverage> beverages = snapshot.data ?? [];
+      
+            //print(beverages);
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor),
+              );
+            }
+      
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(snapshot.error.toString()),
+              );
+            } else {
+              return ListView.builder(
+                  itemCount: beverages.length,
+                  itemBuilder: (context, index) {
+                    final beverage = beverages[index];
+                    return Card(
+                      margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
+                      elevation: 0,
+                      color:
+                          utils.toColor(beverage.colorCode).withOpacity(0.3),
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(30)),
+                          side: BorderSide(
+                              color: utils.toColor(beverage.colorCode),
+                              width: 5)),
+                      child: ListTile(
+                        onTap: () async {
+                          if (beverage.bevID != 1) {
+                            List? output = await showGeneralDialog(
+                                barrierDismissible: false,
+                                transitionDuration:
+                                    const Duration(milliseconds: 150),
+                                transitionBuilder: (context, a1, a2, child) {
+                                  return ScaleTransition(
+                                      scale:
+                                          Tween<double>(begin: 0.5, end: 1.0)
                                               .animate(a1),
-                                          child: EditBeverageDialog(
-                                            beverage: beverage,
-                                            notifyParent: refresh,
-                                          ),
-                                        ));
-                                  },
-                                  context: context,
-                                  pageBuilder: (context, a1, a2) {
-                                    return const Placeholder();
-                                  });
-
-                              if (output![0] == 0) {
-                                List<Beverage> bevList =
-                                    await widget.database.getBeverages();
-                                List<String> bevNames =
-                                    bevList.map((bev) => bev.bevName).toList();
-
-                                if (bevNames
-                                        .contains(output[1].bevName.value) &&
-                                    beverage.bevName !=
-                                        output[1].bevName.value) {
-                                  showBevMenuSnackBar(
-                                      Theme.of(context).primaryColor,
-                                      'This beverage already exists');
-                                } else {
-                                  BeveragesCompanion beverage = output[1];
-                                  showBevMenuSnackBar(
-                                      utils.toColor(beverage.colorCode.value),
-                                      'Beverage Edited');
-                                  await widget.database
-                                      .insertOrUpdateBeverage(beverage);
-                                }
-                              } else if (output[0] == 1) {
+                                      child: FadeTransition(
+                                        opacity: Tween<double>(
+                                                begin: 0.5, end: 1.0)
+                                            .animate(a1),
+                                        child: EditBeverageDialog(
+                                          beverage: beverage,
+                                          notifyParent: refresh,
+                                        ),
+                                      ));
+                                },
+                                context: context,
+                                pageBuilder: (context, a1, a2) {
+                                  return const Placeholder();
+                                });
+      
+                            if (output![0] == 0) {
+                              List<Beverage> bevList =
+                                  await widget.database.getBeverages();
+                              List<String> bevNames =
+                                  bevList.map((bev) => bev.bevName).toList();
+      
+                              if (bevNames
+                                      .contains(output[1].bevName.value) &&
+                                  beverage.bevName !=
+                                      output[1].bevName.value) {
                                 showBevMenuSnackBar(
                                     Theme.of(context).primaryColor,
-                                    'Beverage Deleted');
-                                await widget.database.deleteBeverage(output[1]);
+                                    'This beverage already exists');
+                              } else {
+                                BeveragesCompanion beverage = output[1];
+                                showBevMenuSnackBar(
+                                    utils.toColor(beverage.colorCode.value),
+                                    'Beverage Edited');
+                                await widget.database
+                                    .insertOrUpdateBeverage(beverage);
                               }
-                            } else {
+                            } else if (output[0] == 1) {
                               showBevMenuSnackBar(
-                                  utils.toColor(beverage.colorCode),
-                                  '${beverage.bevName} cannot be edited');
+                                  Theme.of(context).primaryColor,
+                                  'Beverage Deleted');
+                              await widget.database.deleteBeverage(output[1]);
                             }
-                          },
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                          ),
-                          splashColor: utils.toColor(beverage.colorCode),
-                          title: _BeverageCard(
-                              beverageName: beverage.bevName,
-                              beverageColor: beverage.colorCode,
-                              waterFraction: beverage.waterPercent),
+                          } else {
+                            showBevMenuSnackBar(
+                                utils.toColor(beverage.colorCode),
+                                '${beverage.bevName} cannot be edited');
+                          }
+                        },
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
                         ),
-                      );
-                    });
-              }
-            }),
-      ),
+                        splashColor: utils.toColor(beverage.colorCode),
+                        title: _BeverageCard(
+                            beverageName: beverage.bevName,
+                            beverageColor: beverage.colorCode,
+                            waterFraction: beverage.waterPercent),
+                      ),
+                    );
+                  });
+            }
+          }),
       floatingActionButton: SizedBox(
         height: 70,
         width: 70,

@@ -39,7 +39,7 @@ class _AquaState extends State<Aqua> {
   Widget build(BuildContext context) {
     // if the app is running for the first time, onboard key will be null
     bool onboard = widget.sharedPrefs.getBool('onboard') ?? false;
-    
+
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: utils.lightTheme,
@@ -47,8 +47,9 @@ class _AquaState extends State<Aqua> {
         themeMode: ThemeMode.system,
         navigatorKey: navigatorKey,
         home: Builder(
-            builder: (context) =>
-                !(onboard) ? const OnboardingView() :  NavBar(prefs: widget.sharedPrefs)));
+            builder: (context) => !(onboard)
+                ? const OnboardingView()
+                : NavBar(prefs: widget.sharedPrefs)));
   }
 }
 
@@ -103,15 +104,31 @@ class _NavBarState extends State<NavBar> {
         children: pages,
       ),
       bottomNavigationBar: NavigationBar(
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         onDestinationSelected: _onItemTapped,
         indicatorColor: utils.defaultColors['dark blue'],
         selectedIndex: selectedPage,
         destinations: const [
-          NavigationDestination(label: 'Home', icon: Icon(Icons.home)),
-          NavigationDestination(label: 'Profile', icon: Icon(Icons.person)),
-          NavigationDestination(label: 'Activities', icon: Icon(Icons.hiking)),
           NavigationDestination(
-              label: 'Beverages', icon: Icon(Icomoon.plastic_cup)),
+            label: 'Home',
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+          ),
+          NavigationDestination(
+            label: 'Profile',
+            icon: Icon(Icons.person_outline),
+            selectedIcon: Icon(Icons.person),
+          ),
+          NavigationDestination(
+            label: 'Activities',
+            icon: Icon(Icons.directions_run),
+            selectedIcon: Icon(Icons.directions_run),
+          ),
+          NavigationDestination(
+            label: 'Beverages',
+            icon: Icon(Icons.emoji_food_beverage_outlined),
+            selectedIcon: Icon(Icons.emoji_food_beverage),
+          ),
         ],
       ),
     );
