@@ -173,8 +173,8 @@ String getWorkoutCategory(int activityID) {
 
 // Font Utilities
 abstract class ThemeText {
-  static const TextStyle screenHeader =
-      TextStyle(fontSize: 45, fontWeight: FontWeight.w900);
+  static const TextStyle screenHeader = TextStyle(
+      fontSize: 45, fontWeight: FontWeight.w900, fontFamily: "CeraPro");
 
   // Onboarding Screens
 
@@ -398,5 +398,27 @@ class OnboardingQuestion extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class UniversalHeader extends PreferredSize {
+  const UniversalHeader({super.key, required this.title})
+      : super(
+          preferredSize: const Size.fromHeight(60),
+          child: const Placeholder(),
+        );
+
+  final String title;
+  
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+        surfaceTintColor: Theme.of(context).canvasColor,
+        backgroundColor: Theme.of(context).canvasColor,
+        elevation: 0,
+        centerTitle: true,
+        titleTextStyle: ThemeText.screenHeader,
+        title: FittedBox(fit: BoxFit.contain, child: Text(title)),
+        foregroundColor: Theme.of(context).primaryColor);
   }
 }

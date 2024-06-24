@@ -19,25 +19,7 @@ class _ActivityMenuState extends State<ActivityMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60),
-        child: AppBar(
-          surfaceTintColor: Theme.of(context).canvasColor,
-          backgroundColor: Theme.of(context).canvasColor,
-          elevation: 0,
-          shape: BeveledRectangleBorder(
-              side: BorderSide.none, borderRadius: BorderRadius.circular(10)),
-          centerTitle: true,
-          titleTextStyle: utils.ThemeText.screenHeader,
-          title: Text("Today's Activities",
-              maxLines: 2,
-              style: TextStyle(
-                  fontSize: 39,
-                  color: Theme.of(context).primaryColor,
-                  fontFamily: "CeraPro")),
-          foregroundColor: Theme.of(context).primaryColor,
-        ),
-      ),
+      appBar: const utils.UniversalHeader(title: "Today's Activities"),
       body: FutureBuilder<List<Workout>>(
         future: widget.database.getTodaysWorkouts(),
         builder: (context, snapshot) {
