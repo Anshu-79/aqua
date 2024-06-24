@@ -97,10 +97,10 @@ class _BeverageMenuState extends State<BeverageMenu> {
                           borderRadius: BorderRadius.all(Radius.circular(30)),
                         ),
                         splashColor: utils.toColor(beverage.colorCode),
-                        title: _BeverageCard(
-                            beverageName: beverage.name,
-                            beverageColor: beverage.colorCode,
-                            waterFraction: beverage.waterPercent),
+                        title: BeverageCard(
+                          beverage: beverage,
+                          db: widget.database,
+                        ),
                       ),
                     );
                   });
@@ -143,14 +143,23 @@ class _BeverageMenuState extends State<BeverageMenu> {
   }
 }
 
-class _BeverageCard extends StatelessWidget {
-  const _BeverageCard(
-      {required this.beverageName,
-      required this.beverageColor,
-      required this.waterFraction});
-  final String beverageName;
-  final String beverageColor;
-  final int waterFraction;
+class BeverageCard extends StatefulWidget {
+  const BeverageCard({super.key, required this.beverage, required this.db});
+  final Beverage beverage;
+  final Database db;
+
+  @override
+  State<BeverageCard> createState() => _BeverageCardState();
+}
+
+class _BeverageCardState extends State<BeverageCard> {
+  late bool starred;
+
+  @override
+  void initState() {
+    starred = widget.beverage.starred;
+    super.initState();
+  }
 
   Icon beverageIcon({required Color color}) {
     return Icon(Icomoon.water_glass_pixelart, color: color, size: 60);
@@ -162,7 +171,8 @@ class _BeverageCard extends StatelessWidget {
       children: [
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: beverageIcon(color: utils.toColor(beverageColor))),
+            child:
+                beverageIcon(color: utils.toColor(widget.beverage.colorCode))),
         Flexible(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,14 +181,19 @@ class _BeverageCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    beverageName,
+                    widget.beverage.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: utils.ThemeText.beverageName,
                   ),
                   IconButton(
-                    icon: Icon(Icons.star_border),
-                    onPressed: () {},
+                    icon: starred
+                        ? const Icon(Icons.star, color: Colors.amber)
+                        : const Icon(Icons.star_border, color: Colors.amber),
+                    onPressed: () {
+                      widget.db.toggleBeverageStar(widget.beverage.id, starred);
+                      setState(() => starred = !starred);
+                    },
                   )
                 ],
               ),
@@ -187,7 +202,7 @@ class _BeverageCard extends StatelessWidget {
                 style: utils.ThemeText.beverageSubtext,
               ),
               Text(
-                '${waterFraction.toString()}%',
+                '${widget.beverage.waterPercent.toString()}%',
                 style: utils.ThemeText.beverageWaterPercentage,
               ),
             ],

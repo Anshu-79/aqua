@@ -68,6 +68,15 @@ class Database extends _$Database {
     return await select(beverages).get();
   }
 
+  Future<int> toggleBeverageStar(int id, bool starred) async {
+    return (update(beverages)..where((t) => t.id.equals(id)))
+        .write(BeveragesCompanion(starred: Value(!starred)));
+  }
+
+  Future<List<Beverage>> getStarredBeverages() async {
+    return (select(beverages)..where((t) => t.starred.equals(true))).get();
+  }
+
   Future<Beverage> getBeverageFromName(String name) async {
     final query = select(beverages)..where((t) => t.name.equals(name));
     final bevs = await query.get();
@@ -146,7 +155,7 @@ class Database extends _$Database {
             name: "Coffee",
             colorCode: defaultColors['orange']!.value.toRadixString(16),
             waterPercent: 50,
-            starred: false,
+            starred: true,
           ));
           await into(beverages).insertOnConflictUpdate(Beverage(
             id: 4,
