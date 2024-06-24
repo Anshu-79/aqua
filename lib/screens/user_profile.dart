@@ -271,7 +271,7 @@ class StatsSummaryState extends State<StatsSummary> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        padding: const EdgeInsets.all(5),
         height: 65,
         width: 150,
         decoration: BoxDecoration(

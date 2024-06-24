@@ -10,7 +10,7 @@ ThemeData lightTheme = ThemeData(
     fontFamily: 'CeraPro',
     primaryColor: Colors.black,
     canvasColor: Colors.white,
-    splashColor: defaultColors['blue'],
+    splashColor: defaultColors['dark blue'],
     scaffoldBackgroundColor: Colors.white,
     brightness: Brightness.light,
     colorScheme: ColorScheme.fromSeed(
@@ -21,7 +21,7 @@ ThemeData darkTheme = ThemeData(
     fontFamily: 'CeraPro',
     primaryColor: Colors.white,
     canvasColor: Colors.black,
-    splashColor: defaultColors['blue'],
+    splashColor: defaultColors['dark blue'],
     scaffoldBackgroundColor: Colors.black,
     brightness: Brightness.dark,
     colorScheme: ColorScheme.fromSeed(
@@ -173,9 +173,6 @@ String getWorkoutCategory(int activityID) {
 
 // Font Utilities
 abstract class ThemeText {
-  static const TextStyle screenHeader = TextStyle(
-      fontSize: 45, fontWeight: FontWeight.w900, fontFamily: "CeraPro");
-
   // Onboarding Screens
 
   static const TextStyle nameInputField =
@@ -185,22 +182,13 @@ abstract class ThemeText {
       fontSize: 40, fontWeight: FontWeight.bold, color: Colors.grey);
 
   // Home Screen
-  static TextStyle dailyGoalConsumed = const TextStyle(
-      fontSize: 100, fontWeight: FontWeight.w900, color: Color(0xFF44A4EE));
+  static TextStyle dailyGoalConsumed = TextStyle(
+      fontSize: 100, fontWeight: FontWeight.w900, color: defaultColors['dark blue']);
 
   static TextStyle dailyGoalTotal = TextStyle(
       color: defaultColors['dark blue'],
       fontSize: dailyGoalConsumed.fontSize,
       fontWeight: FontWeight.w900);
-
-  static TextStyle dailyGoalBorder = TextStyle(
-    fontSize: dailyGoalConsumed.fontSize,
-    fontWeight: FontWeight.w900,
-    foreground: Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2
-      ..color = Colors.black,
-  );
 
   static TextStyle dailyGoalFillerText = const TextStyle(
     fontSize: 35,
@@ -210,10 +198,10 @@ abstract class ThemeText {
   static TextStyle reminderSubText =
       const TextStyle(fontSize: 20, fontWeight: FontWeight.normal);
 
-  static TextStyle reminderText = const TextStyle(
+  static TextStyle reminderText = TextStyle(
       fontSize: 30,
       fontWeight: FontWeight.bold,
-      color: Color(0xFF44A4EE),
+      color: defaultColors['dark blue'],
       letterSpacing: 3);
 
   // Add Drink Dialog Box
@@ -333,15 +321,28 @@ SnackBar coloredSnackBar(Color color, String text) {
   );
 }
 
-Stack borderedText(String text, TextStyle style, TextStyle borderStyle) {
-  return Stack(children: [
-    Text.rich(TextSpan(children: [
-      TextSpan(text: text, style: borderStyle),
-    ])),
-    Text.rich(TextSpan(children: [
-      TextSpan(text: text, style: style),
-    ])),
-  ]);
+class BorderedText extends StatelessWidget {
+  const BorderedText({super.key, required this.text, required this.textStyle});
+  final String text;
+  final TextStyle textStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    TextStyle dailyGoalBorder = TextStyle(
+        fontSize: ThemeText.dailyGoalConsumed.fontSize,
+        fontWeight: ThemeText.dailyGoalConsumed.fontWeight,
+        foreground: Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 4
+          ..color = Colors.black);
+
+    return Stack(children: [
+      Text.rich(TextSpan(children: [
+        TextSpan(text: text, style: dailyGoalBorder),
+      ])),
+      Text.rich(TextSpan(children: [TextSpan(text: text, style: textStyle)])),
+    ]);
+  }
 }
 
 class GlobalNavigator {
@@ -409,16 +410,21 @@ class UniversalHeader extends PreferredSize {
         );
 
   final String title;
-  
+
   @override
   Widget build(BuildContext context) {
+    TextStyle screenHeader = TextStyle(
+        color: Theme.of(context).primaryColor,
+        fontSize: 45,
+        fontWeight: FontWeight.w900,
+        fontFamily: "CeraPro");
+
     return AppBar(
-        surfaceTintColor: Theme.of(context).canvasColor,
-        backgroundColor: Theme.of(context).canvasColor,
-        elevation: 0,
-        centerTitle: true,
-        titleTextStyle: ThemeText.screenHeader,
-        title: FittedBox(fit: BoxFit.contain, child: Text(title)),
-        foregroundColor: Theme.of(context).primaryColor);
+      backgroundColor: Theme.of(context).canvasColor,
+      elevation: 0,
+      centerTitle: true,
+      titleTextStyle: screenHeader,
+      title: FittedBox(fit: BoxFit.contain, child: Text(title)),
+    );
   }
 }
