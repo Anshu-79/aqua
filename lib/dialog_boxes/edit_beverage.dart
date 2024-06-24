@@ -189,7 +189,7 @@ class _EditBeverageDialogState extends State<EditBeverageDialog> {
                               final beverage = BeveragesCompanion(
                                 bevID: drift.Value(widget.beverage.bevID),
                                 bevName:
-                                    drift.Value(beverageNameController.text),
+                                    drift.Value(beverageNameController.text.trim()),
                                 colorCode: drift.Value(
                                     utils.toHexString(_currentColor)),
                                 waterPercent: drift.Value(_waterPercent),

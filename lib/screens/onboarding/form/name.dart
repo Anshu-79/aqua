@@ -94,7 +94,7 @@ class _NameInputScreenState extends State<NameInputScreen> {
                       ),
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
-                          final name = nameController.text;
+                          final name = nameController.text.trim();
 
                           context.flow<Profile>().update((profile) =>
                               profile.copyWith(name: name).incrementPage());
