@@ -71,13 +71,11 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                         borderRadius: BorderRadius.circular(20)),
                     splashColor: utils.getWorkoutColor(activity.activityID),
                     textColor: Theme.of(context).primaryColor,
-                    tileColor:
-                        (Theme.of(context).brightness ==
-                                Brightness.dark)
-                            ? utils.darken(
-                                utils.getWorkoutColor(activity.activityID), 50)
-                            : utils.lighten(
-                                utils.getWorkoutColor(activity.activityID), 50),
+                    tileColor: (Theme.of(context).brightness == Brightness.dark)
+                        ? utils.darken(
+                            utils.getWorkoutColor(activity.activityID), 50)
+                        : utils.lighten(
+                            utils.getWorkoutColor(activity.activityID), 50),
                     leading: Icon(
                       utils.icomoonMap[activity.category]![0],
                       size: 35,
@@ -89,26 +87,9 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                     onTap: () async {
                       Navigator.pop(context);
 
-                      WorkoutsCompanion? addedWorkout = await showGeneralDialog(
-                          barrierDismissible: false,
-                          transitionDuration: const Duration(milliseconds: 150),
-                          transitionBuilder: (context, a1, a2, child) {
-                            return ScaleTransition(
-                                scale: Tween<double>(begin: 0.5, end: 1.0)
-                                    .animate(a1),
-                                child: FadeTransition(
-                                  opacity: Tween<double>(begin: 0.5, end: 1.0)
-                                      .animate(a1),
-                                  child: CustomizeWorkout(
-                                    activity: activity,
-                                    notifyParent: refresh,
-                                  ),
-                                ));
-                          },
-                          context: context,
-                          pageBuilder: (context, a1, a2) {
-                            return const Placeholder();
-                          });
+                      WorkoutsCompanion? addedWorkout =
+                          await utils.GlobalNavigator.showAnimatedDialog(
+                              CustomizeWorkout(activity: activity));
 
                       await _db.insertOrUpdateWorkout(addedWorkout!);
                       widget.notifyParent();

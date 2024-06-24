@@ -183,7 +183,9 @@ abstract class ThemeText {
 
   // Home Screen
   static TextStyle dailyGoalConsumed = TextStyle(
-      fontSize: 100, fontWeight: FontWeight.w900, color: defaultColors['dark blue']);
+      fontSize: 100,
+      fontWeight: FontWeight.w900,
+      color: defaultColors['dark blue']);
 
   static TextStyle dailyGoalTotal = TextStyle(
       color: defaultColors['dark blue'],
@@ -377,6 +379,23 @@ class GlobalNavigator {
             ],
           );
         });
+  }
+
+  static Future<dynamic>? showAnimatedDialog(Widget dialog) async {
+    return await showGeneralDialog(
+      context: navigatorKey.currentContext!,
+      transitionDuration: const Duration(milliseconds: 500),
+      barrierDismissible: true,
+      barrierLabel: '',
+      pageBuilder: (context, animation1, animation2) => const Placeholder(),
+      transitionBuilder: (context, a1, a2, widget) {
+        final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
+        return Transform(
+          transform: Matrix4.translationValues(0.0, curvedValue * -200, 0.0),
+          child: Opacity(opacity: a1.value, child: dialog),
+        );
+      },
+    );
   }
 }
 

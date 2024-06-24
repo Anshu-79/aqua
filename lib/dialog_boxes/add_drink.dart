@@ -5,18 +5,18 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/database/database.dart';
 
-class AddWaterDialog extends StatefulWidget {
-  const AddWaterDialog(
+class AddDrinkDialog extends StatefulWidget {
+  const AddDrinkDialog(
       {super.key, required this.beverages, required this.notifyParent});
 
   final List<Beverage> beverages;
   final Function notifyParent;
 
   @override
-  State<AddWaterDialog> createState() => _AddWaterDialogState();
+  State<AddDrinkDialog> createState() => _AddDrinkDialogState();
 }
 
-class _AddWaterDialogState extends State<AddWaterDialog> {
+class _AddDrinkDialogState extends State<AddDrinkDialog> {
   int _bevIndex = 0;
   int _volume = 200;
 
@@ -70,7 +70,8 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
                                 borderRadius: BorderRadius.circular(20),
                                 color: Colors.white),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
                                 widget.beverages[_bevIndex].bevName,
                                 maxLines: 2,
@@ -117,10 +118,7 @@ class _AddWaterDialogState extends State<AddWaterDialog> {
                         maxValue: 1000,
                         value: _volume,
                         onChanged: (value) => setState(() => _volume = value)),
-                    Text(
-                      "mL",
-                      style: utils.ThemeText.addDrinkDialogText,
-                    )
+                    Text("mL", style: utils.ThemeText.addDrinkDialogText)
                   ],
                 ),
                 Row(

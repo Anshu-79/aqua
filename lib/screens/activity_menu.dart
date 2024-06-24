@@ -125,36 +125,18 @@ class _ActivityMenuState extends State<ActivityMenu> {
         height: 70,
         width: 70,
         child: FloatingActionButton(
-          onPressed: () async {
-            await showGeneralDialog(
-                barrierDismissible: false,
-                transitionDuration: const Duration(milliseconds: 150),
-                transitionBuilder: (context, a1, a2, child) {
-                  return ScaleTransition(
-                      scale: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
-                      child: FadeTransition(
-                        opacity:
-                            Tween<double>(begin: 0.5, end: 1.0).animate(a1),
-                        child: AddWorkoutDialog(
-                          notifyParent: refresh,
-                          activities: widget.database.getActivities(),
-                        ),
-                      ));
-                },
-                context: context,
-                pageBuilder: (context, a1, a2) {
-                  return const Placeholder();
-                });
-          },
           tooltip: "Add new workout",
           backgroundColor: Theme.of(context).primaryColor,
           splashColor: Theme.of(context).splashColor,
           shape: const CircleBorder(eccentricity: 0),
-          child: Icon(
-            Icons.add,
-            color: Theme.of(context).canvasColor,
-            size: 50,
-          ),
+          onPressed: () async {
+            await utils.GlobalNavigator.showAnimatedDialog(AddWorkoutDialog(
+              activities: widget.database.getActivities(),
+              notifyParent: refresh,
+            ));
+          },
+          child:
+              Icon(Icons.add, color: Theme.of(context).canvasColor, size: 50),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

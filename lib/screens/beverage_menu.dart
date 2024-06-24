@@ -31,7 +31,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
           future: widget.database.getBeverages(),
           builder: (context, snapshot) {
             final List<Beverage> beverages = snapshot.data ?? [];
-      
+
             //print(beverages);
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -39,7 +39,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                     color: Theme.of(context).primaryColor),
               );
             }
-      
+
             if (snapshot.hasError) {
               return Center(
                 child: Text(snapshot.error.toString()),
@@ -52,8 +52,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                     return Card(
                       margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
                       elevation: 0,
-                      color:
-                          utils.toColor(beverage.colorCode).withOpacity(0.3),
+                      color: utils.toColor(beverage.colorCode).withOpacity(0.3),
                       shape: RoundedRectangleBorder(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(30)),
@@ -63,40 +62,20 @@ class _BeverageMenuState extends State<BeverageMenu> {
                       child: ListTile(
                         onTap: () async {
                           if (beverage.bevID != 1) {
-                            List? output = await showGeneralDialog(
-                                barrierDismissible: false,
-                                transitionDuration:
-                                    const Duration(milliseconds: 150),
-                                transitionBuilder: (context, a1, a2, child) {
-                                  return ScaleTransition(
-                                      scale:
-                                          Tween<double>(begin: 0.5, end: 1.0)
-                                              .animate(a1),
-                                      child: FadeTransition(
-                                        opacity: Tween<double>(
-                                                begin: 0.5, end: 1.0)
-                                            .animate(a1),
-                                        child: EditBeverageDialog(
-                                          beverage: beverage,
-                                          notifyParent: refresh,
-                                        ),
-                                      ));
-                                },
-                                context: context,
-                                pageBuilder: (context, a1, a2) {
-                                  return const Placeholder();
-                                });
-      
+                            List? output =
+                                await utils.GlobalNavigator.showAnimatedDialog(
+                                    EditBeverageDialog(
+                                        notifyParent: refresh,
+                                        beverage: beverage));
+
                             if (output![0] == 0) {
                               List<Beverage> bevList =
                                   await widget.database.getBeverages();
                               List<String> bevNames =
                                   bevList.map((bev) => bev.bevName).toList();
-      
-                              if (bevNames
-                                      .contains(output[1].bevName.value) &&
-                                  beverage.bevName !=
-                                      output[1].bevName.value) {
+
+                              if (bevNames.contains(output[1].bevName.value) &&
+                                  beverage.bevName != output[1].bevName.value) {
                                 showBevMenuSnackBar(
                                     Theme.of(context).primaryColor,
                                     'This beverage already exists');
@@ -138,24 +117,10 @@ class _BeverageMenuState extends State<BeverageMenu> {
         width: 70,
         child: FloatingActionButton(
           onPressed: () async {
-            BeveragesCompanion? addedBeverage = await showGeneralDialog(
-                barrierDismissible: false,
-                transitionDuration: const Duration(milliseconds: 150),
-                transitionBuilder: (context, a1, a2, child) {
-                  return ScaleTransition(
-                      scale: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
-                      child: FadeTransition(
-                        opacity:
-                            Tween<double>(begin: 0.5, end: 1.0).animate(a1),
-                        child: AddBeverageDialog(
-                          notifyParent: refresh,
-                        ),
-                      ));
-                },
-                context: context,
-                pageBuilder: (context, a1, a2) {
-                  return const Placeholder();
-                });
+            BeveragesCompanion? addedBeverage =
+                await utils.GlobalNavigator.showAnimatedDialog(
+                    AddBeverageDialog(notifyParent: refresh));
+
             List<Beverage> bevList = await widget.database.getBeverages();
             List<String> bevNames = bevList.map((bev) => bev.bevName).toList();
 
