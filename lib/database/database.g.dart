@@ -9,20 +9,19 @@ class $BeveragesTable extends Beverages
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $BeveragesTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _bevIDMeta = const VerificationMeta('bevID');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<int> bevID = GeneratedColumn<int>(
-      'bev_ID', aliasedName, false,
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
       hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _bevNameMeta =
-      const VerificationMeta('bevName');
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
-  late final GeneratedColumn<String> bevName = GeneratedColumn<String>(
-      'bev_name', aliasedName, false,
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _colorCodeMeta =
       const VerificationMeta('colorCode');
@@ -39,9 +38,18 @@ class $BeveragesTable extends Beverages
   late final GeneratedColumn<int> waterPercent = GeneratedColumn<int>(
       'water_percent', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _starredMeta =
+      const VerificationMeta('starred');
+  @override
+  late final GeneratedColumn<bool> starred = GeneratedColumn<bool>(
+      'starred', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("starred" IN (0, 1))'));
   @override
   List<GeneratedColumn> get $columns =>
-      [bevID, bevName, colorCode, waterPercent];
+      [id, name, colorCode, waterPercent, starred];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -52,15 +60,14 @@ class $BeveragesTable extends Beverages
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('bev_ID')) {
-      context.handle(
-          _bevIDMeta, bevID.isAcceptableOrUnknown(data['bev_ID']!, _bevIDMeta));
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('bev_name')) {
-      context.handle(_bevNameMeta,
-          bevName.isAcceptableOrUnknown(data['bev_name']!, _bevNameMeta));
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
     } else if (isInserting) {
-      context.missing(_bevNameMeta);
+      context.missing(_nameMeta);
     }
     if (data.containsKey('color_code')) {
       context.handle(_colorCodeMeta,
@@ -76,23 +83,31 @@ class $BeveragesTable extends Beverages
     } else if (isInserting) {
       context.missing(_waterPercentMeta);
     }
+    if (data.containsKey('starred')) {
+      context.handle(_starredMeta,
+          starred.isAcceptableOrUnknown(data['starred']!, _starredMeta));
+    } else if (isInserting) {
+      context.missing(_starredMeta);
+    }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {bevID};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Beverage map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Beverage(
-      bevID: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}bev_ID'])!,
-      bevName: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}bev_name'])!,
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       colorCode: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}color_code'])!,
       waterPercent: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}water_percent'])!,
+      starred: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}starred'])!,
     );
   }
 
@@ -103,31 +118,35 @@ class $BeveragesTable extends Beverages
 }
 
 class Beverage extends DataClass implements Insertable<Beverage> {
-  final int bevID;
-  final String bevName;
+  final int id;
+  final String name;
   final String colorCode;
   final int waterPercent;
+  final bool starred;
   const Beverage(
-      {required this.bevID,
-      required this.bevName,
+      {required this.id,
+      required this.name,
       required this.colorCode,
-      required this.waterPercent});
+      required this.waterPercent,
+      required this.starred});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['bev_ID'] = Variable<int>(bevID);
-    map['bev_name'] = Variable<String>(bevName);
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
     map['color_code'] = Variable<String>(colorCode);
     map['water_percent'] = Variable<int>(waterPercent);
+    map['starred'] = Variable<bool>(starred);
     return map;
   }
 
   BeveragesCompanion toCompanion(bool nullToAbsent) {
     return BeveragesCompanion(
-      bevID: Value(bevID),
-      bevName: Value(bevName),
+      id: Value(id),
+      name: Value(name),
       colorCode: Value(colorCode),
       waterPercent: Value(waterPercent),
+      starred: Value(starred),
     );
   }
 
@@ -135,111 +154,125 @@ class Beverage extends DataClass implements Insertable<Beverage> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Beverage(
-      bevID: serializer.fromJson<int>(json['bevID']),
-      bevName: serializer.fromJson<String>(json['bevName']),
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
       colorCode: serializer.fromJson<String>(json['colorCode']),
       waterPercent: serializer.fromJson<int>(json['waterPercent']),
+      starred: serializer.fromJson<bool>(json['starred']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'bevID': serializer.toJson<int>(bevID),
-      'bevName': serializer.toJson<String>(bevName),
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
       'colorCode': serializer.toJson<String>(colorCode),
       'waterPercent': serializer.toJson<int>(waterPercent),
+      'starred': serializer.toJson<bool>(starred),
     };
   }
 
   Beverage copyWith(
-          {int? bevID,
-          String? bevName,
+          {int? id,
+          String? name,
           String? colorCode,
-          int? waterPercent}) =>
+          int? waterPercent,
+          bool? starred}) =>
       Beverage(
-        bevID: bevID ?? this.bevID,
-        bevName: bevName ?? this.bevName,
+        id: id ?? this.id,
+        name: name ?? this.name,
         colorCode: colorCode ?? this.colorCode,
         waterPercent: waterPercent ?? this.waterPercent,
+        starred: starred ?? this.starred,
       );
   @override
   String toString() {
     return (StringBuffer('Beverage(')
-          ..write('bevID: $bevID, ')
-          ..write('bevName: $bevName, ')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
           ..write('colorCode: $colorCode, ')
-          ..write('waterPercent: $waterPercent')
+          ..write('waterPercent: $waterPercent, ')
+          ..write('starred: $starred')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(bevID, bevName, colorCode, waterPercent);
+  int get hashCode => Object.hash(id, name, colorCode, waterPercent, starred);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Beverage &&
-          other.bevID == this.bevID &&
-          other.bevName == this.bevName &&
+          other.id == this.id &&
+          other.name == this.name &&
           other.colorCode == this.colorCode &&
-          other.waterPercent == this.waterPercent);
+          other.waterPercent == this.waterPercent &&
+          other.starred == this.starred);
 }
 
 class BeveragesCompanion extends UpdateCompanion<Beverage> {
-  final Value<int> bevID;
-  final Value<String> bevName;
+  final Value<int> id;
+  final Value<String> name;
   final Value<String> colorCode;
   final Value<int> waterPercent;
+  final Value<bool> starred;
   const BeveragesCompanion({
-    this.bevID = const Value.absent(),
-    this.bevName = const Value.absent(),
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
     this.colorCode = const Value.absent(),
     this.waterPercent = const Value.absent(),
+    this.starred = const Value.absent(),
   });
   BeveragesCompanion.insert({
-    this.bevID = const Value.absent(),
-    required String bevName,
+    this.id = const Value.absent(),
+    required String name,
     required String colorCode,
     required int waterPercent,
-  })  : bevName = Value(bevName),
+    required bool starred,
+  })  : name = Value(name),
         colorCode = Value(colorCode),
-        waterPercent = Value(waterPercent);
+        waterPercent = Value(waterPercent),
+        starred = Value(starred);
   static Insertable<Beverage> custom({
-    Expression<int>? bevID,
-    Expression<String>? bevName,
+    Expression<int>? id,
+    Expression<String>? name,
     Expression<String>? colorCode,
     Expression<int>? waterPercent,
+    Expression<bool>? starred,
   }) {
     return RawValuesInsertable({
-      if (bevID != null) 'bev_ID': bevID,
-      if (bevName != null) 'bev_name': bevName,
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
       if (colorCode != null) 'color_code': colorCode,
       if (waterPercent != null) 'water_percent': waterPercent,
+      if (starred != null) 'starred': starred,
     });
   }
 
   BeveragesCompanion copyWith(
-      {Value<int>? bevID,
-      Value<String>? bevName,
+      {Value<int>? id,
+      Value<String>? name,
       Value<String>? colorCode,
-      Value<int>? waterPercent}) {
+      Value<int>? waterPercent,
+      Value<bool>? starred}) {
     return BeveragesCompanion(
-      bevID: bevID ?? this.bevID,
-      bevName: bevName ?? this.bevName,
+      id: id ?? this.id,
+      name: name ?? this.name,
       colorCode: colorCode ?? this.colorCode,
       waterPercent: waterPercent ?? this.waterPercent,
+      starred: starred ?? this.starred,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (bevID.present) {
-      map['bev_ID'] = Variable<int>(bevID.value);
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
     }
-    if (bevName.present) {
-      map['bev_name'] = Variable<String>(bevName.value);
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
     }
     if (colorCode.present) {
       map['color_code'] = Variable<String>(colorCode.value);
@@ -247,16 +280,20 @@ class BeveragesCompanion extends UpdateCompanion<Beverage> {
     if (waterPercent.present) {
       map['water_percent'] = Variable<int>(waterPercent.value);
     }
+    if (starred.present) {
+      map['starred'] = Variable<bool>(starred.value);
+    }
     return map;
   }
 
   @override
   String toString() {
     return (StringBuffer('BeveragesCompanion(')
-          ..write('bevID: $bevID, ')
-          ..write('bevName: $bevName, ')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
           ..write('colorCode: $colorCode, ')
-          ..write('waterPercent: $waterPercent')
+          ..write('waterPercent: $waterPercent, ')
+          ..write('starred: $starred')
           ..write(')'))
         .toString();
   }
@@ -267,11 +304,10 @@ class $DrinksTable extends Drinks with TableInfo<$DrinksTable, Drink> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $DrinksTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _drinkIDMeta =
-      const VerificationMeta('drinkID');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<int> drinkID = GeneratedColumn<int>(
-      'drink_ID', aliasedName, false,
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
       hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
@@ -284,7 +320,7 @@ class $DrinksTable extends Drinks with TableInfo<$DrinksTable, Drink> {
       type: DriftSqlType.int,
       requiredDuringInsert: true,
       defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES beverages (bev_ID)'));
+          GeneratedColumn.constraintIsAlways('REFERENCES beverages (id)'));
   static const VerificationMeta _volumeMeta = const VerificationMeta('volume');
   @override
   late final GeneratedColumn<int> volume = GeneratedColumn<int>(
@@ -297,7 +333,7 @@ class $DrinksTable extends Drinks with TableInfo<$DrinksTable, Drink> {
       'datetime', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [drinkID, bevID, volume, datetime];
+  List<GeneratedColumn> get $columns => [id, bevID, volume, datetime];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -308,9 +344,8 @@ class $DrinksTable extends Drinks with TableInfo<$DrinksTable, Drink> {
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('drink_ID')) {
-      context.handle(_drinkIDMeta,
-          drinkID.isAcceptableOrUnknown(data['drink_ID']!, _drinkIDMeta));
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('bev_ID')) {
       context.handle(
@@ -334,13 +369,13 @@ class $DrinksTable extends Drinks with TableInfo<$DrinksTable, Drink> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {drinkID};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Drink map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Drink(
-      drinkID: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}drink_ID'])!,
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       bevID: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}bev_ID'])!,
       volume: attachedDatabase.typeMapping
@@ -357,19 +392,19 @@ class $DrinksTable extends Drinks with TableInfo<$DrinksTable, Drink> {
 }
 
 class Drink extends DataClass implements Insertable<Drink> {
-  final int drinkID;
+  final int id;
   final int bevID;
   final int volume;
   final DateTime datetime;
   const Drink(
-      {required this.drinkID,
+      {required this.id,
       required this.bevID,
       required this.volume,
       required this.datetime});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['drink_ID'] = Variable<int>(drinkID);
+    map['id'] = Variable<int>(id);
     map['bev_ID'] = Variable<int>(bevID);
     map['volume'] = Variable<int>(volume);
     map['datetime'] = Variable<DateTime>(datetime);
@@ -378,7 +413,7 @@ class Drink extends DataClass implements Insertable<Drink> {
 
   DrinksCompanion toCompanion(bool nullToAbsent) {
     return DrinksCompanion(
-      drinkID: Value(drinkID),
+      id: Value(id),
       bevID: Value(bevID),
       volume: Value(volume),
       datetime: Value(datetime),
@@ -389,7 +424,7 @@ class Drink extends DataClass implements Insertable<Drink> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Drink(
-      drinkID: serializer.fromJson<int>(json['drinkID']),
+      id: serializer.fromJson<int>(json['id']),
       bevID: serializer.fromJson<int>(json['bevID']),
       volume: serializer.fromJson<int>(json['volume']),
       datetime: serializer.fromJson<DateTime>(json['datetime']),
@@ -399,16 +434,16 @@ class Drink extends DataClass implements Insertable<Drink> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'drinkID': serializer.toJson<int>(drinkID),
+      'id': serializer.toJson<int>(id),
       'bevID': serializer.toJson<int>(bevID),
       'volume': serializer.toJson<int>(volume),
       'datetime': serializer.toJson<DateTime>(datetime),
     };
   }
 
-  Drink copyWith({int? drinkID, int? bevID, int? volume, DateTime? datetime}) =>
+  Drink copyWith({int? id, int? bevID, int? volume, DateTime? datetime}) =>
       Drink(
-        drinkID: drinkID ?? this.drinkID,
+        id: id ?? this.id,
         bevID: bevID ?? this.bevID,
         volume: volume ?? this.volume,
         datetime: datetime ?? this.datetime,
@@ -416,7 +451,7 @@ class Drink extends DataClass implements Insertable<Drink> {
   @override
   String toString() {
     return (StringBuffer('Drink(')
-          ..write('drinkID: $drinkID, ')
+          ..write('id: $id, ')
           ..write('bevID: $bevID, ')
           ..write('volume: $volume, ')
           ..write('datetime: $datetime')
@@ -425,30 +460,30 @@ class Drink extends DataClass implements Insertable<Drink> {
   }
 
   @override
-  int get hashCode => Object.hash(drinkID, bevID, volume, datetime);
+  int get hashCode => Object.hash(id, bevID, volume, datetime);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Drink &&
-          other.drinkID == this.drinkID &&
+          other.id == this.id &&
           other.bevID == this.bevID &&
           other.volume == this.volume &&
           other.datetime == this.datetime);
 }
 
 class DrinksCompanion extends UpdateCompanion<Drink> {
-  final Value<int> drinkID;
+  final Value<int> id;
   final Value<int> bevID;
   final Value<int> volume;
   final Value<DateTime> datetime;
   const DrinksCompanion({
-    this.drinkID = const Value.absent(),
+    this.id = const Value.absent(),
     this.bevID = const Value.absent(),
     this.volume = const Value.absent(),
     this.datetime = const Value.absent(),
   });
   DrinksCompanion.insert({
-    this.drinkID = const Value.absent(),
+    this.id = const Value.absent(),
     required int bevID,
     required int volume,
     required DateTime datetime,
@@ -456,13 +491,13 @@ class DrinksCompanion extends UpdateCompanion<Drink> {
         volume = Value(volume),
         datetime = Value(datetime);
   static Insertable<Drink> custom({
-    Expression<int>? drinkID,
+    Expression<int>? id,
     Expression<int>? bevID,
     Expression<int>? volume,
     Expression<DateTime>? datetime,
   }) {
     return RawValuesInsertable({
-      if (drinkID != null) 'drink_ID': drinkID,
+      if (id != null) 'id': id,
       if (bevID != null) 'bev_ID': bevID,
       if (volume != null) 'volume': volume,
       if (datetime != null) 'datetime': datetime,
@@ -470,12 +505,12 @@ class DrinksCompanion extends UpdateCompanion<Drink> {
   }
 
   DrinksCompanion copyWith(
-      {Value<int>? drinkID,
+      {Value<int>? id,
       Value<int>? bevID,
       Value<int>? volume,
       Value<DateTime>? datetime}) {
     return DrinksCompanion(
-      drinkID: drinkID ?? this.drinkID,
+      id: id ?? this.id,
       bevID: bevID ?? this.bevID,
       volume: volume ?? this.volume,
       datetime: datetime ?? this.datetime,
@@ -485,8 +520,8 @@ class DrinksCompanion extends UpdateCompanion<Drink> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (drinkID.present) {
-      map['drink_ID'] = Variable<int>(drinkID.value);
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
     }
     if (bevID.present) {
       map['bev_ID'] = Variable<int>(bevID.value);
@@ -503,7 +538,7 @@ class DrinksCompanion extends UpdateCompanion<Drink> {
   @override
   String toString() {
     return (StringBuffer('DrinksCompanion(')
-          ..write('drinkID: $drinkID, ')
+          ..write('id: $id, ')
           ..write('bevID: $bevID, ')
           ..write('volume: $volume, ')
           ..write('datetime: $datetime')
@@ -518,11 +553,10 @@ class $ActivitiesTable extends Activities
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $ActivitiesTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _activityIDMeta =
-      const VerificationMeta('activityID');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<int> activityID = GeneratedColumn<int>(
-      'activity_ID', aliasedName, false,
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
       hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
@@ -548,8 +582,7 @@ class $ActivitiesTable extends Activities
       'description', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns =>
-      [activityID, category, met, description];
+  List<GeneratedColumn> get $columns => [id, category, met, description];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -560,11 +593,8 @@ class $ActivitiesTable extends Activities
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('activity_ID')) {
-      context.handle(
-          _activityIDMeta,
-          activityID.isAcceptableOrUnknown(
-              data['activity_ID']!, _activityIDMeta));
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('category')) {
       context.handle(_categoryMeta,
@@ -590,13 +620,13 @@ class $ActivitiesTable extends Activities
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {activityID};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Activity map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Activity(
-      activityID: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}activity_ID'])!,
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       category: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}category'])!,
       met: attachedDatabase.typeMapping
@@ -613,19 +643,19 @@ class $ActivitiesTable extends Activities
 }
 
 class Activity extends DataClass implements Insertable<Activity> {
-  final int activityID;
+  final int id;
   final String category;
   final double met;
   final String description;
   const Activity(
-      {required this.activityID,
+      {required this.id,
       required this.category,
       required this.met,
       required this.description});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['activity_ID'] = Variable<int>(activityID);
+    map['id'] = Variable<int>(id);
     map['category'] = Variable<String>(category);
     map['MET'] = Variable<double>(met);
     map['description'] = Variable<String>(description);
@@ -634,7 +664,7 @@ class Activity extends DataClass implements Insertable<Activity> {
 
   ActivitiesCompanion toCompanion(bool nullToAbsent) {
     return ActivitiesCompanion(
-      activityID: Value(activityID),
+      id: Value(id),
       category: Value(category),
       met: Value(met),
       description: Value(description),
@@ -645,7 +675,7 @@ class Activity extends DataClass implements Insertable<Activity> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Activity(
-      activityID: serializer.fromJson<int>(json['activityID']),
+      id: serializer.fromJson<int>(json['id']),
       category: serializer.fromJson<String>(json['category']),
       met: serializer.fromJson<double>(json['met']),
       description: serializer.fromJson<String>(json['description']),
@@ -655,7 +685,7 @@ class Activity extends DataClass implements Insertable<Activity> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'activityID': serializer.toJson<int>(activityID),
+      'id': serializer.toJson<int>(id),
       'category': serializer.toJson<String>(category),
       'met': serializer.toJson<double>(met),
       'description': serializer.toJson<String>(description),
@@ -663,12 +693,9 @@ class Activity extends DataClass implements Insertable<Activity> {
   }
 
   Activity copyWith(
-          {int? activityID,
-          String? category,
-          double? met,
-          String? description}) =>
+          {int? id, String? category, double? met, String? description}) =>
       Activity(
-        activityID: activityID ?? this.activityID,
+        id: id ?? this.id,
         category: category ?? this.category,
         met: met ?? this.met,
         description: description ?? this.description,
@@ -676,7 +703,7 @@ class Activity extends DataClass implements Insertable<Activity> {
   @override
   String toString() {
     return (StringBuffer('Activity(')
-          ..write('activityID: $activityID, ')
+          ..write('id: $id, ')
           ..write('category: $category, ')
           ..write('met: $met, ')
           ..write('description: $description')
@@ -685,30 +712,30 @@ class Activity extends DataClass implements Insertable<Activity> {
   }
 
   @override
-  int get hashCode => Object.hash(activityID, category, met, description);
+  int get hashCode => Object.hash(id, category, met, description);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Activity &&
-          other.activityID == this.activityID &&
+          other.id == this.id &&
           other.category == this.category &&
           other.met == this.met &&
           other.description == this.description);
 }
 
 class ActivitiesCompanion extends UpdateCompanion<Activity> {
-  final Value<int> activityID;
+  final Value<int> id;
   final Value<String> category;
   final Value<double> met;
   final Value<String> description;
   const ActivitiesCompanion({
-    this.activityID = const Value.absent(),
+    this.id = const Value.absent(),
     this.category = const Value.absent(),
     this.met = const Value.absent(),
     this.description = const Value.absent(),
   });
   ActivitiesCompanion.insert({
-    this.activityID = const Value.absent(),
+    this.id = const Value.absent(),
     required String category,
     required double met,
     required String description,
@@ -716,13 +743,13 @@ class ActivitiesCompanion extends UpdateCompanion<Activity> {
         met = Value(met),
         description = Value(description);
   static Insertable<Activity> custom({
-    Expression<int>? activityID,
+    Expression<int>? id,
     Expression<String>? category,
     Expression<double>? met,
     Expression<String>? description,
   }) {
     return RawValuesInsertable({
-      if (activityID != null) 'activity_ID': activityID,
+      if (id != null) 'id': id,
       if (category != null) 'category': category,
       if (met != null) 'MET': met,
       if (description != null) 'description': description,
@@ -730,12 +757,12 @@ class ActivitiesCompanion extends UpdateCompanion<Activity> {
   }
 
   ActivitiesCompanion copyWith(
-      {Value<int>? activityID,
+      {Value<int>? id,
       Value<String>? category,
       Value<double>? met,
       Value<String>? description}) {
     return ActivitiesCompanion(
-      activityID: activityID ?? this.activityID,
+      id: id ?? this.id,
       category: category ?? this.category,
       met: met ?? this.met,
       description: description ?? this.description,
@@ -745,8 +772,8 @@ class ActivitiesCompanion extends UpdateCompanion<Activity> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (activityID.present) {
-      map['activity_ID'] = Variable<int>(activityID.value);
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
     }
     if (category.present) {
       map['category'] = Variable<String>(category.value);
@@ -763,7 +790,7 @@ class ActivitiesCompanion extends UpdateCompanion<Activity> {
   @override
   String toString() {
     return (StringBuffer('ActivitiesCompanion(')
-          ..write('activityID: $activityID, ')
+          ..write('id: $id, ')
           ..write('category: $category, ')
           ..write('met: $met, ')
           ..write('description: $description')
@@ -777,11 +804,10 @@ class $WorkoutsTable extends Workouts with TableInfo<$WorkoutsTable, Workout> {
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $WorkoutsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _workoutIDMeta =
-      const VerificationMeta('workoutID');
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<int> workoutID = GeneratedColumn<int>(
-      'workout_ID', aliasedName, false,
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
       hasAutoIncrement: true,
       type: DriftSqlType.int,
       requiredDuringInsert: false,
@@ -794,8 +820,8 @@ class $WorkoutsTable extends Workouts with TableInfo<$WorkoutsTable, Workout> {
       'activity_ID', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
-      defaultConstraints: GeneratedColumn.constraintIsAlways(
-          'REFERENCES activities (activity_ID)'));
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES activities (id)'));
   static const VerificationMeta _datetimeMeta =
       const VerificationMeta('datetime');
   @override
@@ -809,8 +835,7 @@ class $WorkoutsTable extends Workouts with TableInfo<$WorkoutsTable, Workout> {
       'duration', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns =>
-      [workoutID, activityID, datetime, duration];
+  List<GeneratedColumn> get $columns => [id, activityID, datetime, duration];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -821,9 +846,8 @@ class $WorkoutsTable extends Workouts with TableInfo<$WorkoutsTable, Workout> {
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('workout_ID')) {
-      context.handle(_workoutIDMeta,
-          workoutID.isAcceptableOrUnknown(data['workout_ID']!, _workoutIDMeta));
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('activity_ID')) {
       context.handle(
@@ -849,13 +873,13 @@ class $WorkoutsTable extends Workouts with TableInfo<$WorkoutsTable, Workout> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {workoutID};
+  Set<GeneratedColumn> get $primaryKey => {id};
   @override
   Workout map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Workout(
-      workoutID: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}workout_ID'])!,
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       activityID: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}activity_ID'])!,
       datetime: attachedDatabase.typeMapping
@@ -872,19 +896,19 @@ class $WorkoutsTable extends Workouts with TableInfo<$WorkoutsTable, Workout> {
 }
 
 class Workout extends DataClass implements Insertable<Workout> {
-  final int workoutID;
+  final int id;
   final int activityID;
   final DateTime datetime;
   final int duration;
   const Workout(
-      {required this.workoutID,
+      {required this.id,
       required this.activityID,
       required this.datetime,
       required this.duration});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['workout_ID'] = Variable<int>(workoutID);
+    map['id'] = Variable<int>(id);
     map['activity_ID'] = Variable<int>(activityID);
     map['datetime'] = Variable<DateTime>(datetime);
     map['duration'] = Variable<int>(duration);
@@ -893,7 +917,7 @@ class Workout extends DataClass implements Insertable<Workout> {
 
   WorkoutsCompanion toCompanion(bool nullToAbsent) {
     return WorkoutsCompanion(
-      workoutID: Value(workoutID),
+      id: Value(id),
       activityID: Value(activityID),
       datetime: Value(datetime),
       duration: Value(duration),
@@ -904,7 +928,7 @@ class Workout extends DataClass implements Insertable<Workout> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Workout(
-      workoutID: serializer.fromJson<int>(json['workoutID']),
+      id: serializer.fromJson<int>(json['id']),
       activityID: serializer.fromJson<int>(json['activityID']),
       datetime: serializer.fromJson<DateTime>(json['datetime']),
       duration: serializer.fromJson<int>(json['duration']),
@@ -914,7 +938,7 @@ class Workout extends DataClass implements Insertable<Workout> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'workoutID': serializer.toJson<int>(workoutID),
+      'id': serializer.toJson<int>(id),
       'activityID': serializer.toJson<int>(activityID),
       'datetime': serializer.toJson<DateTime>(datetime),
       'duration': serializer.toJson<int>(duration),
@@ -922,12 +946,9 @@ class Workout extends DataClass implements Insertable<Workout> {
   }
 
   Workout copyWith(
-          {int? workoutID,
-          int? activityID,
-          DateTime? datetime,
-          int? duration}) =>
+          {int? id, int? activityID, DateTime? datetime, int? duration}) =>
       Workout(
-        workoutID: workoutID ?? this.workoutID,
+        id: id ?? this.id,
         activityID: activityID ?? this.activityID,
         datetime: datetime ?? this.datetime,
         duration: duration ?? this.duration,
@@ -935,7 +956,7 @@ class Workout extends DataClass implements Insertable<Workout> {
   @override
   String toString() {
     return (StringBuffer('Workout(')
-          ..write('workoutID: $workoutID, ')
+          ..write('id: $id, ')
           ..write('activityID: $activityID, ')
           ..write('datetime: $datetime, ')
           ..write('duration: $duration')
@@ -944,30 +965,30 @@ class Workout extends DataClass implements Insertable<Workout> {
   }
 
   @override
-  int get hashCode => Object.hash(workoutID, activityID, datetime, duration);
+  int get hashCode => Object.hash(id, activityID, datetime, duration);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Workout &&
-          other.workoutID == this.workoutID &&
+          other.id == this.id &&
           other.activityID == this.activityID &&
           other.datetime == this.datetime &&
           other.duration == this.duration);
 }
 
 class WorkoutsCompanion extends UpdateCompanion<Workout> {
-  final Value<int> workoutID;
+  final Value<int> id;
   final Value<int> activityID;
   final Value<DateTime> datetime;
   final Value<int> duration;
   const WorkoutsCompanion({
-    this.workoutID = const Value.absent(),
+    this.id = const Value.absent(),
     this.activityID = const Value.absent(),
     this.datetime = const Value.absent(),
     this.duration = const Value.absent(),
   });
   WorkoutsCompanion.insert({
-    this.workoutID = const Value.absent(),
+    this.id = const Value.absent(),
     required int activityID,
     required DateTime datetime,
     required int duration,
@@ -975,13 +996,13 @@ class WorkoutsCompanion extends UpdateCompanion<Workout> {
         datetime = Value(datetime),
         duration = Value(duration);
   static Insertable<Workout> custom({
-    Expression<int>? workoutID,
+    Expression<int>? id,
     Expression<int>? activityID,
     Expression<DateTime>? datetime,
     Expression<int>? duration,
   }) {
     return RawValuesInsertable({
-      if (workoutID != null) 'workout_ID': workoutID,
+      if (id != null) 'id': id,
       if (activityID != null) 'activity_ID': activityID,
       if (datetime != null) 'datetime': datetime,
       if (duration != null) 'duration': duration,
@@ -989,12 +1010,12 @@ class WorkoutsCompanion extends UpdateCompanion<Workout> {
   }
 
   WorkoutsCompanion copyWith(
-      {Value<int>? workoutID,
+      {Value<int>? id,
       Value<int>? activityID,
       Value<DateTime>? datetime,
       Value<int>? duration}) {
     return WorkoutsCompanion(
-      workoutID: workoutID ?? this.workoutID,
+      id: id ?? this.id,
       activityID: activityID ?? this.activityID,
       datetime: datetime ?? this.datetime,
       duration: duration ?? this.duration,
@@ -1004,8 +1025,8 @@ class WorkoutsCompanion extends UpdateCompanion<Workout> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (workoutID.present) {
-      map['workout_ID'] = Variable<int>(workoutID.value);
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
     }
     if (activityID.present) {
       map['activity_ID'] = Variable<int>(activityID.value);
@@ -1022,7 +1043,7 @@ class WorkoutsCompanion extends UpdateCompanion<Workout> {
   @override
   String toString() {
     return (StringBuffer('WorkoutsCompanion(')
-          ..write('workoutID: $workoutID, ')
+          ..write('id: $id, ')
           ..write('activityID: $activityID, ')
           ..write('datetime: $datetime, ')
           ..write('duration: $duration')
@@ -1276,16 +1297,18 @@ abstract class _$Database extends GeneratedDatabase {
 }
 
 typedef $$BeveragesTableInsertCompanionBuilder = BeveragesCompanion Function({
-  Value<int> bevID,
-  required String bevName,
+  Value<int> id,
+  required String name,
   required String colorCode,
   required int waterPercent,
+  required bool starred,
 });
 typedef $$BeveragesTableUpdateCompanionBuilder = BeveragesCompanion Function({
-  Value<int> bevID,
-  Value<String> bevName,
+  Value<int> id,
+  Value<String> name,
   Value<String> colorCode,
   Value<int> waterPercent,
+  Value<bool> starred,
 });
 
 class $$BeveragesTableTableManager extends RootTableManager<
@@ -1308,28 +1331,32 @@ class $$BeveragesTableTableManager extends RootTableManager<
           getChildManagerBuilder: (p) =>
               $$BeveragesTableProcessedTableManager(p),
           getUpdateCompanionBuilder: ({
-            Value<int> bevID = const Value.absent(),
-            Value<String> bevName = const Value.absent(),
+            Value<int> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
             Value<String> colorCode = const Value.absent(),
             Value<int> waterPercent = const Value.absent(),
+            Value<bool> starred = const Value.absent(),
           }) =>
               BeveragesCompanion(
-            bevID: bevID,
-            bevName: bevName,
+            id: id,
+            name: name,
             colorCode: colorCode,
             waterPercent: waterPercent,
+            starred: starred,
           ),
           getInsertCompanionBuilder: ({
-            Value<int> bevID = const Value.absent(),
-            required String bevName,
+            Value<int> id = const Value.absent(),
+            required String name,
             required String colorCode,
             required int waterPercent,
+            required bool starred,
           }) =>
               BeveragesCompanion.insert(
-            bevID: bevID,
-            bevName: bevName,
+            id: id,
+            name: name,
             colorCode: colorCode,
             waterPercent: waterPercent,
+            starred: starred,
           ),
         ));
 }
@@ -1349,13 +1376,13 @@ class $$BeveragesTableProcessedTableManager extends ProcessedTableManager<
 class $$BeveragesTableFilterComposer
     extends FilterComposer<_$Database, $BeveragesTable> {
   $$BeveragesTableFilterComposer(super.$state);
-  ColumnFilters<int> get bevID => $state.composableBuilder(
-      column: $state.table.bevID,
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
-  ColumnFilters<String> get bevName => $state.composableBuilder(
-      column: $state.table.bevName,
+  ColumnFilters<String> get name => $state.composableBuilder(
+      column: $state.table.name,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
@@ -1369,11 +1396,16 @@ class $$BeveragesTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
+  ColumnFilters<bool> get starred => $state.composableBuilder(
+      column: $state.table.starred,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
   ComposableFilter drinksRefs(
       ComposableFilter Function($$DrinksTableFilterComposer f) f) {
     final $$DrinksTableFilterComposer composer = $state.composerBuilder(
         composer: this,
-        getCurrentColumn: (t) => t.bevID,
+        getCurrentColumn: (t) => t.id,
         referencedTable: $state.db.drinks,
         getReferencedColumn: (t) => t.bevID,
         builder: (joinBuilder, parentComposers) => $$DrinksTableFilterComposer(
@@ -1386,13 +1418,13 @@ class $$BeveragesTableFilterComposer
 class $$BeveragesTableOrderingComposer
     extends OrderingComposer<_$Database, $BeveragesTable> {
   $$BeveragesTableOrderingComposer(super.$state);
-  ColumnOrderings<int> get bevID => $state.composableBuilder(
-      column: $state.table.bevID,
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  ColumnOrderings<String> get bevName => $state.composableBuilder(
-      column: $state.table.bevName,
+  ColumnOrderings<String> get name => $state.composableBuilder(
+      column: $state.table.name,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
@@ -1405,16 +1437,21 @@ class $$BeveragesTableOrderingComposer
       column: $state.table.waterPercent,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<bool> get starred => $state.composableBuilder(
+      column: $state.table.starred,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
 }
 
 typedef $$DrinksTableInsertCompanionBuilder = DrinksCompanion Function({
-  Value<int> drinkID,
+  Value<int> id,
   required int bevID,
   required int volume,
   required DateTime datetime,
 });
 typedef $$DrinksTableUpdateCompanionBuilder = DrinksCompanion Function({
-  Value<int> drinkID,
+  Value<int> id,
   Value<int> bevID,
   Value<int> volume,
   Value<DateTime> datetime,
@@ -1439,25 +1476,25 @@ class $$DrinksTableTableManager extends RootTableManager<
               $$DrinksTableOrderingComposer(ComposerState(db, table)),
           getChildManagerBuilder: (p) => $$DrinksTableProcessedTableManager(p),
           getUpdateCompanionBuilder: ({
-            Value<int> drinkID = const Value.absent(),
+            Value<int> id = const Value.absent(),
             Value<int> bevID = const Value.absent(),
             Value<int> volume = const Value.absent(),
             Value<DateTime> datetime = const Value.absent(),
           }) =>
               DrinksCompanion(
-            drinkID: drinkID,
+            id: id,
             bevID: bevID,
             volume: volume,
             datetime: datetime,
           ),
           getInsertCompanionBuilder: ({
-            Value<int> drinkID = const Value.absent(),
+            Value<int> id = const Value.absent(),
             required int bevID,
             required int volume,
             required DateTime datetime,
           }) =>
               DrinksCompanion.insert(
-            drinkID: drinkID,
+            id: id,
             bevID: bevID,
             volume: volume,
             datetime: datetime,
@@ -1480,8 +1517,8 @@ class $$DrinksTableProcessedTableManager extends ProcessedTableManager<
 class $$DrinksTableFilterComposer
     extends FilterComposer<_$Database, $DrinksTable> {
   $$DrinksTableFilterComposer(super.$state);
-  ColumnFilters<int> get drinkID => $state.composableBuilder(
-      column: $state.table.drinkID,
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
@@ -1500,7 +1537,7 @@ class $$DrinksTableFilterComposer
         composer: this,
         getCurrentColumn: (t) => t.bevID,
         referencedTable: $state.db.beverages,
-        getReferencedColumn: (t) => t.bevID,
+        getReferencedColumn: (t) => t.id,
         builder: (joinBuilder, parentComposers) =>
             $$BeveragesTableFilterComposer(ComposerState(
                 $state.db, $state.db.beverages, joinBuilder, parentComposers)));
@@ -1511,8 +1548,8 @@ class $$DrinksTableFilterComposer
 class $$DrinksTableOrderingComposer
     extends OrderingComposer<_$Database, $DrinksTable> {
   $$DrinksTableOrderingComposer(super.$state);
-  ColumnOrderings<int> get drinkID => $state.composableBuilder(
-      column: $state.table.drinkID,
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
@@ -1531,7 +1568,7 @@ class $$DrinksTableOrderingComposer
         composer: this,
         getCurrentColumn: (t) => t.bevID,
         referencedTable: $state.db.beverages,
-        getReferencedColumn: (t) => t.bevID,
+        getReferencedColumn: (t) => t.id,
         builder: (joinBuilder, parentComposers) =>
             $$BeveragesTableOrderingComposer(ComposerState(
                 $state.db, $state.db.beverages, joinBuilder, parentComposers)));
@@ -1540,13 +1577,13 @@ class $$DrinksTableOrderingComposer
 }
 
 typedef $$ActivitiesTableInsertCompanionBuilder = ActivitiesCompanion Function({
-  Value<int> activityID,
+  Value<int> id,
   required String category,
   required double met,
   required String description,
 });
 typedef $$ActivitiesTableUpdateCompanionBuilder = ActivitiesCompanion Function({
-  Value<int> activityID,
+  Value<int> id,
   Value<String> category,
   Value<double> met,
   Value<String> description,
@@ -1572,25 +1609,25 @@ class $$ActivitiesTableTableManager extends RootTableManager<
           getChildManagerBuilder: (p) =>
               $$ActivitiesTableProcessedTableManager(p),
           getUpdateCompanionBuilder: ({
-            Value<int> activityID = const Value.absent(),
+            Value<int> id = const Value.absent(),
             Value<String> category = const Value.absent(),
             Value<double> met = const Value.absent(),
             Value<String> description = const Value.absent(),
           }) =>
               ActivitiesCompanion(
-            activityID: activityID,
+            id: id,
             category: category,
             met: met,
             description: description,
           ),
           getInsertCompanionBuilder: ({
-            Value<int> activityID = const Value.absent(),
+            Value<int> id = const Value.absent(),
             required String category,
             required double met,
             required String description,
           }) =>
               ActivitiesCompanion.insert(
-            activityID: activityID,
+            id: id,
             category: category,
             met: met,
             description: description,
@@ -1613,8 +1650,8 @@ class $$ActivitiesTableProcessedTableManager extends ProcessedTableManager<
 class $$ActivitiesTableFilterComposer
     extends FilterComposer<_$Database, $ActivitiesTable> {
   $$ActivitiesTableFilterComposer(super.$state);
-  ColumnFilters<int> get activityID => $state.composableBuilder(
-      column: $state.table.activityID,
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
@@ -1637,7 +1674,7 @@ class $$ActivitiesTableFilterComposer
       ComposableFilter Function($$WorkoutsTableFilterComposer f) f) {
     final $$WorkoutsTableFilterComposer composer = $state.composerBuilder(
         composer: this,
-        getCurrentColumn: (t) => t.activityID,
+        getCurrentColumn: (t) => t.id,
         referencedTable: $state.db.workouts,
         getReferencedColumn: (t) => t.activityID,
         builder: (joinBuilder, parentComposers) =>
@@ -1650,8 +1687,8 @@ class $$ActivitiesTableFilterComposer
 class $$ActivitiesTableOrderingComposer
     extends OrderingComposer<_$Database, $ActivitiesTable> {
   $$ActivitiesTableOrderingComposer(super.$state);
-  ColumnOrderings<int> get activityID => $state.composableBuilder(
-      column: $state.table.activityID,
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
@@ -1672,13 +1709,13 @@ class $$ActivitiesTableOrderingComposer
 }
 
 typedef $$WorkoutsTableInsertCompanionBuilder = WorkoutsCompanion Function({
-  Value<int> workoutID,
+  Value<int> id,
   required int activityID,
   required DateTime datetime,
   required int duration,
 });
 typedef $$WorkoutsTableUpdateCompanionBuilder = WorkoutsCompanion Function({
-  Value<int> workoutID,
+  Value<int> id,
   Value<int> activityID,
   Value<DateTime> datetime,
   Value<int> duration,
@@ -1704,25 +1741,25 @@ class $$WorkoutsTableTableManager extends RootTableManager<
           getChildManagerBuilder: (p) =>
               $$WorkoutsTableProcessedTableManager(p),
           getUpdateCompanionBuilder: ({
-            Value<int> workoutID = const Value.absent(),
+            Value<int> id = const Value.absent(),
             Value<int> activityID = const Value.absent(),
             Value<DateTime> datetime = const Value.absent(),
             Value<int> duration = const Value.absent(),
           }) =>
               WorkoutsCompanion(
-            workoutID: workoutID,
+            id: id,
             activityID: activityID,
             datetime: datetime,
             duration: duration,
           ),
           getInsertCompanionBuilder: ({
-            Value<int> workoutID = const Value.absent(),
+            Value<int> id = const Value.absent(),
             required int activityID,
             required DateTime datetime,
             required int duration,
           }) =>
               WorkoutsCompanion.insert(
-            workoutID: workoutID,
+            id: id,
             activityID: activityID,
             datetime: datetime,
             duration: duration,
@@ -1745,8 +1782,8 @@ class $$WorkoutsTableProcessedTableManager extends ProcessedTableManager<
 class $$WorkoutsTableFilterComposer
     extends FilterComposer<_$Database, $WorkoutsTable> {
   $$WorkoutsTableFilterComposer(super.$state);
-  ColumnFilters<int> get workoutID => $state.composableBuilder(
-      column: $state.table.workoutID,
+  ColumnFilters<int> get id => $state.composableBuilder(
+      column: $state.table.id,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
@@ -1765,7 +1802,7 @@ class $$WorkoutsTableFilterComposer
         composer: this,
         getCurrentColumn: (t) => t.activityID,
         referencedTable: $state.db.activities,
-        getReferencedColumn: (t) => t.activityID,
+        getReferencedColumn: (t) => t.id,
         builder: (joinBuilder, parentComposers) =>
             $$ActivitiesTableFilterComposer(ComposerState($state.db,
                 $state.db.activities, joinBuilder, parentComposers)));
@@ -1776,8 +1813,8 @@ class $$WorkoutsTableFilterComposer
 class $$WorkoutsTableOrderingComposer
     extends OrderingComposer<_$Database, $WorkoutsTable> {
   $$WorkoutsTableOrderingComposer(super.$state);
-  ColumnOrderings<int> get workoutID => $state.composableBuilder(
-      column: $state.table.workoutID,
+  ColumnOrderings<int> get id => $state.composableBuilder(
+      column: $state.table.id,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
@@ -1796,7 +1833,7 @@ class $$WorkoutsTableOrderingComposer
         composer: this,
         getCurrentColumn: (t) => t.activityID,
         referencedTable: $state.db.activities,
-        getReferencedColumn: (t) => t.activityID,
+        getReferencedColumn: (t) => t.id,
         builder: (joinBuilder, parentComposers) =>
             $$ActivitiesTableOrderingComposer(ComposerState($state.db,
                 $state.db.activities, joinBuilder, parentComposers)));

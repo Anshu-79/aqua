@@ -168,7 +168,7 @@ class _AddBeverageDialogState extends State<AddBeverageDialog> {
                         function: () {
                           if (formKey.currentState!.validate()) {
                             final beverage = BeveragesCompanion(
-                              bevName: drift.Value(beverageNameController.text.trim()),
+                              name: drift.Value(beverageNameController.text.trim()),
                               colorCode:
                                   drift.Value(utils.toHexString(currentColor!)),
                               waterPercent: drift.Value(_waterPercent),

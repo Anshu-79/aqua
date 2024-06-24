@@ -69,13 +69,11 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                     shape: RoundedRectangleBorder(
                         side: BorderSide(color: Theme.of(context).primaryColor),
                         borderRadius: BorderRadius.circular(20)),
-                    splashColor: utils.getWorkoutColor(activity.activityID),
+                    splashColor: utils.getWorkoutColor(activity.id),
                     textColor: Theme.of(context).primaryColor,
                     tileColor: (Theme.of(context).brightness == Brightness.dark)
-                        ? utils.darken(
-                            utils.getWorkoutColor(activity.activityID), 50)
-                        : utils.lighten(
-                            utils.getWorkoutColor(activity.activityID), 50),
+                        ? utils.darken(utils.getWorkoutColor(activity.id), 50)
+                        : utils.lighten(utils.getWorkoutColor(activity.id), 50),
                     leading: Icon(
                       utils.icomoonMap[activity.category]![0],
                       size: 35,
@@ -102,10 +100,7 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // TODO: Replace with mascot
-                    Icon(
-                      Icons.sentiment_dissatisfied_outlined,
-                      size: 60,
-                    ),
+                    Icon(Icons.sentiment_dissatisfied_outlined, size: 60),
                     Text("Nothing in here!"),
                   ],
                 ),

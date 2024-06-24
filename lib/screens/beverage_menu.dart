@@ -56,7 +56,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                               width: 5)),
                       child: ListTile(
                         onTap: () async {
-                          if (beverage.bevID != 1) {
+                          if (beverage.id != 1) {
                             List? output =
                                 await utils.GlobalNavigator.showAnimatedDialog(
                                     EditBeverageDialog(
@@ -66,11 +66,11 @@ class _BeverageMenuState extends State<BeverageMenu> {
                             if (output![0] == 0) {
                               List<Beverage> bevList =
                                   await widget.database.getBeverages();
-                              List<String> bevNames =
-                                  bevList.map((bev) => bev.bevName).toList();
+                              List<String> names =
+                                  bevList.map((bev) => bev.name).toList();
 
-                              if (bevNames.contains(output[1].bevName.value) &&
-                                  beverage.bevName != output[1].bevName.value) {
+                              if (names.contains(output[1].name.value) &&
+                                  beverage.name != output[1].name.value) {
                                 utils.GlobalNavigator.showSnackBar(
                                     "This beverage already exists", null);
                               } else {
@@ -89,7 +89,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                             }
                           } else {
                             utils.GlobalNavigator.showSnackBar(
-                                '${beverage.bevName} cannot be edited',
+                                '${beverage.name} cannot be edited',
                                 utils.toColor(beverage.colorCode));
                           }
                         },
@@ -98,7 +98,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                         ),
                         splashColor: utils.toColor(beverage.colorCode),
                         title: _BeverageCard(
-                            beverageName: beverage.bevName,
+                            beverageName: beverage.name,
                             beverageColor: beverage.colorCode,
                             waterFraction: beverage.waterPercent),
                       ),
@@ -116,9 +116,9 @@ class _BeverageMenuState extends State<BeverageMenu> {
                     AddBeverageDialog(notifyParent: refresh));
 
             List<Beverage> bevList = await widget.database.getBeverages();
-            List<String> bevNames = bevList.map((bev) => bev.bevName).toList();
+            List<String> names = bevList.map((bev) => bev.name).toList();
 
-            if (bevNames.contains(addedBeverage!.bevName.value)) {
+            if (names.contains(addedBeverage!.name.value)) {
               utils.GlobalNavigator.showSnackBar(
                   'This beverage already exists', null);
             } else {
@@ -167,11 +167,20 @@ class _BeverageCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                beverageName,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: utils.ThemeText.beverageName,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    beverageName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: utils.ThemeText.beverageName,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.star_border),
+                    onPressed: () {},
+                  )
+                ],
               ),
               Text(
                 "Water Percentage",

@@ -19,7 +19,7 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: utils.getWorkoutColor(widget.activity!.activityID),
+      backgroundColor: utils.getWorkoutColor(widget.activity!.id),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(40),
           side: BorderSide(width: 5, color: Theme.of(context).primaryColor)),
@@ -33,7 +33,7 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Icon(
-                utils.getWorkoutIcon(widget.activity!.activityID),
+                utils.getWorkoutIcon(widget.activity!.id),
                 size: 60,
               ),
               FittedBox(
@@ -84,13 +84,13 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
                     icon: const Icon(Icons.check),
                     function: () {
                       final workout = WorkoutsCompanion(
-                        activityID: drift.Value(widget.activity!.activityID),
+                        activityID: drift.Value(widget.activity!.id),
                         datetime: drift.Value(DateTime.now()),
                         duration: drift.Value(_duration),
                       );
                       Navigator.pop(context, workout);
                       utils.GlobalNavigator.showSnackBar("Activity Added",
-                          utils.getWorkoutColor(widget.activity!.activityID));
+                          utils.getWorkoutColor(widget.activity!.id));
                     },
                   ),
                   utils.addDrinkDialogButtons(
