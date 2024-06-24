@@ -89,11 +89,8 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
                         duration: drift.Value(_duration),
                       );
                       Navigator.pop(context, workout);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          utils.coloredSnackBar(
-                              utils
-                                  .getWorkoutColor(widget.activity!.activityID),
-                              "Activity Added"));
+                      utils.GlobalNavigator.showSnackBar("Activity Added",
+                          utils.getWorkoutColor(widget.activity!.activityID));
                     },
                   ),
                   utils.addDrinkDialogButtons(

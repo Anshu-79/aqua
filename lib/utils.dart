@@ -307,22 +307,6 @@ class addDrinkDialogButtons extends StatelessWidget {
   }
 }
 
-SnackBar coloredSnackBar(Color color, String text) {
-  return SnackBar(
-    duration: const Duration(seconds: 1),
-    content: Text(
-      text,
-      style: const TextStyle(color: Colors.white),
-    ),
-    backgroundColor: color,
-    action: SnackBarAction(
-      label: 'Dismiss',
-      textColor: Colors.white,
-      onPressed: () {},
-    ),
-  );
-}
-
 class BorderedText extends StatelessWidget {
   const BorderedText({super.key, required this.text, required this.textStyle});
   final String text;
@@ -348,6 +332,22 @@ class BorderedText extends StatelessWidget {
 }
 
 class GlobalNavigator {
+  static void showSnackBar(String text, Color? color) {
+    BuildContext context = navigatorKey.currentContext!;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: const Duration(milliseconds: 500),
+        content: Text(text,
+            style: TextStyle(
+              color: Theme.of(context).canvasColor,
+            )),
+        backgroundColor: color,
+        action: SnackBarAction(
+          label: 'Dismiss',
+          textColor: Theme.of(context).canvasColor,
+          onPressed: () {},
+        )));
+  }
+
   static Future<dynamic>? showAlertDialog(
       String text, Widget? altDataCollection) async {
     return await showDialog(

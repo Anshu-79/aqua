@@ -18,11 +18,6 @@ class BeverageMenu extends StatefulWidget {
 class _BeverageMenuState extends State<BeverageMenu> {
   refresh() => setState(() {});
 
-  void showBevMenuSnackBar(Color color, String text) {
-    final snackbar = utils.coloredSnackBar(color, text);
-    ScaffoldMessenger.of(context).showSnackBar(snackbar);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,27 +71,26 @@ class _BeverageMenuState extends State<BeverageMenu> {
 
                               if (bevNames.contains(output[1].bevName.value) &&
                                   beverage.bevName != output[1].bevName.value) {
-                                showBevMenuSnackBar(
-                                    Theme.of(context).primaryColor,
-                                    'This beverage already exists');
+                                utils.GlobalNavigator.showSnackBar(
+                                    "This beverage already exists", null);
                               } else {
                                 BeveragesCompanion beverage = output[1];
-                                showBevMenuSnackBar(
-                                    utils.toColor(beverage.colorCode.value),
-                                    'Beverage Edited');
+
                                 await widget.database
                                     .insertOrUpdateBeverage(beverage);
+                                utils.GlobalNavigator.showSnackBar(
+                                    'Beverage Edited',
+                                    utils.toColor(beverage.colorCode.value));
                               }
                             } else if (output[0] == 1) {
-                              showBevMenuSnackBar(
-                                  Theme.of(context).primaryColor,
-                                  'Beverage Deleted');
+                              utils.GlobalNavigator.showSnackBar(
+                                  'Beverage Deleted', null);
                               await widget.database.deleteBeverage(output[1]);
                             }
                           } else {
-                            showBevMenuSnackBar(
-                                utils.toColor(beverage.colorCode),
-                                '${beverage.bevName} cannot be edited');
+                            utils.GlobalNavigator.showSnackBar(
+                                '${beverage.bevName} cannot be edited',
+                                utils.toColor(beverage.colorCode));
                           }
                         },
                         shape: const RoundedRectangleBorder(
@@ -125,11 +119,11 @@ class _BeverageMenuState extends State<BeverageMenu> {
             List<String> bevNames = bevList.map((bev) => bev.bevName).toList();
 
             if (bevNames.contains(addedBeverage!.bevName.value)) {
-              showBevMenuSnackBar(Theme.of(context).primaryColor,
-                  'This beverage already exists');
+              utils.GlobalNavigator.showSnackBar(
+                  'This beverage already exists', null);
             } else {
-              showBevMenuSnackBar(utils.toColor(addedBeverage.colorCode.value),
-                  'Beverage Added');
+              utils.GlobalNavigator.showSnackBar('Beverage Added',
+                  utils.toColor(addedBeverage.colorCode.value));
               await widget.database.insertOrUpdateBeverage(addedBeverage);
             }
           },

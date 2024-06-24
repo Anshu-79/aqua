@@ -71,7 +71,7 @@ class Database extends _$Database {
   Future<Beverage> getBeverageFromName(String name) async {
     final query = select(beverages)..where((t) => t.bevName.equals(name));
     final bevs = await query.get();
-    if (bevs.isEmpty) return getBeverageFromName('Water')!;
+    if (bevs.isEmpty) return getBeverageFromName('Water');
     return bevs[0];
   }
 
