@@ -175,6 +175,7 @@ class _WaterGoalForegroundState extends State<WaterGoalForeground> {
         children: [
           utils.BorderedText(
               text: getGoalText(widget.consumedVol),
+              strokeWidth: 4,
               textStyle: utils.ThemeText.dailyGoalConsumed),
           Text.rich(
               TextSpan(text: " L", style: utils.ThemeText.dailyGoalFillerText))
@@ -184,6 +185,7 @@ class _WaterGoalForegroundState extends State<WaterGoalForeground> {
       Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         utils.BorderedText(
             text: getGoalText(widget.totalVol),
+            strokeWidth: 4,
             textStyle: utils.ThemeText.dailyGoalTotal),
         Text.rich(
             TextSpan(text: " L", style: utils.ThemeText.dailyGoalFillerText)),

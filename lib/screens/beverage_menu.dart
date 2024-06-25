@@ -196,6 +196,7 @@ class _BeverageCardState extends State<BeverageCard> {
                 IconButton(
                   icon: starred ? filledStarIcon : blankStarIcon,
                   onPressed: () {
+                    if (widget.bvg.id == 1) return;
                     widget.db.toggleBeverageStar(widget.bvg.id, starred);
                     setState(() => starred = !starred);
                   },

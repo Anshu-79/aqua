@@ -64,6 +64,43 @@ class ReminderBox extends StatelessWidget {
   }
 }
 
+class ExtendedFabButton extends StatelessWidget {
+  const ExtendedFabButton({super.key, required this.bev});
+  final Beverage? bev;
+  static const double iconSize = 45;
+
+  @override
+  Widget build(BuildContext context) {
+    if (bev == null) return SizedBox.shrink();
+
+    return SizedBox(
+      child: TextButton(
+          style: TextButton.styleFrom(
+              shape: const CircleBorder(),
+              backgroundColor: utils.toColor(bev!.colorCode)),
+          onPressed: () {},
+          child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icomoon.water_glass,
+                    color: Colors.white, size: iconSize),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: iconSize),
+                  child: Text(bev!.name,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: false,
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
+                )
+              ],
+            ),
+          )),
+    );
+  }
+}
+
 class CircularFab extends StatefulWidget {
   const CircularFab({super.key, required this.db, required this.notifyParent});
   final Database db;
@@ -75,7 +112,9 @@ class CircularFab extends StatefulWidget {
 
 class _CircularFabState extends State<CircularFab> {
   late List<Widget> _fabButtons;
+  int fabButtonsCount = 3;
   bool _loading = true;
+  bool _fabOpen = false;
 
   @override
   void initState() {
@@ -84,21 +123,21 @@ class _CircularFabState extends State<CircularFab> {
   }
 
   Future<void> _loadFabButtons() async {
-    final List<Beverage> starredBevs = await widget.db.getStarredBeverages();
+    final List<Beverage> starBevs = await widget.db.getStarredBeverages();
 
-    final widgets = List.generate(5, (idx) {
-      final bev = starredBevs[idx];
-      return GestureDetector(
-        child: Column(
-          children: [
-            Icon(Icomoon.iced_liquid, color: utils.toColor(bev.colorCode)),
-            Text(bev.name)
-          ],
-        ),
-        onTap: () {},
-        onLongPress: () {},
-      );
+    if (starBevs.length < fabButtonsCount) fabButtonsCount = starBevs.length;
+
+    final widgets = List.generate(fabButtonsCount, (idx) {
+      final bev = starBevs[idx];
+      return ExtendedFabButton(bev: bev);
     });
+
+    // Adding Placeholder widgets at the start & end of list
+    // so that the item is displayed at the center
+    if (widgets.length < 2) {
+      widgets.add(const ExtendedFabButton(bev: null));
+      widgets.insert(0, const ExtendedFabButton(bev: null));
+    }
 
     setState(() {
       _fabButtons = widgets;
@@ -109,14 +148,18 @@ class _CircularFabState extends State<CircularFab> {
   @override
   Widget build(BuildContext context) {
     return FabCircularMenuPlus(
+      onDisplayChange: (isOpen) => setState(() => _fabOpen = isOpen),
       animationDuration: const Duration(milliseconds: 200),
       alignment: Alignment.bottomCenter,
       fabSize: 70,
-      ringDiameter: 300,
-      ringColor: Theme.of(context).canvasColor.withOpacity(0.8),
+      ringDiameter: 350,
+      ringWidth: 100,
+      ringColor: Colors.transparent,
       fabColor: Theme.of(context).splashColor,
       fabChild: GestureDetector(
-          child: const Icon(Icons.add, size: 30),
+          child: _fabOpen
+              ? const Icon(Icons.close, size: 30)
+              : const Icon(Icons.add, size: 30),
           onLongPress: () async {
             List<Beverage> beverages = await widget.db.getBeverages();
             await utils.GlobalNavigator.showAnimatedDialog(AddDrinkDialog(
@@ -124,7 +167,9 @@ class _CircularFabState extends State<CircularFab> {
               notifyParent: widget.notifyParent,
             ));
           }),
-      children: _loading ? [const CircularProgressIndicator()] : _fabButtons,
+      children: _loading
+          ? List.generate(2, (idx) => const CircularProgressIndicator())
+          : _fabButtons,
     );
   }
 }
