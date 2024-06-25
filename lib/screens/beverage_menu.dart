@@ -1,10 +1,9 @@
-import 'package:aqua/icomoon_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:aqua/utils.dart' as utils;
 
+import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/dialog_boxes/beverage.dart';
+import 'package:aqua/icomoon_icons.dart';
 import 'package:aqua/database/database.dart';
-import 'package:aqua/dialog_boxes/add_beverage.dart';
-import 'package:aqua/dialog_boxes/edit_beverage.dart';
 
 class BeverageMenu extends StatefulWidget {
   const BeverageMenu({super.key, required this.database});
@@ -56,7 +55,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
             shape: const CircleBorder(eccentricity: 0),
             onPressed: () async {
               final output = await utils.GlobalNavigator.showAnimatedDialog(
-                  AddBeverageDialog(notifyParent: refresh));
+                  BeverageDialog(notifyParent: refresh, beverage: null));
 
               BeveragesCompanion? addedBeverage = output[1];
 
@@ -114,7 +113,7 @@ class _BeverageCardState extends State<BeverageCard> {
     }
 
     List? output = await utils.GlobalNavigator.showAnimatedDialog(
-        EditBeverageDialog(notifyParent: refresh, beverage: widget.bvg));
+        BeverageDialog(notifyParent: refresh, beverage: widget.bvg));
 
     String choice = output![0];
 
