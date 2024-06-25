@@ -20,6 +20,21 @@ class _AddDrinkDialogState extends State<AddDrinkDialog> {
   int _bevIndex = 0;
   int _volume = 200;
 
+  void changeDrink(int jump) {
+    final int len = widget.beverages.length;
+
+    // Allows to move through beverages circularly
+    if (jump == -1) {
+      if (_bevIndex == 0) return setState(() => _bevIndex = len - 1);
+    } else {
+      if (_bevIndex == len - 1) return setState(() => _bevIndex = 0);
+    }
+
+    return setState(() => _bevIndex += jump);
+  }
+
+  void changeVolume(int volume) => setState(() => _volume = volume);
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -28,122 +43,155 @@ class _AddDrinkDialogState extends State<AddDrinkDialog> {
             borderRadius: BorderRadius.circular(40),
             side: BorderSide(width: 5, color: Theme.of(context).primaryColor)),
         backgroundColor: utils.toColor(widget.beverages[_bevIndex].colorCode),
-        surfaceTintColor: Colors.transparent,
         child: Container(
           alignment: Alignment.bottomCenter,
           height: 400,
           width: 150,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30),
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 5),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: IconButton(
-                            padding: const EdgeInsets.only(left: 10),
-                            color: Colors.black,
-                            onPressed: () {
-                              if (_bevIndex == 0) {
-                                setState(() =>
-                                    (_bevIndex = widget.beverages.length - 1));
-                              } else {
-                                setState(() => _bevIndex -= 1);
-                              }
-                            },
-                            icon: const Icon(Icons.arrow_back_ios)),
-                      ),
-                      SizedBox(
-                        width: 150,
-                        height: 80,
-                        child: FittedBox(
-                          fit: BoxFit.contain,
-                          clipBehavior: Clip.antiAlias,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.white),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                widget.beverages[_bevIndex].name,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: utils.ThemeText.addDrinkBeverageName,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: IconButton(
-                            color: Colors.black,
-                            onPressed: () {
-                              if (_bevIndex == widget.beverages.length - 1) {
-                                setState(() => _bevIndex = 0);
-                              } else {
-                                setState(() => _bevIndex += 1);
-                              }
-                            },
-                            icon: const Icon(Icons.arrow_forward_ios)),
-                      ),
-                    ],
-                  ),
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    NumberPicker(
-                        itemHeight: 60,
-                        itemWidth: 120,
-                        selectedTextStyle: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 50),
-                        textStyle: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                        axis: Axis.vertical,
-                        minValue: 25,
-                        step: 25,
-                        maxValue: 1000,
-                        value: _volume,
-                        onChanged: (value) => setState(() => _volume = value)),
-                    Text("mL", style: utils.ThemeText.addDrinkDialogText)
+                    LeftButton(bevIndex: _bevIndex, changeDrink: changeDrink),
+                    BeverageName(bevName: widget.beverages[_bevIndex].name),
+                    RightButton(bevIndex: _bevIndex, changeDrink: changeDrink)
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    utils.DialogActionButton(
-                      icon: const Icon(Icons.check),
-                      function: () {
-                        final drink = DrinksCompanion(
-                            bevID:
-                                drift.Value(widget.beverages[_bevIndex].id),
-                            volume: drift.Value(_volume),
-                            datetime: drift.Value(DateTime.now()));
-                        Navigator.pop(context, drink);
-                      },
-                    ),
-                    utils.DialogActionButton(
-                        icon: const Icon(Icons.close),
-                        function: () =>
-                            Navigator.of(context, rootNavigator: true).pop())
-                  ],
-                )
+                VolumePicker(volume: _volume, changeVolume: changeVolume),
+                ActionButtons(
+                    id: widget.beverages[_bevIndex].id, volume: _volume)
               ],
             ),
           ),
         ));
+  }
+}
+
+class LeftButton extends StatelessWidget {
+  const LeftButton(
+      {super.key, required this.bevIndex, required this.changeDrink});
+  final int bevIndex;
+  final Function changeDrink;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        icon: const Icon(Icons.chevron_left),
+        color: Colors.black,
+        style: IconButton.styleFrom(backgroundColor: Colors.white),
+        onPressed: () => changeDrink(-1));
+  }
+}
+
+class RightButton extends StatelessWidget {
+  const RightButton(
+      {super.key, required this.bevIndex, required this.changeDrink});
+  final int bevIndex;
+  final Function changeDrink;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.chevron_right),
+      color: Colors.black,
+      style: IconButton.styleFrom(backgroundColor: Colors.white),
+      onPressed: () => changeDrink(1),
+    );
+  }
+}
+
+class BeverageName extends StatelessWidget {
+  const BeverageName({super.key, required this.bevName});
+  final String bevName;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 150,
+      height: 80,
+      child: FittedBox(
+        fit: BoxFit.contain,
+        clipBehavior: Clip.antiAlias,
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20), color: Colors.white),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              bevName,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: utils.ThemeText.addDrinkBeverageName,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class VolumePicker extends StatefulWidget {
+  const VolumePicker(
+      {super.key, required this.volume, required this.changeVolume});
+  final int volume;
+  final Function changeVolume;
+  @override
+  State<VolumePicker> createState() => _VolumePickerState();
+}
+
+class _VolumePickerState extends State<VolumePicker> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        NumberPicker(
+            itemHeight: 60,
+            itemWidth: 120,
+            selectedTextStyle: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w900, fontSize: 50),
+            textStyle: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+            axis: Axis.vertical,
+            minValue: 25,
+            step: 25,
+            maxValue: 1000,
+            value: widget.volume,
+            onChanged: (value) => widget.changeVolume(value)),
+        const SizedBox(width: 10),
+        Text("mL", style: utils.ThemeText.addDrinkDialogText)
+      ],
+    );
+  }
+}
+
+class ActionButtons extends StatelessWidget {
+  const ActionButtons({super.key, required this.id, required this.volume});
+  final int id;
+  final int volume;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        utils.DialogActionButton(
+          icon: const Icon(Icons.check),
+          function: () {
+            final drink = DrinksCompanion(
+                bevID: drift.Value(id),
+                volume: drift.Value(volume),
+                datetime: drift.Value(DateTime.now()));
+            Navigator.pop(context, drink);
+          },
+        ),
+        utils.DialogActionButton(
+            icon: const Icon(Icons.close),
+            function: () => Navigator.of(context, rootNavigator: true).pop())
+      ],
+    );
   }
 }
