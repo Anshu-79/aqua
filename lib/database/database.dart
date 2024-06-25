@@ -68,6 +68,11 @@ class Database extends _$Database {
     return await select(beverages).get();
   }
 
+  Future<Beverage> getBeverage(int id) async {
+    return await (select(beverages)..where((tbl) => tbl.id.equals(id)))
+        .getSingle();
+  }
+
   Future<int> toggleBeverageStar(int id, bool starred) async {
     return (update(beverages)..where((t) => t.id.equals(id)))
         .write(BeveragesCompanion(starred: Value(!starred)));

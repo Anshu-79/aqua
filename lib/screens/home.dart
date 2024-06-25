@@ -1,5 +1,4 @@
 import 'package:aqua/dialog_boxes/add_drink.dart';
-import 'package:drift/drift.dart' as drift;
 import 'package:fab_circular_menu_plus/fab_circular_menu_plus.dart';
 import 'package:flutter/material.dart';
 
@@ -76,7 +75,7 @@ class ExtendedFabButton extends StatelessWidget {
     return SizedBox(
       child: TextButton(
           style: TextButton.styleFrom(
-            shadowColor: Colors.black,
+              shadowColor: Colors.black,
               elevation: 6,
               shape: const CircleBorder(),
               backgroundColor: utils.toColor(bev!.colorCode)),
@@ -87,14 +86,14 @@ class ExtendedFabButton extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Icon(Icomoon.water_glass,
-                    color: Colors.white, size: iconSize),
+                    color: Colors.black, size: iconSize),
                 ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: iconSize),
                   child: Text(bev!.name,
                       overflow: TextOverflow.ellipsis,
                       softWrap: false,
                       style: const TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
+                          color: Colors.black, fontWeight: FontWeight.bold)),
                 )
               ],
             ),
@@ -164,10 +163,19 @@ class _CircularFabState extends State<CircularFab> {
               : const Icon(Icons.add, size: 30),
           onLongPress: () async {
             List<Beverage> beverages = await widget.db.getBeverages();
-            await utils.GlobalNavigator.showAnimatedDialog(AddDrinkDialog(
+            DrinksCompanion drink =
+                await utils.GlobalNavigator.showAnimatedDialog(AddDrinkDialog(
               beverages: beverages,
               notifyParent: widget.notifyParent,
             ));
+            await widget.db.insertOrUpdateDrink(drink);
+
+            Beverage bev = await widget.db.getBeverage(drink.bevID.value);
+
+            String msg = "${drink.volume} mL of ${bev.name} added!";
+            Color color = utils.toColor(bev.colorCode);
+
+            utils.GlobalNavigator.showSnackBar(msg, color);
           }),
       children: _loading
           ? List.generate(2, (idx) => const CircularProgressIndicator())
