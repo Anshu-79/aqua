@@ -308,18 +308,23 @@ class addDrinkDialogButtons extends StatelessWidget {
 }
 
 class BorderedText extends StatelessWidget {
-  const BorderedText({super.key, required this.text, required this.textStyle});
+  const BorderedText(
+      {super.key,
+      required this.text,
+      required this.textStyle,
+      required this.strokeWidth});
   final String text;
   final TextStyle textStyle;
+  final double strokeWidth;
 
   @override
   Widget build(BuildContext context) {
     TextStyle dailyGoalBorder = TextStyle(
-        fontSize: ThemeText.dailyGoalConsumed.fontSize,
-        fontWeight: ThemeText.dailyGoalConsumed.fontWeight,
+        fontSize: textStyle.fontSize,
+        fontWeight: textStyle.fontWeight,
         foreground: Paint()
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 4
+          ..strokeWidth = strokeWidth
           ..color = Colors.black);
 
     return Stack(children: [
@@ -328,6 +333,29 @@ class BorderedText extends StatelessWidget {
       ])),
       Text.rich(TextSpan(children: [TextSpan(text: text, style: textStyle)])),
     ]);
+  }
+}
+
+class BorderedIcon extends StatelessWidget {
+  const BorderedIcon(
+      {super.key,
+      required this.iconData,
+      required this.color,
+      required this.size,
+      required this.borderColor});
+  final IconData iconData;
+  final Color color;
+  final Color borderColor;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        // Icon(iconData, size: size + 2, color: borderColor),
+        Icon(iconData, size: size, color: color)
+      ],
+    );
   }
 }
 
