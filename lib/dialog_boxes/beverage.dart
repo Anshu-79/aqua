@@ -271,7 +271,7 @@ class _ActionButtonsState extends State<ActionButtons> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          utils.addDrinkDialogButtons(
+          utils.DialogActionButton(
             icon: const Icon(Icons.check),
             function: () {
               if (widget.formKey.currentState!.validate()) {
@@ -293,7 +293,7 @@ class _ActionButtonsState extends State<ActionButtons> {
             },
           ),
           (widget.bev != null)
-              ? utils.addDrinkDialogButtons(
+              ? utils.DialogActionButton(
                   icon: const Icon(Icons.delete_forever_outlined),
                   function: () {
                     Navigator.pop(context, ['delete', null]);
@@ -301,7 +301,7 @@ class _ActionButtonsState extends State<ActionButtons> {
                   },
                 )
               : const SizedBox.shrink(),
-          utils.addDrinkDialogButtons(
+          utils.DialogActionButton(
               icon: const Icon(Icons.close),
               function: () => Navigator.pop(context, ['exit', null]))
         ],

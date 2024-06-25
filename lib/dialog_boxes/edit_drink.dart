@@ -73,11 +73,11 @@ class _editDrinkDialogBoxState extends State<editDrinkDialogBox> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    utils.addDrinkDialogButtons(
+                    utils.DialogActionButton(
                       icon: const Icon(Icons.check),
                       function: () => {},
                     ),
-                    utils.addDrinkDialogButtons(
+                    utils.DialogActionButton(
                         icon: const Icon(Icons.close),
                         function: () =>
                             Navigator.of(context, rootNavigator: true).pop())

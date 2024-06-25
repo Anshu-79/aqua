@@ -80,7 +80,7 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  utils.addDrinkDialogButtons(
+                  utils.DialogActionButton(
                     icon: const Icon(Icons.check),
                     function: () {
                       final workout = WorkoutsCompanion(
@@ -93,7 +93,7 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
                           utils.getWorkoutColor(widget.activity!.id));
                     },
                   ),
-                  utils.addDrinkDialogButtons(
+                  utils.DialogActionButton(
                       icon: const Icon(Icons.close),
                       function: () => Navigator.pop(context))
                 ],

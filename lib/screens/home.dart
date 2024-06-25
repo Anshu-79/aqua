@@ -71,7 +71,7 @@ class ExtendedFabButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (bev == null) return SizedBox.shrink();
+    if (bev == null) return const SizedBox.shrink();
 
     return SizedBox(
       child: TextButton(
