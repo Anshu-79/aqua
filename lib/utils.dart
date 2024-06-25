@@ -285,8 +285,8 @@ abstract class ThemeText {
       const TextStyle(fontSize: 30, fontWeight: FontWeight.w900);
 }
 
-class addDrinkDialogButtons extends StatelessWidget {
-  const addDrinkDialogButtons(
+class DialogActionButton extends StatelessWidget {
+  const DialogActionButton(
       {super.key, required this.icon, required this.function});
   final Icon icon;
   final Function function;

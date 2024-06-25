@@ -124,7 +124,7 @@ class _AddDrinkDialogState extends State<AddDrinkDialog> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    utils.addDrinkDialogButtons(
+                    utils.DialogActionButton(
                       icon: const Icon(Icons.check),
                       function: () {
                         final drink = DrinksCompanion(
@@ -135,7 +135,7 @@ class _AddDrinkDialogState extends State<AddDrinkDialog> {
                         Navigator.pop(context, drink);
                       },
                     ),
-                    utils.addDrinkDialogButtons(
+                    utils.DialogActionButton(
                         icon: const Icon(Icons.close),
                         function: () =>
                             Navigator.of(context, rootNavigator: true).pop())
