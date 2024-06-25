@@ -22,7 +22,6 @@ Future<void> main() async {
   prefs.setBool('onboard', false);
   final String? weatherAPIKey = await initAPIKeys(prefs);
 
-  print(getWeather(weatherAPIKey!, prefs));
   runApp(Aqua(sharedPrefs: prefs));
 }
 

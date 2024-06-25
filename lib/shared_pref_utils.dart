@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/screens/onboarding/form/profile.dart';
@@ -18,6 +21,22 @@ Future<void> createUser(Profile profile, List<double?> location) async {
   prefs.setDouble('longitude', location[1]!);
   prefs.setDouble('altitude', location[2] ?? 0);
   prefs.setBool('onboard', true);
+}
+
+Future<void> savePictureLocally(File? image, String username) async {
+  if (image == null) return;
+
+  final directory = await getApplicationDocumentsDirectory();
+  final filePath = '${directory.path}/$username.png';
+
+  final newfile = await image.copy(filePath);
+
+  SharedPrefUtils.saveStr('photo_path', newfile.path);
+}
+
+Future<File?> getProfilePicture() async {
+  String? imgPath = await SharedPrefUtils.readPrefStr('photo_path');
+  return (imgPath == null) ? null : File(imgPath);
 }
 
 class SharedPrefUtils {
