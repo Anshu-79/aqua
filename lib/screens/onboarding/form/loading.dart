@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:aqua/main.dart';
@@ -6,37 +8,6 @@ import 'package:aqua/firestore_utils.dart' as firestore;
 import 'package:aqua/shared_pref_utils.dart' as shared_prefs;
 import 'package:aqua/location_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-class LoadingWhales extends StatelessWidget {
-  const LoadingWhales({super.key});
-
-  @override
-  Widget build(BuildContext context) =>
-      Image.asset('assets/images/loading_whales.gif');
-}
-
-class ContinueButton extends StatelessWidget {
-  const ContinueButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-        style: TextButton.styleFrom(
-            backgroundColor: Colors.black, shape: const CircleBorder()),
-        onPressed: () async {
-          final prefs = await SharedPreferences.getInstance();
-          if (context.mounted) {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => NavBar(prefs: prefs)));
-          }
-        },
-        child: const Text(
-          "Let's go!",
-          style: TextStyle(
-              color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900),
-        ));
-  }
-}
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key, required this.profile});
@@ -56,6 +27,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
     _createUser();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _uploadProfilePicture();
+  }
+
   Future<void> _createUser() async {
     if (!mounted) return;
     final location = await getCurrentLocation();
@@ -63,13 +40,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
     await firestore.createUser(widget.profile, location);
     await shared_prefs.createUser(widget.profile, location);
 
-    await firestore.saveProfilePictureLocally(
-        widget.profile.picture, widget.profile.name!);
-    await firestore.uploadProfilePicture(
+    await shared_prefs.savePictureLocally(
         widget.profile.picture, widget.profile.name!);
 
-    await Future.delayed(const Duration(milliseconds: 500));
     setState(() => _loaded = true);
+  }
+
+  Future<void> _uploadProfilePicture() async {
+    File? img = await shared_prefs.getProfilePicture();
+    await firestore.uploadProfilePicture(img, widget.profile.name!);
   }
 
   @override
@@ -107,5 +86,36 @@ class _LoadingScreenState extends State<LoadingScreen> {
         ),
       ),
     );
+  }
+}
+
+class LoadingWhales extends StatelessWidget {
+  const LoadingWhales({super.key});
+
+  @override
+  Widget build(BuildContext context) =>
+      Image.asset('assets/images/loading_whales.gif');
+}
+
+class ContinueButton extends StatelessWidget {
+  const ContinueButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+        style: TextButton.styleFrom(
+            backgroundColor: Colors.black, shape: const CircleBorder()),
+        onPressed: () async {
+          final prefs = await SharedPreferences.getInstance();
+          if (context.mounted) {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => NavBar(prefs: prefs)));
+          }
+        },
+        child: const Text(
+          "Let's go!",
+          style: TextStyle(
+              color: Colors.white, fontSize: 30, fontWeight: FontWeight.w900),
+        ));
   }
 }
