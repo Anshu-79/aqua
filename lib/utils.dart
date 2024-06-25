@@ -377,34 +377,37 @@ class GlobalNavigator {
   }
 
   static Future<dynamic>? showAlertDialog(
-      String text, Widget? altDataCollection) async {
+      String text, Widget? backupData) async {
     return await showDialog(
+        barrierDismissible: false,
         context: navigatorKey.currentContext!,
         builder: (context) {
-          return AlertDialog(
-            title: const Text("Permission denied"),
-            content: Text(text),
-            actions: [
-              TextButton(
-                  onPressed: () async => await openAppSettings(),
-                  child: const Text("Open Settings")),
-              TextButton(
-                  onPressed: () async {
-                    if (altDataCollection != null) {
-                      final val = await showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (context) {
-                            return PopScope(
-                                canPop: false, child: altDataCollection);
-                          });
-                      if (context.mounted) Navigator.pop(context, val);
-                    } else {
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: const Text("Continue")),
-            ],
+          return PopScope(
+            canPop: false,
+            child: AlertDialog(
+              title: const Text("Permission denied"),
+              content: Text(text),
+              actions: [
+                TextButton(
+                    onPressed: () async => await openAppSettings(),
+                    child: const Text("Open Settings")),
+                TextButton(
+                    onPressed: () async {
+                      if (backupData != null) {
+                        final val = await showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) {
+                              return PopScope(canPop: false, child: backupData);
+                            });
+                        if (context.mounted) Navigator.pop(context, val);
+                      } else {
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: const Text("Continue")),
+              ],
+            ),
           );
         });
   }
