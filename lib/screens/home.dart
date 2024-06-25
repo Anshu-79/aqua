@@ -76,6 +76,8 @@ class ExtendedFabButton extends StatelessWidget {
     return SizedBox(
       child: TextButton(
           style: TextButton.styleFrom(
+            shadowColor: Colors.black,
+              elevation: 6,
               shape: const CircleBorder(),
               backgroundColor: utils.toColor(bev!.colorCode)),
           onPressed: () {},
@@ -149,7 +151,7 @@ class _CircularFabState extends State<CircularFab> {
   Widget build(BuildContext context) {
     return FabCircularMenuPlus(
       onDisplayChange: (isOpen) => setState(() => _fabOpen = isOpen),
-      animationDuration: const Duration(milliseconds: 200),
+      animationDuration: const Duration(milliseconds: 500),
       alignment: Alignment.bottomCenter,
       fabSize: 70,
       ringDiameter: 350,
