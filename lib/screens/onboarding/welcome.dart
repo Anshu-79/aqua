@@ -24,7 +24,7 @@ class WelcomeScreen extends StatelessWidget {
             child: Crab(
               tag: 'graphic',
               child: Image.asset(
-                'assets/images/logo.png',
+                'assets/images/icon.png',
                 fit: BoxFit.contain,
               ),
             ),

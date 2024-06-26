@@ -59,7 +59,7 @@ class _OnboardingViewState extends State<OnboardingView>
       curve: Curves.easeInOut,
     ));
 
-    logo = Image.asset('assets/images/logo.png');
+    logo = Image.asset('assets/images/icon.png');
     reminderIcon = Image.asset('assets/images/reminder.gif');
     progressIcon = Image.asset('assets/images/progress.gif');
     congratsIcon = Image.asset('assets/images/congrats.gif');
