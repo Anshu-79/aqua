@@ -59,7 +59,7 @@ class _GoalScreenState extends State<GoalScreen> {
                 child: Crab(
                   tag: 'graphic',
                   child: Image.asset(
-                    'assets/images/logo.png',
+                    'assets/images/icon.png',
                     fit: BoxFit.contain,
                   ),
                 ),

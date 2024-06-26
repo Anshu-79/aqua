@@ -29,7 +29,7 @@ Future<void> createHydrationNotification(int minutes) async {
       title: '${Emojis.wheater_droplet} Add some water!',
       body: 'Drink water regularly to stay healthy.',
       notificationLayout: NotificationLayout.BigPicture,
-      largeIcon: "asset://assets/images/logo.png",
+      largeIcon: "asset://assets/images/icon.png",
     ),
     schedule: NotificationInterval(interval: 60 * minutes),
   );

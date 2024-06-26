@@ -82,7 +82,7 @@ class _LocationScreenState extends State<LocationScreen>
                       return FractionalTranslation(
                         translation: _translationAnimation.value,
                         child: Image.asset(
-                          'assets/images/logo.png',
+                          'assets/images/icon.png',
                           fit: BoxFit.contain,
                           width: 75,
                           height: 75,
