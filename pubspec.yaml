@@ -36,7 +36,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   firebase_core: ^2.25.4
-  firebase_messaging: ^14.7.16
   numberpicker: ^2.1.2
   drift: ^2.15.0
   sqlite3_flutter_libs: ^0.5.21
@@ -67,6 +66,8 @@ dependencies:
   fab_circular_menu_plus: ^0.0.2
   weather: ^3.1.1
   flutter_secure_storage: ^9.2.2
+  awesome_notifications: ^0.9.3+1
+  awesome_notifications_core: ^0.9.3
 
 dev_dependencies:
   drift_dev: ^2.15.0

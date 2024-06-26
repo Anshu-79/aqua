@@ -9,7 +9,7 @@ String locationMsg =
     "Accessing your location allows us to calculate your water intake more accurately. Do you wish to continue without providing location access?";
 
 Future<void> requestNotificationPermission() async {
-  var status = await Permission.notification.request();
+  var status = await Permission.scheduleExactAlarm.request();
   if (status.isGranted) {
     print("Notification permission granted");
   } else if (status.isDenied) {

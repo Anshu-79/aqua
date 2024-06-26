@@ -1,4 +1,5 @@
 import 'package:aqua/database/database.dart';
+import 'package:aqua/notifications.dart';
 import 'package:aqua/weather_utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +18,10 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setBool('onboard', false);
-  final String? weatherAPIKey = await initAPIKeys(prefs);
 
+  final String? weatherAPIKey = await initAPIKeys(prefs);
+  await initLocalNotifications();
   runApp(Aqua(sharedPrefs: prefs));
 }
 
