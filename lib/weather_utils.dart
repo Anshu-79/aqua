@@ -37,19 +37,17 @@ Future<String?> initAPIKeys(SharedPreferences prefs) async {
 }
 
 // Calls OpenWeatherAPI to get today's weather
-Future<void> getWeather(String apiKey, SharedPreferences prefs) async {
+Future<Weather> getWeather(String apiKey, SharedPreferences prefs) async {
   WeatherFactory wf = WeatherFactory(apiKey);
 
   // Get weather using geo coordinates if available
   double? lat = await SharedPrefUtils.readPrefDouble('latitude');
   double? long = await SharedPrefUtils.readPrefDouble('longitude');
 
-  // if (lat != null && long != null) {
-    print(await wf.currentWeatherByLocation(lat!, long!));
-    // return await wf.currentWeatherByLocation(lat, long);
-  // } else {
+  if (lat != null && long != null) {
+    return await wf.currentWeatherByLocation(lat, long);
+  } else {
     String? city = await SharedPrefUtils.readPrefStr('city');
-    print(await wf.currentWeatherByCityName(city!));
-    // return await wf.currentWeatherByCityName(city!);
-  // }
+    return await wf.currentWeatherByCityName(city!);
+  }
 }
