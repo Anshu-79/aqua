@@ -32,6 +32,12 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   @override
+  void initState() {
+    print(widget.prefs.getDouble('latitude'));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
