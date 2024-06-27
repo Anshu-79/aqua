@@ -35,7 +35,7 @@ Future<void> savePictureLocally(File? image, String username) async {
 }
 
 Future<File?> getProfilePicture() async {
-  String? imgPath = await SharedPrefUtils.readPrefStr('photo_path');
+  String? imgPath = await SharedPrefUtils.readStr('photo_path');
   return (imgPath == null) ? null : File(imgPath);
 }
 
@@ -50,22 +50,22 @@ class SharedPrefUtils {
     pref.setDouble(key, message);
   }
 
-  static Future<String?> readPrefStr(String key) async {
+  static Future<String?> readStr(String key) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     return pref.getString(key);
   }
 
-  static Future<int?> readPrefInt(String key) async {
+  static Future<int?> readInt(String key) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     return pref.getInt(key);
   }
 
-  static Future<bool?> readPrefBool(String key) async {
+  static Future<bool?> readBool(String key) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     return pref.getBool(key);
   }
 
-  static Future<double?> readPrefDouble(String key) async {
+  static Future<double?> readDouble(String key) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     return pref.getDouble(key);
   }

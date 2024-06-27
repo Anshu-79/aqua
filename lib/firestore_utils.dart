@@ -27,7 +27,7 @@ Future<void> createUser(Profile profile, List<double?> location) async {
 Future<void> uploadProfilePicture(File? image, String username) async {
   final folderRef = FirebaseStorage.instance.ref().child('profile_pictures');
 
-  String uid = await SharedPrefUtils.readPrefStr('uid') ?? username;
+  String uid = await SharedPrefUtils.readStr('uid') ?? username;
 
   final imageRef = folderRef.child(uid);
 

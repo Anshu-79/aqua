@@ -9,8 +9,8 @@ import 'package:aqua/shared_pref_utils.dart';
 Future<List<double?>> getCurrentLocation() async {
   Location location = Location();
 
-  final storedLat = await SharedPrefUtils.readPrefDouble('latitude');
-  final storedLong = await SharedPrefUtils.readPrefDouble('longitude');
+  final storedLat = await SharedPrefUtils.readDouble('latitude');
+  final storedLong = await SharedPrefUtils.readDouble('longitude');
 
   bool serviceEnabled = await location.serviceEnabled();
   PermissionStatus permission = await location.hasPermission();

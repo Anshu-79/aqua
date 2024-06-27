@@ -36,7 +36,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Future<void> _createUser() async {
     if (!mounted) return;
     final location = await getCurrentLocation();
-    print(location);
 
     await shared_prefs.createUser(widget.profile, location);
 

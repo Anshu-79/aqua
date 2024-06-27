@@ -1,3 +1,4 @@
+import 'package:aqua/timers.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +26,10 @@ Future<void> main() async {
   if (prefs.getBool('onboard') != true) writeAPIKey('weather', openWeatherKey);
 
   await NotificationsController.initLocalNotifications();
+
+  // Runs every time app is run but fetches weather only when day has changed
+  await DailyTaskManager.checkAndRunTask(saveWeather);
+
   runApp(Aqua(sharedPrefs: prefs));
 }
 

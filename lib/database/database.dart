@@ -64,9 +64,7 @@ class Database extends _$Database {
 
   // Beverages Actions
 
-  Future<List<Beverage>> getBeverages() async {
-    return await select(beverages).get();
-  }
+  Future<List<Beverage>> getBeverages() async => await select(beverages).get();
 
   Future<Beverage> getBeverage(int id) async {
     return await (select(beverages)..where((tbl) => tbl.id.equals(id)))
@@ -116,6 +114,17 @@ class Database extends _$Database {
   // Drinks Actions
   Future<int> insertOrUpdateDrink(DrinksCompanion entity) async {
     return await into(drinks).insertOnConflictUpdate(entity);
+  }
+
+  Future<List<Drink>> getDrinks() async => await select(drinks).get();
+
+  Future<List<Drink>> getLastNDrinks(int n) async {
+    return (select(drinks)
+          ..orderBy([
+            (t) => OrderingTerm(mode: OrderingMode.desc, expression: t.datetime)
+          ])
+          ..limit(n))
+        .get();
   }
 
   // Water Goals Actions
