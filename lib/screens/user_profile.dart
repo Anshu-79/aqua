@@ -8,19 +8,17 @@ import 'package:aqua/database/database.dart';
 import 'package:aqua/icomoon_icons.dart';
 import 'package:aqua/utils.dart' as utils;
 
-
-getWakeTimeText(SharedPreferences prefs) {
+String getWakeTimeText(SharedPreferences prefs) {
   int wakeTime = prefs.getInt('wakeTime')!;
   if (wakeTime >= 12) return "$wakeTime:00 PM";
   return "$wakeTime:00 AM";
 }
 
-getSleepTimeText(SharedPreferences prefs) {
+String getSleepTimeText(SharedPreferences prefs) {
   int sleepTime = prefs.getInt('sleepTime')!;
   if (sleepTime >= 12) return "$sleepTime:00 PM";
   return "$sleepTime:00 AM";
 }
-
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key, required this.database, required this.prefs});
