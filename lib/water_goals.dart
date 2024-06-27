@@ -1,12 +1,11 @@
 import 'package:aqua/shared_pref_utils.dart';
-import 'package:aqua/weather_utils.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:aqua/database/database.dart';
 import 'package:flutter/material.dart' show DateUtils;
 
 Future<void> setTodaysGoal() async {
   final Database db = Database();
-  final int totalIntake = await findTodaysGoal();
+  final int totalIntake = await calcTodaysGoal();
 
   DateTime now = DateUtils.dateOnly(DateTime.now());
 
@@ -19,35 +18,57 @@ Future<void> setTodaysGoal() async {
   await db.close();
 }
 
-Future<int> findTodaysGoal() async {
+Future<int> calcTodaysGoal() async {
   final int age = await getAge();
-  final String? sex = await SharedPrefUtils.readPrefStr('sex');
-  final double? altitude = await SharedPrefUtils.readPrefDouble('altitude');
+  final String? sex = await SharedPrefUtils.readStr('sex');
+  final double? altitude = await SharedPrefUtils.readDouble('altitude');
+  final double? temperature = await SharedPrefUtils.readDouble('temperature');
 
   int intake = getAWI(age, sex);
 
-  // Calculating Respiratory Water Loss (RWL)
+  // Calculate Respiratory Water Loss (RWL)
   final double mr = await getMR();
-  final double rwl = 0.107 * mr + 92.2;
+  double rwl = 0.107 * mr + 92.2;
 
-  intake += rwl.round(); // Adding RWL to the goal to compensate for it
+  if (altitude! > 4300) rwl += 200;
 
-  if (altitude! > 4300) intake += 200;
+  if (temperature! < -20 || temperature > 25) rwl += 340;
 
-  double temperature = await getTemperature();
-  if (temperature < -20 || temperature > 25) intake += 340;
+  intake += rwl.round(); // Add RWL to the goal to compensate for it
 
   return intake;
 }
 
-// TODO: Complete this!
-Future<int> getReminderGap() async {
-  final int goal = await findTodaysGoal();
-  return 0;
+Future<int> calcMedianDrinkSize() async {
+  int sampleSize = 20; // Number of recent drinks for median
+
+  final Database db = Database();
+
+  List<Drink> drinks = await db.getLastNDrinks(sampleSize);
+  List<int> drinkSizes = List.generate(drinks.length, (i) => drinks[i].volume);
+  drinkSizes.sort();
+
+  return drinkSizes[drinkSizes.length ~/ 2]; // Median is at middle position
+}
+
+Future<double> calcReminderGap(int goal, int consumed) async {
+  final int toDrink = goal - consumed;
+  final int drinkSize = await calcMedianDrinkSize();
+  int drinksNeeded = toDrink ~/ drinkSize;
+
+  DateTime now = DateTime.now();
+  final int? sleepHour = await SharedPrefUtils.readInt('sleepTime');
+  DateTime sleepTime = DateTime(now.year, now.month, now.day, sleepHour!);
+  if (sleepTime.isBefore(now)) {
+    sleepTime = sleepTime.add(const Duration(days: 1));
+  }
+
+  Duration timeLeft = sleepTime.difference(now);
+  return timeLeft.inMinutes / drinksNeeded;
 }
 
 Future<int> getAge() async {
-  String? dobStr = await SharedPrefUtils.readPrefStr('DOB');
+  String? dobStr = await SharedPrefUtils.readStr('DOB');
   return calculateAge(dobStr!);
 }
 
@@ -91,9 +112,9 @@ int getAWI(age, sex) {
 
 // Calculates the Basal Metabolic Rate of a user
 Future<double> getMR() async {
-  int? weight = await SharedPrefUtils.readPrefInt('weight');
-  int? height = await SharedPrefUtils.readPrefInt('height');
-  String? sex = await SharedPrefUtils.readPrefStr('sex');
+  int? weight = await SharedPrefUtils.readInt('weight');
+  int? height = await SharedPrefUtils.readInt('height');
+  String? sex = await SharedPrefUtils.readStr('sex');
   int age = await getAge();
 
   double mr = 10 * weight! + 6.25 * height! - 5 * age;

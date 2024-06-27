@@ -54,8 +54,8 @@ Future<Weather> getWeather() async {
   return await wf.currentWeatherByLocation(lat!, long!);
 }
 
-Future<double> getTemperature() async {
+Future<void> saveWeather() async {
   Weather w = await getWeather();
-  if (w.temperature == null) return 25; // Default Temperature = 25 C
-  return w.temperature!.celsius!;
+  SharedPrefUtils.saveStr('place', w.areaName!);
+  SharedPrefUtils.saveDouble('temperature', w.temperature!.celsius!);
 }
