@@ -59,9 +59,6 @@ class NotificationsController {
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) requestNotificationPermission();
     });
-  }
-
-  static Future<void> initNotificationsEventListeners() async {
     AwesomeNotifications().setListeners(
         onActionReceivedMethod: NotificationsController.onActionReceivedMethod);
   }
@@ -87,14 +84,16 @@ class NotificationsController {
       actionButtons: [
         NotificationActionButton(key: 'ADD', label: 'Add $volume mL')
       ],
-      schedule: NotificationInterval(interval: 60 * minutes),
+      // schedule: NotificationInterval(interval: 60 * minutes),
     );
   }
 
   @pragma("vm:entry-point")
   static Future<void> onActionReceivedMethod(ReceivedAction action) async {
-    String vol = action.payload!['volume']!.toString();
-    Fluttertoast.showToast(msg: "$vol mL water added");
+    if (action.buttonKeyPressed == 'ADD') {
+      String vol = action.payload!['volume']!.toString();
+      Fluttertoast.showToast(msg: "$vol mL water added");
+    }
   }
 
   Future<void> cancelScheduledNotifications() async =>

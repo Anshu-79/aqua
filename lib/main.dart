@@ -23,7 +23,6 @@ Future<void> main() async {
   final String? weatherAPIKey = await initAPIKeys(prefs);
 
   await NotificationsController.initLocalNotifications();
-  await NotificationsController.initNotificationsEventListeners();
   runApp(Aqua(sharedPrefs: prefs));
 }
 
