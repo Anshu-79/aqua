@@ -1,4 +1,6 @@
 import 'package:aqua/dialog_boxes/add_drink.dart';
+import 'package:aqua/notifications.dart';
+import 'package:aqua/permission_handlers.dart';
 import 'package:fab_circular_menu_plus/fab_circular_menu_plus.dart';
 import 'package:flutter/material.dart';
 
@@ -162,6 +164,8 @@ class _CircularFabState extends State<CircularFab> {
               ? const Icon(Icons.close, size: 30)
               : const Icon(Icons.add, size: 30),
           onLongPress: () async {
+            requestNotificationPermission();
+
             List<Beverage> beverages = await widget.db.getBeverages();
             DrinksCompanion drink =
                 await utils.GlobalNavigator.showAnimatedDialog(AddDrinkDialog(

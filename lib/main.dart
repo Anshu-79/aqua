@@ -21,7 +21,9 @@ Future<void> main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   final String? weatherAPIKey = await initAPIKeys(prefs);
-  await initLocalNotifications();
+
+  await NotificationsController.initLocalNotifications();
+  await NotificationsController.initNotificationsEventListeners();
   runApp(Aqua(sharedPrefs: prefs));
 }
 
