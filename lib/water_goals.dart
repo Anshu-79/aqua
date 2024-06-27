@@ -1,4 +1,5 @@
 import 'package:aqua/shared_pref_utils.dart';
+import 'package:aqua/weather_utils.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:aqua/database/database.dart';
 import 'package:flutter/material.dart' show DateUtils;
@@ -33,7 +34,9 @@ Future<int> findTodaysGoal() async {
 
   if (altitude! > 4300) intake += 200;
 
-  // TODO: Also add Temperature dependency of intake
+  double temperature = await getTemperature();
+  if (temperature < -20 || temperature > 25) intake += 340;
+
   return intake;
 }
 

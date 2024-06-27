@@ -1,8 +1,8 @@
-import 'package:aqua/shared_pref_utils.dart';
 import 'package:weather/weather.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:aqua/api_keys.dart';
+import 'package:location/location.dart';
+
+import 'package:aqua/shared_pref_utils.dart';
 
 // Safe API Key Storage Helper Functions
 getAndroidOptions() => const AndroidOptions(encryptedSharedPreferences: true);
@@ -29,25 +29,33 @@ Future<String?> readAPIKey(String serviceName) async {
   );
 }
 
-Future<String?> initAPIKeys(SharedPreferences prefs) async {
-  if (prefs.getBool('onboard') == true) return await readAPIKey('weather');
+// Call OpenWeatherAPI to get today's weather
+Future<Weather> getWeather() async {
+  String? apiKey = await readAPIKey('weather');
+  WeatherFactory wf = WeatherFactory(apiKey!);
 
-  writeAPIKey('weather', openWeatherKey);
-  return await readAPIKey('weather');
+  // First try to get current location's weather
+  final location = Location();
+
+  if (await location.serviceEnabled()) {
+    final currentLocation = await location.getLocation();
+    double lat = currentLocation.latitude!;
+    double long = currentLocation.longitude!;
+
+    // If current location is available, change prefs according to it
+    SharedPrefUtils.setLocation(lat, long);
+    return await wf.currentWeatherByLocation(lat, long);
+  }
+
+  // If current location not available, use stored location
+  final savedLocation = await SharedPrefUtils.getLocation();
+  final lat = savedLocation[0];
+  final long = savedLocation[1];
+  return await wf.currentWeatherByLocation(lat!, long!);
 }
 
-// Calls OpenWeatherAPI to get today's weather
-Future<Weather> getWeather(String apiKey, SharedPreferences prefs) async {
-  WeatherFactory wf = WeatherFactory(apiKey);
-
-  // Get weather using geo coordinates if available
-  double? lat = await SharedPrefUtils.readPrefDouble('latitude');
-  double? long = await SharedPrefUtils.readPrefDouble('longitude');
-
-  if (lat != null && long != null) {
-    return await wf.currentWeatherByLocation(lat, long);
-  } else {
-    String? city = await SharedPrefUtils.readPrefStr('city');
-    return await wf.currentWeatherByCityName(city!);
-  }
+Future<double> getTemperature() async {
+  Weather w = await getWeather();
+  if (w.temperature == null) return 25; // Default Temperature = 25 C
+  return w.temperature!.celsius!;
 }

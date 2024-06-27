@@ -1,13 +1,16 @@
-import 'package:aqua/shared_pref_utils.dart';
 import 'package:location/location.dart';
 import 'package:flutter/material.dart';
 import 'package:country_state_city_pro/country_state_city_pro.dart';
 import 'package:geocode/geocode.dart';
 
 import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/shared_pref_utils.dart';
 
 Future<List<double?>> getCurrentLocation() async {
   Location location = Location();
+
+  final storedLat = await SharedPrefUtils.readPrefDouble('latitude');
+  final storedLong = await SharedPrefUtils.readPrefDouble('longitude');
 
   bool serviceEnabled = await location.serviceEnabled();
   PermissionStatus permission = await location.hasPermission();
@@ -15,10 +18,8 @@ Future<List<double?>> getCurrentLocation() async {
   if (!serviceEnabled) serviceEnabled = await location.requestService();
 
   if (permission != PermissionStatus.granted) {
-    Coordinates location =
-        await getCoordinates(await SharedPrefUtils.getLocation());
-
-    return [location.latitude, location.longitude];
+    if (storedLat != null) return [storedLat, storedLong, 0];
+    return [28.70405920, 77.10249020, 216]; // Coordinates of Delhi
   }
 
   LocationData locationData = await location.getLocation();

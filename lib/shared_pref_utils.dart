@@ -19,7 +19,7 @@ Future<void> createUser(Profile profile, List<double?> location) async {
   prefs.setInt('streak', 0);
   prefs.setDouble('latitude', location[0]!);
   prefs.setDouble('longitude', location[1]!);
-  prefs.setDouble('altitude', location[2] ?? 0);
+  prefs.setDouble('altitude', location[2]!);
   prefs.setBool('onboard', true);
 }
 
@@ -40,9 +40,14 @@ Future<File?> getProfilePicture() async {
 }
 
 class SharedPrefUtils {
-  static void saveStr(String key, String message) async {
+  static Future<void> saveStr(String key, String message) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString(key, message);
+  }
+
+  static Future<void> saveDouble(String key, double message) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setDouble(key, message);
   }
 
   static Future<String?> readPrefStr(String key) async {
@@ -66,19 +71,18 @@ class SharedPrefUtils {
   }
 
   static Future<void> setLocation(
-      String city, String state, String country) async {
+      double latitude, double longitude) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setString('city', city);
-    pref.setString('state', state);
-    pref.setString('country', country);
+    pref.setDouble('city', latitude);
+    pref.setDouble('state', longitude);
   }
 
-  static Future<String> getLocation() async {
+  static Future<List<double?>> getLocation() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    String? city = pref.getString('city');
-    String? state = pref.getString('state');
-    String? country = pref.getString('country');
-
-    return "$city, $state, $country";
+    double? lat = pref.getDouble('city');
+    double? long = pref.getDouble('state');
+    return [lat, long];
   }
+
+  
 }

@@ -30,6 +30,9 @@ Future<void> requestLocationPermission() async {
     final List<String> location = await utils.GlobalNavigator.showAlertDialog(
         reminderMsg, const PickCityDialog());
 
-    await SharedPrefUtils.setLocation(location[0], location[1], location[2]);
+    String address = "${location[0]}, ${location[1]}, ${location[2]}";
+    final coordinates = await getCoordinates(address);
+    await SharedPrefUtils.saveDouble('latitude', coordinates.latitude!);
+    await SharedPrefUtils.saveDouble('longitude', coordinates.longitude!);
   }
 }
