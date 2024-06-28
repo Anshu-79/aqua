@@ -1,21 +1,19 @@
 import 'package:aqua/shared_pref_utils.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:aqua/database/database.dart';
-import 'package:flutter/material.dart' show DateUtils;
 
-Future<void> setTodaysGoal() async {
-  final Database db = Database();
+Future<void> setTodaysGoal(Database db) async {
+  WaterGoal? existingGoal = await db.getGoal(DateTime.now());
+  if (existingGoal != null) return;
+
   final int totalIntake = await calcTodaysGoal();
 
-  DateTime now = DateUtils.dateOnly(DateTime.now());
-
   final goal = WaterGoalsCompanion(
-      date: drift.Value(now),
+      date: drift.Value(DateTime.now()),
       totalVolume: drift.Value(totalIntake),
       consumedVolume: const drift.Value(0));
 
   await db.insertOrUpdateGoal(goal);
-  await db.close();
 }
 
 Future<int> calcTodaysGoal() async {

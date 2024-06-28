@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:flutter/material.dart' show DateUtils;
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/services.dart' show rootBundle;
@@ -132,17 +133,22 @@ class Database extends _$Database {
     return await into(waterGoals).insertOnConflictUpdate(entity);
   }
 
-  Future<WaterGoal> getGoal(DateTime id) async {
+  Future<WaterGoal?> getGoal(DateTime id) async {
+    // To allow us to simply put any datetime when calling the function
+    id = DateUtils.dateOnly(id);
+
     return await (select(waterGoals)..where((tbl) => tbl.date.equals(id)))
-        .getSingle();
+        .getSingleOrNull();
   }
 
-  Future increaseConsumedVolume(DateTime today, int consumedVol) async {
+  Future<int> increaseConsumedVolume(DateTime today, int consumedVol) async {
+    today = DateUtils.dateOnly(today);
+
     final goal = await getGoal(today);
 
     return (update(waterGoals)..where((t) => t.date.equals(today))).write(
         WaterGoalsCompanion(
-            consumedVolume: Value(goal.consumedVolume + consumedVol)));
+            consumedVolume: Value(goal!.consumedVolume + consumedVol)));
   }
 
   @override
