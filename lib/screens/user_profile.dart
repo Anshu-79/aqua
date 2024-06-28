@@ -54,8 +54,7 @@ class _UserProfileState extends State<UserProfile> {
                   children: [
                     const Icon(Icons.location_on, color: Colors.white),
                     const SizedBox(width: 10),
-                    Text(
-                        "City, State, Country", //TODO: Use Weather API to get town name...
+                    Text(widget.prefs.getString('place')!,
                         style: utils.ThemeText.userLocationSubtext)
                   ],
                 ),

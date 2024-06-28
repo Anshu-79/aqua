@@ -1,7 +1,3 @@
-import 'dart:ffi';
-import 'dart:ui';
-
-import 'package:aqua/water_goals.dart';
 import 'package:flutter/material.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 
