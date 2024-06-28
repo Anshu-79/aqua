@@ -29,16 +29,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   refresh() => setState(() {});
 
-  Future<WaterGoal?> _getGoal() async =>
-      await widget.database.getGoal(DateTime.now());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         appBar: const utils.UniversalHeader(title: "Today's Goal"),
         body: FutureBuilder<WaterGoal?>(
-            future: _getGoal(),
+            future: widget.database.getGoal(DateTime.now()),
             builder: (context, snapshot) {
               WaterGoal? goal = snapshot.data;
 
@@ -108,7 +105,7 @@ class ExtendedFabButton extends StatelessWidget {
 
     double waterVol = drink.volume.value * bev!.waterPercent / 100;
 
-    await db.increaseConsumedVolume(drink.datetime.value, waterVol.toInt());
+    await db.updateConsumedVolume(drink.datetime.value, waterVol.toInt());
     notifyParent();
 
     showDrinkAddedSnackbar(drink, bev!);
@@ -227,7 +224,7 @@ class CustomDrinkButton extends ExtendedFabButton {
 
     double waterVol = drink.volume.value * bev.waterPercent / 100;
 
-    await db.increaseConsumedVolume(drink.datetime.value, waterVol.toInt());
+    await db.updateConsumedVolume(drink.datetime.value, waterVol.toInt());
     notifyParent();
     showDrinkAddedSnackbar(drink, bev);
   }

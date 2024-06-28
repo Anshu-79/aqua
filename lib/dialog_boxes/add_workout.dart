@@ -1,5 +1,7 @@
+import 'dart:ffi';
 import 'dart:ui';
 
+import 'package:aqua/water_goals.dart';
 import 'package:flutter/material.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 
@@ -9,7 +11,11 @@ import 'package:aqua/dialog_boxes/customize_workout.dart';
 
 class AddWorkoutDialog extends StatefulWidget {
   const AddWorkoutDialog(
-      {super.key, required this.notifyParent, required this.activities});
+      {super.key,
+      required this.notifyParent,
+      required this.activities,
+      required this.db});
+  final Database db;
   final Function() notifyParent;
   final Future<List<Activity>> activities;
 
@@ -18,21 +24,7 @@ class AddWorkoutDialog extends StatefulWidget {
 }
 
 class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
-  late Database _db;
-
   refresh() => setState(() {});
-
-  @override
-  void initState() {
-    _db = Database();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _db.close();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +81,10 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                           await utils.GlobalNavigator.showAnimatedDialog(
                               CustomizeWorkout(activity: activity));
 
-                      await _db.insertOrUpdateWorkout(addedWorkout!);
+                      await widget.db.insertOrUpdateWorkout(addedWorkout!);
+
+                      await widget.db.updateTotalVolume(
+                          DateTime.now(), addedWorkout.waterLoss.value);
                       widget.notifyParent();
                     },
                   ),
@@ -132,7 +127,7 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                   SizedBox(
                     height: 20,
                   ),
-                  Text('Error while fetching actors')
+                  Text('Error while fetching activities')
                 ],
               ),
             ),

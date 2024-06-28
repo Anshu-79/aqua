@@ -834,8 +834,15 @@ class $WorkoutsTable extends Workouts with TableInfo<$WorkoutsTable, Workout> {
   late final GeneratedColumn<int> duration = GeneratedColumn<int>(
       'duration', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _waterLossMeta =
+      const VerificationMeta('waterLoss');
   @override
-  List<GeneratedColumn> get $columns => [id, activityID, datetime, duration];
+  late final GeneratedColumn<int> waterLoss = GeneratedColumn<int>(
+      'water_loss', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, activityID, datetime, duration, waterLoss];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -869,6 +876,12 @@ class $WorkoutsTable extends Workouts with TableInfo<$WorkoutsTable, Workout> {
     } else if (isInserting) {
       context.missing(_durationMeta);
     }
+    if (data.containsKey('water_loss')) {
+      context.handle(_waterLossMeta,
+          waterLoss.isAcceptableOrUnknown(data['water_loss']!, _waterLossMeta));
+    } else if (isInserting) {
+      context.missing(_waterLossMeta);
+    }
     return context;
   }
 
@@ -886,6 +899,8 @@ class $WorkoutsTable extends Workouts with TableInfo<$WorkoutsTable, Workout> {
           .read(DriftSqlType.dateTime, data['${effectivePrefix}datetime'])!,
       duration: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}duration'])!,
+      waterLoss: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}water_loss'])!,
     );
   }
 
@@ -900,11 +915,13 @@ class Workout extends DataClass implements Insertable<Workout> {
   final int activityID;
   final DateTime datetime;
   final int duration;
+  final int waterLoss;
   const Workout(
       {required this.id,
       required this.activityID,
       required this.datetime,
-      required this.duration});
+      required this.duration,
+      required this.waterLoss});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -912,6 +929,7 @@ class Workout extends DataClass implements Insertable<Workout> {
     map['activity_ID'] = Variable<int>(activityID);
     map['datetime'] = Variable<DateTime>(datetime);
     map['duration'] = Variable<int>(duration);
+    map['water_loss'] = Variable<int>(waterLoss);
     return map;
   }
 
@@ -921,6 +939,7 @@ class Workout extends DataClass implements Insertable<Workout> {
       activityID: Value(activityID),
       datetime: Value(datetime),
       duration: Value(duration),
+      waterLoss: Value(waterLoss),
     );
   }
 
@@ -932,6 +951,7 @@ class Workout extends DataClass implements Insertable<Workout> {
       activityID: serializer.fromJson<int>(json['activityID']),
       datetime: serializer.fromJson<DateTime>(json['datetime']),
       duration: serializer.fromJson<int>(json['duration']),
+      waterLoss: serializer.fromJson<int>(json['waterLoss']),
     );
   }
   @override
@@ -942,16 +962,22 @@ class Workout extends DataClass implements Insertable<Workout> {
       'activityID': serializer.toJson<int>(activityID),
       'datetime': serializer.toJson<DateTime>(datetime),
       'duration': serializer.toJson<int>(duration),
+      'waterLoss': serializer.toJson<int>(waterLoss),
     };
   }
 
   Workout copyWith(
-          {int? id, int? activityID, DateTime? datetime, int? duration}) =>
+          {int? id,
+          int? activityID,
+          DateTime? datetime,
+          int? duration,
+          int? waterLoss}) =>
       Workout(
         id: id ?? this.id,
         activityID: activityID ?? this.activityID,
         datetime: datetime ?? this.datetime,
         duration: duration ?? this.duration,
+        waterLoss: waterLoss ?? this.waterLoss,
       );
   @override
   String toString() {
@@ -959,13 +985,15 @@ class Workout extends DataClass implements Insertable<Workout> {
           ..write('id: $id, ')
           ..write('activityID: $activityID, ')
           ..write('datetime: $datetime, ')
-          ..write('duration: $duration')
+          ..write('duration: $duration, ')
+          ..write('waterLoss: $waterLoss')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, activityID, datetime, duration);
+  int get hashCode =>
+      Object.hash(id, activityID, datetime, duration, waterLoss);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -973,7 +1001,8 @@ class Workout extends DataClass implements Insertable<Workout> {
           other.id == this.id &&
           other.activityID == this.activityID &&
           other.datetime == this.datetime &&
-          other.duration == this.duration);
+          other.duration == this.duration &&
+          other.waterLoss == this.waterLoss);
 }
 
 class WorkoutsCompanion extends UpdateCompanion<Workout> {
@@ -981,31 +1010,37 @@ class WorkoutsCompanion extends UpdateCompanion<Workout> {
   final Value<int> activityID;
   final Value<DateTime> datetime;
   final Value<int> duration;
+  final Value<int> waterLoss;
   const WorkoutsCompanion({
     this.id = const Value.absent(),
     this.activityID = const Value.absent(),
     this.datetime = const Value.absent(),
     this.duration = const Value.absent(),
+    this.waterLoss = const Value.absent(),
   });
   WorkoutsCompanion.insert({
     this.id = const Value.absent(),
     required int activityID,
     required DateTime datetime,
     required int duration,
+    required int waterLoss,
   })  : activityID = Value(activityID),
         datetime = Value(datetime),
-        duration = Value(duration);
+        duration = Value(duration),
+        waterLoss = Value(waterLoss);
   static Insertable<Workout> custom({
     Expression<int>? id,
     Expression<int>? activityID,
     Expression<DateTime>? datetime,
     Expression<int>? duration,
+    Expression<int>? waterLoss,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (activityID != null) 'activity_ID': activityID,
       if (datetime != null) 'datetime': datetime,
       if (duration != null) 'duration': duration,
+      if (waterLoss != null) 'water_loss': waterLoss,
     });
   }
 
@@ -1013,12 +1048,14 @@ class WorkoutsCompanion extends UpdateCompanion<Workout> {
       {Value<int>? id,
       Value<int>? activityID,
       Value<DateTime>? datetime,
-      Value<int>? duration}) {
+      Value<int>? duration,
+      Value<int>? waterLoss}) {
     return WorkoutsCompanion(
       id: id ?? this.id,
       activityID: activityID ?? this.activityID,
       datetime: datetime ?? this.datetime,
       duration: duration ?? this.duration,
+      waterLoss: waterLoss ?? this.waterLoss,
     );
   }
 
@@ -1037,6 +1074,9 @@ class WorkoutsCompanion extends UpdateCompanion<Workout> {
     if (duration.present) {
       map['duration'] = Variable<int>(duration.value);
     }
+    if (waterLoss.present) {
+      map['water_loss'] = Variable<int>(waterLoss.value);
+    }
     return map;
   }
 
@@ -1046,7 +1086,8 @@ class WorkoutsCompanion extends UpdateCompanion<Workout> {
           ..write('id: $id, ')
           ..write('activityID: $activityID, ')
           ..write('datetime: $datetime, ')
-          ..write('duration: $duration')
+          ..write('duration: $duration, ')
+          ..write('waterLoss: $waterLoss')
           ..write(')'))
         .toString();
   }
@@ -1713,12 +1754,14 @@ typedef $$WorkoutsTableInsertCompanionBuilder = WorkoutsCompanion Function({
   required int activityID,
   required DateTime datetime,
   required int duration,
+  required int waterLoss,
 });
 typedef $$WorkoutsTableUpdateCompanionBuilder = WorkoutsCompanion Function({
   Value<int> id,
   Value<int> activityID,
   Value<DateTime> datetime,
   Value<int> duration,
+  Value<int> waterLoss,
 });
 
 class $$WorkoutsTableTableManager extends RootTableManager<
@@ -1745,24 +1788,28 @@ class $$WorkoutsTableTableManager extends RootTableManager<
             Value<int> activityID = const Value.absent(),
             Value<DateTime> datetime = const Value.absent(),
             Value<int> duration = const Value.absent(),
+            Value<int> waterLoss = const Value.absent(),
           }) =>
               WorkoutsCompanion(
             id: id,
             activityID: activityID,
             datetime: datetime,
             duration: duration,
+            waterLoss: waterLoss,
           ),
           getInsertCompanionBuilder: ({
             Value<int> id = const Value.absent(),
             required int activityID,
             required DateTime datetime,
             required int duration,
+            required int waterLoss,
           }) =>
               WorkoutsCompanion.insert(
             id: id,
             activityID: activityID,
             datetime: datetime,
             duration: duration,
+            waterLoss: waterLoss,
           ),
         ));
 }
@@ -1797,6 +1844,11 @@ class $$WorkoutsTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
+  ColumnFilters<int> get waterLoss => $state.composableBuilder(
+      column: $state.table.waterLoss,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
   $$ActivitiesTableFilterComposer get activityID {
     final $$ActivitiesTableFilterComposer composer = $state.composerBuilder(
         composer: this,
@@ -1825,6 +1877,11 @@ class $$WorkoutsTableOrderingComposer
 
   ColumnOrderings<int> get duration => $state.composableBuilder(
       column: $state.table.duration,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get waterLoss => $state.composableBuilder(
+      column: $state.table.waterLoss,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 

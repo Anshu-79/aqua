@@ -24,7 +24,6 @@ class _ActivityMenuState extends State<ActivityMenu> {
         future: widget.database.getTodaysWorkouts(),
         builder: (context, snapshot) {
           final List<Workout>? workouts = snapshot.data;
-          print(workouts);
 
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(
@@ -48,41 +47,7 @@ class _ActivityMenuState extends State<ActivityMenu> {
               itemBuilder: (context, index) {
                 final workout = workouts[index];
 
-                return Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: utils.lighten(
-                            utils.getWorkoutColor(workout.activityID), 30),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                            color: Theme.of(context).primaryColor, width: 3)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Icon(
-                            utils.getWorkoutIcon(workout.activityID),
-                            color: Colors.black,
-                            size: 50,
-                          ),
-                          FittedBox(
-                              fit: BoxFit.contain,
-                              child: Text(
-                                utils.getWorkoutCategory(workout.activityID),
-                                style: utils.ThemeText.workoutTitle,
-                              )),
-                          Text(
-                            utils.getInText(workout.duration),
-                            style: const TextStyle(color: Colors.black),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
+                return WorkoutCard(workout: workout);
               },
             );
           } else {
@@ -131,6 +96,7 @@ class _ActivityMenuState extends State<ActivityMenu> {
           shape: const CircleBorder(eccentricity: 0),
           onPressed: () async {
             await utils.GlobalNavigator.showAnimatedDialog(AddWorkoutDialog(
+              db: widget.database,
               activities: widget.database.getActivities(),
               notifyParent: refresh,
             ));
@@ -140,6 +106,42 @@ class _ActivityMenuState extends State<ActivityMenu> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+}
+
+class WorkoutCard extends StatelessWidget {
+  const WorkoutCard({super.key, required this.workout});
+  final Workout workout;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+          color: utils.lighten(utils.getWorkoutColor(workout.activityID), 30),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Theme.of(context).primaryColor, width: 3)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Icon(utils.getWorkoutIcon(workout.activityID),
+              color: Colors.black, size: 50),
+          FittedBox(
+              fit: BoxFit.contain,
+              child: Text(utils.getWorkoutCategory(workout.activityID),
+                  style: utils.ThemeText.workoutTitle)),
+          Text(utils.getInText(workout.duration),
+              style: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.w900)),
+          Text(
+            "${workout.waterLoss} mL water loss",
+            style: const TextStyle(color: Colors.black),
+          )
+        ],
+      ),
     );
   }
 }

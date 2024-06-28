@@ -1,15 +1,17 @@
 import 'package:aqua/shared_pref_utils.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:aqua/database/database.dart';
+import 'package:flutter/material.dart' show DateUtils;
 
 Future<void> setTodaysGoal(Database db) async {
   WaterGoal? existingGoal = await db.getGoal(DateTime.now());
   if (existingGoal != null) return;
 
   final int totalIntake = await calcTodaysGoal();
+  DateTime date = DateUtils.dateOnly(DateTime.now());
 
   final goal = WaterGoalsCompanion(
-      date: drift.Value(DateTime.now()),
+      date: drift.Value(date),
       totalVolume: drift.Value(totalIntake),
       consumedVolume: const drift.Value(0));
 
@@ -19,12 +21,18 @@ Future<void> setTodaysGoal(Database db) async {
 Future<int> calcTodaysGoal() async {
   final int age = await getAge();
   final String? sex = await SharedPrefUtils.readStr('sex');
-  final double? altitude = await SharedPrefUtils.readDouble('altitude');
-  final double? temperature = await SharedPrefUtils.readDouble('temperature');
 
   int intake = getAWI(age, sex);
 
-  // Calculate Respiratory Water Loss (RWL)
+  int rwl = await calcRespiratoryLoss();
+  intake += rwl.round(); // Add RWL to the goal to compensate for it
+
+  return intake;
+}
+
+Future<int> calcRespiratoryLoss() async {
+  final double? altitude = await SharedPrefUtils.readDouble('altitude');
+  final double? temperature = await SharedPrefUtils.readDouble('temperature');
   final double mr = await getMR();
   double rwl = 0.107 * mr + 92.2;
 
@@ -32,9 +40,17 @@ Future<int> calcTodaysGoal() async {
 
   if (temperature! < -20 || temperature > 25) rwl += 340;
 
-  intake += rwl.round(); // Add RWL to the goal to compensate for it
+  return rwl.round();
+}
 
-  return intake;
+Future<double> calcSweatLoss(double metVal, int duration) async {
+  double efficiency = 0.25;
+
+  int? weight = await SharedPrefUtils.readInt('weight');
+
+  double swl = 1.722 * (1 - efficiency) * metVal * weight! * duration / 60;
+
+  return swl;
 }
 
 Future<int> calcMedianDrinkSize() async {

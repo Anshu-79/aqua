@@ -27,6 +27,7 @@ class Workouts extends Table {
   IntColumn get activityID => integer().references(Activities, #id).named("activity_ID")();
   DateTimeColumn get datetime => dateTime()();
   IntColumn get duration => integer()();
+  IntColumn get waterLoss => integer()();
 }
 
 class WaterGoals extends Table {
