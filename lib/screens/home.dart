@@ -1,11 +1,21 @@
 import 'package:aqua/dialog_boxes/add_drink.dart';
 import 'package:fab_circular_menu_plus/fab_circular_menu_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:drift/drift.dart' as drift;
 
 import 'package:aqua/water_animation.dart';
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/icomoon_icons.dart';
 import 'package:aqua/database/database.dart';
+
+const double ICONSIZE = 45;
+
+Future<void> showDrinkAddedSnackbar(DrinksCompanion drink, Beverage bev) async {
+  String msg = "${drink.volume.value} mL of ${bev.name} added!";
+  Color color = utils.toColor(bev.colorCode);
+
+  utils.GlobalNavigator.showSnackBar(msg, color);
+}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.database});
@@ -64,9 +74,20 @@ class ReminderBox extends StatelessWidget {
 }
 
 class ExtendedFabButton extends StatelessWidget {
-  const ExtendedFabButton({super.key, required this.bev});
+  const ExtendedFabButton(
+      {super.key, this.bev, required this.db, required this.notifyParent});
   final Beverage? bev;
-  static const double iconSize = 45;
+  final Database db;
+  final VoidCallback notifyParent;
+
+  _addQuickDrink() async {
+    DrinksCompanion drink = DrinksCompanion(
+        bevID: drift.Value(bev!.id),
+        volume: const drift.Value(200),
+        datetime: drift.Value(DateTime.now()));
+    await db.insertOrUpdateDrink(drink);
+    showDrinkAddedSnackbar(drink, bev!);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,20 +96,22 @@ class ExtendedFabButton extends StatelessWidget {
     return SizedBox(
       child: TextButton(
           style: TextButton.styleFrom(
-              shadowColor: Colors.black,
-              elevation: 6,
-              shape: const CircleBorder(),
-              backgroundColor: utils.toColor(bev!.colorCode)),
-          onPressed: () {},
+            shadowColor: Colors.black,
+            elevation: 6,
+            backgroundColor: utils.toColor(bev!.colorCode),
+            shape: const CircleBorder(
+                side: BorderSide(color: Colors.white, width: 2)),
+          ),
+          onPressed: _addQuickDrink,
           child: Padding(
             padding: const EdgeInsets.all(5),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Icon(Icomoon.water_glass,
-                    color: Colors.black, size: iconSize),
+                    color: Colors.black, size: ICONSIZE),
                 ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: iconSize),
+                  constraints: const BoxConstraints(maxWidth: ICONSIZE),
                   child: Text(bev!.name,
                       overflow: TextOverflow.ellipsis,
                       softWrap: false,
@@ -113,32 +136,30 @@ class CircularFab extends StatefulWidget {
 
 class _CircularFabState extends State<CircularFab> {
   late List<Widget> _fabButtons;
-  int fabButtonsCount = 3;
+  final int maxFabButtonsCount = 3;
   bool _loading = true;
-  bool _fabOpen = false;
 
   @override
   void initState() {
-    _loadFabButtons();
     super.initState();
+    _loadFabButtons();
   }
 
   Future<void> _loadFabButtons() async {
     final List<Beverage> starBevs = await widget.db.getStarredBeverages();
+    int starDrinksCount = maxFabButtonsCount - 1;
 
-    if (starBevs.length < fabButtonsCount) fabButtonsCount = starBevs.length;
+    if (starBevs.length < starDrinksCount) starDrinksCount = starBevs.length;
 
-    final widgets = List.generate(fabButtonsCount, (idx) {
+    final widgets = List.generate(starDrinksCount, (idx) {
       final bev = starBevs[idx];
-      return ExtendedFabButton(bev: bev);
+      return ExtendedFabButton(
+          bev: bev, db: widget.db, notifyParent: widget.notifyParent);
     });
 
-    // Adding Placeholder widgets at the start & end of list
-    // so that the item is displayed at the center
-    if (widgets.length < 2) {
-      widgets.add(const ExtendedFabButton(bev: null));
-      widgets.insert(0, const ExtendedFabButton(bev: null));
-    }
+    // Add CustomDrinkButton in the middle
+    widgets.insert(((starDrinksCount + 1) / 2).floor(),
+        CustomDrinkButton(db: widget.db, notifyParent: widget.notifyParent));
 
     setState(() {
       _fabButtons = widgets;
@@ -149,38 +170,70 @@ class _CircularFabState extends State<CircularFab> {
   @override
   Widget build(BuildContext context) {
     return FabCircularMenuPlus(
-      onDisplayChange: (isOpen) => setState(() => _fabOpen = isOpen),
       animationDuration: const Duration(milliseconds: 500),
       alignment: Alignment.bottomCenter,
       fabSize: 70,
-      ringDiameter: 350,
+      ringDiameter: 400,
       ringWidth: 100,
       ringColor: Colors.transparent,
       fabColor: Theme.of(context).splashColor,
-      fabChild: GestureDetector(
-          child: _fabOpen
-              ? const Icon(Icons.close, size: 30)
-              : const Icon(Icons.add, size: 30),
-          onLongPress: () async {
-
-            List<Beverage> beverages = await widget.db.getBeverages();
-            DrinksCompanion drink =
-                await utils.GlobalNavigator.showAnimatedDialog(AddDrinkDialog(
-              beverages: beverages,
-              notifyParent: widget.notifyParent,
-            ));
-            await widget.db.insertOrUpdateDrink(drink);
-
-            Beverage bev = await widget.db.getBeverage(drink.bevID.value);
-
-            String msg = "${drink.volume} mL of ${bev.name} added!";
-            Color color = utils.toColor(bev.colorCode);
-
-            utils.GlobalNavigator.showSnackBar(msg, color);
-          }),
+      fabOpenIcon: const Icon(Icons.add),
       children: _loading
-          ? List.generate(2, (idx) => const CircularProgressIndicator())
+          ? List.generate(
+              maxFabButtonsCount, (idx) => const CircularProgressIndicator())
           : _fabButtons,
+    );
+  }
+}
+
+class CustomDrinkButton extends ExtendedFabButton {
+  const CustomDrinkButton(
+      {super.key, super.bev, required super.db, required super.notifyParent});
+
+  _showCustomDrinkDialog() async {
+    List<Beverage> beverages = await db.getBeverages();
+    DrinksCompanion drink =
+        await utils.GlobalNavigator.showAnimatedDialog(AddDrinkDialog(
+      beverages: beverages,
+      notifyParent: notifyParent,
+    ));
+    await db.insertOrUpdateDrink(drink);
+    Beverage bev = await db.getBeverage(drink.bevID.value);
+
+    showDrinkAddedSnackbar(drink, bev);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: TextButton(
+          style: TextButton.styleFrom(
+            shadowColor: Colors.black,
+            elevation: 6,
+            backgroundColor: Theme.of(context).primaryColor,
+            shape: const CircleBorder(
+                side: BorderSide(color: Colors.white, width: 2)),
+          ),
+          onPressed: _showCustomDrinkDialog,
+          child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.edit, color: Colors.black, size: ICONSIZE),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: ICONSIZE),
+                  child: const Text("Custom",
+                      overflow: TextOverflow.fade,
+                      softWrap: false,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12)),
+                )
+              ],
+            ),
+          )),
     );
   }
 }
