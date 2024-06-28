@@ -31,6 +31,7 @@ Future<void> requestLocationPermission() async {
         reminderMsg, const PickCityDialog());
 
     String address = "${location[0]}, ${location[1]}, ${location[2]}";
+    await SharedPrefUtils.saveStr('place', address);
     final coordinates = await getCoordinates(address);
     await SharedPrefUtils.saveDouble('latitude', coordinates.latitude!);
     await SharedPrefUtils.saveDouble('longitude', coordinates.longitude!);

@@ -56,6 +56,6 @@ Future<Weather> getWeather() async {
 
 Future<void> saveWeather() async {
   Weather w = await getWeather();
-  SharedPrefUtils.saveStr('place', w.areaName!);
+  SharedPrefUtils.saveStr('place', "${w.areaName!}, ${w.country!}");
   SharedPrefUtils.saveDouble('temperature', w.temperature!.celsius!);
 }
