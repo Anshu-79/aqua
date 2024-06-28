@@ -20,39 +20,33 @@ class _BeverageMenuState extends State<BeverageMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const utils.UniversalHeader(title: "My Beverages"),
-      body: FutureBuilder<List<Beverage>>(
-          future: widget.database.getBeverages(),
-          builder: (context, snapshot) {
-            final List<Beverage> beverages = snapshot.data ?? [];
+        appBar: const utils.UniversalHeader(title: "My Beverages"),
+        body: FutureBuilder<List<Beverage>>(
+            future: widget.database.getBeverages(),
+            builder: (context, snapshot) {
+              final List<Beverage> beverages = snapshot.data ?? [];
 
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-            if (snapshot.hasError) {
-              return Center(child: Text(snapshot.error.toString()));
-            }
+              if (snapshot.hasError) {
+                return Center(child: Text(snapshot.error.toString()));
+              }
 
-            return ListView.builder(
-                itemCount: beverages.length,
-                itemBuilder: (context, index) {
-                  return BeverageCard(
-                    bvg: beverages[index],
-                    db: widget.database,
-                    notifyParent: refresh,
-                  );
-                });
-          }),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: SizedBox(
-          height: 70,
-          width: 70,
-          child: FloatingActionButton(
+              return ListView.builder(
+                  itemCount: beverages.length,
+                  itemBuilder: (context, index) {
+                    return BeverageCard(
+                      bvg: beverages[index],
+                      db: widget.database,
+                      notifyParent: refresh,
+                    );
+                  });
+            }),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: utils.UniversalFAB(
             tooltip: "Add new beverage",
-            backgroundColor: Theme.of(context).primaryColor,
-            splashColor: Theme.of(context).splashColor,
-            shape: const CircleBorder(eccentricity: 0),
             onPressed: () async {
               final output = await utils.GlobalNavigator.showAnimatedDialog(
                   BeverageDialog(notifyParent: refresh, beverage: null));
@@ -72,11 +66,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                     utils.toColor(addedBeverage.colorCode.value));
                 await widget.database.insertOrUpdateBeverage(addedBeverage);
               }
-            },
-            child:
-                Icon(Icons.add, color: Theme.of(context).canvasColor, size: 50),
-          )),
-    );
+            }));
   }
 }
 

@@ -192,14 +192,14 @@ class _CircularFabState extends State<CircularFab> {
   @override
   Widget build(BuildContext context) {
     return FabCircularMenuPlus(
-      animationDuration: const Duration(milliseconds: 500),
+      animationDuration: const Duration(milliseconds: 300),
       alignment: Alignment.bottomCenter,
       fabSize: 70,
       ringDiameter: 400,
       ringWidth: 100,
       ringColor: Colors.transparent,
       fabColor: Theme.of(context).splashColor,
-      fabOpenIcon: const Icon(Icons.add),
+      fabOpenIcon: Icon(Icons.add, color: Theme.of(context).primaryColor),
       children: _loading
           ? List.generate(
               maxFabButtonsCount, (idx) => const CircularProgressIndicator())
@@ -249,13 +249,15 @@ class CustomDrinkButton extends ExtendedFabButton {
                 const Icon(Icons.edit, color: Colors.black, size: iconSize),
                 ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: iconSize),
-                  child: const Text("Custom",
-                      overflow: TextOverflow.fade,
-                      softWrap: false,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12)),
+                  child: const Text(
+                    "Custom",
+                    overflow: TextOverflow.fade,
+                    softWrap: false,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12),
+                  ),
                 )
               ],
             ),
