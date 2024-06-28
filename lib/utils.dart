@@ -478,3 +478,25 @@ class UniversalHeader extends PreferredSize {
     );
   }
 }
+
+class UniversalFAB extends StatelessWidget {
+  const UniversalFAB(
+      {super.key, required this.tooltip, required this.onPressed});
+  final String tooltip;
+  final Function onPressed;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 70,
+      width: 70,
+      child: FloatingActionButton(
+        tooltip: tooltip,
+        backgroundColor: Theme.of(context).splashColor,
+        splashColor: Theme.of(context).primaryColor,
+        shape: const CircleBorder(eccentricity: 0),
+        onPressed: () => onPressed(),
+        child: Icon(Icons.add, color: Theme.of(context).primaryColor, size: 30),
+      ),
+    );
+  }
+}
