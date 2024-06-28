@@ -1,19 +1,26 @@
 import 'package:aqua/shared_pref_utils.dart';
+import 'package:aqua/utils.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:aqua/database/database.dart';
 import 'package:flutter/material.dart' show DateUtils;
 
 Future<void> setTodaysGoal(Database db) async {
-  WaterGoal? existingGoal = await db.getGoal(DateTime.now());
+  DateTime today = await shiftToWakeTime(DateTime.now());
+
+  DateTime date = DateUtils.dateOnly(today);
+
+  WaterGoal? existingGoal = await db.getGoal(date);
   if (existingGoal != null) return;
 
   final int totalIntake = await calcTodaysGoal();
-  DateTime date = DateUtils.dateOnly(DateTime.now());
+  int consumed = 0;
+  double gap = await calcReminderGap(totalIntake, consumed);
 
   final goal = WaterGoalsCompanion(
       date: drift.Value(date),
       totalVolume: drift.Value(totalIntake),
-      consumedVolume: const drift.Value(0));
+      consumedVolume: drift.Value(consumed),
+      reminderGap: drift.Value(gap.toInt()));
 
   await db.insertOrUpdateGoal(goal);
 }
@@ -62,14 +69,17 @@ Future<int> calcMedianDrinkSize() async {
   List<int> drinkSizes = List.generate(drinks.length, (i) => drinks[i].volume);
   drinkSizes.sort();
 
+  db.close();
+
   return drinkSizes[drinkSizes.length ~/ 2]; // Median is at middle position
 }
 
 Future<double> calcReminderGap(int goal, int consumed) async {
   final int toDrink = goal - consumed;
   final int drinkSize = await calcMedianDrinkSize();
+  print("drinkSize: $drinkSize");
   int drinksNeeded = toDrink ~/ drinkSize;
-
+  print("drinks needed: $drinksNeeded");
   DateTime now = DateTime.now();
   final int? sleepHour = await SharedPrefUtils.readInt('sleepTime');
   DateTime sleepTime = DateTime(now.year, now.month, now.day, sleepHour!);
@@ -78,6 +88,7 @@ Future<double> calcReminderGap(int goal, int consumed) async {
   }
 
   Duration timeLeft = sleepTime.difference(now);
+  print("timeleft: $timeLeft");
   return timeLeft.inMinutes / drinksNeeded;
 }
 

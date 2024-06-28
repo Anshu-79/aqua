@@ -98,4 +98,9 @@ class NotificationsController {
 
   Future<void> cancelScheduledNotifications() async =>
       await AwesomeNotifications().cancelAllSchedules();
+
+  Future<void> updateScheduledNotifications(int minutes, int volume) async {
+    await cancelScheduledNotifications();
+    await createHydrationNotification(minutes, volume);
+  }
 }
