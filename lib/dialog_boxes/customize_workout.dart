@@ -1,3 +1,4 @@
+import 'package:aqua/water_goals.dart';
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:numberpicker/numberpicker.dart';
@@ -82,13 +83,16 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
                 children: [
                   utils.DialogActionButton(
                     icon: const Icon(Icons.check),
-                    function: () {
+                    function: () async {
+                      double swl =
+                          await calcSweatLoss(widget.activity!.met, _duration);
                       final workout = WorkoutsCompanion(
-                        activityID: drift.Value(widget.activity!.id),
-                        datetime: drift.Value(DateTime.now()),
-                        duration: drift.Value(_duration),
-                      );
-                      Navigator.pop(context, workout);
+                          activityID: drift.Value(widget.activity!.id),
+                          datetime: drift.Value(DateTime.now()),
+                          duration: drift.Value(_duration),
+                          waterLoss: drift.Value(swl.toInt()));
+
+                      if (context.mounted) Navigator.pop(context, workout);
                       utils.GlobalNavigator.showSnackBar("Activity Added",
                           utils.getWorkoutColor(widget.activity!.id));
                     },

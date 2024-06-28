@@ -141,7 +141,7 @@ class Database extends _$Database {
         .getSingleOrNull();
   }
 
-  Future<int> increaseConsumedVolume(DateTime today, int consumedVol) async {
+  Future<int> updateConsumedVolume(DateTime today, int consumedVol) async {
     today = DateUtils.dateOnly(today);
 
     final goal = await getGoal(today);
@@ -149,6 +149,15 @@ class Database extends _$Database {
     return (update(waterGoals)..where((t) => t.date.equals(today))).write(
         WaterGoalsCompanion(
             consumedVolume: Value(goal!.consumedVolume + consumedVol)));
+  }
+
+  Future<int> updateTotalVolume(DateTime today, int totalVol) async {
+    today = DateUtils.dateOnly(today);
+
+    final goal = await getGoal(today);
+
+    return (update(waterGoals)..where((t) => t.date.equals(today))).write(
+        WaterGoalsCompanion(totalVolume: Value(goal!.totalVolume + totalVol)));
   }
 
   @override
