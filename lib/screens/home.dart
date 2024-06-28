@@ -8,7 +8,7 @@ import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/icomoon_icons.dart';
 import 'package:aqua/database/database.dart';
 
-const double ICONSIZE = 45;
+const double iconSize = 45;
 
 Future<void> showDrinkAddedSnackbar(DrinksCompanion drink, Beverage bev) async {
   String msg = "${drink.volume.value} mL of ${bev.name} added!";
@@ -29,20 +29,39 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   refresh() => setState(() {});
 
+  Future<WaterGoal?> _getGoal() async =>
+      await widget.database.getGoal(DateTime.now());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         appBar: const utils.UniversalHeader(title: "Today's Goal"),
-        body: Container(
-            margin: const EdgeInsets.all(20),
-            child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  WaterGoalWidget(consumedVol: 1500, totalVol: 3000),
-                  SizedBox(height: 20),
-                  ReminderBox(),
-                ])),
+        body: FutureBuilder<WaterGoal?>(
+            future: _getGoal(),
+            builder: (context, snapshot) {
+              WaterGoal? goal = snapshot.data;
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (snapshot.hasError) {
+                return Center(child: Text(snapshot.error.toString()));
+              }
+
+              return Container(
+                  margin: const EdgeInsets.all(20),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        WaterGoalWidget(
+                            consumedVol: goal!.consumedVolume,
+                            totalVol: goal.totalVolume),
+                        const SizedBox(height: 20),
+                        const ReminderBox(),
+                      ]));
+            }),
         floatingActionButton:
             CircularFab(db: widget.database, notifyParent: refresh));
   }
@@ -86,6 +105,12 @@ class ExtendedFabButton extends StatelessWidget {
         volume: const drift.Value(200),
         datetime: drift.Value(DateTime.now()));
     await db.insertOrUpdateDrink(drink);
+
+    double waterVol = drink.volume.value * bev!.waterPercent / 100;
+
+    await db.increaseConsumedVolume(drink.datetime.value, waterVol.toInt());
+    notifyParent();
+
     showDrinkAddedSnackbar(drink, bev!);
   }
 
@@ -109,9 +134,9 @@ class ExtendedFabButton extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Icon(Icomoon.water_glass,
-                    color: Colors.black, size: ICONSIZE),
+                    color: Colors.black, size: iconSize),
                 ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: ICONSIZE),
+                  constraints: const BoxConstraints(maxWidth: iconSize),
                   child: Text(bev!.name,
                       overflow: TextOverflow.ellipsis,
                       softWrap: false,
@@ -200,6 +225,10 @@ class CustomDrinkButton extends ExtendedFabButton {
     await db.insertOrUpdateDrink(drink);
     Beverage bev = await db.getBeverage(drink.bevID.value);
 
+    double waterVol = drink.volume.value * bev.waterPercent / 100;
+
+    await db.increaseConsumedVolume(drink.datetime.value, waterVol.toInt());
+    notifyParent();
     showDrinkAddedSnackbar(drink, bev);
   }
 
@@ -220,9 +249,9 @@ class CustomDrinkButton extends ExtendedFabButton {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.edit, color: Colors.black, size: ICONSIZE),
+                const Icon(Icons.edit, color: Colors.black, size: iconSize),
                 ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: ICONSIZE),
+                  constraints: const BoxConstraints(maxWidth: iconSize),
                   child: const Text("Custom",
                       overflow: TextOverflow.fade,
                       softWrap: false,
