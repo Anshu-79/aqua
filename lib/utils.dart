@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:aqua/shared_pref_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -499,4 +500,20 @@ class UniversalFAB extends StatelessWidget {
       ),
     );
   }
+}
+
+// Shifts a DateTime object to start at the wakeTime of a user
+// ensuring that goal is not reset at 12 AM, but at wakeTime
+Future<DateTime> shiftToWakeTime(DateTime dt) async {
+  int? wakeTime = await SharedPrefUtils.readInt('wakeTime');
+
+  if (wakeTime == null) return dt;
+
+  DateTime wakeUpToday = DateTime(dt.year, dt.month, dt.day, wakeTime);
+
+  if (dt.isBefore(wakeUpToday)) {
+    dt = wakeUpToday.subtract(const Duration(days: 1));
+  }
+
+  return dt;
 }

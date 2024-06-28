@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:aqua/water_goals.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart' show DateUtils;
@@ -145,19 +146,25 @@ class Database extends _$Database {
     today = DateUtils.dateOnly(today);
 
     final goal = await getGoal(today);
+    int newConsumedVol = consumedVol + goal!.consumedVolume;
+    double gap = await calcReminderGap(goal.totalVolume, newConsumedVol);
 
     return (update(waterGoals)..where((t) => t.date.equals(today))).write(
         WaterGoalsCompanion(
-            consumedVolume: Value(goal!.consumedVolume + consumedVol)));
+            consumedVolume: Value(goal.consumedVolume + consumedVol),
+            reminderGap: Value(gap.toInt())));
   }
 
   Future<int> updateTotalVolume(DateTime today, int totalVol) async {
     today = DateUtils.dateOnly(today);
 
     final goal = await getGoal(today);
+    int newTotalVol = totalVol + goal!.totalVolume;
+    double gap = await calcReminderGap(goal.totalVolume, newTotalVol);
 
     return (update(waterGoals)..where((t) => t.date.equals(today))).write(
-        WaterGoalsCompanion(totalVolume: Value(goal!.totalVolume + totalVol)));
+        WaterGoalsCompanion(
+            totalVolume: Value(newTotalVol), reminderGap: Value(gap.toInt())));
   }
 
   @override
