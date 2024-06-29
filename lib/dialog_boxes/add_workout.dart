@@ -1,3 +1,5 @@
+import 'package:aqua/notifications.dart';
+import 'package:aqua/water_goals.dart';
 import 'package:flutter/material.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 
@@ -79,9 +81,17 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
 
                       await widget.db.insertOrUpdateWorkout(addedWorkout!);
 
-                      await widget.db.updateTotalVolume(
-                          DateTime.now(), addedWorkout.waterLoss.value);
+                      await widget.db
+                          .updateTotalVolume(addedWorkout.waterLoss.value);
                       widget.notifyParent();
+
+                      // Update notification gap
+                      WaterGoal? todaysGoal =
+                          await widget.db.getGoal(DateTime.now());
+                      int medianDrinkSize = await calcMedianDrinkSize();
+                      await NotificationsController
+                          .updateScheduledNotifications(
+                              todaysGoal!.reminderGap, medianDrinkSize);
                     },
                   ),
                 ),
@@ -116,13 +126,8 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
               errorWidget: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.error,
-                    color: Colors.red,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  Icon(Icons.error, color: Colors.red),
+                  SizedBox(height: 20),
                   Text('Error while fetching activities')
                 ],
               ),
@@ -141,11 +146,8 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
           backgroundColor: Theme.of(context).primaryColor,
           splashColor: Theme.of(context).splashColor,
           shape: const CircleBorder(eccentricity: 0),
-          child: Icon(
-            Icons.close,
-            color: Theme.of(context).canvasColor,
-            size: 50,
-          ),
+          child:
+              Icon(Icons.close, color: Theme.of(context).canvasColor, size: 50),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

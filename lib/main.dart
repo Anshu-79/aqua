@@ -1,9 +1,8 @@
-import 'package:aqua/timers.dart';
-import 'package:aqua/water_goals.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:aqua/timers.dart';
 import 'package:aqua/weather_utils.dart';
 import 'package:aqua/api_keys.dart';
 import 'package:aqua/database/database.dart';
@@ -82,7 +81,7 @@ class _NavBarState extends State<NavBar> {
   @override
   void initState() {
     _db = Database();
-    setTodaysGoal(_db);
+    _db.setTodaysGoal();
     super.initState();
   }
 

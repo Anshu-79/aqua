@@ -1,29 +1,5 @@
 import 'package:aqua/shared_pref_utils.dart';
-import 'package:aqua/utils.dart';
-import 'package:drift/drift.dart' as drift;
 import 'package:aqua/database/database.dart';
-import 'package:flutter/material.dart' show DateUtils;
-
-Future<void> setTodaysGoal(Database db) async {
-  DateTime today = await shiftToWakeTime(DateTime.now());
-
-  DateTime date = DateUtils.dateOnly(today);
-
-  WaterGoal? existingGoal = await db.getGoal(date);
-  if (existingGoal != null) return;
-
-  final int totalIntake = await calcTodaysGoal();
-  int consumed = 0;
-  double gap = await calcReminderGap(totalIntake, consumed);
-
-  final goal = WaterGoalsCompanion(
-      date: drift.Value(date),
-      totalVolume: drift.Value(totalIntake),
-      consumedVolume: drift.Value(consumed),
-      reminderGap: drift.Value(gap.toInt()));
-
-  await db.insertOrUpdateGoal(goal);
-}
 
 Future<int> calcTodaysGoal() async {
   final int age = await getAge();
@@ -61,35 +37,39 @@ Future<double> calcSweatLoss(double metVal, int duration) async {
 }
 
 Future<int> calcMedianDrinkSize() async {
-  int sampleSize = 20; // Number of recent drinks for median
+  int sampleSize = 20; // Number of recent drinks to calculate median
 
   final Database db = Database();
 
   List<Drink> drinks = await db.getLastNDrinks(sampleSize);
+  await db.close();
+
   List<int> drinkSizes = List.generate(drinks.length, (i) => drinks[i].volume);
   drinkSizes.sort();
-
-  db.close();
 
   return drinkSizes[drinkSizes.length ~/ 2]; // Median is at middle position
 }
 
-Future<double> calcReminderGap(int goal, int consumed) async {
-  final int toDrink = goal - consumed;
+Future<int> calcReminderGap(int consumed, int total) async {
+  final int toDrink = total - consumed;
   final int drinkSize = await calcMedianDrinkSize();
-  print("drinkSize: $drinkSize");
   int drinksNeeded = toDrink ~/ drinkSize;
-  print("drinks needed: $drinksNeeded");
+
   DateTime now = DateTime.now();
+
   final int? sleepHour = await SharedPrefUtils.readInt('sleepTime');
   DateTime sleepTime = DateTime(now.year, now.month, now.day, sleepHour!);
+
   if (sleepTime.isBefore(now)) {
     sleepTime = sleepTime.add(const Duration(days: 1));
   }
 
   Duration timeLeft = sleepTime.difference(now);
-  print("timeleft: $timeLeft");
-  return timeLeft.inMinutes / drinksNeeded;
+
+  double reminderGap = timeLeft.inMinutes / drinksNeeded;
+
+  if (reminderGap < 5) return 10;
+  return reminderGap.round();
 }
 
 Future<int> getAge() async {
@@ -111,28 +91,20 @@ int calculateAge(String dobStr) {
 }
 
 int getAWI(age, sex) {
-  int awi = 0;
   if (sex == 'F') {
-    if (1 <= age && age < 4) awi = 1300;
-    if (4 <= age && age < 9) awi = 1700;
-    if (9 <= age && age < 14) awi = 2100;
-    if (14 <= age && age < 19) awi = 2300;
-    if (19 <= age && age < 31) awi = 2700;
-    if (31 <= age && age < 51) awi = 2700;
-    if (51 <= age && age < 71) awi = 2700;
-    if (71 <= age) awi = 2700;
+    if (1 <= age && age < 4) return 1300;
+    if (4 <= age && age < 9) return 1700;
+    if (9 <= age && age < 14) return 2100;
+    if (14 <= age && age < 19) return 2300;
+    if (19 <= age) return 2700;
   } else {
-    if (1 <= age && age < 4) awi = 1300;
-    if (4 <= age && age < 9) awi = 1700;
-    if (9 <= age && age < 14) awi = 2400;
-    if (14 <= age && age < 19) awi = 3300;
-    if (19 <= age && age < 31) awi = 3700;
-    if (31 <= age && age < 51) awi = 3700;
-    if (51 <= age && age < 71) awi = 3700;
-    if (71 <= age) awi = 3700;
+    if (1 <= age && age < 4) return 1300;
+    if (4 <= age && age < 9) return 1700;
+    if (9 <= age && age < 14) return 2400;
+    if (14 <= age && age < 19) return 3300;
+    if (19 <= age) return 3700;
   }
-
-  return awi;
+  return 0;
 }
 
 // Calculates the Basal Metabolic Rate of a user
