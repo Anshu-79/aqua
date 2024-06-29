@@ -332,8 +332,15 @@ class $DrinksTable extends Drinks with TableInfo<$DrinksTable, Drink> {
   late final GeneratedColumn<DateTime> datetime = GeneratedColumn<DateTime>(
       'datetime', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _datetimeOffsetMeta =
+      const VerificationMeta('datetimeOffset');
   @override
-  List<GeneratedColumn> get $columns => [id, bevID, volume, datetime];
+  late final GeneratedColumn<int> datetimeOffset = GeneratedColumn<int>(
+      'datetime_offset', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, bevID, volume, datetime, datetimeOffset];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -365,6 +372,14 @@ class $DrinksTable extends Drinks with TableInfo<$DrinksTable, Drink> {
     } else if (isInserting) {
       context.missing(_datetimeMeta);
     }
+    if (data.containsKey('datetime_offset')) {
+      context.handle(
+          _datetimeOffsetMeta,
+          datetimeOffset.isAcceptableOrUnknown(
+              data['datetime_offset']!, _datetimeOffsetMeta));
+    } else if (isInserting) {
+      context.missing(_datetimeOffsetMeta);
+    }
     return context;
   }
 
@@ -382,6 +397,8 @@ class $DrinksTable extends Drinks with TableInfo<$DrinksTable, Drink> {
           .read(DriftSqlType.int, data['${effectivePrefix}volume'])!,
       datetime: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}datetime'])!,
+      datetimeOffset: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}datetime_offset'])!,
     );
   }
 
@@ -396,11 +413,13 @@ class Drink extends DataClass implements Insertable<Drink> {
   final int bevID;
   final int volume;
   final DateTime datetime;
+  final int datetimeOffset;
   const Drink(
       {required this.id,
       required this.bevID,
       required this.volume,
-      required this.datetime});
+      required this.datetime,
+      required this.datetimeOffset});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -408,6 +427,7 @@ class Drink extends DataClass implements Insertable<Drink> {
     map['bev_ID'] = Variable<int>(bevID);
     map['volume'] = Variable<int>(volume);
     map['datetime'] = Variable<DateTime>(datetime);
+    map['datetime_offset'] = Variable<int>(datetimeOffset);
     return map;
   }
 
@@ -417,6 +437,7 @@ class Drink extends DataClass implements Insertable<Drink> {
       bevID: Value(bevID),
       volume: Value(volume),
       datetime: Value(datetime),
+      datetimeOffset: Value(datetimeOffset),
     );
   }
 
@@ -428,6 +449,7 @@ class Drink extends DataClass implements Insertable<Drink> {
       bevID: serializer.fromJson<int>(json['bevID']),
       volume: serializer.fromJson<int>(json['volume']),
       datetime: serializer.fromJson<DateTime>(json['datetime']),
+      datetimeOffset: serializer.fromJson<int>(json['datetimeOffset']),
     );
   }
   @override
@@ -438,15 +460,22 @@ class Drink extends DataClass implements Insertable<Drink> {
       'bevID': serializer.toJson<int>(bevID),
       'volume': serializer.toJson<int>(volume),
       'datetime': serializer.toJson<DateTime>(datetime),
+      'datetimeOffset': serializer.toJson<int>(datetimeOffset),
     };
   }
 
-  Drink copyWith({int? id, int? bevID, int? volume, DateTime? datetime}) =>
+  Drink copyWith(
+          {int? id,
+          int? bevID,
+          int? volume,
+          DateTime? datetime,
+          int? datetimeOffset}) =>
       Drink(
         id: id ?? this.id,
         bevID: bevID ?? this.bevID,
         volume: volume ?? this.volume,
         datetime: datetime ?? this.datetime,
+        datetimeOffset: datetimeOffset ?? this.datetimeOffset,
       );
   @override
   String toString() {
@@ -454,13 +483,14 @@ class Drink extends DataClass implements Insertable<Drink> {
           ..write('id: $id, ')
           ..write('bevID: $bevID, ')
           ..write('volume: $volume, ')
-          ..write('datetime: $datetime')
+          ..write('datetime: $datetime, ')
+          ..write('datetimeOffset: $datetimeOffset')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, bevID, volume, datetime);
+  int get hashCode => Object.hash(id, bevID, volume, datetime, datetimeOffset);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -468,7 +498,8 @@ class Drink extends DataClass implements Insertable<Drink> {
           other.id == this.id &&
           other.bevID == this.bevID &&
           other.volume == this.volume &&
-          other.datetime == this.datetime);
+          other.datetime == this.datetime &&
+          other.datetimeOffset == this.datetimeOffset);
 }
 
 class DrinksCompanion extends UpdateCompanion<Drink> {
@@ -476,31 +507,37 @@ class DrinksCompanion extends UpdateCompanion<Drink> {
   final Value<int> bevID;
   final Value<int> volume;
   final Value<DateTime> datetime;
+  final Value<int> datetimeOffset;
   const DrinksCompanion({
     this.id = const Value.absent(),
     this.bevID = const Value.absent(),
     this.volume = const Value.absent(),
     this.datetime = const Value.absent(),
+    this.datetimeOffset = const Value.absent(),
   });
   DrinksCompanion.insert({
     this.id = const Value.absent(),
     required int bevID,
     required int volume,
     required DateTime datetime,
+    required int datetimeOffset,
   })  : bevID = Value(bevID),
         volume = Value(volume),
-        datetime = Value(datetime);
+        datetime = Value(datetime),
+        datetimeOffset = Value(datetimeOffset);
   static Insertable<Drink> custom({
     Expression<int>? id,
     Expression<int>? bevID,
     Expression<int>? volume,
     Expression<DateTime>? datetime,
+    Expression<int>? datetimeOffset,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (bevID != null) 'bev_ID': bevID,
       if (volume != null) 'volume': volume,
       if (datetime != null) 'datetime': datetime,
+      if (datetimeOffset != null) 'datetime_offset': datetimeOffset,
     });
   }
 
@@ -508,12 +545,14 @@ class DrinksCompanion extends UpdateCompanion<Drink> {
       {Value<int>? id,
       Value<int>? bevID,
       Value<int>? volume,
-      Value<DateTime>? datetime}) {
+      Value<DateTime>? datetime,
+      Value<int>? datetimeOffset}) {
     return DrinksCompanion(
       id: id ?? this.id,
       bevID: bevID ?? this.bevID,
       volume: volume ?? this.volume,
       datetime: datetime ?? this.datetime,
+      datetimeOffset: datetimeOffset ?? this.datetimeOffset,
     );
   }
 
@@ -532,6 +571,9 @@ class DrinksCompanion extends UpdateCompanion<Drink> {
     if (datetime.present) {
       map['datetime'] = Variable<DateTime>(datetime.value);
     }
+    if (datetimeOffset.present) {
+      map['datetime_offset'] = Variable<int>(datetimeOffset.value);
+    }
     return map;
   }
 
@@ -541,7 +583,8 @@ class DrinksCompanion extends UpdateCompanion<Drink> {
           ..write('id: $id, ')
           ..write('bevID: $bevID, ')
           ..write('volume: $volume, ')
-          ..write('datetime: $datetime')
+          ..write('datetime: $datetime, ')
+          ..write('datetimeOffset: $datetimeOffset')
           ..write(')'))
         .toString();
   }
@@ -840,9 +883,15 @@ class $WorkoutsTable extends Workouts with TableInfo<$WorkoutsTable, Workout> {
   late final GeneratedColumn<int> waterLoss = GeneratedColumn<int>(
       'water_loss', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _datetimeOffsetMeta =
+      const VerificationMeta('datetimeOffset');
+  @override
+  late final GeneratedColumn<int> datetimeOffset = GeneratedColumn<int>(
+      'datetime_offset', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, activityID, datetime, duration, waterLoss];
+      [id, activityID, datetime, duration, waterLoss, datetimeOffset];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -882,6 +931,14 @@ class $WorkoutsTable extends Workouts with TableInfo<$WorkoutsTable, Workout> {
     } else if (isInserting) {
       context.missing(_waterLossMeta);
     }
+    if (data.containsKey('datetime_offset')) {
+      context.handle(
+          _datetimeOffsetMeta,
+          datetimeOffset.isAcceptableOrUnknown(
+              data['datetime_offset']!, _datetimeOffsetMeta));
+    } else if (isInserting) {
+      context.missing(_datetimeOffsetMeta);
+    }
     return context;
   }
 
@@ -901,6 +958,8 @@ class $WorkoutsTable extends Workouts with TableInfo<$WorkoutsTable, Workout> {
           .read(DriftSqlType.int, data['${effectivePrefix}duration'])!,
       waterLoss: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}water_loss'])!,
+      datetimeOffset: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}datetime_offset'])!,
     );
   }
 
@@ -916,12 +975,14 @@ class Workout extends DataClass implements Insertable<Workout> {
   final DateTime datetime;
   final int duration;
   final int waterLoss;
+  final int datetimeOffset;
   const Workout(
       {required this.id,
       required this.activityID,
       required this.datetime,
       required this.duration,
-      required this.waterLoss});
+      required this.waterLoss,
+      required this.datetimeOffset});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -930,6 +991,7 @@ class Workout extends DataClass implements Insertable<Workout> {
     map['datetime'] = Variable<DateTime>(datetime);
     map['duration'] = Variable<int>(duration);
     map['water_loss'] = Variable<int>(waterLoss);
+    map['datetime_offset'] = Variable<int>(datetimeOffset);
     return map;
   }
 
@@ -940,6 +1002,7 @@ class Workout extends DataClass implements Insertable<Workout> {
       datetime: Value(datetime),
       duration: Value(duration),
       waterLoss: Value(waterLoss),
+      datetimeOffset: Value(datetimeOffset),
     );
   }
 
@@ -952,6 +1015,7 @@ class Workout extends DataClass implements Insertable<Workout> {
       datetime: serializer.fromJson<DateTime>(json['datetime']),
       duration: serializer.fromJson<int>(json['duration']),
       waterLoss: serializer.fromJson<int>(json['waterLoss']),
+      datetimeOffset: serializer.fromJson<int>(json['datetimeOffset']),
     );
   }
   @override
@@ -963,6 +1027,7 @@ class Workout extends DataClass implements Insertable<Workout> {
       'datetime': serializer.toJson<DateTime>(datetime),
       'duration': serializer.toJson<int>(duration),
       'waterLoss': serializer.toJson<int>(waterLoss),
+      'datetimeOffset': serializer.toJson<int>(datetimeOffset),
     };
   }
 
@@ -971,13 +1036,15 @@ class Workout extends DataClass implements Insertable<Workout> {
           int? activityID,
           DateTime? datetime,
           int? duration,
-          int? waterLoss}) =>
+          int? waterLoss,
+          int? datetimeOffset}) =>
       Workout(
         id: id ?? this.id,
         activityID: activityID ?? this.activityID,
         datetime: datetime ?? this.datetime,
         duration: duration ?? this.duration,
         waterLoss: waterLoss ?? this.waterLoss,
+        datetimeOffset: datetimeOffset ?? this.datetimeOffset,
       );
   @override
   String toString() {
@@ -986,14 +1053,15 @@ class Workout extends DataClass implements Insertable<Workout> {
           ..write('activityID: $activityID, ')
           ..write('datetime: $datetime, ')
           ..write('duration: $duration, ')
-          ..write('waterLoss: $waterLoss')
+          ..write('waterLoss: $waterLoss, ')
+          ..write('datetimeOffset: $datetimeOffset')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, activityID, datetime, duration, waterLoss);
+  int get hashCode => Object.hash(
+      id, activityID, datetime, duration, waterLoss, datetimeOffset);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1002,7 +1070,8 @@ class Workout extends DataClass implements Insertable<Workout> {
           other.activityID == this.activityID &&
           other.datetime == this.datetime &&
           other.duration == this.duration &&
-          other.waterLoss == this.waterLoss);
+          other.waterLoss == this.waterLoss &&
+          other.datetimeOffset == this.datetimeOffset);
 }
 
 class WorkoutsCompanion extends UpdateCompanion<Workout> {
@@ -1011,12 +1080,14 @@ class WorkoutsCompanion extends UpdateCompanion<Workout> {
   final Value<DateTime> datetime;
   final Value<int> duration;
   final Value<int> waterLoss;
+  final Value<int> datetimeOffset;
   const WorkoutsCompanion({
     this.id = const Value.absent(),
     this.activityID = const Value.absent(),
     this.datetime = const Value.absent(),
     this.duration = const Value.absent(),
     this.waterLoss = const Value.absent(),
+    this.datetimeOffset = const Value.absent(),
   });
   WorkoutsCompanion.insert({
     this.id = const Value.absent(),
@@ -1024,16 +1095,19 @@ class WorkoutsCompanion extends UpdateCompanion<Workout> {
     required DateTime datetime,
     required int duration,
     required int waterLoss,
+    required int datetimeOffset,
   })  : activityID = Value(activityID),
         datetime = Value(datetime),
         duration = Value(duration),
-        waterLoss = Value(waterLoss);
+        waterLoss = Value(waterLoss),
+        datetimeOffset = Value(datetimeOffset);
   static Insertable<Workout> custom({
     Expression<int>? id,
     Expression<int>? activityID,
     Expression<DateTime>? datetime,
     Expression<int>? duration,
     Expression<int>? waterLoss,
+    Expression<int>? datetimeOffset,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1041,6 +1115,7 @@ class WorkoutsCompanion extends UpdateCompanion<Workout> {
       if (datetime != null) 'datetime': datetime,
       if (duration != null) 'duration': duration,
       if (waterLoss != null) 'water_loss': waterLoss,
+      if (datetimeOffset != null) 'datetime_offset': datetimeOffset,
     });
   }
 
@@ -1049,13 +1124,15 @@ class WorkoutsCompanion extends UpdateCompanion<Workout> {
       Value<int>? activityID,
       Value<DateTime>? datetime,
       Value<int>? duration,
-      Value<int>? waterLoss}) {
+      Value<int>? waterLoss,
+      Value<int>? datetimeOffset}) {
     return WorkoutsCompanion(
       id: id ?? this.id,
       activityID: activityID ?? this.activityID,
       datetime: datetime ?? this.datetime,
       duration: duration ?? this.duration,
       waterLoss: waterLoss ?? this.waterLoss,
+      datetimeOffset: datetimeOffset ?? this.datetimeOffset,
     );
   }
 
@@ -1077,6 +1154,9 @@ class WorkoutsCompanion extends UpdateCompanion<Workout> {
     if (waterLoss.present) {
       map['water_loss'] = Variable<int>(waterLoss.value);
     }
+    if (datetimeOffset.present) {
+      map['datetime_offset'] = Variable<int>(datetimeOffset.value);
+    }
     return map;
   }
 
@@ -1087,7 +1167,8 @@ class WorkoutsCompanion extends UpdateCompanion<Workout> {
           ..write('activityID: $activityID, ')
           ..write('datetime: $datetime, ')
           ..write('duration: $duration, ')
-          ..write('waterLoss: $waterLoss')
+          ..write('waterLoss: $waterLoss, ')
+          ..write('datetimeOffset: $datetimeOffset')
           ..write(')'))
         .toString();
   }
@@ -1122,9 +1203,15 @@ class $WaterGoalsTable extends WaterGoals
   late final GeneratedColumn<int> reminderGap = GeneratedColumn<int>(
       'reminder_gap', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _datetimeOffsetMeta =
+      const VerificationMeta('datetimeOffset');
+  @override
+  late final GeneratedColumn<int> datetimeOffset = GeneratedColumn<int>(
+      'datetime_offset', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
-      [date, totalVolume, consumedVolume, reminderGap];
+      [date, totalVolume, consumedVolume, reminderGap, datetimeOffset];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1165,6 +1252,14 @@ class $WaterGoalsTable extends WaterGoals
     } else if (isInserting) {
       context.missing(_reminderGapMeta);
     }
+    if (data.containsKey('datetime_offset')) {
+      context.handle(
+          _datetimeOffsetMeta,
+          datetimeOffset.isAcceptableOrUnknown(
+              data['datetime_offset']!, _datetimeOffsetMeta));
+    } else if (isInserting) {
+      context.missing(_datetimeOffsetMeta);
+    }
     return context;
   }
 
@@ -1182,6 +1277,8 @@ class $WaterGoalsTable extends WaterGoals
           .read(DriftSqlType.int, data['${effectivePrefix}consumed_volume'])!,
       reminderGap: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}reminder_gap'])!,
+      datetimeOffset: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}datetime_offset'])!,
     );
   }
 
@@ -1196,11 +1293,13 @@ class WaterGoal extends DataClass implements Insertable<WaterGoal> {
   final int totalVolume;
   final int consumedVolume;
   final int reminderGap;
+  final int datetimeOffset;
   const WaterGoal(
       {required this.date,
       required this.totalVolume,
       required this.consumedVolume,
-      required this.reminderGap});
+      required this.reminderGap,
+      required this.datetimeOffset});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1208,6 +1307,7 @@ class WaterGoal extends DataClass implements Insertable<WaterGoal> {
     map['total_volume'] = Variable<int>(totalVolume);
     map['consumed_volume'] = Variable<int>(consumedVolume);
     map['reminder_gap'] = Variable<int>(reminderGap);
+    map['datetime_offset'] = Variable<int>(datetimeOffset);
     return map;
   }
 
@@ -1217,6 +1317,7 @@ class WaterGoal extends DataClass implements Insertable<WaterGoal> {
       totalVolume: Value(totalVolume),
       consumedVolume: Value(consumedVolume),
       reminderGap: Value(reminderGap),
+      datetimeOffset: Value(datetimeOffset),
     );
   }
 
@@ -1228,6 +1329,7 @@ class WaterGoal extends DataClass implements Insertable<WaterGoal> {
       totalVolume: serializer.fromJson<int>(json['totalVolume']),
       consumedVolume: serializer.fromJson<int>(json['consumedVolume']),
       reminderGap: serializer.fromJson<int>(json['reminderGap']),
+      datetimeOffset: serializer.fromJson<int>(json['datetimeOffset']),
     );
   }
   @override
@@ -1238,6 +1340,7 @@ class WaterGoal extends DataClass implements Insertable<WaterGoal> {
       'totalVolume': serializer.toJson<int>(totalVolume),
       'consumedVolume': serializer.toJson<int>(consumedVolume),
       'reminderGap': serializer.toJson<int>(reminderGap),
+      'datetimeOffset': serializer.toJson<int>(datetimeOffset),
     };
   }
 
@@ -1245,12 +1348,14 @@ class WaterGoal extends DataClass implements Insertable<WaterGoal> {
           {DateTime? date,
           int? totalVolume,
           int? consumedVolume,
-          int? reminderGap}) =>
+          int? reminderGap,
+          int? datetimeOffset}) =>
       WaterGoal(
         date: date ?? this.date,
         totalVolume: totalVolume ?? this.totalVolume,
         consumedVolume: consumedVolume ?? this.consumedVolume,
         reminderGap: reminderGap ?? this.reminderGap,
+        datetimeOffset: datetimeOffset ?? this.datetimeOffset,
       );
   @override
   String toString() {
@@ -1258,14 +1363,15 @@ class WaterGoal extends DataClass implements Insertable<WaterGoal> {
           ..write('date: $date, ')
           ..write('totalVolume: $totalVolume, ')
           ..write('consumedVolume: $consumedVolume, ')
-          ..write('reminderGap: $reminderGap')
+          ..write('reminderGap: $reminderGap, ')
+          ..write('datetimeOffset: $datetimeOffset')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(date, totalVolume, consumedVolume, reminderGap);
+  int get hashCode => Object.hash(
+      date, totalVolume, consumedVolume, reminderGap, datetimeOffset);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1273,7 +1379,8 @@ class WaterGoal extends DataClass implements Insertable<WaterGoal> {
           other.date == this.date &&
           other.totalVolume == this.totalVolume &&
           other.consumedVolume == this.consumedVolume &&
-          other.reminderGap == this.reminderGap);
+          other.reminderGap == this.reminderGap &&
+          other.datetimeOffset == this.datetimeOffset);
 }
 
 class WaterGoalsCompanion extends UpdateCompanion<WaterGoal> {
@@ -1281,12 +1388,14 @@ class WaterGoalsCompanion extends UpdateCompanion<WaterGoal> {
   final Value<int> totalVolume;
   final Value<int> consumedVolume;
   final Value<int> reminderGap;
+  final Value<int> datetimeOffset;
   final Value<int> rowid;
   const WaterGoalsCompanion({
     this.date = const Value.absent(),
     this.totalVolume = const Value.absent(),
     this.consumedVolume = const Value.absent(),
     this.reminderGap = const Value.absent(),
+    this.datetimeOffset = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   WaterGoalsCompanion.insert({
@@ -1294,16 +1403,19 @@ class WaterGoalsCompanion extends UpdateCompanion<WaterGoal> {
     required int totalVolume,
     required int consumedVolume,
     required int reminderGap,
+    required int datetimeOffset,
     this.rowid = const Value.absent(),
   })  : date = Value(date),
         totalVolume = Value(totalVolume),
         consumedVolume = Value(consumedVolume),
-        reminderGap = Value(reminderGap);
+        reminderGap = Value(reminderGap),
+        datetimeOffset = Value(datetimeOffset);
   static Insertable<WaterGoal> custom({
     Expression<DateTime>? date,
     Expression<int>? totalVolume,
     Expression<int>? consumedVolume,
     Expression<int>? reminderGap,
+    Expression<int>? datetimeOffset,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1311,6 +1423,7 @@ class WaterGoalsCompanion extends UpdateCompanion<WaterGoal> {
       if (totalVolume != null) 'total_volume': totalVolume,
       if (consumedVolume != null) 'consumed_volume': consumedVolume,
       if (reminderGap != null) 'reminder_gap': reminderGap,
+      if (datetimeOffset != null) 'datetime_offset': datetimeOffset,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1320,12 +1433,14 @@ class WaterGoalsCompanion extends UpdateCompanion<WaterGoal> {
       Value<int>? totalVolume,
       Value<int>? consumedVolume,
       Value<int>? reminderGap,
+      Value<int>? datetimeOffset,
       Value<int>? rowid}) {
     return WaterGoalsCompanion(
       date: date ?? this.date,
       totalVolume: totalVolume ?? this.totalVolume,
       consumedVolume: consumedVolume ?? this.consumedVolume,
       reminderGap: reminderGap ?? this.reminderGap,
+      datetimeOffset: datetimeOffset ?? this.datetimeOffset,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1345,6 +1460,9 @@ class WaterGoalsCompanion extends UpdateCompanion<WaterGoal> {
     if (reminderGap.present) {
       map['reminder_gap'] = Variable<int>(reminderGap.value);
     }
+    if (datetimeOffset.present) {
+      map['datetime_offset'] = Variable<int>(datetimeOffset.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1358,6 +1476,7 @@ class WaterGoalsCompanion extends UpdateCompanion<WaterGoal> {
           ..write('totalVolume: $totalVolume, ')
           ..write('consumedVolume: $consumedVolume, ')
           ..write('reminderGap: $reminderGap, ')
+          ..write('datetimeOffset: $datetimeOffset, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -1533,12 +1652,14 @@ typedef $$DrinksTableInsertCompanionBuilder = DrinksCompanion Function({
   required int bevID,
   required int volume,
   required DateTime datetime,
+  required int datetimeOffset,
 });
 typedef $$DrinksTableUpdateCompanionBuilder = DrinksCompanion Function({
   Value<int> id,
   Value<int> bevID,
   Value<int> volume,
   Value<DateTime> datetime,
+  Value<int> datetimeOffset,
 });
 
 class $$DrinksTableTableManager extends RootTableManager<
@@ -1564,24 +1685,28 @@ class $$DrinksTableTableManager extends RootTableManager<
             Value<int> bevID = const Value.absent(),
             Value<int> volume = const Value.absent(),
             Value<DateTime> datetime = const Value.absent(),
+            Value<int> datetimeOffset = const Value.absent(),
           }) =>
               DrinksCompanion(
             id: id,
             bevID: bevID,
             volume: volume,
             datetime: datetime,
+            datetimeOffset: datetimeOffset,
           ),
           getInsertCompanionBuilder: ({
             Value<int> id = const Value.absent(),
             required int bevID,
             required int volume,
             required DateTime datetime,
+            required int datetimeOffset,
           }) =>
               DrinksCompanion.insert(
             id: id,
             bevID: bevID,
             volume: volume,
             datetime: datetime,
+            datetimeOffset: datetimeOffset,
           ),
         ));
 }
@@ -1616,6 +1741,11 @@ class $$DrinksTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
+  ColumnFilters<int> get datetimeOffset => $state.composableBuilder(
+      column: $state.table.datetimeOffset,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
   $$BeveragesTableFilterComposer get bevID {
     final $$BeveragesTableFilterComposer composer = $state.composerBuilder(
         composer: this,
@@ -1644,6 +1774,11 @@ class $$DrinksTableOrderingComposer
 
   ColumnOrderings<DateTime> get datetime => $state.composableBuilder(
       column: $state.table.datetime,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get datetimeOffset => $state.composableBuilder(
+      column: $state.table.datetimeOffset,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
@@ -1798,6 +1933,7 @@ typedef $$WorkoutsTableInsertCompanionBuilder = WorkoutsCompanion Function({
   required DateTime datetime,
   required int duration,
   required int waterLoss,
+  required int datetimeOffset,
 });
 typedef $$WorkoutsTableUpdateCompanionBuilder = WorkoutsCompanion Function({
   Value<int> id,
@@ -1805,6 +1941,7 @@ typedef $$WorkoutsTableUpdateCompanionBuilder = WorkoutsCompanion Function({
   Value<DateTime> datetime,
   Value<int> duration,
   Value<int> waterLoss,
+  Value<int> datetimeOffset,
 });
 
 class $$WorkoutsTableTableManager extends RootTableManager<
@@ -1832,6 +1969,7 @@ class $$WorkoutsTableTableManager extends RootTableManager<
             Value<DateTime> datetime = const Value.absent(),
             Value<int> duration = const Value.absent(),
             Value<int> waterLoss = const Value.absent(),
+            Value<int> datetimeOffset = const Value.absent(),
           }) =>
               WorkoutsCompanion(
             id: id,
@@ -1839,6 +1977,7 @@ class $$WorkoutsTableTableManager extends RootTableManager<
             datetime: datetime,
             duration: duration,
             waterLoss: waterLoss,
+            datetimeOffset: datetimeOffset,
           ),
           getInsertCompanionBuilder: ({
             Value<int> id = const Value.absent(),
@@ -1846,6 +1985,7 @@ class $$WorkoutsTableTableManager extends RootTableManager<
             required DateTime datetime,
             required int duration,
             required int waterLoss,
+            required int datetimeOffset,
           }) =>
               WorkoutsCompanion.insert(
             id: id,
@@ -1853,6 +1993,7 @@ class $$WorkoutsTableTableManager extends RootTableManager<
             datetime: datetime,
             duration: duration,
             waterLoss: waterLoss,
+            datetimeOffset: datetimeOffset,
           ),
         ));
 }
@@ -1892,6 +2033,11 @@ class $$WorkoutsTableFilterComposer
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
 
+  ColumnFilters<int> get datetimeOffset => $state.composableBuilder(
+      column: $state.table.datetimeOffset,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
+
   $$ActivitiesTableFilterComposer get activityID {
     final $$ActivitiesTableFilterComposer composer = $state.composerBuilder(
         composer: this,
@@ -1928,6 +2074,11 @@ class $$WorkoutsTableOrderingComposer
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 
+  ColumnOrderings<int> get datetimeOffset => $state.composableBuilder(
+      column: $state.table.datetimeOffset,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
   $$ActivitiesTableOrderingComposer get activityID {
     final $$ActivitiesTableOrderingComposer composer = $state.composerBuilder(
         composer: this,
@@ -1946,6 +2097,7 @@ typedef $$WaterGoalsTableInsertCompanionBuilder = WaterGoalsCompanion Function({
   required int totalVolume,
   required int consumedVolume,
   required int reminderGap,
+  required int datetimeOffset,
   Value<int> rowid,
 });
 typedef $$WaterGoalsTableUpdateCompanionBuilder = WaterGoalsCompanion Function({
@@ -1953,6 +2105,7 @@ typedef $$WaterGoalsTableUpdateCompanionBuilder = WaterGoalsCompanion Function({
   Value<int> totalVolume,
   Value<int> consumedVolume,
   Value<int> reminderGap,
+  Value<int> datetimeOffset,
   Value<int> rowid,
 });
 
@@ -1980,6 +2133,7 @@ class $$WaterGoalsTableTableManager extends RootTableManager<
             Value<int> totalVolume = const Value.absent(),
             Value<int> consumedVolume = const Value.absent(),
             Value<int> reminderGap = const Value.absent(),
+            Value<int> datetimeOffset = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               WaterGoalsCompanion(
@@ -1987,6 +2141,7 @@ class $$WaterGoalsTableTableManager extends RootTableManager<
             totalVolume: totalVolume,
             consumedVolume: consumedVolume,
             reminderGap: reminderGap,
+            datetimeOffset: datetimeOffset,
             rowid: rowid,
           ),
           getInsertCompanionBuilder: ({
@@ -1994,6 +2149,7 @@ class $$WaterGoalsTableTableManager extends RootTableManager<
             required int totalVolume,
             required int consumedVolume,
             required int reminderGap,
+            required int datetimeOffset,
             Value<int> rowid = const Value.absent(),
           }) =>
               WaterGoalsCompanion.insert(
@@ -2001,6 +2157,7 @@ class $$WaterGoalsTableTableManager extends RootTableManager<
             totalVolume: totalVolume,
             consumedVolume: consumedVolume,
             reminderGap: reminderGap,
+            datetimeOffset: datetimeOffset,
             rowid: rowid,
           ),
         ));
@@ -2040,6 +2197,11 @@ class $$WaterGoalsTableFilterComposer
       column: $state.table.reminderGap,
       builder: (column, joinBuilders) =>
           ColumnFilters(column, joinBuilders: joinBuilders));
+
+  ColumnFilters<int> get datetimeOffset => $state.composableBuilder(
+      column: $state.table.datetimeOffset,
+      builder: (column, joinBuilders) =>
+          ColumnFilters(column, joinBuilders: joinBuilders));
 }
 
 class $$WaterGoalsTableOrderingComposer
@@ -2062,6 +2224,11 @@ class $$WaterGoalsTableOrderingComposer
 
   ColumnOrderings<int> get reminderGap => $state.composableBuilder(
       column: $state.table.reminderGap,
+      builder: (column, joinBuilders) =>
+          ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  ColumnOrderings<int> get datetimeOffset => $state.composableBuilder(
+      column: $state.table.datetimeOffset,
       builder: (column, joinBuilders) =>
           ColumnOrderings(column, joinBuilders: joinBuilders));
 }

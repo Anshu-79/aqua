@@ -502,8 +502,9 @@ class UniversalFAB extends StatelessWidget {
   }
 }
 
-// Shifts a DateTime object to start at the wakeTime of a user
+// Manipulates a DateTime object into starting at the wakeTime of a user
 // ensuring that goal is reset at WakeTime instead of 12 AM
+// TL:DR - Shifts the point at which a new day starts to wakeTime
 Future<DateTime> shiftToWakeTime(DateTime dt) async {
   int? wakeTime = await SharedPrefUtils.readInt('wakeTime');
 
@@ -514,6 +515,27 @@ Future<DateTime> shiftToWakeTime(DateTime dt) async {
   if (dt.isBefore(wakeUpToday)) {
     dt = wakeUpToday.subtract(const Duration(days: 1));
   }
-
   return dt;
+}
+
+// Does the opposite of its twin shiftToWakeTime
+Future<DateTime> shiftToMidnight(DateTime dt, int offsetHrs) async {
+  DateTime wakeUpToday = DateTime(dt.year, dt.month, dt.day, offsetHrs);
+
+  if (dt.isBefore(wakeUpToday)) {
+    dt = wakeUpToday.add(const Duration(days: 1));
+  }
+  return dt;
+}
+
+Future<DateTime> convertToWaterGoalID(DateTime dt) async {
+  // Explanation at function's definition
+  DateTime today = await shiftToWakeTime(dt);
+
+  // Convert datetime to a date since primary key is the date
+  DateTime dateOnly = DateUtils.dateOnly(today);
+  print("now = $dt");
+  print("today = $today");
+  print("dateOnly = $dateOnly");
+  return dateOnly;
 }

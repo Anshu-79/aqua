@@ -1,5 +1,4 @@
 import 'package:aqua/shared_pref_utils.dart';
-import 'package:aqua/database/database.dart';
 
 Future<int> calcTodaysGoal() async {
   final int age = await getAge();
@@ -34,42 +33,6 @@ Future<double> calcSweatLoss(double metVal, int duration) async {
   double swl = 1.722 * (1 - efficiency) * metVal * weight! * duration / 60;
 
   return swl;
-}
-
-Future<int> calcMedianDrinkSize() async {
-  int sampleSize = 20; // Number of recent drinks to calculate median
-
-  final Database db = Database();
-
-  List<Drink> drinks = await db.getLastNDrinks(sampleSize);
-  await db.close();
-
-  List<int> drinkSizes = List.generate(drinks.length, (i) => drinks[i].volume);
-  drinkSizes.sort();
-
-  return drinkSizes[drinkSizes.length ~/ 2]; // Median is at middle position
-}
-
-Future<int> calcReminderGap(int consumed, int total) async {
-  final int toDrink = total - consumed;
-  final int drinkSize = await calcMedianDrinkSize();
-  int drinksNeeded = toDrink ~/ drinkSize;
-
-  DateTime now = DateTime.now();
-
-  final int? sleepHour = await SharedPrefUtils.readInt('sleepTime');
-  DateTime sleepTime = DateTime(now.year, now.month, now.day, sleepHour!);
-
-  if (sleepTime.isBefore(now)) {
-    sleepTime = sleepTime.add(const Duration(days: 1));
-  }
-
-  Duration timeLeft = sleepTime.difference(now);
-
-  double reminderGap = timeLeft.inMinutes / drinksNeeded;
-
-  if (reminderGap < 5) return 10;
-  return reminderGap.round();
 }
 
 Future<int> getAge() async {
