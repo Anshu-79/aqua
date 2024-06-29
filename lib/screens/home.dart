@@ -1,6 +1,6 @@
 import 'package:aqua/dialog_boxes/add_drink.dart';
 import 'package:aqua/notifications.dart';
-import 'package:aqua/water_goals.dart';
+import 'package:aqua/shared_pref_utils.dart';
 import 'package:fab_circular_menu_plus/fab_circular_menu_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as drift;
@@ -96,7 +96,8 @@ class _ReminderBoxState extends State<ReminderBox> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text("Next reminder in", style: utils.ThemeText.reminderSubText),
-              Text("20 minutes", style: utils.ThemeText.reminderText),
+              Text("${widget.minInNextReminder} minutes",
+                  style: utils.ThemeText.reminderText)
             ])
       ]),
     );
@@ -114,7 +115,8 @@ class ExtendedFabButton extends StatelessWidget {
     DrinksCompanion drink = DrinksCompanion(
         bevID: drift.Value(bev!.id),
         volume: const drift.Value(200),
-        datetime: drift.Value(DateTime.now()));
+        datetime: drift.Value(DateTime.now()),
+        datetimeOffset: drift.Value(await SharedPrefUtils.getWakeTime()));
     await db.insertOrUpdateDrink(drink);
 
     double waterVol = drink.volume.value * bev!.waterPercent / 100;
@@ -125,7 +127,7 @@ class ExtendedFabButton extends StatelessWidget {
     showDrinkAddedSnackbar(drink, bev!);
 
     WaterGoal? todaysGoal = await db.getGoal(DateTime.now());
-    int medianDrinkSize = await calcMedianDrinkSize();
+    int medianDrinkSize = await db.calcMedianDrinkSize();
     await NotificationsController.updateScheduledNotifications(
         todaysGoal!.reminderGap, medianDrinkSize);
   }
@@ -248,7 +250,7 @@ class CustomDrinkButton extends ExtendedFabButton {
     showDrinkAddedSnackbar(drink, bev);
 
     WaterGoal? todaysGoal = await db.getGoal(DateTime.now());
-    int medianDrinkSize = await calcMedianDrinkSize();
+    int medianDrinkSize = await db.calcMedianDrinkSize();
     await NotificationsController.updateScheduledNotifications(
         todaysGoal!.reminderGap, medianDrinkSize);
   }

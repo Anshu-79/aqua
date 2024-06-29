@@ -1,3 +1,4 @@
+import 'package:aqua/shared_pref_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:numberpicker/numberpicker.dart';
@@ -180,12 +181,15 @@ class ActionButtons extends StatelessWidget {
       children: [
         utils.DialogActionButton(
           icon: const Icon(Icons.check),
-          function: () {
+          function: () async {
             final drink = DrinksCompanion(
                 bevID: drift.Value(id),
                 volume: drift.Value(volume),
-                datetime: drift.Value(DateTime.now()));
-            Navigator.pop(context, drink);
+                datetime: drift.Value(DateTime.now()),
+                datetimeOffset:
+                    drift.Value(await SharedPrefUtils.getWakeTime()));
+
+            if (context.mounted) Navigator.pop(context, drink);
           },
         ),
         utils.DialogActionButton(

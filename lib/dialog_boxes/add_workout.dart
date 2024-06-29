@@ -1,5 +1,4 @@
 import 'package:aqua/notifications.dart';
-import 'package:aqua/water_goals.dart';
 import 'package:flutter/material.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 
@@ -88,7 +87,7 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                       // Update notification gap
                       WaterGoal? todaysGoal =
                           await widget.db.getGoal(DateTime.now());
-                      int medianDrinkSize = await calcMedianDrinkSize();
+                      int medianDrinkSize = await widget.db.calcMedianDrinkSize();
                       await NotificationsController
                           .updateScheduledNotifications(
                               todaysGoal!.reminderGap, medianDrinkSize);

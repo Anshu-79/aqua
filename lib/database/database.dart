@@ -1,8 +1,8 @@
 import 'dart:io';
+import 'package:aqua/shared_pref_utils.dart';
 import 'package:aqua/water_goals.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:flutter/material.dart' show DateUtils;
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/services.dart' show rootBundle;
@@ -120,7 +120,26 @@ class Database extends _$Database {
 
   Future<List<Drink>> getDrinks() async => await select(drinks).get();
 
-  Future<List<Drink>> getLastNDrinks(int n) async {
+  Future<List<Drink>> getDrinksOfDay(DateTime date) async {
+    final startOfDay = await shiftToWakeTime(DateTime(date.year, date.month, date.day));
+    final endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59, 999);
+
+    return (select(drinks)
+          ..where((d) =>
+              d.datetime.isBiggerOrEqualValue(startOfDay) &
+              d.datetime.isSmallerOrEqualValue(endOfDay)))
+        .get();
+  }
+
+  Future<int> getDrinkCount() async {
+    return customSelect('SELECT COUNT(*) FROM drinks', readsFrom: {drinks})
+        .map((row) => row.read<int>('COUNT(*)'))
+        .getSingle();
+  }
+
+  Future<List<Drink>?> getLastNDrinks(int n) async {
+    if (await getDrinkCount() == 0) return null;
+
     return (select(drinks)
           ..orderBy([
             (t) => OrderingTerm(mode: OrderingMode.desc, expression: t.datetime)
@@ -129,9 +148,48 @@ class Database extends _$Database {
         .get();
   }
 
-  Future<int> minutesElapsedSinceLastDrink() async {
-    Drink lastDrink = (await getDrinks()).last;
+  Future<int> calcMedianDrinkSize() async {
+    int sampleSize = 20; // Number of recent drinks to calculate median
 
+    List<Drink>? drinks = await getLastNDrinks(sampleSize);
+
+    if (drinks == null) return 200;
+
+    List<int> drinkSizes =
+        List.generate(drinks.length, (i) => drinks[i].volume);
+    drinkSizes.sort();
+
+    return drinkSizes[drinkSizes.length ~/ 2]; // Median is at middle position
+  }
+
+  Future<int> calcReminderGap(int consumed, int total) async {
+    final int toDrink = total - consumed;
+    final int drinkSize = await calcMedianDrinkSize();
+    int drinksNeeded = toDrink ~/ drinkSize;
+
+    DateTime now = DateTime.now();
+
+    final int? sleepHour = await SharedPrefUtils.readInt('sleepTime');
+    DateTime sleepTime = DateTime(now.year, now.month, now.day, sleepHour!);
+
+    if (sleepTime.isBefore(now)) {
+      sleepTime = sleepTime.add(const Duration(days: 1));
+    }
+
+    Duration timeLeft = sleepTime.difference(now);
+
+    double reminderGap = timeLeft.inMinutes / drinksNeeded;
+
+    if (reminderGap < 10) return 10; // Throttle minumum Reminder gap at 10 min
+    return reminderGap.round();
+  }
+
+  Future<int> minutesElapsedSinceLastDrink() async {
+    List<Drink> drinks = await getDrinks();
+    if (drinks.isEmpty) return 0;
+    // If no drinks have been logged, no time has passed since last drink
+
+    Drink lastDrink = drinks.last;
     Duration timeElapsed = DateTime.now().difference(lastDrink.datetime);
 
     return timeElapsed.inMinutes;
@@ -148,34 +206,30 @@ class Database extends _$Database {
 
   // Water Goals Actions
   Future<WaterGoal?> getGoal(DateTime datetime) async {
-    // Explanation at function's definition
-    DateTime today = await shiftToWakeTime(datetime);
+    final DateTime dateOnly = await convertToWaterGoalID(datetime);
 
-    // Convert datetime to a date since primary key is the date
-    today = DateUtils.dateOnly(today);
-    return await (select(waterGoals)..where((tbl) => tbl.date.equals(today)))
+    return await (select(waterGoals)..where((tbl) => tbl.date.equals(dateOnly)))
         .getSingleOrNull();
   }
 
   Future<void> setTodaysGoal() async {
-    DateTime now = DateTime.now();
+    DateTime dateOnly = await convertToWaterGoalID(DateTime.now());
 
-    WaterGoal? existingGoal = await getGoal(now);
+    WaterGoal? existingGoal = await getGoal(DateTime.now());
     print(existingGoal);
 
     if (existingGoal != null) return;
-
-    DateTime date = DateUtils.dateOnly(now);
 
     final int totalIntake = await calcTodaysGoal();
     int consumed = 0;
     int gap = await calcReminderGap(consumed, totalIntake);
 
     final goal = WaterGoalsCompanion(
-      date: Value(date),
+      date: Value(dateOnly),
       totalVolume: Value(totalIntake),
       consumedVolume: Value(consumed),
       reminderGap: Value(gap),
+      datetimeOffset: Value(await SharedPrefUtils.getWakeTime())
     );
 
     print(goal);

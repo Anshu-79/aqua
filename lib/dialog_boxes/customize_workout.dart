@@ -1,3 +1,4 @@
+import 'package:aqua/shared_pref_utils.dart';
 import 'package:aqua/water_goals.dart';
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as drift;
@@ -87,10 +88,13 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
                       double swl =
                           await calcSweatLoss(widget.activity!.met, _duration);
                       final workout = WorkoutsCompanion(
-                          activityID: drift.Value(widget.activity!.id),
-                          datetime: drift.Value(DateTime.now()),
-                          duration: drift.Value(_duration),
-                          waterLoss: drift.Value(swl.toInt()));
+                        activityID: drift.Value(widget.activity!.id),
+                        datetime: drift.Value(DateTime.now()),
+                        duration: drift.Value(_duration),
+                        waterLoss: drift.Value(swl.toInt()),
+                        datetimeOffset:
+                            drift.Value(await SharedPrefUtils.getWakeTime()),
+                      );
 
                       if (context.mounted) Navigator.pop(context, workout);
                       utils.GlobalNavigator.showSnackBar("Activity Added",
