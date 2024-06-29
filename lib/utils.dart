@@ -503,7 +503,7 @@ class UniversalFAB extends StatelessWidget {
 }
 
 // Shifts a DateTime object to start at the wakeTime of a user
-// ensuring that goal is not reset at 12 AM, but at wakeTime
+// ensuring that goal is reset at WakeTime instead of 12 AM
 Future<DateTime> shiftToWakeTime(DateTime dt) async {
   int? wakeTime = await SharedPrefUtils.readInt('wakeTime');
 

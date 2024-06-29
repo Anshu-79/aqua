@@ -1,4 +1,6 @@
 import 'package:aqua/dialog_boxes/add_drink.dart';
+import 'package:aqua/notifications.dart';
+import 'package:aqua/water_goals.dart';
 import 'package:fab_circular_menu_plus/fab_circular_menu_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as drift;
@@ -29,9 +31,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   refresh() => setState(() {});
 
-  Future<WaterGoal?> _getGoal() async {
-    DateTime date = await utils.shiftToWakeTime(DateTime.now());
-    return await widget.database.getGoal(date);
+  // The first element of this function's output stores a WaterGoal? object & the second an int
+  Future<List<dynamic>> _getGoal() async {
+    int nextReminderIn = await widget.database.minutesInNextReminder();
+    return [await widget.database.getGoal(DateTime.now()), nextReminderIn];
   }
 
   @override
@@ -39,10 +42,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         appBar: const utils.UniversalHeader(title: "Today's Goal"),
-        body: FutureBuilder<WaterGoal?>(
+        body: FutureBuilder<List<dynamic>>(
             future: _getGoal(),
             builder: (context, snapshot) {
-              WaterGoal? goal = snapshot.data;
+              List<dynamic>? snapshotData = snapshot.data;
 
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
@@ -58,10 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         WaterGoalWidget(
-                            consumedVol: goal!.consumedVolume,
-                            totalVol: goal.totalVolume),
+                            consumedVol: snapshotData![0].consumedVolume,
+                            totalVol: snapshotData[0].totalVolume),
                         const SizedBox(height: 20),
-                        const ReminderBox(),
+                        ReminderBox(minInNextReminder: snapshotData[1]),
                       ]));
             }),
         floatingActionButton:
@@ -69,9 +72,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class ReminderBox extends StatelessWidget {
-  const ReminderBox({super.key});
+class ReminderBox extends StatefulWidget {
+  const ReminderBox({super.key, required this.minInNextReminder});
+  final int minInNextReminder;
 
+  @override
+  State<ReminderBox> createState() => _ReminderBoxState();
+}
+
+class _ReminderBoxState extends State<ReminderBox> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -110,11 +119,15 @@ class ExtendedFabButton extends StatelessWidget {
 
     double waterVol = drink.volume.value * bev!.waterPercent / 100;
 
-    DateTime shiftedDate = await utils.shiftToWakeTime(drink.datetime.value);
-    await db.updateConsumedVolume(shiftedDate, waterVol.toInt());
+    await db.updateConsumedVolume(waterVol.toInt());
     notifyParent();
 
     showDrinkAddedSnackbar(drink, bev!);
+
+    WaterGoal? todaysGoal = await db.getGoal(DateTime.now());
+    int medianDrinkSize = await calcMedianDrinkSize();
+    await NotificationsController.updateScheduledNotifications(
+        todaysGoal!.reminderGap, medianDrinkSize);
   }
 
   @override
@@ -230,10 +243,14 @@ class CustomDrinkButton extends ExtendedFabButton {
 
     double waterVol = drink.volume.value * bev.waterPercent / 100;
 
-    DateTime shiftedDate = await utils.shiftToWakeTime(drink.datetime.value);
-    await db.updateConsumedVolume(shiftedDate, waterVol.toInt());
+    await db.updateConsumedVolume(waterVol.toInt());
     notifyParent();
     showDrinkAddedSnackbar(drink, bev);
+
+    WaterGoal? todaysGoal = await db.getGoal(DateTime.now());
+    int medianDrinkSize = await calcMedianDrinkSize();
+    await NotificationsController.updateScheduledNotifications(
+        todaysGoal!.reminderGap, medianDrinkSize);
   }
 
   @override

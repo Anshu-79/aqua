@@ -129,42 +129,78 @@ class Database extends _$Database {
         .get();
   }
 
-  // Water Goals Actions
-  Future<int> insertOrUpdateGoal(WaterGoalsCompanion entity) async {
-    return await into(waterGoals).insertOnConflictUpdate(entity);
+  Future<int> minutesElapsedSinceLastDrink() async {
+    Drink lastDrink = (await getDrinks()).last;
+
+    Duration timeElapsed = DateTime.now().difference(lastDrink.datetime);
+
+    return timeElapsed.inMinutes;
   }
 
-  Future<WaterGoal?> getGoal(DateTime id) async {
-    // To allow us to simply put any datetime when calling the function
-    id = DateUtils.dateOnly(id);
+  // Time in next reminder is the difference of reminder gap specified & the time elapsed
+  Future<int> minutesInNextReminder() async {
+    int minutesPassed = await minutesElapsedSinceLastDrink();
 
-    return await (select(waterGoals)..where((tbl) => tbl.date.equals(id)))
+    WaterGoal? todaysGoal = await getGoal(DateTime.now());
+
+    return todaysGoal!.reminderGap - minutesPassed;
+  }
+
+  // Water Goals Actions
+  Future<WaterGoal?> getGoal(DateTime datetime) async {
+    // Explanation at function's definition
+    DateTime today = await shiftToWakeTime(datetime);
+
+    // Convert datetime to a date since primary key is the date
+    today = DateUtils.dateOnly(today);
+    return await (select(waterGoals)..where((tbl) => tbl.date.equals(today)))
         .getSingleOrNull();
   }
 
-  Future<int> updateConsumedVolume(DateTime today, int consumedVol) async {
-    today = DateUtils.dateOnly(today);
+  Future<void> setTodaysGoal() async {
+    DateTime now = DateTime.now();
 
-    final goal = await getGoal(today);
-    int newConsumedVol = consumedVol + goal!.consumedVolume;
-    double gap = await calcReminderGap(goal.totalVolume, newConsumedVol);
+    WaterGoal? existingGoal = await getGoal(now);
+    print(existingGoal);
 
-    return (update(waterGoals)..where((t) => t.date.equals(today))).write(
-        WaterGoalsCompanion(
-            consumedVolume: Value(goal.consumedVolume + consumedVol),
-            reminderGap: Value(gap.toInt())));
+    if (existingGoal != null) return;
+
+    DateTime date = DateUtils.dateOnly(now);
+
+    final int totalIntake = await calcTodaysGoal();
+    int consumed = 0;
+    int gap = await calcReminderGap(consumed, totalIntake);
+
+    final goal = WaterGoalsCompanion(
+      date: Value(date),
+      totalVolume: Value(totalIntake),
+      consumedVolume: Value(consumed),
+      reminderGap: Value(gap),
+    );
+
+    print(goal);
+    await into(waterGoals).insertOnConflictUpdate(goal);
   }
 
-  Future<int> updateTotalVolume(DateTime today, int totalVol) async {
-    today = DateUtils.dateOnly(today);
+  Future<int> updateConsumedVolume(int consumedVol) async {
+    final goal = await getGoal(DateTime.now());
+    int newConsumedVol = consumedVol + goal!.consumedVolume;
+    int gap = await calcReminderGap(newConsumedVol, goal.totalVolume);
 
-    final goal = await getGoal(today);
-    int newTotalVol = totalVol + goal!.totalVolume;
-    double gap = await calcReminderGap(goal.totalVolume, newTotalVol);
-
-    return (update(waterGoals)..where((t) => t.date.equals(today))).write(
+    return (update(waterGoals)..where((t) => t.date.equals(goal.date))).write(
         WaterGoalsCompanion(
-            totalVolume: Value(newTotalVol), reminderGap: Value(gap.toInt())));
+            consumedVolume: Value(goal.consumedVolume + consumedVol),
+            reminderGap: Value(gap)));
+  }
+
+  Future<int> updateTotalVolume(int totalVolIncrease) async {
+    final goal = await getGoal(DateTime.now());
+    int newTotalVol = totalVolIncrease + goal!.totalVolume;
+    int gap = await calcReminderGap(goal.consumedVolume, newTotalVol);
+
+    return (update(waterGoals)..where((t) => t.date.equals(goal.date))).write(
+        WaterGoalsCompanion(
+            totalVolume: Value(newTotalVol), reminderGap: Value(gap)));
   }
 
   @override

@@ -84,7 +84,7 @@ class NotificationsController {
       actionButtons: [
         NotificationActionButton(key: 'ADD', label: 'Add $volume mL')
       ],
-      // schedule: NotificationInterval(interval: 60 * minutes),
+      schedule: NotificationInterval(interval: 60 * minutes),
     );
   }
 
@@ -96,10 +96,10 @@ class NotificationsController {
     }
   }
 
-  Future<void> cancelScheduledNotifications() async =>
+  static Future<void> cancelScheduledNotifications() async =>
       await AwesomeNotifications().cancelAllSchedules();
 
-  Future<void> updateScheduledNotifications(int minutes, int volume) async {
+  static Future<void> updateScheduledNotifications(int minutes, int volume) async {
     await cancelScheduledNotifications();
     await createHydrationNotification(minutes, volume);
   }
