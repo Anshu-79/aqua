@@ -50,19 +50,22 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
               },
               itemBuilder: (Activity activity) => Padding(
                 padding: const EdgeInsets.only(bottom: 10),
+                // This Card Widget is wrapped over ListTile to prevent ListTiles
+                // from displaying over searchbar
                 child: Card(
                   elevation: 1,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
+                      borderRadius: BorderRadius.circular(30)),
                   child: ListTile(
                     shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Theme.of(context).primaryColor),
-                        borderRadius: BorderRadius.circular(20)),
+                        side: BorderSide(
+                            color: utils.getWorkoutColor(activity.id),
+                            width: 5),
+                        borderRadius: BorderRadius.circular(30)),
                     splashColor: utils.getWorkoutColor(activity.id),
                     textColor: Theme.of(context).primaryColor,
-                    tileColor: (Theme.of(context).brightness == Brightness.dark)
-                        ? utils.darken(utils.getWorkoutColor(activity.id), 50)
-                        : utils.lighten(utils.getWorkoutColor(activity.id), 50),
+                    tileColor:
+                        utils.getWorkoutColor(activity.id).withOpacity(0.3),
                     leading: Icon(
                       utils.icomoonMap[activity.category]![0],
                       size: 35,
@@ -87,7 +90,8 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                       // Update notification gap
                       WaterGoal? todaysGoal =
                           await widget.db.getGoal(DateTime.now());
-                      int medianDrinkSize = await widget.db.calcMedianDrinkSize();
+                      int medianDrinkSize =
+                          await widget.db.calcMedianDrinkSize();
                       await NotificationsController
                           .updateScheduledNotifications(
                               todaysGoal!.reminderGap, medianDrinkSize);

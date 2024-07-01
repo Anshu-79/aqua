@@ -282,8 +282,6 @@ abstract class ThemeText {
   static TextStyle workoutTitle = const TextStyle(
       fontSize: 40, fontWeight: FontWeight.w900, color: Colors.black);
 
-  static TextStyle durationSubtext =
-      const TextStyle(fontSize: 30, fontWeight: FontWeight.w900);
 }
 
 class DialogActionButton extends StatelessWidget {
