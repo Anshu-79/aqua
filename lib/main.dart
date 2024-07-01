@@ -9,7 +9,7 @@ import 'package:aqua/database/database.dart';
 import 'package:aqua/notifications.dart';
 import 'package:aqua/firebase_options.dart';
 import 'package:aqua/screens/home.dart';
-import 'package:aqua/screens/user_profile.dart';
+import 'package:aqua/screens/user_profile/user_profile.dart';
 import 'package:aqua/screens/beverage_menu.dart';
 import 'package:aqua/screens/activity_menu.dart';
 import 'package:aqua/screens/onboarding/onboarding.dart';
