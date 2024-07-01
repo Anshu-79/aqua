@@ -121,7 +121,8 @@ class Database extends _$Database {
   Future<List<Drink>> getDrinks() async => await select(drinks).get();
 
   Future<List<Drink>> getDrinksOfDay(DateTime date) async {
-    final startOfDay = await shiftToWakeTime(DateTime(date.year, date.month, date.day));
+    final startOfDay =
+        await shiftToWakeTime(DateTime(date.year, date.month, date.day));
     final endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59, 999);
 
     return (select(drinks)
@@ -228,26 +229,24 @@ class Database extends _$Database {
     int gap = await calcReminderGap(consumed, totalIntake);
 
     final goal = WaterGoalsCompanion(
-      date: Value(dateOnly),
-      totalVolume: Value(totalIntake),
-      consumedVolume: Value(consumed),
-      reminderGap: Value(gap),
-      datetimeOffset: Value(await SharedPrefUtils.getWakeTime())
-    );
+        date: Value(dateOnly),
+        totalVolume: Value(totalIntake),
+        consumedVolume: Value(consumed),
+        reminderGap: Value(gap),
+        datetimeOffset: Value(await SharedPrefUtils.getWakeTime()));
 
     print("Goal set");
     return await into(waterGoals).insertReturning(goal);
-    
   }
 
-  Future<int> updateConsumedVolume(int consumedVol) async {
+  Future<int> updateConsumedVolume(int consumedVolIncrease) async {
     final goal = await getGoal(DateTime.now());
-    int newConsumedVol = consumedVol + goal!.consumedVolume;
+    int newConsumedVol = consumedVolIncrease + goal!.consumedVolume;
     int gap = await calcReminderGap(newConsumedVol, goal.totalVolume);
 
     return (update(waterGoals)..where((t) => t.date.equals(goal.date))).write(
         WaterGoalsCompanion(
-            consumedVolume: Value(goal.consumedVolume + consumedVol),
+            consumedVolume: Value(goal.consumedVolume + consumedVolIncrease),
             reminderGap: Value(gap)));
   }
 
@@ -264,43 +263,45 @@ class Database extends _$Database {
   @override
   MigrationStrategy get migration => MigrationStrategy(
         onCreate: (Migrator m) async {
+          List<BeveragesCompanion> defaultBeverages = [
+            BeveragesCompanion(
+              name: const Value("Water"),
+              colorCode: Value(defaultColors['blue']!.value.toRadixString(16)),
+              waterPercent: const Value(100),
+              starred: const Value(true),
+            ),
+            BeveragesCompanion(
+              name: const Value("Soda"),
+              colorCode: Value(defaultColors['red']!.value.toRadixString(16)),
+              waterPercent: const Value(90),
+              starred: const Value(true),
+            ),
+            BeveragesCompanion(
+              name: const Value("Coffee"),
+              colorCode:
+                  Value(defaultColors['orange']!.value.toRadixString(16)),
+              waterPercent: const Value(50),
+              starred: const Value(false),
+            ),
+            BeveragesCompanion(
+              name: const Value("Tea"),
+              colorCode: Value(defaultColors['green']!.value.toRadixString(16)),
+              waterPercent: const Value(75),
+              starred: const Value(false),
+            ),
+            BeveragesCompanion(
+              name: const Value("Milk"),
+              colorCode: Value(defaultColors['pink']!.value.toRadixString(16)),
+              waterPercent: const Value(88),
+              starred: const Value(false),
+            ),
+          ];
+
           await m.createAll();
           print("Database created...");
-          await into(beverages).insertOnConflictUpdate(Beverage(
-            id: 1,
-            name: "Water",
-            colorCode: defaultColors['blue']!.value.toRadixString(16),
-            waterPercent: 100,
-            starred: true,
-          ));
-          await into(beverages).insertOnConflictUpdate(Beverage(
-            id: 2,
-            name: "Soda",
-            colorCode: defaultColors['red']!.value.toRadixString(16),
-            waterPercent: 90,
-            starred: true,
-          ));
-          await into(beverages).insertOnConflictUpdate(Beverage(
-            id: 3,
-            name: "Coffee",
-            colorCode: defaultColors['orange']!.value.toRadixString(16),
-            waterPercent: 50,
-            starred: true,
-          ));
-          await into(beverages).insertOnConflictUpdate(Beverage(
-            id: 4,
-            name: "Tea",
-            colorCode: defaultColors['green']!.value.toRadixString(16),
-            waterPercent: 75,
-            starred: true,
-          ));
-          await into(beverages).insertOnConflictUpdate(Beverage(
-            id: 5,
-            name: "Milk",
-            colorCode: defaultColors['pink']!.value.toRadixString(16),
-            waterPercent: 88,
-            starred: false,
-          ));
+          for (final beverage in defaultBeverages) {
+            await into(beverages).insert(beverage);
+          }
         },
         beforeOpen: (details) async {
           print("beforeOpen executed...");

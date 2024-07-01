@@ -1,11 +1,4 @@
-import 'package:aqua/shared_pref_utils.dart';
 import 'package:drift/drift.dart';
-
-// The dateTimeOffset column stores the wakeTime when the entry was created.
-// This ensures dates change at wakeTime instead of midnight.
-// Helper functions for conversions are available in utility files.
-Future<int> getWakeTime() async =>
-    await SharedPrefUtils.readInt('wakeTime') ?? 0;
 
 class Beverages extends Table {
   IntColumn get id => integer().autoIncrement()();
