@@ -169,8 +169,8 @@ class Database extends _$Database {
 
     DateTime now = DateTime.now();
 
-    final int? sleepHour = await SharedPrefUtils.readInt('sleepTime');
-    DateTime sleepTime = DateTime(now.year, now.month, now.day, sleepHour!);
+    final int sleepHour = await SharedPrefUtils.getSleepTime();
+    DateTime sleepTime = DateTime(now.year, now.month, now.day, sleepHour);
 
     if (sleepTime.isBefore(now)) {
       sleepTime = sleepTime.add(const Duration(days: 1));
@@ -201,7 +201,10 @@ class Database extends _$Database {
 
     WaterGoal? todaysGoal = await getGoal(DateTime.now());
 
-    return todaysGoal!.reminderGap - minutesPassed;
+    int minutesLeft = todaysGoal!.reminderGap - minutesPassed;
+    
+    if (minutesLeft < 0) return 0;
+    return minutesLeft;
   }
 
   // Water Goals Actions
@@ -212,13 +215,13 @@ class Database extends _$Database {
         .getSingleOrNull();
   }
 
-  Future<void> setTodaysGoal() async {
+  Future<WaterGoal> setTodaysGoal() async {
     DateTime dateOnly = await convertToWaterGoalID(DateTime.now());
 
     WaterGoal? existingGoal = await getGoal(DateTime.now());
     print(existingGoal);
 
-    if (existingGoal != null) return;
+    if (existingGoal != null) return existingGoal;
 
     final int totalIntake = await calcTodaysGoal();
     int consumed = 0;
@@ -232,8 +235,9 @@ class Database extends _$Database {
       datetimeOffset: Value(await SharedPrefUtils.getWakeTime())
     );
 
-    print(goal);
-    await into(waterGoals).insertOnConflictUpdate(goal);
+    print("Goal set");
+    return await into(waterGoals).insertReturning(goal);
+    
   }
 
   Future<int> updateConsumedVolume(int consumedVol) async {

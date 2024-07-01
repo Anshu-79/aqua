@@ -87,7 +87,13 @@ class SharedPrefUtils {
   static Future<int> getWakeTime() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     int? wakeTime = pref.getInt('wakeTime');
-    return wakeTime ?? 0;
+    return wakeTime ?? 8;
+  }
+
+  static Future<int> getSleepTime() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    int? sleepTime = pref.getInt('sleepTime');
+    return sleepTime ?? 0;
   }
   
 }
