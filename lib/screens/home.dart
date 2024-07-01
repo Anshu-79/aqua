@@ -264,7 +264,7 @@ class CustomDrinkButton extends ExtendedFabButton {
           style: TextButton.styleFrom(
             shadowColor: Colors.black,
             elevation: 6,
-            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.7),
+            backgroundColor: Theme.of(context).canvasColor.withOpacity(0.7),
             shape: const CircleBorder(
                 side: BorderSide(color: Colors.white, width: 5)),
           ),
@@ -275,7 +275,7 @@ class CustomDrinkButton extends ExtendedFabButton {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(Icons.edit,
-                    color: Theme.of(context).canvasColor, size: iconSize),
+                    color: Theme.of(context).primaryColor, size: iconSize),
                 ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: iconSize),
                   child: Text(
@@ -283,7 +283,7 @@ class CustomDrinkButton extends ExtendedFabButton {
                     overflow: TextOverflow.fade,
                     softWrap: false,
                     style: TextStyle(
-                        color: Theme.of(context).canvasColor,
+                        color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 12),
                   ),
