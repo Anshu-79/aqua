@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:aqua/database/database.dart';
 import 'package:aqua/shared_pref_utils.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -92,8 +93,14 @@ class NotificationsController {
   @pragma("vm:entry-point")
   static Future<void> onActionReceivedMethod(ReceivedAction action) async {
     if (action.buttonKeyPressed == 'ADD') {
-      String vol = action.payload!['volume']!.toString();
+      String vol = action.payload!['volume']!;
       Fluttertoast.showToast(msg: "$vol mL water added");
+      int volume = int.parse(action.payload!['volume']!);
+      
+      Database db = Database();
+      await db.insertWater(volume);
+      await db.updateConsumedVolume(volume);
+      db.close();
     }
   }
 

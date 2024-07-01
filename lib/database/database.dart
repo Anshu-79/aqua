@@ -115,7 +115,17 @@ class Database extends _$Database {
 
   // Drinks Actions
   Future<int> insertOrUpdateDrink(DrinksCompanion entity) async {
-    return await into(drinks).insertOnConflictUpdate(entity);
+    return await into(drinks).insert(entity);
+  }
+
+  Future<int> insertWater(int volume) async {
+    DrinksCompanion water = DrinksCompanion(
+      bevID: const Value(1),
+      volume: Value(volume),
+      datetime: Value(DateTime.now()),
+      datetimeOffset: Value(await SharedPrefUtils.getWakeTime())
+    );
+    return await into(drinks).insert(water);
   }
 
   Future<List<Drink>> getDrinks() async => await select(drinks).get();
@@ -203,7 +213,7 @@ class Database extends _$Database {
     WaterGoal? todaysGoal = await getGoal(DateTime.now());
 
     int minutesLeft = todaysGoal!.reminderGap - minutesPassed;
-    
+
     if (minutesLeft < 0) return 0;
     return minutesLeft;
   }

@@ -218,7 +218,7 @@ class _CircularFabState extends State<CircularFab> {
       animationDuration: const Duration(milliseconds: 300),
       alignment: Alignment.bottomCenter,
       fabSize: 70,
-      ringDiameter: 450,
+      ringDiameter: 425,
       ringWidth: 100,
       ringColor: Colors.transparent,
       fabColor: Theme.of(context).splashColor,
