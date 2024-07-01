@@ -33,8 +33,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // The first element of this function's output stores a WaterGoal? object & the second an int
   Future<List<dynamic>> _getGoal() async {
+    WaterGoal todaysGoal = await widget.database.setTodaysGoal(); // set goal if not set already
+
     int nextReminderIn = await widget.database.minutesInNextReminder();
-    return [await widget.database.getGoal(DateTime.now()), nextReminderIn];
+    return [todaysGoal, nextReminderIn];
   }
 
   @override
@@ -50,11 +52,9 @@ class _HomeScreenState extends State<HomeScreen> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
-
               if (snapshot.hasError) {
                 return Center(child: Text(snapshot.error.toString()));
               }
-
               return Container(
                   margin: const EdgeInsets.all(20),
                   child: Column(

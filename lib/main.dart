@@ -30,6 +30,9 @@ Future<void> main() async {
   // Runs every time app is run but fetches weather only when day has changed
   await DailyTaskManager.checkAndRunTask(saveWeather);
 
+  await DailyTaskManager.checkAndRunTask(
+      NotificationsController.killNotificationsDuringSleepTime);
+
   runApp(Aqua(sharedPrefs: prefs));
 }
 
@@ -81,7 +84,6 @@ class _NavBarState extends State<NavBar> {
   @override
   void initState() {
     _db = Database();
-    _db.setTodaysGoal();
     super.initState();
   }
 
