@@ -33,7 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // The first element of this function's output stores a WaterGoal? object & the second an int
   Future<List<dynamic>> _getGoal() async {
-    WaterGoal todaysGoal = await widget.database.setTodaysGoal(); // set goal if not set already
+    WaterGoal todaysGoal =
+        await widget.database.setTodaysGoal(); // set goal if not set already
 
     int nextReminderIn = await widget.database.minutesInNextReminder();
     return [todaysGoal, nextReminderIn];
@@ -141,9 +142,10 @@ class ExtendedFabButton extends StatelessWidget {
           style: TextButton.styleFrom(
             shadowColor: Colors.black,
             elevation: 6,
-            backgroundColor: utils.toColor(bev!.colorCode),
-            shape: const CircleBorder(
-                side: BorderSide(color: Colors.white, width: 2)),
+            backgroundColor: utils.toColor(bev!.colorCode).withOpacity(0.7),
+            shape: CircleBorder(
+                side:
+                    BorderSide(color: utils.toColor(bev!.colorCode), width: 5)),
           ),
           onPressed: _addQuickDrink,
           child: Padding(
@@ -152,14 +154,14 @@ class ExtendedFabButton extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Icon(Icomoon.water_glass,
-                    color: Colors.black, size: iconSize),
+                    color: Colors.white, size: iconSize),
                 ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: iconSize),
                   child: Text(bev!.name,
                       overflow: TextOverflow.ellipsis,
                       softWrap: false,
                       style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold)),
+                          color: Colors.white, fontWeight: FontWeight.bold)),
                 )
               ],
             ),
@@ -179,7 +181,7 @@ class CircularFab extends StatefulWidget {
 
 class _CircularFabState extends State<CircularFab> {
   late List<Widget> _fabButtons;
-  final int maxFabButtonsCount = 3;
+  final int maxFabButtonsCount = 4;
   bool _loading = true;
 
   @override
@@ -216,7 +218,7 @@ class _CircularFabState extends State<CircularFab> {
       animationDuration: const Duration(milliseconds: 300),
       alignment: Alignment.bottomCenter,
       fabSize: 70,
-      ringDiameter: 400,
+      ringDiameter: 450,
       ringWidth: 100,
       ringColor: Colors.transparent,
       fabColor: Theme.of(context).splashColor,
@@ -262,9 +264,9 @@ class CustomDrinkButton extends ExtendedFabButton {
           style: TextButton.styleFrom(
             shadowColor: Colors.black,
             elevation: 6,
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.7),
             shape: const CircleBorder(
-                side: BorderSide(color: Colors.white, width: 2)),
+                side: BorderSide(color: Colors.white, width: 5)),
           ),
           onPressed: _showCustomDrinkDialog,
           child: Padding(
@@ -272,15 +274,16 @@ class CustomDrinkButton extends ExtendedFabButton {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.edit, color: Colors.black, size: iconSize),
+                Icon(Icons.edit,
+                    color: Theme.of(context).canvasColor, size: iconSize),
                 ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: iconSize),
-                  child: const Text(
+                  child: Text(
                     "Custom",
                     overflow: TextOverflow.fade,
                     softWrap: false,
                     style: TextStyle(
-                        color: Colors.black,
+                        color: Theme.of(context).canvasColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 12),
                   ),
