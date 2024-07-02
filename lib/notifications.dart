@@ -84,7 +84,10 @@ class NotificationsController {
         payload: {"volume": volume.toString()},
       ),
       actionButtons: [
-        NotificationActionButton(key: 'ADD', label: 'Add $volume mL')
+        NotificationActionButton(
+            key: 'ADD',
+            label: 'Add $volume mL',
+            actionType: ActionType.SilentBackgroundAction)
       ],
       schedule: NotificationInterval(interval: 60 * minutes, repeats: true),
     );
@@ -96,7 +99,7 @@ class NotificationsController {
       String vol = action.payload!['volume']!;
       Fluttertoast.showToast(msg: "$vol mL water added");
       int volume = int.parse(action.payload!['volume']!);
-      
+
       Database db = Database();
       await db.insertWater(volume);
       await db.updateConsumedVolume(volume);

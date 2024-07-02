@@ -1,3 +1,5 @@
+import 'package:aqua/database/database.dart';
+import 'package:aqua/screens/user_profile/charts.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -6,17 +8,28 @@ import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/icomoon_icons.dart';
 
 class StatsWidget extends StatefulWidget {
-  const StatsWidget({super.key, required this.prefs});
+  const StatsWidget({super.key, required this.prefs, required this.db});
   final SharedPreferences prefs;
+  final Database db;
 
   @override
   State<StatsWidget> createState() => _StatsWidgetState();
 }
 
 class _StatsWidgetState extends State<StatsWidget> {
+  late Future<List<WaterGoal>> _waterGoals;
+  late Future<List<Map<Beverage, Map>>> _drinksData;
+
+  @override
+  void initState() {
+    _waterGoals = widget.db.getWaterGoals();
+    _drinksData = widget.db.bevWiseDailyConsumption();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return Wrap(runSpacing: 20, children: [
       Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         StatsSummary(
           color: utils.defaultColors['red']!,
@@ -30,7 +43,6 @@ class _StatsWidgetState extends State<StatsWidget> {
             statsSubtext: "Water per Week",
             icondata: Icomoon.water_bottle)
       ]),
-      const SizedBox(height: 20),
       Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         StatsSummary(
             color: utils.defaultColors['mint']!,
@@ -42,7 +54,14 @@ class _StatsWidgetState extends State<StatsWidget> {
             stats: "10 L",
             statsSubtext: "Fluids per Week",
             icondata: Icomoon.iced_liquid)
-      ])
+      ]),
+      AquaGenericChart(
+        dataFuture: _waterGoals,
+        chartBuilder: (data) => TotalWaterLineChart(waterGoals: data),
+      ),
+      AquaGenericChart(
+          dataFuture: _drinksData,
+          chartBuilder: (data) => BevConsumptionLineChart(drinks: data))
     ]);
   }
 }

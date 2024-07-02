@@ -19,12 +19,14 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Wrap(
-      runSpacing: 20,
-      children: [
-        ProfileWidget(prefs: widget.prefs),
-        StatsWidget(prefs: widget.prefs)
-      ],
-    ));
+        body: SingleChildScrollView(
+          child: Wrap(
+                runSpacing: 20,
+                children: [
+          ProfileWidget(prefs: widget.prefs),
+          StatsWidget(prefs: widget.prefs, db: widget.database)
+                ],
+              ),
+        ));
   }
 }

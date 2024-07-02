@@ -65,6 +65,7 @@ dependencies:
   awesome_notifications: ^0.9.3+1
   awesome_notifications_core: ^0.9.3
   fluttertoast: ^8.2.6
+  fl_chart: ^0.68.0
 
 dev_dependencies:
   drift_dev: ^2.15.0
