@@ -94,6 +94,8 @@ class Database extends _$Database {
   }
 
   Future<int> deleteBeverage(int id) async {
+    // delete all drinks associated with beverage
+    await (delete(drinks)..where((tbl) => tbl.bevID.equals(id))).go();
     return await (delete(beverages)..where((tbl) => tbl.id.equals(id))).go();
   }
 
@@ -118,13 +120,115 @@ class Database extends _$Database {
     return await into(drinks).insert(entity);
   }
 
+  Future<List<Map<Beverage, int>>> totalVolumeByBeverage() async {
+    final query = selectOnly(drinks)
+      ..addColumns([drinks.bevID, drinks.volume.sum()]);
+    query.groupBy([drinks.bevID]);
+
+    final result = await query.get();
+
+    final bevIDs = result.map((row) => row.read(drinks.bevID)).toList();
+
+    final List<Map<Beverage, int>> aggregatedData = [];
+    for (final id in bevIDs) {
+      final totalVolume = result
+          .where((row) => row.read(drinks.bevID) == id)
+          .map<int>((row) => row.read(drinks.volume.sum()) as int)
+          .reduce((value, element) => value + element);
+
+      final beverage = await (select(beverages)
+            ..where((tbl) => tbl.id.equals(id!)))
+          .getSingle();
+
+      aggregatedData.add({beverage: totalVolume});
+    }
+    print(aggregatedData);
+    return aggregatedData;
+  }
+
+  Future<Drink> insertTempDrink(int bevID, int volume, DateTime dt) async {
+    return await into(drinks).insertReturning(DrinksCompanion(
+        bevID: Value(bevID),
+        volume: Value(volume),
+        datetime: Value(dt),
+        datetimeOffset: const Value(0)));
+  }
+
+  Future<Map<DateTime, int>> getDailyConsumption(int bevID) async {
+    final query = selectOnly(drinks)
+      ..addColumns([drinks.datetime.date, drinks.volume.sum()])
+      ..where(drinks.bevID.equals(bevID))
+      ..groupBy([drinks.datetime.date]);
+
+    final result = await query.get();
+
+    final Map<DateTime, int> aggregatedData = {};
+
+    for (final row in result) {
+      final date = DateTime.parse(row.read(drinks.datetime.date)!);
+      final totalVolume = row.read(drinks.volume.sum()) as int;
+      aggregatedData[date] = totalVolume;
+    }
+    return aggregatedData;
+  }
+
+  Future<List<Map<Beverage, Map>>> bevWiseDailyConsumption() async {
+    
+    final beverages = await getBeverages();
+
+    Map<Beverage, Map> aggregatedData = {};
+    for (final bev in beverages) {
+      final bevsConsumptionList = await getDailyConsumption(bev.id);
+      aggregatedData[bev] = bevsConsumptionList;
+    }
+
+    return [aggregatedData];
+  }
+
+  Future<List<Map<int, int>>> getBevConsumption(String date) async {
+    final query = selectOnly(drinks)
+      ..addColumns([drinks.bevID, drinks.volume.sum()])
+      ..where(drinks.datetime.date.equals(date))
+      ..groupBy([drinks.bevID]);
+
+    final result = await query.get();
+
+    final List<Map<int, int>> aggregatedData = result.map((row) {
+      final id = row.read(drinks.bevID)!;
+      final totalVolume = row.read(drinks.volume.sum()) as int;
+      return {id: totalVolume};
+    }).toList();
+
+    return aggregatedData;
+  }
+
+  Future<List<Map<String, List<dynamic>>>> daywiseAllBevsConsumption() async {
+    final temp =
+        await insertTempDrink(1, 100, DateTime.now().add(Duration(days: 1)));
+    final query = selectOnly(drinks, distinct: true)
+      ..addColumns([drinks.datetime.date]);
+    final result = await query.get();
+
+    final List<String> dates =
+        result.map((row) => row.read(drinks.datetime.date)!).toList();
+
+    Map<String, List<dynamic>> aggregatedData = {};
+    for (final date in dates) {
+      final bevsConsumptionList = await getBevConsumption(date);
+      aggregatedData[date] = bevsConsumptionList;
+    }
+
+    await (delete(drinks)..where((tbl) => tbl.id.equals(temp.id))).go();
+
+    return [aggregatedData];
+  }
+
   Future<int> insertWater(int volume) async {
     DrinksCompanion water = DrinksCompanion(
-      bevID: const Value(1),
-      volume: Value(volume),
-      datetime: Value(DateTime.now()),
-      datetimeOffset: Value(await SharedPrefUtils.getWakeTime())
-    );
+        bevID: const Value(1),
+        volume: Value(volume),
+        datetime: Value(DateTime.now()),
+        datetimeOffset: Value(await SharedPrefUtils.getWakeTime()));
     return await into(drinks).insert(water);
   }
 
@@ -219,6 +323,10 @@ class Database extends _$Database {
   }
 
   // Water Goals Actions
+
+  Future<List<WaterGoal>> getWaterGoals() async =>
+      await select(waterGoals).get();
+
   Future<WaterGoal?> getGoal(DateTime datetime) async {
     final DateTime dateOnly = await convertToWaterGoalID(datetime);
 
