@@ -28,7 +28,7 @@ class _BevsPieChartState extends State<BevsPieChart> {
 
   List<PieChartSectionData> bevPieSections(Map<Beverage, int> bevMap) {
     List<Beverage> beverages = bevMap.keys.toList();
-    if (widget.showWater == false) beverages.remove(water);
+    if (!widget.showWater) beverages.remove(water);
 
     return List.generate(beverages.length, (i) {
       final isTouched = i == touchedIndex;

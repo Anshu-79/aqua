@@ -15,7 +15,7 @@ int toCMs(int feet, int inches) {
   return cm;
 }
 
-int toFeet(int height) => (height * 0.3937008 / 12).toInt();
+int toFeet(int height) => height * 0.3937008 ~/ 12;
 
 int toInch(int height) =>
     ((height * 0.3937008 / 12 - toFeet(height)) * 12).toInt();
