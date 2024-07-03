@@ -1,5 +1,4 @@
 import 'package:aqua/database/database.dart';
-import 'package:aqua/screens/user_profile/charts.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,7 +44,6 @@ class _StatsWidgetState extends State<StatsWidget> {
             statsSubtext: "Fluids per Week",
             icondata: Icomoon.iced_liquid)
       ]),
-      ChartsHolder(db: widget.db),
     ]);
   }
 }

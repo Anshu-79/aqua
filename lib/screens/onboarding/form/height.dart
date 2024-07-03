@@ -20,7 +20,6 @@ int toFeet(int height) => (height * 0.3937008 / 12).toInt();
 int toInch(int height) =>
     ((height * 0.3937008 / 12 - toFeet(height)) * 12).toInt();
 
-
 class HeightInputScreen extends StatefulWidget {
   const HeightInputScreen({super.key});
 
@@ -112,10 +111,7 @@ class _HeightInputScreenState extends State<HeightInputScreen> {
 
     Widget imperialHeightPicker() => Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            heightPicker('ft', 2, 8),
-            heightPicker('in', 0, 11),
-          ],
+          children: [heightPicker('ft', 2, 8), heightPicker('in', 0, 11)],
         );
 
     return Scaffold(
