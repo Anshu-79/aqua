@@ -9,13 +9,6 @@ import 'package:aqua/screens/charts/workout_duration_pie_chart.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils.dart' as utils;
 
-Beverage water = Beverage(
-    id: 1,
-    name: 'Water',
-    colorCode: utils.defaultColors['blue']!.value.toRadixString(16),
-    starred: true,
-    waterPercent: 100);
-
 enum DaysRangeLabel {
   week('Last week', 7),
   fortnight('Last 2 weeks', 14),
@@ -45,7 +38,7 @@ class _StatsScreenState extends State<StatsScreen> {
   late Future<Map<Activity, int>> _workouts;
 
   bool showWater = true;
-  DaysRangeLabel? selectedRange;
+  DaysRangeLabel? selectedRange = DaysRangeLabel.week;
   final TextEditingController daysRangeController = TextEditingController();
 
   @override
@@ -114,22 +107,31 @@ class _StatsScreenState extends State<StatsScreen> {
               GenericChart(
                 headerText: 'Hydation Trend',
                 dataFuture: _waterGoals,
-                chartBuilder: (data) => TotalWaterTrendChart(waterGoals: data),
+                chartBuilder: (data) => TotalWaterTrendChart(
+                    waterGoals: data, daysRange: selectedRange!.value),
               ),
               GenericChart(
                 headerText: 'Beverage Intake Trend',
                 dataFuture: _drinksData,
-                chartBuilder: (data) => BeverageTrendChart(drinks: data),
+                chartBuilder: (data) => BeverageTrendChart(
+                    drinks: data,
+                    daysRange: selectedRange!.value,
+                    showWater: showWater),
               ),
               GenericChart(
                 headerText: 'Daily Beverage Breakdown',
                 dataFuture: _daywiseDrinksData,
-                chartBuilder: (data) => BevDistributionBarChart(drinks: data),
+                chartBuilder: (data) => BevDistributionBarChart(
+                  drinks: data,
+                  showWater: showWater,
+                  daysRange: selectedRange!.value,
+                ),
               ),
               GenericChart(
                 headerText: 'Net Beverage Breakdown',
                 dataFuture: _totalBevDistribution,
-                chartBuilder: (data) => BevsPieChart(bevMap: data),
+                chartBuilder: (data) =>
+                    BevsPieChart(bevMap: data, showWater: showWater),
               ),
               GenericChart(
                 headerText: 'Workout Duration Breakdown',
