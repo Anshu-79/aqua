@@ -45,12 +45,8 @@ String getDurationInText(int duration) {
 
 String getVolumeInText(int volume) {
   if (volume >= 1000) {
-    int litres = volume ~/ 1000;
-    int millilitres = volume % 1000;
-
-    if (millilitres == 0) return "$litres L";
-
-    return "$litres L $millilitres mL";
+    double litres = volume / 1000;
+    return "${litres.toStringAsFixed(3)} L";
   }
 
   return "$volume mL";

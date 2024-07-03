@@ -128,7 +128,8 @@ class WorkoutCard extends StatelessWidget {
               style: const TextStyle(
                   color: Colors.white, fontWeight: FontWeight.w900)),
           Text(utils.getVolumeInText(workout.waterLoss),
-              style: const TextStyle(color: Colors.white)),
+              style: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold)),
         ],
       ),
     );
