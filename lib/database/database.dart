@@ -120,7 +120,8 @@ class Database extends _$Database {
 
     final result = await query.get();
 
-    final activityIDs = result.map((row) => row.read(workouts.activityID)).toList();
+    final activityIDs =
+        result.map((row) => row.read(workouts.activityID)).toList();
 
     final Map<Activity, int> aggregatedData = {};
     for (final id in activityIDs) {
@@ -301,10 +302,24 @@ class Database extends _$Database {
 
   Future<int> calcReminderGap(int consumed, int total) async {
     final int toDrink = total - consumed;
+    DateTime now = DateTime.now();
+
+    // If day's goal has been completed, next reminder will
+    // be at the waking time of next day
+    if (toDrink <= 0) {
+      final wakeHour = await SharedPrefUtils.getWakeTime();
+      DateTime wakeTime = DateTime(now.year, now.month, now.day, wakeHour);
+
+      if (wakeTime.isBefore(now)) {
+        wakeTime = wakeTime.add(const Duration(days: 1));
+      }
+      return wakeTime.difference(now).inMinutes;
+    }
+
     final int drinkSize = await calcMedianDrinkSize();
     int drinksNeeded = toDrink ~/ drinkSize;
-
-    DateTime now = DateTime.now();
+    
+    if (drinksNeeded == 0) drinksNeeded = 1;
 
     final int sleepHour = await SharedPrefUtils.getSleepTime();
     DateTime sleepTime = DateTime(now.year, now.month, now.day, sleepHour);
@@ -319,29 +334,6 @@ class Database extends _$Database {
 
     if (reminderGap < 10) return 10; // Throttle minumum Reminder gap at 10 min
     return reminderGap.round();
-  }
-
-  Future<int> minutesElapsedSinceLastDrink() async {
-    List<Drink> drinks = await getDrinks();
-    if (drinks.isEmpty) return 0;
-    // If no drinks have been logged, no time has passed since last drink
-
-    Drink lastDrink = drinks.last;
-    Duration timeElapsed = DateTime.now().difference(lastDrink.datetime);
-
-    return timeElapsed.inMinutes;
-  }
-
-  // Time in next reminder is the difference of reminder gap specified & the time elapsed
-  Future<int> minutesInNextReminder() async {
-    int minutesPassed = await minutesElapsedSinceLastDrink();
-
-    WaterGoal? todaysGoal = await getGoal(DateTime.now());
-
-    int minutesLeft = todaysGoal!.reminderGap - minutesPassed;
-
-    if (minutesLeft < 0) return 0;
-    return minutesLeft;
   }
 
   // Water Goals Actions

@@ -190,7 +190,6 @@ class _WaterGoalForegroundState extends State<WaterGoalForeground> {
         Text.rich(
             TextSpan(text: " L", style: utils.ThemeText.dailyGoalFillerText)),
       ]),
-      Text("consumed", style: utils.ThemeText.dailyGoalFillerText)
     ]);
   }
 }

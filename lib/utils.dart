@@ -35,12 +35,12 @@ String getDurationInText(int duration) {
     int hrs = duration ~/ 60;
     int minutes = duration % 60;
 
-    if (minutes == 0) return "$hrs hours";
+    if (minutes == 0) return "$hrs hrs";
 
-    return "$hrs hours $minutes minutes";
+    return "$hrs hrs $minutes mins";
   }
 
-  return "$duration minutes";
+  return "$duration mins";
 }
 
 String getVolumeInText(int volume) {
@@ -216,13 +216,12 @@ abstract class ThemeText {
   );
 
   static TextStyle reminderSubText =
-      const TextStyle(fontSize: 20, fontWeight: FontWeight.normal);
+      const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 
   static TextStyle reminderText = TextStyle(
-      fontSize: 30,
-      fontWeight: FontWeight.bold,
-      color: defaultColors['dark blue'],
-      letterSpacing: 3);
+      fontSize: 25,
+      fontWeight: FontWeight.w900,
+      color: defaultColors['dark blue']);
 
   // Add Drink Dialog Box
   static TextStyle dialogButtons =
