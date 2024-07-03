@@ -5,10 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils.dart' as utils;
 
+Beverage water = Beverage(
+    id: 1,
+    name: 'Water',
+    colorCode: utils.toHexString(utils.defaultColors['blue']!),
+    starred: true,
+    waterPercent: 100);
+
 class BevDistributionBarChart extends StatefulWidget {
-  const BevDistributionBarChart({super.key, required this.drinks});
+  const BevDistributionBarChart(
+      {super.key,
+      required this.drinks,
+      required this.showWater,
+      required this.daysRange});
 
   final Map<String, Map<Beverage, int>> drinks;
+  final bool showWater;
+  final int daysRange;
 
   @override
   State<BevDistributionBarChart> createState() =>
@@ -20,7 +33,9 @@ class _BevDistributionBarChartState extends State<BevDistributionBarChart> {
 
   List<BarChartGroupData> generateBarChartGroups(
       Map<String, Map<Beverage, int>> drinksData) {
-    int daysRange = 7;
+    
+    int daysRange = widget.daysRange;
+    if (daysRange > 14) daysRange = 14;
 
     final List<String> dates = drinksData.keys.toList();
 
@@ -36,20 +51,23 @@ class _BevDistributionBarChartState extends State<BevDistributionBarChart> {
 
       Map<Beverage, int> allBevsDataOnDate = drinksData[datesInRange[i]]!;
 
-      // allBevsDataOnDate.remove(water);
+      List<Beverage> beverages = allBevsDataOnDate.keys.toList();
+      if (!widget.showWater) beverages.remove(water);
 
-      int totalVolForDay = allBevsDataOnDate.values.toList().sum;
+      List<int> volumes = allBevsDataOnDate.values.toList();
+      if (!widget.showWater) volumes.remove(allBevsDataOnDate[water]);
 
       return BarChartGroupData(x: i + 1, barRods: [
         BarChartRodData(
             borderRadius: BorderRadius.circular(2),
             borderSide: const BorderSide(width: 2, color: Colors.white),
             width: width,
-            toY: totalVolForDay.toDouble(),
-            rodStackItems: List.generate(allBevsDataOnDate.length, (j) {
-              Beverage bev = allBevsDataOnDate.keys.toList()[j];
-              List<int> volumes = allBevsDataOnDate.values.toList();
-              int volume = allBevsDataOnDate[bev]!;
+            toY: volumes.sum.toDouble(),
+            rodStackItems: List.generate(beverages.length, (j) {
+              // print(beverages);
+              Beverage bev = beverages[j];
+
+              int volume = volumes[j];
 
               // starting point is calculated by adding all previous volumes
               int prevVolume = (j >= 1) ? volumes.sublist(0, j).sum : 0;
@@ -57,7 +75,7 @@ class _BevDistributionBarChartState extends State<BevDistributionBarChart> {
               return BarChartRodStackItem(
                   prevVolume.toDouble(),
                   volume.toDouble() + prevVolume.toDouble(),
-                  utils.adjustColorContrast(utils.toColor(bev.colorCode), 1.5),
+                  utils.toColor(bev.colorCode),
                   const BorderSide(color: Colors.white));
             })),
       ]);

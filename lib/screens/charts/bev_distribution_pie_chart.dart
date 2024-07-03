@@ -5,10 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils.dart' as utils;
 
+Beverage water = Beverage(
+    id: 1,
+    name: 'Water',
+    colorCode: utils.toHexString(utils.defaultColors['blue']!),
+    starred: true,
+    waterPercent: 100);
+
 class BevsPieChart extends StatefulWidget {
-  const BevsPieChart({super.key, required this.bevMap});
+  const BevsPieChart(
+      {super.key, required this.bevMap, required this.showWater});
 
   final Map<Beverage, int> bevMap;
+  final bool showWater;
 
   @override
   State<BevsPieChart> createState() => _BevsPieChartState();
@@ -17,19 +26,19 @@ class BevsPieChart extends StatefulWidget {
 class _BevsPieChartState extends State<BevsPieChart> {
   int touchedIndex = -1;
 
-  List<PieChartSectionData> bevPieSections(Map<Beverage, int> bevDataMap) {
-    // bevDataMap.remove(water);
-    return List.generate(bevDataMap.length, (i) {
+  List<PieChartSectionData> bevPieSections(Map<Beverage, int> bevMap) {
+    List<Beverage> beverages = bevMap.keys.toList();
+    if (widget.showWater == false) beverages.remove(water);
+
+    return List.generate(beverages.length, (i) {
       final isTouched = i == touchedIndex;
       final fontSize = isTouched ? 20.0 : 16.0;
       final radius = isTouched ? 90.0 : 80.0;
 
-      Beverage bev = bevDataMap.keys.toList()[i];
-      Color color =
-          utils.adjustColorContrast(utils.toColor(bev.colorCode), 1.5);
+      Beverage bev = beverages[i];
+      Color color = utils.toColor(bev.colorCode);
 
-      double volPercentage =
-          100 * bevDataMap[bev]! / bevDataMap.values.toList().sum;
+      double volPercentage = 100 * bevMap[bev]! / bevMap.values.toList().sum;
       return PieChartSectionData(
         showTitle: isTouched,
         title: "\t${bev.name}: ${volPercentage.toStringAsFixed(2)}%",
@@ -39,7 +48,7 @@ class _BevsPieChartState extends State<BevsPieChart> {
             fontSize: fontSize,
             color: Colors.white),
         titlePositionPercentageOffset: 0,
-        value: bevDataMap[bev]!.toDouble(),
+        value: bevMap[bev]!.toDouble(),
         color: color,
         radius: radius,
       );

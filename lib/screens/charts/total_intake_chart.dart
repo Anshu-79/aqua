@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:aqua/database/database.dart';
 
 class TotalWaterTrendChart extends StatelessWidget {
-  const TotalWaterTrendChart({super.key, required this.waterGoals});
+  const TotalWaterTrendChart({super.key, required this.waterGoals, required this.daysRange});
 
   final List<WaterGoal> waterGoals;
+  final int daysRange;
 
   List<FlSpot> totalWaterDataPoints(List<WaterGoal> waterGoals) {
-    int daysRange = 14;
 
     // Select the last 7, 14, etc number of days
     List dataInRange = waterGoals.reversed.take(daysRange).toList();

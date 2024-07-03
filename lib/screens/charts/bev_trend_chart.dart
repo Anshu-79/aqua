@@ -4,22 +4,34 @@ import 'package:flutter/material.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils.dart' as utils;
 
+Beverage water = Beverage(
+    id: 1,
+    name: 'Water',
+    colorCode: utils.toHexString(utils.defaultColors['blue']!),
+    starred: true,
+    waterPercent: 100);
+
 class BeverageTrendChart extends StatelessWidget {
-  const BeverageTrendChart({super.key, required this.drinks});
+  const BeverageTrendChart(
+      {super.key,
+      required this.drinks,
+      required this.daysRange,
+      required this.showWater});
 
   final Map<Beverage, Map> drinks;
+  final int daysRange;
+  final bool showWater;
 
   List<LineChartBarData> beverageLines(Map<Beverage, Map> drinks) {
-    int daysRange = 7;
     final List<Beverage> beverages = drinks.keys.toList();
+    if (showWater == false) beverages.remove(water);
 
     // Generate a list of lines accounting all beverages
-    return List.generate(drinks.length, (i) {
+    return List.generate(beverages.length, (i) {
       final Beverage bev = beverages[i];
       final Map bevData = drinks[bev]!;
       final dataInRange = bevData.values.toList().reversed.take(daysRange);
-      final Color color =
-          utils.adjustColorContrast(utils.toColor(bev.colorCode), 1.5);
+      final Color color = utils.toColor(bev.colorCode);
 
       return LineChartBarData(
           color: color,

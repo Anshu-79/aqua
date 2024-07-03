@@ -41,7 +41,7 @@ class _WorkoutDurationPieChartState extends State<WorkoutDurationPieChart> {
       final fontSize = isTouched ? 20.0 : 16.0;
       final radius = isTouched ? 90.0 : 80.0;
       String name = workouts.keys.toList()[i];
-      Color color = utils.adjustColorContrast(utils.icomoonMap[name]![1], 1.5);
+      Color color = utils.icomoonMap[name]![1];
 
       return PieChartSectionData(
           showTitle: isTouched,
