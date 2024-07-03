@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:aqua/water_goals.dart';
 import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/screens/settings.dart';
 
 String getWakeTimeText(SharedPreferences prefs) {
   int wakeTime = prefs.getInt('wakeTime')!;
@@ -30,7 +32,29 @@ class ProfilePicture extends StatelessWidget {
           size: 120, color: Colors.white);
     }
     FileImage img = FileImage(File(imgPath));
-    return CircleAvatar(radius: 60, backgroundImage: img);
+    return Align(
+        alignment: Alignment.topCenter,
+        child: CircleAvatar(radius: 60, backgroundImage: img));
+  }
+}
+
+class SettingsButton extends StatelessWidget {
+  const SettingsButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.topRight,
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: IconButton(
+          iconSize: 40,
+          icon: const Icon(Icons.settings, color: Colors.white),
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const SettingsPage())),
+        ),
+      ),
+    );
   }
 }
 

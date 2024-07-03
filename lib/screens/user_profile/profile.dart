@@ -22,7 +22,12 @@ class _ProfileWidgetState extends State<ProfileWidget> {
           borderRadius: const BorderRadius.all(Radius.circular(35))),
       child: Column(children: [
         const SizedBox(height: 20),
-        ProfilePicture(prefs: widget.prefs),
+        Stack(
+          children: [
+            ProfilePicture(prefs: widget.prefs),
+            const SettingsButton()
+          ],
+        ),
         const SizedBox(height: 10),
         Text(widget.prefs.getString('name')!, style: utils.ThemeText.username),
         const SizedBox(height: 20),
