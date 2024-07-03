@@ -1,3 +1,4 @@
+import 'package:aqua/screens/charts/charts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -108,6 +109,7 @@ class _NavBarState extends State<NavBar> {
       UserProfile(database: _db, prefs: widget.prefs),
       ActivityMenu(database: _db),
       BeverageMenu(database: _db),
+      StatsScreen(db: _db),
     ];
 
     return Scaffold(
@@ -142,6 +144,11 @@ class _NavBarState extends State<NavBar> {
             label: 'Beverages',
             icon: Icon(Icons.emoji_food_beverage_outlined),
             selectedIcon: Icon(Icons.emoji_food_beverage),
+          ),
+          NavigationDestination(
+            label: 'Statistics',
+            icon: Icon(Icons.insert_chart_outlined_rounded),
+            selectedIcon: Icon(Icons.insert_chart_rounded),
           ),
         ],
       ),
