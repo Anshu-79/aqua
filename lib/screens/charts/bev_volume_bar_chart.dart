@@ -64,7 +64,6 @@ class _BevDistributionBarChartState extends State<BevDistributionBarChart> {
             width: width,
             toY: volumes.sum.toDouble(),
             rodStackItems: List.generate(beverages.length, (j) {
-              // print(beverages);
               Beverage bev = beverages[j];
 
               int volume = volumes[j];

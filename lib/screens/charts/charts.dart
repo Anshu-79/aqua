@@ -1,7 +1,7 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 
-import 'package:aqua/screens/charts/bev_distribution_bar_chart.dart';
+import 'package:aqua/screens/charts/bev_volume_bar_chart.dart';
 import 'package:aqua/screens/charts/bev_distribution_pie_chart.dart';
 import 'package:aqua/screens/charts/bev_trend_chart.dart';
 import 'package:aqua/screens/charts/total_intake_chart.dart';
@@ -119,7 +119,7 @@ class _StatsScreenState extends State<StatsScreen> {
                     showWater: showWater),
               ),
               GenericChart(
-                headerText: 'Daily Beverage Breakdown',
+                headerText: 'Beverage Volume Breakdown',
                 dataFuture: _daywiseDrinksData,
                 chartBuilder: (data) => BevDistributionBarChart(
                   drinks: data,
@@ -146,6 +146,7 @@ class _StatsScreenState extends State<StatsScreen> {
   }
 }
 
+// Draws a border around the chart
 // Displays a Progress Indicator while the chart loads
 class GenericChart<T> extends StatelessWidget {
   const GenericChart({
@@ -167,7 +168,7 @@ class GenericChart<T> extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).canvasColor.computeLuminance() > 0.5
             ? Colors.grey.shade200
-            : Colors.grey.shade800,
+            : Colors.grey.shade900,
         borderRadius: BorderRadius.circular(30),
         border: Border.all(color: Theme.of(context).primaryColor, width: 5),
       ),
@@ -186,11 +187,10 @@ class GenericChart<T> extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 FittedBox(
-                  fit: BoxFit.contain,
-                  child: Text(headerText,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w900, fontSize: 40)),
-                ),
+                    fit: BoxFit.contain,
+                    child: Text(headerText,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w900, fontSize: 40))),
                 const SizedBox(height: 20),
                 AspectRatio(
                     aspectRatio: 2.0, child: chartBuilder(snapshot.data as T)),
