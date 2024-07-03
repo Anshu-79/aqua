@@ -1,146 +1,132 @@
-import 'dart:math';
-
+import 'package:aqua/screens/user_profile/charts/bev_distribution_bar_chart.dart';
+import 'package:aqua/screens/user_profile/charts/bev_distribution_pie_chart.dart';
+import 'package:aqua/screens/user_profile/charts/bev_trend_chart.dart';
+import 'package:aqua/screens/user_profile/charts/total_intake_chart.dart';
+import 'package:aqua/screens/user_profile/charts/workout_duration_pie_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils.dart' as utils;
 
-class AquaGenericChart<T> extends StatelessWidget {
-  const AquaGenericChart(
-      {super.key, required this.dataFuture, required this.chartBuilder});
+Beverage water = Beverage(
+    id: 1,
+    name: 'Water',
+    colorCode: utils.defaultColors['blue']!.value.toRadixString(16),
+    starred: true,
+    waterPercent: 100);
 
-  final Future<List<T>> dataFuture;
-  final Widget Function(List<T>) chartBuilder;
+
+// Parent widget to hold all the charts
+class ChartsHolder extends StatefulWidget {
+  const ChartsHolder({super.key, required this.db});
+  final Database db;
+
+  @override
+  State<ChartsHolder> createState() => _ChartsHolderState();
+}
+
+class _ChartsHolderState extends State<ChartsHolder> {
+  late Future<List<WaterGoal>> _waterGoals;
+  late Future<Map<Beverage, Map>> _drinksData;
+  late Future<Map<String, Map<Beverage, int>>> _daywiseDrinksData;
+  late Future<Map<Beverage, int>> _totalBevDistribution;
+  late Future<Map<Activity, int>> _workouts;
+
+  @override
+  void initState() {
+    _waterGoals = widget.db.getWaterGoals();
+    _drinksData = widget.db.bevWiseDailyConsumption();
+    _daywiseDrinksData = widget.db.daywiseAllBevsConsumption();
+    _totalBevDistribution = widget.db.totalVolumePerBeverage();
+    _workouts = widget.db.totalDurationPerActivity();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<T>>(
-        future: dataFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
-          }
-
-          return chartBuilder(snapshot.data!);
-        });
+    return Column(
+      children: [
+        GenericChart(
+          headerText: 'Hydation Trend',
+          dataFuture: _waterGoals,
+          chartBuilder: (data) => TotalWaterTrendChart(waterGoals: data),
+        ),
+        GenericChart(
+          headerText: 'Beverage Intake Trend',
+          dataFuture: _drinksData,
+          chartBuilder: (data) => BeverageTrendChart(drinks: data),
+        ),
+        GenericChart(
+          headerText: 'Daily Beverage Breakdown',
+          dataFuture: _daywiseDrinksData,
+          chartBuilder: (data) => BevDistributionBarChart(drinks: data),
+        ),
+        GenericChart(
+          headerText: 'Net Beverage Breakdown',
+          dataFuture: _totalBevDistribution,
+          chartBuilder: (data) => BevsPieChart(bevMap: data),
+        ),
+        GenericChart(
+          headerText: 'Workout Duration Breakdown',
+          dataFuture: _workouts,
+          chartBuilder: (data) => WorkoutDurationPieChart(workouts: data),
+        ),
+      ],
+    );
   }
 }
 
-List<FlSpot> totalWaterDataPoints(List<WaterGoal> waterGoals) {
-  return List.generate(14, (i) {
-    return FlSpot(
-        (i + 1).toDouble(), Random().nextInt(6000 - 2000 + 1).toDouble());
+
+// Displays a Progress Indicator while the chart loads
+class GenericChart<T> extends StatelessWidget {
+  const GenericChart({
+    super.key,
+    required this.headerText,
+    required this.dataFuture,
+    required this.chartBuilder,
   });
 
-  // return List.generate(waterGoals.length, (idx) {
-  //   return FlSpot(
-  //     (idx+1).toDouble(),
-  //     waterGoals[idx].consumedVolume.toDouble(),
-  //   );
-  // });
-}
-
-class TotalWaterLineChart extends StatelessWidget {
-  const TotalWaterLineChart({super.key, required this.waterGoals});
-
-  final List<WaterGoal> waterGoals;
+  final String headerText;
+  final Future<T> dataFuture;
+  final Widget Function(T) chartBuilder;
 
   @override
   Widget build(BuildContext context) {
-    Gradient chartGradient = const LinearGradient(
-        begin: Alignment.bottomCenter,
-        end: Alignment.topCenter,
-        colors: [Color(0xffcc208e), Color(0xff2575fc)]);
-
-    return Padding(
+    return Container(
+      margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(20),
-      child: AspectRatio(
-        aspectRatio: 2.0,
-        child: LineChart(
-          duration: const Duration(milliseconds: 150),
-          LineChartData(
-              lineBarsData: [
-                LineChartBarData(
-                  spots: totalWaterDataPoints(waterGoals),
-                  barWidth: 5,
-                  isCurved: true,
-                  preventCurveOverShooting: true,
-                  gradient: chartGradient,
-                  dotData: const FlDotData(show: false),
+      decoration: BoxDecoration(
+        color: Theme.of(context).canvasColor.computeLuminance() > 0.5
+            ? Colors.grey.shade200
+            : Colors.grey.shade800,
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(color: Theme.of(context).primaryColor, width: 5),
+      ),
+      child: FutureBuilder<T>(
+          future: dataFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            }
+
+            return Column(
+              children: [
+                FittedBox(
+                  fit: BoxFit.contain,
+                  child: Text(headerText,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w900, fontSize: 40)),
                 ),
+                const SizedBox(height: 20),
+                AspectRatio(
+                    aspectRatio: 2.0, child: chartBuilder(snapshot.data as T)),
               ],
-              gridData: const FlGridData(show: false),
-              titlesData: const FlTitlesData(
-                show: true,
-                rightTitles: AxisTitles(),
-                leftTitles: AxisTitles(axisNameWidget: Text("Volume (in mL)")),
-                bottomTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: true)),
-                topTitles: AxisTitles(
-                    axisNameWidget: Text("Total Water Consumption / Day"),
-                    axisNameSize: 30),
-              )),
-        ),
-      ),
-    );
-  }
-}
-
-List<LineChartBarData> beverageDataPoints(Map<Beverage, Map> drinks) {
-  final List<Beverage> beverages = drinks.keys.toList();
-  return List.generate(drinks.length, (i) {
-    final Beverage bev = beverages[i];
-    final Map bevData = drinks[bev]!;
-
-    return LineChartBarData(
-      color: utils.toColor(bev.colorCode),
-      barWidth: 5,
-      isCurved: true,
-      preventCurveOverShooting: true,
-      dotData: const FlDotData(show: false),
-      spots: List.generate(bevData.length, (j) {
-        final DateTime date = bevData.keys.toList()[j];
-        final volume = bevData[date];
-        return FlSpot((j+1).toDouble(), volume.toDouble());
-      })
-    );
-  });
-  // return List.generate(length, generator)
-}
-
-class BevConsumptionLineChart extends StatelessWidget {
-  const BevConsumptionLineChart({super.key, required this.drinks});
-
-  final List<dynamic> drinks;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: AspectRatio(
-        aspectRatio: 2.0,
-        child: LineChart(
-          duration: const Duration(milliseconds: 150),
-          LineChartData(
-              lineBarsData: beverageDataPoints(drinks[0]),
-              gridData: const FlGridData(show: false),
-              titlesData: const FlTitlesData(
-                show: true,
-                rightTitles: AxisTitles(),
-                leftTitles: AxisTitles(axisNameWidget: Text("Volume (in mL)")),
-                bottomTitles:
-                    AxisTitles(sideTitles: SideTitles(showTitles: true)),
-                topTitles: AxisTitles(
-                    axisNameWidget: Text("Beverage Consumption / Day"),
-                    axisNameSize: 30),
-              )),
-        ),
-      ),
+            );
+          }),
     );
   }
 }

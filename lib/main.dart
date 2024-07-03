@@ -84,7 +84,6 @@ class _NavBarState extends State<NavBar> {
   @override
   void initState() {
     _db = Database();
-    _db.bevWiseDailyConsumption();
     super.initState();
   }
 
