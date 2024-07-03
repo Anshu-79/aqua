@@ -106,7 +106,7 @@ class _StatsScreenState extends State<StatsScreen> {
                 children: [dayRangeDropdown(), showWaterToggle()],
               ),
               GenericChart(
-                headerText: 'Hydation Trend',
+                headerText: 'Hydration Trend',
                 dataFuture: _waterGoals,
                 chartBuilder: (data) => TotalWaterTrendChart(
                     waterGoals: data, daysRange: selectedRange!.value),

@@ -70,7 +70,7 @@ class NotificationsController {
     int randomIdx = Random().nextInt(notificationTitles.length);
     String imgURL = "asset://assets/images/icon.png";
 
-    // Change the img to the meme hydation_duck if text is from the meme
+    // Change the img to the meme hydration_duck if text is from the meme
     if (randomIdx == 0) imgURL = "asset://assets/images/hydration_duck.png";
 
     await AwesomeNotifications().createNotification(

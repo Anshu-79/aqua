@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'package:aqua/main.dart';
+import 'package:aqua/nav_bar.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/firestore_utils.dart' as firestore;
 import 'package:aqua/shared_pref_utils.dart' as shared_prefs;
