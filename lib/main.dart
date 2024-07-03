@@ -1,4 +1,3 @@
-import 'package:aqua/screens/charts/charts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,15 +5,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aqua/timers.dart';
 import 'package:aqua/weather_utils.dart';
 import 'package:aqua/api_keys.dart';
-import 'package:aqua/database/database.dart';
 import 'package:aqua/notifications.dart';
 import 'package:aqua/firebase_options.dart';
 import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/nav_bar.dart';
 
-import 'package:aqua/screens/home/home.dart';
-import 'package:aqua/screens/user_profile/user_profile.dart';
-import 'package:aqua/screens/beverage_menu.dart';
-import 'package:aqua/screens/activity_menu.dart';
 import 'package:aqua/screens/onboarding/onboarding.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -68,91 +63,3 @@ class _AquaState extends State<Aqua> {
   }
 }
 
-class NavBar extends StatefulWidget {
-  const NavBar({super.key, required this.prefs});
-
-  final SharedPreferences prefs;
-
-  @override
-  State<NavBar> createState() => _NavBarState();
-}
-
-class _NavBarState extends State<NavBar> {
-  late Database _db;
-
-  int selectedPage = 0;
-  final PageController pageController = PageController();
-
-  @override
-  void initState() {
-    _db = Database();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    pageController.dispose();
-    _db.close();
-    super.dispose();
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      selectedPage = index;
-      pageController.jumpToPage(index);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final pages = [
-      HomeScreen(database: _db),
-      UserProfile(database: _db, prefs: widget.prefs),
-      ActivityMenu(database: _db),
-      BeverageMenu(database: _db),
-      StatsScreen(db: _db),
-    ];
-
-    return Scaffold(
-      body: PageView(
-        controller: pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: pages,
-      ),
-      bottomNavigationBar: NavigationBar(
-        surfaceTintColor: utils.defaultColors['dark blue'],
-        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        onDestinationSelected: _onItemTapped,
-        indicatorColor: utils.defaultColors['dark blue'],
-        selectedIndex: selectedPage,
-        destinations: const [
-          NavigationDestination(
-            label: 'Home',
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
-          ),
-          NavigationDestination(
-            label: 'Profile',
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
-          ),
-          NavigationDestination(
-            label: 'Activities',
-            icon: Icon(Icons.directions_run),
-            selectedIcon: Icon(Icons.directions_run),
-          ),
-          NavigationDestination(
-            label: 'Beverages',
-            icon: Icon(Icons.emoji_food_beverage_outlined),
-            selectedIcon: Icon(Icons.emoji_food_beverage),
-          ),
-          NavigationDestination(
-            label: 'Statistics',
-            icon: Icon(Icons.insert_chart_outlined_rounded),
-            selectedIcon: Icon(Icons.insert_chart_rounded),
-          ),
-        ],
-      ),
-    );
-  }
-}
