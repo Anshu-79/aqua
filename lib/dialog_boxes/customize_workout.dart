@@ -36,7 +36,10 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
             FittedBox(
                 fit: BoxFit.contain,
                 child: Text(widget.activity!.category,
-                    style: utils.ThemeText.workoutTitle)),
+                    style: const TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.black))),
             Text(widget.activity!.description,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

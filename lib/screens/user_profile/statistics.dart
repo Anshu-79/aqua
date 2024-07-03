@@ -17,16 +17,6 @@ class StatsWidget extends StatefulWidget {
 }
 
 class _StatsWidgetState extends State<StatsWidget> {
-  late Future<List<WaterGoal>> _waterGoals;
-  late Future<List<Map<Beverage, Map>>> _drinksData;
-
-  @override
-  void initState() {
-    _waterGoals = widget.db.getWaterGoals();
-    _drinksData = widget.db.bevWiseDailyConsumption();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Wrap(runSpacing: 20, children: [
@@ -55,13 +45,7 @@ class _StatsWidgetState extends State<StatsWidget> {
             statsSubtext: "Fluids per Week",
             icondata: Icomoon.iced_liquid)
       ]),
-      AquaGenericChart(
-        dataFuture: _waterGoals,
-        chartBuilder: (data) => TotalWaterLineChart(waterGoals: data),
-      ),
-      AquaGenericChart(
-          dataFuture: _drinksData,
-          chartBuilder: (data) => BevConsumptionLineChart(drinks: data))
+      ChartsHolder(db: widget.db),
     ]);
   }
 }

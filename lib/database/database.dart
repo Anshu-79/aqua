@@ -111,6 +111,33 @@ class Database extends _$Database {
     return query.get();
   }
 
+  Future<List<Workout>> getAllWorkouts() async => await select(workouts).get();
+
+  Future<Map<Activity, int>> totalDurationPerActivity() async {
+    final query = selectOnly(workouts)
+      ..addColumns([workouts.activityID, workouts.duration.sum()]);
+    query.groupBy([workouts.activityID]);
+
+    final result = await query.get();
+
+    final activityIDs = result.map((row) => row.read(workouts.activityID)).toList();
+
+    final Map<Activity, int> aggregatedData = {};
+    for (final id in activityIDs) {
+      final totalDuration = result
+          .where((row) => row.read(workouts.activityID) == id)
+          .map<int>((row) => row.read(workouts.duration.sum()) as int)
+          .reduce((value, element) => value + element);
+
+      final activity = await (select(activities)
+            ..where((tbl) => tbl.id.equals(id!)))
+          .getSingle();
+
+      aggregatedData[activity] = totalDuration;
+    }
+    return aggregatedData;
+  }
+
   Future<int> insertOrUpdateWorkout(WorkoutsCompanion entity) async {
     return await into(workouts).insertOnConflictUpdate(entity);
   }
@@ -120,7 +147,7 @@ class Database extends _$Database {
     return await into(drinks).insert(entity);
   }
 
-  Future<List<Map<Beverage, int>>> totalVolumeByBeverage() async {
+  Future<Map<Beverage, int>> totalVolumePerBeverage() async {
     final query = selectOnly(drinks)
       ..addColumns([drinks.bevID, drinks.volume.sum()]);
     query.groupBy([drinks.bevID]);
@@ -129,7 +156,7 @@ class Database extends _$Database {
 
     final bevIDs = result.map((row) => row.read(drinks.bevID)).toList();
 
-    final List<Map<Beverage, int>> aggregatedData = [];
+    final Map<Beverage, int> aggregatedData = {};
     for (final id in bevIDs) {
       final totalVolume = result
           .where((row) => row.read(drinks.bevID) == id)
@@ -140,9 +167,8 @@ class Database extends _$Database {
             ..where((tbl) => tbl.id.equals(id!)))
           .getSingle();
 
-      aggregatedData.add({beverage: totalVolume});
+      aggregatedData[beverage] = totalVolume;
     }
-    print(aggregatedData);
     return aggregatedData;
   }
 
@@ -172,8 +198,7 @@ class Database extends _$Database {
     return aggregatedData;
   }
 
-  Future<List<Map<Beverage, Map>>> bevWiseDailyConsumption() async {
-    
+  Future<Map<Beverage, Map>> bevWiseDailyConsumption() async {
     final beverages = await getBeverages();
 
     Map<Beverage, Map> aggregatedData = {};
@@ -181,11 +206,10 @@ class Database extends _$Database {
       final bevsConsumptionList = await getDailyConsumption(bev.id);
       aggregatedData[bev] = bevsConsumptionList;
     }
-
-    return [aggregatedData];
+    return aggregatedData;
   }
 
-  Future<List<Map<int, int>>> getBevConsumption(String date) async {
+  Future<Map<Beverage, int>> getBevConsumption(String date) async {
     final query = selectOnly(drinks)
       ..addColumns([drinks.bevID, drinks.volume.sum()])
       ..where(drinks.datetime.date.equals(date))
@@ -193,18 +217,19 @@ class Database extends _$Database {
 
     final result = await query.get();
 
-    final List<Map<int, int>> aggregatedData = result.map((row) {
+    final Map<Beverage, int> aggregatedData = {};
+
+    for (final row in result) {
       final id = row.read(drinks.bevID)!;
       final totalVolume = row.read(drinks.volume.sum()) as int;
-      return {id: totalVolume};
-    }).toList();
+      Beverage beverage = await getBeverage(id);
+      aggregatedData[beverage] = totalVolume;
+    }
 
     return aggregatedData;
   }
 
-  Future<List<Map<String, List<dynamic>>>> daywiseAllBevsConsumption() async {
-    final temp =
-        await insertTempDrink(1, 100, DateTime.now().add(Duration(days: 1)));
+  Future<Map<String, Map<Beverage, int>>> daywiseAllBevsConsumption() async {
     final query = selectOnly(drinks, distinct: true)
       ..addColumns([drinks.datetime.date]);
     final result = await query.get();
@@ -212,15 +237,12 @@ class Database extends _$Database {
     final List<String> dates =
         result.map((row) => row.read(drinks.datetime.date)!).toList();
 
-    Map<String, List<dynamic>> aggregatedData = {};
+    Map<String, Map<Beverage, int>> aggregatedData = {};
     for (final date in dates) {
       final bevsConsumptionList = await getBevConsumption(date);
       aggregatedData[date] = bevsConsumptionList;
     }
-
-    await (delete(drinks)..where((tbl) => tbl.id.equals(temp.id))).go();
-
-    return [aggregatedData];
+    return aggregatedData;
   }
 
   Future<int> insertWater(int volume) async {

@@ -29,20 +29,31 @@ ThemeData darkTheme = ThemeData(
         seedColor: defaultColors['dark blue']!.toMaterialColor(),
         brightness: Brightness.dark));
 
-// Duration Utilities
-String getInText(int duration) {
-  if (duration < 60) {
-    return "$duration minutes";
-  } else {
+// Unit Utilities
+String getDurationInText(int duration) {
+  if (duration >= 60) {
     int hrs = duration ~/ 60;
     int minutes = duration % 60;
 
-    if (minutes == 0) {
-      return "$hrs hours";
-    } else {
-      return "$hrs hours $minutes minutes";
-    }
+    if (minutes == 0) return "$hrs hours";
+
+    return "$hrs hours $minutes minutes";
   }
+
+  return "$duration minutes";
+}
+
+String getVolumeInText(int volume) {
+  if (volume >= 1000) {
+    int litres = volume ~/ 1000;
+    int millilitres = volume % 1000;
+
+    if (millilitres == 0) return "$litres L";
+
+    return "$litres L $millilitres mL";
+  }
+
+  return "$volume mL";
 }
 
 // Color Utilities
@@ -81,13 +92,23 @@ Color toColor(String colorCode) => Color(int.parse('0x$colorCode'));
 
 String toHexString(Color color) => color.value.toRadixString(16);
 
-/// Darken a color by [percent] amount (100 = black)
-Color darken(Color c, [int percent = 10]) {
-  assert(1 <= percent && percent <= 100);
-  var f = 1 - percent / 100;
-  return Color.fromARGB(c.alpha, (c.red * f).round(), (c.green * f).round(),
-      (c.blue * f).round());
+Color adjustColorContrast(Color color, double factor) {
+  int adjustChannel(int channel) {
+    double normalized = channel / 255.0;
+    double adjusted = ((normalized - 0.5) * factor + 0.5).clamp(0.0, 1.0);
+    return (adjusted * 255).round();
+  }
+
+  return Color.fromARGB(
+    color.alpha,
+    adjustChannel(color.red),
+    adjustChannel(color.green),
+    adjustChannel(color.blue),
+  );
 }
+
+Color visibilityCheck(Color color) =>
+    color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
 
 /// Lighten a color by [percent] amount (100 = white)
 Color lighten(Color c, [int percent = 10]) {
@@ -278,10 +299,6 @@ abstract class ThemeText {
       const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 
   static TextStyle listTileTitle = const TextStyle(fontWeight: FontWeight.bold);
-
-  static TextStyle workoutTitle = const TextStyle(
-      fontSize: 40, fontWeight: FontWeight.w900, color: Colors.black);
-
 }
 
 class DialogActionButton extends StatelessWidget {

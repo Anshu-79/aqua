@@ -40,7 +40,6 @@ class _ActivityMenuState extends State<ActivityMenu> {
 
           if (workouts != null && workouts.isNotEmpty) {
             return GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2),
               itemCount: workouts.length,
@@ -67,10 +66,7 @@ class _ActivityMenuState extends State<ActivityMenu> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(
-                            Icons.sentiment_dissatisfied,
-                            size: 80,
-                          ),
+                          const Icon(Icons.sentiment_dissatisfied, size: 80),
                           Text(
                             "No activities found.\nTry adding one!",
                             textAlign: TextAlign.center,
@@ -107,11 +103,12 @@ class WorkoutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color bgColor = utils.getWorkoutColor(workout.activityID);
     return Container(
-      margin: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(8.0),
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-          color: utils.lighten(utils.getWorkoutColor(workout.activityID), 30),
+          color: bgColor,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: Theme.of(context).primaryColor, width: 3)),
       child: Column(
@@ -123,14 +120,15 @@ class WorkoutCard extends StatelessWidget {
           FittedBox(
               fit: BoxFit.contain,
               child: Text(utils.getWorkoutCategory(workout.activityID),
-                  style: utils.ThemeText.workoutTitle)),
-          Text(utils.getInText(workout.duration),
+                  style: const TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.black))),
+          Text(utils.getDurationInText(workout.duration),
               style: const TextStyle(
-                  color: Colors.black, fontWeight: FontWeight.w900)),
-          Text(
-            "${workout.waterLoss} mL water loss",
-            style: const TextStyle(color: Colors.black),
-          )
+                  color: Colors.white, fontWeight: FontWeight.w900)),
+          Text(utils.getVolumeInText(workout.waterLoss),
+              style: const TextStyle(color: Colors.white)),
         ],
       ),
     );
