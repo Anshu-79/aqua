@@ -1,5 +1,7 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'package:aqua/screens/charts/bev_volume_bar_chart.dart';
 import 'package:aqua/screens/charts/bev_distribution_pie_chart.dart';
@@ -163,40 +165,58 @@ class GenericChart<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-      decoration: BoxDecoration(
-        color: Theme.of(context).canvasColor.computeLuminance() > 0.5
-            ? Colors.grey.shade200
-            : Colors.grey.shade900,
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: Theme.of(context).primaryColor, width: 5),
-      ),
-      child: FutureBuilder<T>(
-          future: dataFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
+        margin: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        decoration: BoxDecoration(
+          color: Theme.of(context).canvasColor.computeLuminance() > 0.5
+              ? Colors.grey.shade200
+              : Colors.grey.shade900,
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: Theme.of(context).primaryColor, width: 5),
+        ),
+        child: FutureBuilder<T>(
+            future: dataFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return _buildShimmerEffect();
+              }
 
-            if (snapshot.hasError) {
-              return Center(child: Text("Error: ${snapshot.error}"));
-            }
+              if (snapshot.hasError) {
+                return Center(child: Text("Error: ${snapshot.error}"));
+              }
 
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                FittedBox(
-                    fit: BoxFit.contain,
-                    child: Text(headerText,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w900, fontSize: 40))),
-                const SizedBox(height: 20),
-                AspectRatio(
-                    aspectRatio: 2.0, child: chartBuilder(snapshot.data as T)),
-              ],
-            );
-          }),
+              return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FittedBox(
+                        fit: BoxFit.contain,
+                        child: Text(
+                          headerText,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w900, fontSize: 40),
+                        )),
+                    const SizedBox(height: 20),
+                    AspectRatio(
+                      aspectRatio: 2.0,
+                      child: chartBuilder(snapshot.data as T),
+                    )
+                  ]);
+            }));
+  }
+
+  Widget _buildShimmerEffect() {
+    bool isDarkMode =
+        PlatformDispatcher.instance.platformBrightness == Brightness.dark;
+
+    return Shimmer.fromColors(
+      baseColor: isDarkMode ? Colors.grey.shade800 : Colors.grey.shade100,
+      highlightColor: isDarkMode ? Colors.grey.shade700 : Colors.grey.shade300,
+      child:
+          Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        Container(width: 200, height: 40, color: Colors.white),
+        const SizedBox(height: 20),
+        Container(width: double.infinity, height: 150, color: Colors.white),
+      ]),
     );
   }
 }
