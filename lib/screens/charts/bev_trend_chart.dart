@@ -24,7 +24,7 @@ class BeverageTrendChart extends StatelessWidget {
 
   List<LineChartBarData> beverageLines(Map<Beverage, Map> drinks) {
     final List<Beverage> beverages = drinks.keys.toList();
-    if (showWater == false) beverages.remove(water);
+    if (!showWater) beverages.remove(water);
 
     // Generate a list of lines accounting all beverages
     return List.generate(beverages.length, (i) {
