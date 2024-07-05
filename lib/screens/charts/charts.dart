@@ -58,9 +58,8 @@ class _StatsScreenState extends State<StatsScreen> {
       return DropdownMenu<DaysRangeLabel>(
           inputDecorationTheme: InputDecorationTheme(
               labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  borderSide: const BorderSide())),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(25))),
           initialSelection: DaysRangeLabel.week,
           width: 150,
           controller: daysRangeController,
@@ -87,6 +86,7 @@ class _StatsScreenState extends State<StatsScreen> {
           height: 55,
           onChanged: (b) => setState(() => showWater = b),
           styleBuilder: (b) => ToggleStyle(
+            backgroundColor: Theme.of(context).canvasColor,
               indicatorColor:
                   b ? utils.defaultColors['dark blue'] : Colors.grey.shade300),
           textBuilder: (value) => const Text('Water',

@@ -39,7 +39,9 @@ class ProfilePicture extends StatelessWidget {
 }
 
 class SettingsButton extends StatelessWidget {
-  const SettingsButton({super.key});
+  const SettingsButton({super.key, required this.prefs});
+
+  final SharedPreferences prefs;
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +52,10 @@ class SettingsButton extends StatelessWidget {
         child: IconButton(
           iconSize: 40,
           icon: const Icon(Icons.settings, color: Colors.white),
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const SettingsPage())),
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => SettingsPage(prefs: prefs))),
         ),
       ),
     );
