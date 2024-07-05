@@ -2,12 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:aqua/theme_manager.dart';
 import 'package:aqua/timers.dart';
 import 'package:aqua/weather_utils.dart';
 import 'package:aqua/api_keys.dart';
 import 'package:aqua/notifications.dart';
 import 'package:aqua/firebase_options.dart';
-import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/nav_bar.dart';
 
 import 'package:aqua/screens/onboarding/onboarding.dart';
@@ -50,16 +50,20 @@ class _AquaState extends State<Aqua> {
     // if the app is running for the first time, onboard key will be null
     bool onboard = widget.sharedPrefs.getBool('onboard') ?? false;
 
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: utils.lightTheme,
-        darkTheme: utils.darkTheme,
-        themeMode: ThemeMode.system,
-        navigatorKey: navigatorKey,
-        home: Builder(
-            builder: (context) => !(onboard)
-                ? const OnboardingView()
-                : NavBar(prefs: widget.sharedPrefs)));
+    return ThemeManager(
+      child: Builder(builder: (context) {
+        final themeNotifier = ThemeNotifier.of(context);
+        return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            themeMode: themeNotifier.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+            navigatorKey: navigatorKey,
+            home: Builder(
+                builder: (context) => !(onboard)
+                    ? const OnboardingView()
+                    : NavBar(prefs: widget.sharedPrefs)));
+      }),
+    );
   }
 }
-

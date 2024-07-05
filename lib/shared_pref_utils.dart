@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,6 +8,8 @@ import 'package:aqua/screens/onboarding/form/profile.dart';
 
 Future<void> createUser(Profile profile, List<double?> location) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  final bool isDarkMode = PlatformDispatcher.instance.platformBrightness == Brightness.dark;
 
   prefs.setString('name', profile.name!);
   prefs.setString('email', profile.email!);
@@ -21,6 +24,7 @@ Future<void> createUser(Profile profile, List<double?> location) async {
   prefs.setDouble('longitude', location[1]!);
   prefs.setDouble('altitude', location[2]!);
   prefs.setBool('onboard', true);
+  prefs.setBool('darkMode', isDarkMode);
 }
 
 Future<void> savePictureLocally(File? image, String username) async {

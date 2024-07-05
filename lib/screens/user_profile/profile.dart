@@ -25,7 +25,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
         Stack(
           children: [
             ProfilePicture(prefs: widget.prefs),
-            const SettingsButton()
+            SettingsButton(prefs: widget.prefs),
           ],
         ),
         const SizedBox(height: 10),

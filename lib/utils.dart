@@ -6,29 +6,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:aqua/main.dart';
 import 'icomoon_icons.dart';
 
-// Theme Utilities
-ThemeData lightTheme = ThemeData(
-    fontFamily: 'CeraPro',
-    primaryColor: Colors.black,
-    canvasColor: Colors.white,
-    splashColor: defaultColors['dark blue'],
-    scaffoldBackgroundColor: Colors.white,
-    brightness: Brightness.light,
-    colorScheme: ColorScheme.fromSeed(
-        seedColor: defaultColors['dark blue']!.toMaterialColor(),
-        brightness: Brightness.light));
-
-ThemeData darkTheme = ThemeData(
-    fontFamily: 'CeraPro',
-    primaryColor: Colors.white,
-    canvasColor: Colors.black,
-    splashColor: defaultColors['dark blue'],
-    scaffoldBackgroundColor: Colors.black,
-    brightness: Brightness.dark,
-    colorScheme: ColorScheme.fromSeed(
-        seedColor: defaultColors['dark blue']!.toMaterialColor(),
-        brightness: Brightness.dark));
-
 // Unit Utilities
 String getDurationInText(int duration) {
   if (duration >= 60) {
@@ -294,6 +271,13 @@ abstract class ThemeText {
       const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 
   static TextStyle listTileTitle = const TextStyle(fontWeight: FontWeight.bold);
+
+  // Settings Page
+  static TextStyle themeToggle =
+      const TextStyle(fontWeight: FontWeight.bold, fontSize: 17);
+
+  static TextStyle themeSubtext =
+      const TextStyle(fontSize: 40, fontWeight: FontWeight.w900);
 }
 
 class DialogActionButton extends StatelessWidget {
