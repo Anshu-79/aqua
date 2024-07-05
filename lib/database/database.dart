@@ -102,8 +102,9 @@ class Database extends _$Database {
   // Workouts Actions
   Future<List<Workout>> getTodaysWorkouts() async {
     final now = DateTime.now();
-    final todayStart = DateTime(now.year, now.month, now.day);
-    final todayEnd = DateTime(now.year, now.month, now.day, 23, 59, 59, 999);
+    final int wakeHour = await SharedPrefUtils.getWakeTime();
+    final todayStart = DateTime(now.year, now.month, now.day, wakeHour);
+    final todayEnd = todayStart.add(const Duration(days: 1));
 
     final query = select(workouts)
       ..where((tbl) => tbl.datetime.isBetweenValues(todayStart, todayEnd));
