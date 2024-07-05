@@ -85,7 +85,7 @@ class _SettingsPageState extends State<SettingsPage> {
           backgroundColor: Theme.of(context).canvasColor,
           borderColor: Theme.of(context).primaryColor,
           indicatorColor: b
-              ? utils.defaultColors['violet']
+              ? utils.defaultColors['dark blue']
               : utils.defaultColors['yellow']),
     );
   }
@@ -170,15 +170,10 @@ class FAQCard extends StatelessWidget {
         tilePadding: const EdgeInsets.only(left: 10),
         shape: border,
         collapsedShape: border,
-        title: Text(
-          question,
-          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
-        ),
+        title: Text(question,
+            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(answer),
-          )
+          Padding(padding: const EdgeInsets.all(8.0), child: Text(answer))
         ],
       ),
     );
