@@ -450,9 +450,8 @@ class OnboardingQuestion extends StatelessWidget {
 class UniversalHeader extends PreferredSize {
   const UniversalHeader({super.key, required this.title})
       : super(
-          preferredSize: const Size.fromHeight(60),
-          child: const Placeholder(),
-        );
+            preferredSize: const Size.fromHeight(60),
+            child: const Placeholder());
 
   final String title;
 
@@ -465,12 +464,24 @@ class UniversalHeader extends PreferredSize {
         fontFamily: "CeraPro");
 
     return AppBar(
-      backgroundColor: Theme.of(context).canvasColor,
-      elevation: 0,
-      centerTitle: true,
-      titleTextStyle: screenHeader,
-      title: FittedBox(fit: BoxFit.contain, child: Text(title)),
-    );
+        backgroundColor: Theme.of(context).canvasColor,
+        elevation: 0,
+        centerTitle: true,
+        titleTextStyle: screenHeader,
+        title: FittedBox(
+          fit: BoxFit.contain,
+          child: AnimatedTextKit(
+            repeatForever: true,
+            animatedTexts: [
+              ColorizeAnimatedText(
+                title,
+                textStyle: screenHeader,
+                speed: const Duration(milliseconds: 400),
+                colors: textColorizeColors,
+              )
+            ],
+          ),
+        ));
   }
 }
 
