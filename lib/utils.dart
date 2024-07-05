@@ -276,7 +276,7 @@ abstract class ThemeText {
   static TextStyle themeToggle =
       const TextStyle(fontWeight: FontWeight.bold, fontSize: 17);
 
-  static TextStyle themeSubtext =
+  static TextStyle settingsHeader =
       const TextStyle(fontSize: 40, fontWeight: FontWeight.w900);
 }
 
