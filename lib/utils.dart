@@ -242,7 +242,7 @@ abstract class ThemeText {
 
   // User Profile
   static TextStyle username = const TextStyle(
-      fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white);
+      fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black);
 
   static TextStyle userLocationSubtext = const TextStyle(
       fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white);
@@ -292,12 +292,10 @@ class DialogActionButton extends StatelessWidget {
       icon: icon,
       iconSize: 50,
       style: IconButton.styleFrom(
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Theme.of(context).canvasColor,
       ),
       onPressed: () => function(),
-
-      //Text(text, style: ThemeText.dialogButtons,)
     );
   }
 }

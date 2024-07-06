@@ -1,6 +1,10 @@
 import 'dart:io';
 
+import 'package:aqua/screens/user_profile/age_edit_dialog.dart';
+import 'package:aqua/screens/user_profile/name_edit_dialog.dart';
+import 'package:aqua/weather_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/water_goals.dart';
@@ -35,6 +39,69 @@ class ProfilePicture extends StatelessWidget {
     return Align(
         alignment: Alignment.topCenter,
         child: CircleAvatar(radius: 60, backgroundImage: img));
+  }
+}
+
+class NameWidget extends StatefulWidget {
+  const NameWidget({super.key, required this.prefs});
+  final SharedPreferences prefs;
+
+  @override
+  State<NameWidget> createState() => _NameWidgetState();
+}
+
+class _NameWidgetState extends State<NameWidget> {
+  refresh() => setState(() {});
+
+  @override
+  Widget build(BuildContext context) {
+    final String name = widget.prefs.getString('name')!;
+
+    return TextButton(
+      style: TextButton.styleFrom(
+          elevation: 5,
+          shadowColor: Colors.black,
+          backgroundColor: Colors.white,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+      child: Text(name,
+          style: utils.ThemeText.username, overflow: TextOverflow.ellipsis),
+      onPressed: () => utils.GlobalNavigator.showAnimatedDialog(NameEditDialog(
+          name: name, notifyParent: refresh, prefs: widget.prefs)),
+    );
+  }
+}
+
+class LocationWidget extends StatefulWidget {
+  const LocationWidget({super.key, required this.prefs});
+  final SharedPreferences prefs;
+  @override
+  State<LocationWidget> createState() => _LocationWidgetState();
+}
+
+class _LocationWidgetState extends State<LocationWidget> {
+  @override
+  Widget build(BuildContext context) {
+    String place = widget.prefs.getString('place')!;
+
+    return TextButton(
+      onPressed: () {},
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.location_on, color: Colors.white),
+          const SizedBox(width: 10),
+          Text(place, style: utils.ThemeText.userLocationSubtext),
+          IconButton(
+            icon: const Icon(Icons.refresh, color: Colors.white),
+            onPressed: () async {
+              await saveWeather();
+              setState(() {});
+            },
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -141,17 +208,19 @@ class BioButtonsRow extends StatefulWidget {
 }
 
 class _BioButtonsRowState extends State<BioButtonsRow> {
+  refresh() => setState(() {});
   @override
   Widget build(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
       BiometricButton(
           metric: calculateAge(widget.prefs.getString('DOB')!),
           subtext: "Age",
-          callback: () {}),
+          callback: () => utils.GlobalNavigator.showAnimatedDialog(
+              AgeEditDialog(notifyParent: refresh, prefs: widget.prefs))),
       BiometricButton(
           metric: widget.prefs.getInt('height')!,
           subtext: "Height",
-          callback: () {}),
+          callback: () => utils.GlobalNavigator.showAnimatedDialog),
       BiometricButton(
           metric: widget.prefs.getInt('weight')!,
           subtext: "Weight",
