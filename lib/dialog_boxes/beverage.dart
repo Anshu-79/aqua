@@ -120,9 +120,7 @@ class _NameInputFieldState extends State<NameInputField> {
             filled: true,
           ),
           validator: (value) {
-            if (value!.trim().isEmpty) {
-              return "Name cannot be empty";
-            }
+            if (value!.trim().isEmpty) return "Name cannot be empty";
             return null;
           },
         ),
