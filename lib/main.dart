@@ -57,7 +57,8 @@ class _AquaState extends State<Aqua> {
             debugShowCheckedModeBanner: false,
             theme: lightTheme,
             darkTheme: darkTheme,
-            themeMode: themeNotifier.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+            themeMode:
+                themeNotifier.isDarkMode ? ThemeMode.dark : ThemeMode.light,
             navigatorKey: navigatorKey,
             home: Builder(
                 builder: (context) => !(onboard)

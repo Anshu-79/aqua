@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:aqua/screens/user_profile/age_edit_dialog.dart';
 import 'package:aqua/screens/user_profile/height_edit_dialog.dart';
 import 'package:aqua/screens/user_profile/name_edit_dialog.dart';
+import 'package:aqua/screens/user_profile/weight_edit_dialog.dart';
 import 'package:aqua/weather_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -231,7 +232,8 @@ class _BioButtonsRowState extends State<BioButtonsRow> {
       BiometricButton(
           metric: widget.prefs.getInt('weight')!,
           subtext: "Weight",
-          callback: () {})
+          callback: () => utils.GlobalNavigator.showAnimatedDialog(
+              WeightEditDialog(notifyParent: refresh, prefs: widget.prefs)))
     ]);
   }
 }
