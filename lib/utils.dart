@@ -356,7 +356,7 @@ class GlobalNavigator {
   static void showSnackBar(String text, Color? color) {
     BuildContext context = navigatorKey.currentContext!;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        duration: const Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 1000),
         content: Text(text,
             style: TextStyle(
               color: Theme.of(context).canvasColor,

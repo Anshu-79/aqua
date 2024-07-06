@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:aqua/screens/user_profile/age_edit_dialog.dart';
+import 'package:aqua/screens/user_profile/height_edit_dialog.dart';
 import 'package:aqua/screens/user_profile/name_edit_dialog.dart';
 import 'package:aqua/weather_utils.dart';
 import 'package:flutter/material.dart';
@@ -95,8 +96,13 @@ class _LocationWidgetState extends State<LocationWidget> {
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.white),
             onPressed: () async {
+              utils.GlobalNavigator.showSnackBar(
+                  'Updating location...', utils.defaultColors['dark blue']);
+
               await saveWeather();
               setState(() {});
+              utils.GlobalNavigator.showSnackBar(
+                  'Location updated', utils.defaultColors['dark blue']);
             },
           )
         ],
@@ -220,7 +226,8 @@ class _BioButtonsRowState extends State<BioButtonsRow> {
       BiometricButton(
           metric: widget.prefs.getInt('height')!,
           subtext: "Height",
-          callback: () => utils.GlobalNavigator.showAnimatedDialog),
+          callback: () => utils.GlobalNavigator.showAnimatedDialog(
+              HeightEditDialog(notifyParent: refresh, prefs: widget.prefs))),
       BiometricButton(
           metric: widget.prefs.getInt('weight')!,
           subtext: "Weight",
