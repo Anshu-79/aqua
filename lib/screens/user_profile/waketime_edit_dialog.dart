@@ -3,12 +3,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/utils/time_picker.dart';
 import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/database/database.dart';
 
 class WaketimeEditDialog extends StatefulWidget {
   const WaketimeEditDialog(
-      {super.key, required this.prefs, required this.notifyParent});
+      {super.key,
+      required this.prefs,
+      required this.notifyParent,
+      required this.db});
 
   final SharedPreferences prefs;
+  final Database db;
   final VoidCallback notifyParent;
 
   @override
@@ -49,9 +54,19 @@ class _WaketimeEditDialogState extends State<WaketimeEditDialog> {
                 utils.DialogActionButton(
                     icon: const Icon(Icons.check),
                     function: () async {
-                      widget.prefs.setInt('wakeTime', wakeTime);
-                      Navigator.pop(context);
-                      widget.notifyParent();
+                      int sleepTime = widget.prefs.getInt('sleepTime')!;
+                      if (sleepTime != wakeTime) {
+                        widget.prefs.setInt('wakeTime', wakeTime);
+                        Navigator.pop(context);
+                        widget.notifyParent();
+
+                        // Update Daily goal to change reminder gap
+                        await widget.db.updateConsumedVolume(0);
+                      } else {
+                        utils.GlobalNavigator.showSnackBar(
+                            'Sleeping Time & Wake-up Time cannot be same',
+                            utils.defaultColors['red']);
+                      }
                     }),
                 utils.DialogActionButton(
                   icon: const Icon(Icons.close),

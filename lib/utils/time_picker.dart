@@ -22,6 +22,7 @@ class _TimePickerState extends State<TimePicker> {
       children: [
         NumberPicker(
           zeroPad: true,
+          infiniteLoop: true,
           itemHeight: 70,
             minValue: 0,
             maxValue: 23,

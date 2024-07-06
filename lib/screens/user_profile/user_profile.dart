@@ -23,7 +23,7 @@ class _UserProfileState extends State<UserProfile> {
           child: Wrap(
                 runSpacing: 20,
                 children: [
-          ProfileWidget(prefs: widget.prefs),
+          ProfileWidget(prefs: widget.prefs, db: widget.database),
           StatsWidget(prefs: widget.prefs, db: widget.database)
                 ],
               ),

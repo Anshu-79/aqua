@@ -1,30 +1,32 @@
 import 'dart:io';
 
-import 'package:aqua/screens/user_profile/sleeptime_edit_dialog.dart';
-import 'package:aqua/screens/user_profile/waketime_edit_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:aqua/screens/user_profile/age_edit_dialog.dart';
-import 'package:aqua/screens/user_profile/height_edit_dialog.dart';
-import 'package:aqua/screens/user_profile/name_edit_dialog.dart';
-import 'package:aqua/screens/user_profile/weight_edit_dialog.dart';
+import 'package:aqua/database/database.dart';
 import 'package:aqua/weather_utils.dart';
 import 'package:aqua/water_goals.dart';
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/screens/settings.dart';
 
-String getWakeTimeText(SharedPreferences prefs) {
-  int wakeTime = prefs.getInt('wakeTime')!;
-  if (wakeTime >= 12) return "$wakeTime:00 PM";
-  return "$wakeTime:00 AM";
+import 'package:aqua/screens/user_profile/sleeptime_edit_dialog.dart';
+import 'package:aqua/screens/user_profile/waketime_edit_dialog.dart';
+import 'package:aqua/screens/user_profile/age_edit_dialog.dart';
+import 'package:aqua/screens/user_profile/height_edit_dialog.dart';
+import 'package:aqua/screens/user_profile/name_edit_dialog.dart';
+import 'package:aqua/screens/user_profile/weight_edit_dialog.dart';
+
+String getTimeText(int time) {
+  if (time > 12) return "${time - 12}:00 PM";
+  if (time == 12) return "12:00 PM";
+  return "$time:00 AM";
 }
 
-String getSleepTimeText(SharedPreferences prefs) {
-  int sleepTime = prefs.getInt('sleepTime')!;
-  if (sleepTime >= 12) return "$sleepTime:00 PM";
-  return "$sleepTime:00 AM";
-}
+String getWakeTimeText(SharedPreferences prefs) =>
+    getTimeText(prefs.getInt('wakeTime')!);
+
+String getSleepTimeText(SharedPreferences prefs) =>
+    getTimeText(prefs.getInt('sleepTime')!);
 
 class ProfilePicture extends StatelessWidget {
   const ProfilePicture({super.key, required this.prefs});
@@ -240,8 +242,9 @@ class _BioButtonsRowState extends State<BioButtonsRow> {
 }
 
 class SleepButtonsRow extends StatefulWidget {
-  const SleepButtonsRow({super.key, required this.prefs});
+  const SleepButtonsRow({super.key, required this.prefs, required this.db});
   final SharedPreferences prefs;
+  final Database db;
 
   @override
   State<SleepButtonsRow> createState() => _SleepButtonsRowState();
@@ -258,15 +261,18 @@ class _SleepButtonsRowState extends State<SleepButtonsRow> {
           SleepScheduleButton(
               icon: Icon(Icons.sunny, color: utils.defaultColors['yellow']),
               time: getWakeTimeText(widget.prefs),
-              callback: () => utils.GlobalNavigator.showAnimatedDialog(
-                  WaketimeEditDialog(
-                      prefs: widget.prefs, notifyParent: refresh))),
+              callback: () {
+                utils.GlobalNavigator.showAnimatedDialog(WaketimeEditDialog(
+                    prefs: widget.prefs, db: widget.db, notifyParent: refresh));
+              }),
           SleepScheduleButton(
               icon: Icon(Icons.bedtime, color: utils.defaultColors['violet']),
               time: getSleepTimeText(widget.prefs),
               callback: () => utils.GlobalNavigator.showAnimatedDialog(
                   SleeptimeEditDialog(
-                      prefs: widget.prefs, notifyParent: refresh)))
+                      prefs: widget.prefs,
+                      notifyParent: refresh,
+                      db: widget.db)))
         ]);
   }
 }
