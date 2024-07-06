@@ -1,14 +1,15 @@
 import 'dart:io';
 
+import 'package:aqua/screens/user_profile/sleeptime_edit_dialog.dart';
+import 'package:aqua/screens/user_profile/waketime_edit_dialog.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:aqua/screens/user_profile/age_edit_dialog.dart';
 import 'package:aqua/screens/user_profile/height_edit_dialog.dart';
 import 'package:aqua/screens/user_profile/name_edit_dialog.dart';
 import 'package:aqua/screens/user_profile/weight_edit_dialog.dart';
 import 'package:aqua/weather_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:aqua/water_goals.dart';
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/screens/settings.dart';
@@ -247,6 +248,7 @@ class SleepButtonsRow extends StatefulWidget {
 }
 
 class _SleepButtonsRowState extends State<SleepButtonsRow> {
+  refresh() => setState(() {});
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -256,11 +258,15 @@ class _SleepButtonsRowState extends State<SleepButtonsRow> {
           SleepScheduleButton(
               icon: Icon(Icons.sunny, color: utils.defaultColors['yellow']),
               time: getWakeTimeText(widget.prefs),
-              callback: () {}),
+              callback: () => utils.GlobalNavigator.showAnimatedDialog(
+                  WaketimeEditDialog(
+                      prefs: widget.prefs, notifyParent: refresh))),
           SleepScheduleButton(
               icon: Icon(Icons.bedtime, color: utils.defaultColors['violet']),
               time: getSleepTimeText(widget.prefs),
-              callback: () {})
+              callback: () => utils.GlobalNavigator.showAnimatedDialog(
+                  SleeptimeEditDialog(
+                      prefs: widget.prefs, notifyParent: refresh)))
         ]);
   }
 }
