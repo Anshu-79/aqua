@@ -81,3 +81,72 @@ Future<String> getStreak(Database db) async {
   return streak.toString();
 }
 
+Future<String> getLongestStreak(Database db) async {
+  List<WaterGoal> goals = await db.getWaterGoals();
+
+  List<int> dailyWaterDeficit = List.generate(goals.length, (i) {
+    return goals[i].consumedVolume - goals[i].totalVolume;
+  });
+  if (dailyWaterDeficit.isEmpty) return "0";
+
+  int longestStreak = 0, streak = 0;
+  for (final deficit in dailyWaterDeficit) {
+    if (deficit >= 0) streak += 1;
+
+    if (streak > longestStreak) longestStreak = streak;
+
+    if (deficit < 0) streak = 0;
+  }
+
+  return longestStreak.toString();
+}
+
+Future<String> getTotalHydration(Database db) async {
+  List<WaterGoal> goals = await db.getWaterGoals();
+
+  if (goals.isEmpty) return "0 L";
+
+  int totalConsumedVol =
+      goals.fold(0, (sum, goal) => sum + goal.consumedVolume);
+
+  // Convert to Litres
+  double totalLitres = totalConsumedVol / 1000;
+
+  if (totalLitres > 1000) {
+    return "${(totalLitres / 1000).toStringAsFixed(1)} kL";
+  }
+
+  return "${totalLitres.toStringAsFixed(1)} L";
+}
+
+Future<String> getLastWeekWaterIntake(Database db) async {
+  List<Drink> drinks = await db.getWaterDrinks();
+
+  drinks = drinks.reversed.toList();
+  // Reverse list for better performance
+
+  DateTime now = DateTime.now();
+
+  int daysToSubtract = now.weekday - DateTime.monday;
+  if (daysToSubtract < 0) daysToSubtract += 7;
+
+  DateTime lastMonday = now.subtract(Duration(days: daysToSubtract));
+
+  lastMonday = DateTime(lastMonday.year, lastMonday.month, lastMonday.day);
+
+  int waterIntakeLastWeek = 0;
+
+  for (final drink in drinks) {
+    if (drink.datetime.isBefore(lastMonday)) break;
+    waterIntakeLastWeek += drink.volume;
+  }
+
+  // Convert to Litres
+  double totalLitres = waterIntakeLastWeek / 1000;
+
+  if (totalLitres > 1000) {
+    return "${(totalLitres / 1000).toStringAsFixed(1)} kL";
+  }
+
+  return "${totalLitres.toStringAsFixed(1)} L";
+}
