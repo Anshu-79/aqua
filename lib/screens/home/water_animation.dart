@@ -51,7 +51,7 @@ class WaterGoalWidgetState extends State<WaterGoalWidget>
     thirdController = AnimationController(vsync: this, duration: duration);
     fourthController = AnimationController(vsync: this, duration: duration);
 
-    firstAnimation = Tween<double>(begin: 0.0, end: 2 * pi).animate(
+    firstAnimation = Tween<double>(begin: 0.0, end: pi).animate(
         CurvedAnimation(parent: firstController, curve: Curves.easeInOut))
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
