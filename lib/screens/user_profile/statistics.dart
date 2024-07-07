@@ -24,25 +24,25 @@ class _StatsWidgetState extends State<StatsWidget> {
           color: utils.defaultColors['red']!,
           stats: getStreak(widget.db),
           statsSubtext: "Day Streak",
-          icondata: Icons.whatshot,
+          icondata: Icons.whatshot_sharp,
         ),
         StatsSummary(
-            color: utils.defaultColors['blue']!,
-            stats: Future.delayed(Duration.zero, () => '7.9 L'),
-            statsSubtext: "Water per Week",
-            icondata: Icomoon.water_bottle)
+            color: utils.defaultColors['yellow']!,
+            stats: getLongestStreak(widget.db),
+            statsSubtext: "Longest Streak",
+            icondata: Icons.emoji_events_sharp)
       ]),
       Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         StatsSummary(
-            color: utils.defaultColors['mint']!,
-            stats: Future.delayed(Duration.zero, () => '10 L'),
-            statsSubtext: "Lifetime Intake",
-            icondata: Icons.calendar_month_sharp),
+            color: utils.defaultColors['blue']!,
+            stats: getLastWeekWaterIntake(widget.db),
+            statsSubtext: "Water per Week",
+            icondata: Icomoon.water_bottle),
         StatsSummary(
-            color: utils.defaultColors['yellow']!,
-            stats: Future.delayed(Duration.zero, () => '9 L'),
-            statsSubtext: "Fluids per Week",
-            icondata: Icomoon.iced_liquid)
+            color: utils.defaultColors['mint']!,
+            stats: getTotalHydration(widget.db),
+            statsSubtext: "Lifetime Intake",
+            icondata: Icons.calendar_month_sharp)
       ]),
     ]);
   }

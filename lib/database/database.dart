@@ -258,6 +258,11 @@ class Database extends _$Database {
 
   Future<List<Drink>> getDrinks() async => await select(drinks).get();
 
+  Future<List<Drink>> getWaterDrinks() async {
+    final query = select(drinks)..where((tbl) => tbl.bevID.equals(1));
+    return await query.get();
+  }
+
   Future<List<Drink>> getDrinksOfDay(DateTime date) async {
     final startOfDay =
         await shiftToWakeTime(DateTime(date.year, date.month, date.day));
