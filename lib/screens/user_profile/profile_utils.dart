@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:aqua/screens/user_profile/profile/edit_picture_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,9 +42,12 @@ class ProfilePicture extends StatelessWidget {
           size: 120, color: Colors.white);
     }
     FileImage img = FileImage(File(imgPath));
-    return Align(
-        alignment: Alignment.topCenter,
-        child: CircleAvatar(radius: 60, backgroundImage: img));
+    return InkWell(
+      onTap: () => utils.GlobalNavigator.showAnimatedDialog(EditPictureDialog(prefs: prefs)),
+      child: Align(
+          alignment: Alignment.topCenter,
+          child: CircleAvatar(radius: 60, backgroundImage: img)),
+    );
   }
 }
 
