@@ -36,7 +36,7 @@ class _StatsWidgetState extends State<StatsWidget> {
         StatsSummary(
             color: utils.defaultColors['blue']!,
             stats: getLastWeekWaterIntake(widget.db),
-            statsSubtext: "Water per Week",
+            statsSubtext: "Water this Week",
             icondata: Icomoon.water_bottle),
         StatsSummary(
             color: utils.defaultColors['mint']!,
