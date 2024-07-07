@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:aqua/utils.dart' as utils;
 
-String getGoalText(int vol) => (vol / 1000).toStringAsFixed(2);
+import 'package:aqua/screens/home/water_goal_widget_foreground.dart';
+import 'package:aqua/utils.dart' as utils;
 
 class WaterGoalWidget extends StatefulWidget {
   const WaterGoalWidget({
@@ -17,11 +17,14 @@ class WaterGoalWidget extends StatefulWidget {
   final int totalVol;
 
   @override
-  State<WaterGoalWidget> createState() => _WaterGoalWidgetState();
+  State<WaterGoalWidget> createState() => WaterGoalWidgetState();
 }
 
-class _WaterGoalWidgetState extends State<WaterGoalWidget>
+class WaterGoalWidgetState extends State<WaterGoalWidget>
     with TickerProviderStateMixin {
+  final GlobalKey<WaterGoalForegroundState> _waterGoalForegroundKey =
+      GlobalKey<WaterGoalForegroundState>();
+
   late AnimationController firstController;
   late Animation firstAnimation;
 
@@ -33,6 +36,9 @@ class _WaterGoalWidgetState extends State<WaterGoalWidget>
 
   late AnimationController fourthController;
   late Animation fourthAnimation;
+
+  late AnimationController _fillController;
+  late Animation<double> _fillAnimation;
 
   @override
   void initState() {
@@ -85,6 +91,22 @@ class _WaterGoalWidgetState extends State<WaterGoalWidget>
         }
       });
 
+    _fillController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+
+    _fillAnimation = Tween<double>(
+      begin: 0,
+      end: widget.consumedVol / widget.totalVol,
+    ).animate(
+      CurvedAnimation(parent: _fillController, curve: Curves.fastOutSlowIn),
+    );
+
+    _fillController.forward();
+
+    _fillAnimation.addListener(() => setState(() {}));
+
     firstController.addListener(_updateState);
     secondController.addListener(_updateState);
     thirdController.addListener(_updateState);
@@ -106,9 +128,22 @@ class _WaterGoalWidgetState extends State<WaterGoalWidget>
   }
 
   void _updateState() {
-    if (mounted) {
-      setState(() {});
-    }
+    if (mounted) setState(() {});
+  }
+
+  void startFillAnimation(double consumedVol) {
+    setState(() {
+      _fillAnimation = Tween<double>(
+        begin: _fillAnimation.value,
+        end: (widget.consumedVol + consumedVol) / widget.totalVol,
+      ).animate(
+        CurvedAnimation(parent: _fillController, curve: Curves.easeInOut),
+      );
+      _fillController
+        ..reset()
+        ..forward();
+    });
+    _waterGoalForegroundKey.currentState?.startFadeAnimation(consumedVol);
   }
 
   @override
@@ -122,11 +157,14 @@ class _WaterGoalWidgetState extends State<WaterGoalWidget>
     secondController.dispose();
     thirdController.dispose();
     fourthController.dispose();
+    _fillController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    double currentFillValue = _fillAnimation.value.clamp(0.0, 1.0);
+
     return Container(
       height: 425,
       decoration: BoxDecoration(
@@ -142,55 +180,18 @@ class _WaterGoalWidgetState extends State<WaterGoalWidget>
                     secondAnimation.value,
                     thirdAnimation.value,
                     fourthAnimation.value,
-                    widget.consumedVol / widget.totalVol),
+                    currentFillValue),
                 child: SizedBox(
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width),
               )),
           WaterGoalForeground(
-              consumedVol: widget.consumedVol, totalVol: widget.totalVol),
+              key: _waterGoalForegroundKey,
+              consumedVol: widget.consumedVol,
+              totalVol: widget.totalVol),
         ],
       ),
     );
-  }
-}
-
-class WaterGoalForeground extends StatefulWidget {
-  const WaterGoalForeground(
-      {super.key, required this.consumedVol, required this.totalVol});
-
-  final int consumedVol;
-  final int totalVol;
-
-  @override
-  State<WaterGoalForeground> createState() => _WaterGoalForegroundState();
-}
-
-class _WaterGoalForegroundState extends State<WaterGoalForeground> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          utils.BorderedText(
-              text: getGoalText(widget.consumedVol),
-              strokeWidth: 4,
-              textStyle: utils.ThemeText.dailyGoalConsumed),
-          Text.rich(
-              TextSpan(text: " L", style: utils.ThemeText.dailyGoalFillerText))
-        ],
-      ),
-      Text("of", style: utils.ThemeText.dailyGoalFillerText),
-      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        utils.BorderedText(
-            text: getGoalText(widget.totalVol),
-            strokeWidth: 4,
-            textStyle: utils.ThemeText.dailyGoalTotal),
-        Text.rich(
-            TextSpan(text: " L", style: utils.ThemeText.dailyGoalFillerText)),
-      ]),
-    ]);
   }
 }
 
