@@ -22,25 +22,25 @@ class _StatsWidgetState extends State<StatsWidget> {
       Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         StatsSummary(
           color: utils.defaultColors['red']!,
-          stats: widget.prefs.getInt('streak')!.toString(),
+          stats: getStreak(widget.db),
           statsSubtext: "Day Streak",
           icondata: Icons.whatshot,
         ),
         StatsSummary(
             color: utils.defaultColors['blue']!,
-            stats: "7.9 L",
+            stats: Future.delayed(Duration.zero, () => '7.9 L'),
             statsSubtext: "Water per Week",
             icondata: Icomoon.water_bottle)
       ]),
       Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         StatsSummary(
             color: utils.defaultColors['mint']!,
-            stats: "42 L",
+            stats: Future.delayed(Duration.zero, () => '10 L'),
             statsSubtext: "Lifetime Intake",
             icondata: Icons.calendar_month_sharp),
         StatsSummary(
             color: utils.defaultColors['yellow']!,
-            stats: "10 L",
+            stats: Future.delayed(Duration.zero, () => '9 L'),
             statsSubtext: "Fluids per Week",
             icondata: Icomoon.iced_liquid)
       ]),
