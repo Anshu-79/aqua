@@ -60,33 +60,33 @@ class WaterGoalForegroundState extends State<WaterGoalForeground>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FadeTransition(
-              opacity: _fadeAnimation,
-              child: utils.BorderedText(
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              utils.BorderedText(
                   text: getGoalText(_consumedVol),
                   strokeWidth: 4,
                   textStyle: utils.ThemeText.dailyGoalConsumed),
-            ),
-            Text.rich(TextSpan(
-                text: " L", style: utils.ThemeText.dailyGoalFillerText))
-          ],
-        ),
-        Text("of", style: utils.ThemeText.dailyGoalFillerText),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          utils.BorderedText(
-              text: getGoalText(widget.totalVol),
-              strokeWidth: 4,
-              textStyle: utils.ThemeText.dailyGoalTotal),
-          Text.rich(
-              TextSpan(text: " L", style: utils.ThemeText.dailyGoalFillerText)),
-        ]),
-      ],
+              Text.rich(TextSpan(
+                  text: " L", style: utils.ThemeText.dailyGoalFillerText))
+            ],
+          ),
+          Text("of", style: utils.ThemeText.dailyGoalFillerText),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            utils.BorderedText(
+                text: getGoalText(widget.totalVol),
+                strokeWidth: 4,
+                textStyle: utils.ThemeText.dailyGoalTotal),
+            Text.rich(
+                TextSpan(text: " L", style: utils.ThemeText.dailyGoalFillerText)),
+          ]),
+        ],
+      ),
     );
   }
 }

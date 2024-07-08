@@ -25,6 +25,7 @@ Future<void> createUser(Profile profile, List<double?> location) async {
   prefs.setDouble('altitude', location[2]!);
   prefs.setBool('onboard', true);
   prefs.setBool('darkMode', isDarkMode);
+  prefs.setBool('reminders', true);
 }
 
 Future<void> savePictureLocally(File? image, String username) async {
