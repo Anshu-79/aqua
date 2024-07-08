@@ -20,9 +20,13 @@ Future<void> showDrinkAddedSnackbar(DrinksCompanion drink, Beverage bev) async {
 
 class CircularFab extends StatefulWidget {
   const CircularFab(
-      {super.key, required this.db, required this.startFillAnimation});
+      {super.key,
+      required this.db,
+      required this.startFillAnimation,
+      required this.notifyReminderBox});
   final Database db;
   final Function(double) startFillAnimation;
+  final VoidCallback notifyReminderBox;
 
   @override
   State<CircularFab> createState() => _CircularFabState();
@@ -48,16 +52,21 @@ class _CircularFabState extends State<CircularFab> {
     final widgets = List.generate(starDrinksCount, (idx) {
       final bev = starBevs[idx];
       return ExtendedFabButton(
-          bev: bev,
-          db: widget.db,
-          startFillAnimation: widget.startFillAnimation);
+        bev: bev,
+        db: widget.db,
+        startFillAnimation: widget.startFillAnimation,
+        notifyReminderBox: widget.notifyReminderBox,
+      );
     });
 
     // Add CustomDrinkButton in the middle
     widgets.insert(
         ((starDrinksCount + 1) / 2).floor(),
         CustomDrinkButton(
-            db: widget.db, startFillAnimation: widget.startFillAnimation));
+          db: widget.db,
+          startFillAnimation: widget.startFillAnimation,
+          notifyReminderBox: widget.notifyReminderBox,
+        ));
 
     setState(() {
       _fabButtons = widgets;
@@ -89,7 +98,8 @@ class CustomDrinkButton extends ExtendedFabButton {
       {super.key,
       super.bev,
       required super.db,
-      required super.startFillAnimation});
+      required super.startFillAnimation,
+      required super.notifyReminderBox});
 
   _showCustomDrinkDialog() async {
     List<Beverage> beverages = await db.getBeverages();
@@ -105,6 +115,7 @@ class CustomDrinkButton extends ExtendedFabButton {
 
     await db.updateConsumedVolume(waterVol.toInt());
     startFillAnimation(waterVol);
+    notifyReminderBox();
     showDrinkAddedSnackbar(drink, bev);
 
     WaterGoal? todaysGoal = await db.getGoal(DateTime.now());
@@ -156,10 +167,12 @@ class ExtendedFabButton extends StatelessWidget {
       {super.key,
       this.bev,
       required this.db,
-      required this.startFillAnimation});
+      required this.startFillAnimation,
+      required this.notifyReminderBox});
   final Beverage? bev;
   final Database db;
   final Function(double) startFillAnimation;
+  final VoidCallback notifyReminderBox;
 
   _addQuickDrink() async {
     DrinksCompanion drink = DrinksCompanion(
@@ -173,6 +186,7 @@ class ExtendedFabButton extends StatelessWidget {
 
     await db.updateConsumedVolume(waterVol.toInt());
     startFillAnimation(waterVol);
+    notifyReminderBox();
 
     showDrinkAddedSnackbar(drink, bev!);
 
