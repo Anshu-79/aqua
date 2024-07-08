@@ -192,14 +192,6 @@ abstract class ThemeText {
     fontWeight: FontWeight.bold,
   );
 
-  static TextStyle reminderSubText =
-      const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
-
-  static TextStyle reminderText = TextStyle(
-      fontSize: 25,
-      fontWeight: FontWeight.w900,
-      color: defaultColors['dark blue']);
-
   // Add Drink Dialog Box
   static TextStyle dialogButtons =
       const TextStyle(fontSize: 30, fontWeight: FontWeight.bold);

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/screens/home/fab.dart';
 import 'package:aqua/screens/home/water_animation.dart';
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/screens/home/reminder_box.dart';
 import 'package:aqua/database/database.dart';
+import 'package:aqua/utils.dart' as utils;
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.database});
+  const HomeScreen({super.key, required this.database, required this.prefs});
 
   final Database database;
+  final SharedPreferences prefs;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -51,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       ReminderBox(
                           reminderGap: snapshotData![0].reminderGap,
-                          drinkSize: snapshotData[1]),
+                          drinkSize: snapshotData[1], prefs: widget.prefs),
                       const SizedBox(height: 20),
                       WaterGoalWidget(
                           key: _waterGoalWidgetKey,
@@ -69,45 +72,3 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class ReminderBox extends StatelessWidget {
-  const ReminderBox(
-      {super.key, required this.reminderGap, required this.drinkSize});
-  final int reminderGap;
-  final int drinkSize;
-
-  Widget getStyledText(String prefix, String styledText, String suffix) {
-    return Text.rich(
-      TextSpan(
-        text: '$prefix ',
-        style: utils.ThemeText.reminderSubText,
-        children: <TextSpan>[
-          TextSpan(text: styledText, style: utils.ThemeText.reminderText),
-          TextSpan(text: ' $suffix', style: utils.ThemeText.reminderSubText),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(5),
-      decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(30)),
-          border: Border.all(width: 4, color: Theme.of(context).primaryColor)),
-      child: Row(children: [
-        const Icon(Icons.alarm, size: 55),
-        const SizedBox(width: 5),
-        Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text("We will remind you to",
-                  style: utils.ThemeText.reminderSubText),
-              getStyledText("drink", "$drinkSize mL", "water"),
-              getStyledText("every", utils.getDurationInText(reminderGap), ''),
-            ])
-      ]),
-    );
-  }
-}

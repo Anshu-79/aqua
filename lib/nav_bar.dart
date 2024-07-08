@@ -43,7 +43,7 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     final pages = [
-      HomeScreen(database: _db),
+      HomeScreen(database: _db, prefs: widget.prefs),
       UserProfile(database: _db, prefs: widget.prefs),
       ActivityMenu(database: _db),
       BeverageMenu(database: _db),
