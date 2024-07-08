@@ -55,6 +55,11 @@ class SharedPrefUtils {
     pref.setDouble(key, message);
   }
 
+  static Future<void> saveBool(String key, bool b) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setBool(key, b);
+  }
+
   static Future<String?> readStr(String key) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     return pref.getString(key);

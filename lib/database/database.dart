@@ -349,6 +349,11 @@ class Database extends _$Database {
     return reminderGap.round();
   }
 
+  Future<int> getStoredReminderGap() async {
+    WaterGoal? todaysGoal = await getGoal(DateTime.now());
+    return todaysGoal!.reminderGap;
+  }
+
   // Water Goals Actions
 
   Future<List<WaterGoal>> getWaterGoals() async =>
@@ -380,7 +385,6 @@ class Database extends _$Database {
         reminderGap: Value(gap),
         datetimeOffset: Value(await SharedPrefUtils.getWakeTime()));
 
-    print("Goal set");
     return await into(waterGoals).insertReturning(goal);
   }
 

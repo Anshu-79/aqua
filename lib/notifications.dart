@@ -87,7 +87,11 @@ class NotificationsController {
         NotificationActionButton(
             key: 'ADD',
             label: 'Add $volume mL',
-            actionType: ActionType.SilentBackgroundAction)
+            actionType: ActionType.SilentBackgroundAction),
+        NotificationActionButton(
+            key: 'TURN OFF',
+            label: 'Turn off reminders',
+            actionType: ActionType.SilentAction)
       ],
       schedule: NotificationInterval(interval: 60 * minutes, repeats: true),
     );
@@ -104,6 +108,10 @@ class NotificationsController {
       await db.insertWater(volume);
       await db.updateConsumedVolume(volume);
       db.close();
+    }
+
+    else if (action.buttonKeyPressed == 'TURN OFF') {
+      await SharedPrefUtils.saveBool('reminders', false);
     }
   }
 

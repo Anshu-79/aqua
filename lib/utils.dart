@@ -529,8 +529,5 @@ Future<DateTime> convertToWaterGoalID(DateTime dt) async {
 
   // Convert datetime to a date since primary key is the date
   DateTime dateOnly = DateUtils.dateOnly(today);
-  print("now = $dt");
-  print("today = $today");
-  print("dateOnly = $dateOnly");
   return dateOnly;
 }

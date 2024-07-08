@@ -61,7 +61,7 @@ class _ReminderBoxState extends State<ReminderBox> {
     widget.prefs.setBool('reminders', b);
     if (b) {
       NotificationsController.createHydrationNotification(
-          await widget.db.calcReminderGap(),
+          await widget.db.getStoredReminderGap(),
           await widget.db.calcMedianDrinkSize());
     } else {
       NotificationsController.cancelScheduledNotifications();
@@ -159,7 +159,7 @@ class ReminderONWidget extends StatefulWidget {
 
 class _ReminderONWidgetState extends State<ReminderONWidget> {
   Future<List> _dbQuery(Database db) async =>
-      [await db.calcReminderGap(), await db.calcMedianDrinkSize()];
+      [await db.getStoredReminderGap(), await db.calcMedianDrinkSize()];
 
   @override
   Widget build(BuildContext context) {
