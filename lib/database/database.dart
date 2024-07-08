@@ -101,7 +101,8 @@ class Database extends _$Database {
 
   // Workouts Actions
   Future<List<Workout>> getTodaysWorkouts() async {
-    final now = DateTime.now();
+    DateTime now = DateTime.now();
+    now = await shiftToWakeTime(now);
     final int wakeHour = await SharedPrefUtils.getWakeTime();
     final todayStart = DateTime(now.year, now.month, now.day, wakeHour);
     final todayEnd = todayStart.add(const Duration(days: 1));
@@ -306,9 +307,14 @@ class Database extends _$Database {
     return drinkSizes[drinkSizes.length ~/ 2]; // Median is at middle position
   }
 
-  Future<int> calcReminderGap(int consumed, int total) async {
-    final int toDrink = total - consumed;
+  Future<int> calcReminderGap() async {
     DateTime now = DateTime.now();
+
+    WaterGoal? todaysGoal = await getGoal(now);
+    int total = todaysGoal!.totalVolume;
+    int consumed = todaysGoal.consumedVolume;
+
+    final int toDrink = total - consumed;
 
     // If day's goal has been completed, next reminder will
     // be at the waking time of next day
@@ -324,7 +330,8 @@ class Database extends _$Database {
 
     final int drinkSize = await calcMedianDrinkSize();
     int drinksNeeded = toDrink ~/ drinkSize;
-    
+
+    // Assume a minimum of 1 drink
     if (drinksNeeded == 0) drinksNeeded = 1;
 
     final int sleepHour = await SharedPrefUtils.getSleepTime();
@@ -364,7 +371,7 @@ class Database extends _$Database {
 
     final int totalIntake = await calcTodaysGoal();
     int consumed = 0;
-    int gap = await calcReminderGap(consumed, totalIntake);
+    int gap = await calcReminderGap();
 
     final goal = WaterGoalsCompanion(
         date: Value(dateOnly),
@@ -379,19 +386,18 @@ class Database extends _$Database {
 
   Future<int> updateConsumedVolume(int consumedVolIncrease) async {
     final goal = await getGoal(DateTime.now());
-    int newConsumedVol = consumedVolIncrease + goal!.consumedVolume;
-    int gap = await calcReminderGap(newConsumedVol, goal.totalVolume);
+    int gap = await calcReminderGap();
 
-    return (update(waterGoals)..where((t) => t.date.equals(goal.date))).write(
+    return (update(waterGoals)..where((t) => t.date.equals(goal!.date))).write(
         WaterGoalsCompanion(
-            consumedVolume: Value(goal.consumedVolume + consumedVolIncrease),
+            consumedVolume: Value(goal!.consumedVolume + consumedVolIncrease),
             reminderGap: Value(gap)));
   }
 
   Future<int> updateTotalVolume(int totalVolIncrease) async {
     final goal = await getGoal(DateTime.now());
     int newTotalVol = totalVolIncrease + goal!.totalVolume;
-    int gap = await calcReminderGap(goal.consumedVolume, newTotalVol);
+    int gap = await calcReminderGap();
 
     return (update(waterGoals)..where((t) => t.date.equals(goal.date))).write(
         WaterGoalsCompanion(

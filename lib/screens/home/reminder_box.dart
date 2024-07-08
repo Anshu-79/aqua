@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
-import 'package:aqua/notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:aqua/database/database.dart';
+import 'package:aqua/notifications.dart';
 
 bool isSleepTime(SharedPreferences prefs) {
   int sleepTime = prefs.getInt('sleepTime') ?? 0;
@@ -33,14 +35,9 @@ Widget getStyledText(String prefix, String styledText, String suffix,
 }
 
 class ReminderBox extends StatefulWidget {
-  const ReminderBox(
-      {super.key,
-      required this.reminderGap,
-      required this.drinkSize,
-      required this.prefs});
+  const ReminderBox({super.key, required this.prefs, required this.db});
   final SharedPreferences prefs;
-  final int reminderGap;
-  final int drinkSize;
+  final Database db;
 
   @override
   State<ReminderBox> createState() => _ReminderBoxState();
@@ -59,12 +56,13 @@ class _ReminderBoxState extends State<ReminderBox> {
     super.initState();
   }
 
-  void _toggled(bool b) {
+  void _toggled(bool b) async {
     setState(() => remindersON = b);
     widget.prefs.setBool('reminders', b);
     if (b) {
       NotificationsController.createHydrationNotification(
-          widget.reminderGap, widget.drinkSize);
+          await widget.db.calcReminderGap(),
+          await widget.db.calcMedianDrinkSize());
     } else {
       NotificationsController.cancelScheduledNotifications();
     }
@@ -105,8 +103,7 @@ class _ReminderBoxState extends State<ReminderBox> {
               ? const Icon(Icons.notifications_off, size: 60)
               : const Icon(Icons.bedtime_sharp, size: 60),
       textBuilder: (b) => b
-          ? ReminderONWidget(
-              drinkSize: widget.drinkSize, reminderGap: widget.reminderGap)
+          ? ReminderONWidget(db: widget.db)
           : isNotSleepTime
               ? const ReminderOFFWidget()
               : const SleepingWidget(),
@@ -151,32 +148,53 @@ class SleepingWidget extends StatelessWidget {
   }
 }
 
-class ReminderONWidget extends StatelessWidget {
-  const ReminderONWidget(
-      {super.key, required this.drinkSize, required this.reminderGap});
+class ReminderONWidget extends StatefulWidget {
+  const ReminderONWidget({super.key, required this.db});
 
-  final int drinkSize;
-  final int reminderGap;
+  final Database db;
+
+  @override
+  State<ReminderONWidget> createState() => _ReminderONWidgetState();
+}
+
+class _ReminderONWidgetState extends State<ReminderONWidget> {
+  Future<List> _dbQuery(Database db) async =>
+      [await db.calcReminderGap(), await db.calcMedianDrinkSize()];
 
   @override
   Widget build(BuildContext context) {
-    TextStyle subTextStyle =
-        const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+    return FutureBuilder<List>(
+        future: _dbQuery(widget.db),
+        builder: (context, snapshot) {
+          // The default state of this widget. Doesn't represent
+          // any data. Just for show.
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return textForReminder(200, 10);
+          }
 
-    TextStyle styledTextStyle = const TextStyle(
-        fontSize: 25, fontWeight: FontWeight.w900, color: Colors.green);
+          if (snapshot.hasError) return Text(snapshot.error.toString());
 
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text("Reminders set", style: subTextStyle),
-          getStyledText("every", getDurationInText(reminderGap), "for",
-              subTextStyle, styledTextStyle),
-          getStyledText(
-              "", "$drinkSize mL", "water", subTextStyle, styledTextStyle),
-        ]);
+          return textForReminder(snapshot.data![1], snapshot.data![0]);
+        });
   }
+}
+
+Widget textForReminder(int volume, int reminderGap) {
+  TextStyle subTextStyle =
+      const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+
+  TextStyle styledTextStyle = const TextStyle(
+      fontSize: 25, fontWeight: FontWeight.w900, color: Colors.green);
+
+  return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Text("Reminders set for", style: subTextStyle),
+        getStyledText("", "$volume mL", "water", subTextStyle, styledTextStyle),
+        getStyledText("every", getDurationInText(reminderGap), "", subTextStyle,
+            styledTextStyle),
+      ]);
 }
 
 String getDurationInText(int duration) {

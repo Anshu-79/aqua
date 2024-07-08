@@ -20,12 +20,17 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<WaterGoalWidgetState> _waterGoalWidgetKey =
       GlobalKey<WaterGoalWidgetState>();
-      
+
+  final ValueNotifier<bool> _reminderBoxNotifier = ValueNotifier(false);
+
+  void _triggerUpdate() =>
+      _reminderBoxNotifier.value = !_reminderBoxNotifier.value;
+
   // The first element of this function's output stores a WaterGoal? object
   // the second stores an int
   Future<List<dynamic>> _getGoal() async {
-    WaterGoal todaysGoal =
-        await widget.database.setTodaysGoal(); // set goal if not set already
+    WaterGoal todaysGoal = await widget.database.setTodaysGoal();
+    // set goal if not set already
 
     int drinkSize = await widget.database.calcMedianDrinkSize();
     return [todaysGoal, drinkSize];
@@ -52,18 +57,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      ReminderBox(
-                          reminderGap: snapshotData![0].reminderGap,
-                          drinkSize: snapshotData[1], prefs: widget.prefs),
+                      ValueListenableBuilder<bool>(
+                          valueListenable: _reminderBoxNotifier,
+                          builder: (context, value, child) {
+                            return ReminderBox(
+                                db: widget.database, prefs: widget.prefs);
+                          }),
                       const SizedBox(height: 20),
                       WaterGoalWidget(
                           key: _waterGoalWidgetKey,
-                          consumedVol: snapshotData[0].consumedVolume,
+                          consumedVol: snapshotData![0].consumedVolume,
                           totalVol: snapshotData[0].totalVolume),
                     ]));
           }),
       floatingActionButton: CircularFab(
         db: widget.database,
+        notifyReminderBox: _triggerUpdate,
         startFillAnimation: (consumedVol) {
           _waterGoalWidgetKey.currentState?.startFillAnimation(consumedVol);
         },
@@ -71,4 +80,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
