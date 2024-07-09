@@ -219,8 +219,8 @@ class ExtendedFabButton extends StatelessWidget {
           style: TextButton.styleFrom(
             shadowColor: Colors.black,
             elevation: 6,
-            backgroundColor: utils.lighten(color, 10),
-            shape: CircleBorder(side: BorderSide(color: color, width: 5)),
+            backgroundColor: color,
+            shape: const CircleBorder(side: BorderSide.none),
           ),
           onPressed: _addQuickDrink,
           child: Padding(
