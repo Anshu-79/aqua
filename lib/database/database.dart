@@ -180,7 +180,7 @@ class Database extends _$Database {
     DateTime endDate = await shiftToWakeTime(DateTime.now());
     endDate = DateUtils.dateOnly(endDate);
     DateTime startDate = endDate.subtract(Duration(days: range));
-    
+
     final query = selectOnly(drinks)
       ..addColumns([drinks.datetime.date, drinks.volume.sum()])
       ..where(drinks.bevID.equals(bevID))
@@ -310,12 +310,16 @@ class Database extends _$Database {
     return drinkSizes[drinkSizes.length ~/ 2]; // Median is at middle position
   }
 
-  Future<int> calcReminderGap() async {
+  // The input variables consumed & total are nullable since they
+  // don't need to be passed everytime. Currently, they are passed only when 
+  // the function is called from setTodaysGoal()
+  Future<int> calcReminderGap(int? consumed, int? total) async {
     DateTime now = DateTime.now();
 
     WaterGoal? todaysGoal = await getGoal(now);
-    int total = todaysGoal!.totalVolume;
-    int consumed = todaysGoal.consumedVolume;
+
+    consumed ??= todaysGoal!.consumedVolume;
+    total ??= todaysGoal!.totalVolume;
 
     final int toDrink = total - consumed;
 
@@ -379,7 +383,7 @@ class Database extends _$Database {
 
     final int totalIntake = await calcTodaysGoal();
     int consumed = 0;
-    int gap = await calcReminderGap();
+    int gap = await calcReminderGap(consumed, totalIntake);
 
     final goal = WaterGoalsCompanion(
         date: Value(dateOnly),
@@ -393,7 +397,7 @@ class Database extends _$Database {
 
   Future<int> updateConsumedVolume(int consumedVolIncrease) async {
     final goal = await getGoal(DateTime.now());
-    int gap = await calcReminderGap();
+    int gap = await calcReminderGap(null, null);
 
     return (update(waterGoals)..where((t) => t.date.equals(goal!.date))).write(
         WaterGoalsCompanion(
@@ -404,7 +408,7 @@ class Database extends _$Database {
   Future<int> updateTotalVolume(int totalVolIncrease) async {
     final goal = await getGoal(DateTime.now());
     int newTotalVol = totalVolIncrease + goal!.totalVolume;
-    int gap = await calcReminderGap();
+    int gap = await calcReminderGap(null, null);
 
     return (update(waterGoals)..where((t) => t.date.equals(goal.date))).write(
         WaterGoalsCompanion(

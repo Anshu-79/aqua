@@ -61,7 +61,7 @@ class _WaketimeEditDialogState extends State<WaketimeEditDialog> {
                         widget.notifyParent();
 
                         // Update Daily goal to change reminder gap
-                        await widget.db.updateConsumedVolume(0);
+                        await widget.db.setTodaysGoal();
                       } else {
                         utils.GlobalNavigator.showSnackBar(
                             'Sleeping Time & Wake-up Time cannot be same',
