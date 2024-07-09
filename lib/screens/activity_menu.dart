@@ -104,32 +104,34 @@ class WorkoutCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color bgColor = utils.getWorkoutColor(workout.activityID);
+    Color primaryColor = Theme.of(context).primaryColor;
+
     return Container(
       margin: const EdgeInsets.all(8.0),
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-          color: bgColor,
+          color: bgColor.withOpacity(0.5),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Theme.of(context).primaryColor, width: 3)),
+          border: Border.all(color: bgColor, width: 5)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Icon(utils.getWorkoutIcon(workout.activityID),
-              color: Colors.black, size: 50),
+              color: primaryColor, size: 50),
           FittedBox(
               fit: BoxFit.contain,
               child: Text(utils.getWorkoutCategory(workout.activityID),
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.w900,
-                      color: Colors.black))),
+                      color: primaryColor))),
           Text(utils.getDurationInText(workout.duration),
-              style: const TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.w900)),
+              style:
+                  TextStyle(color: primaryColor, fontWeight: FontWeight.w900)),
           Text(utils.getVolumeInText(workout.waterLoss),
-              style: const TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.bold)),
+              style:
+                  TextStyle(color: primaryColor, fontWeight: FontWeight.bold)),
         ],
       ),
     );
