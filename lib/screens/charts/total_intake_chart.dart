@@ -13,10 +13,12 @@ class TotalWaterTrendChart extends StatelessWidget {
 
     // Select the last 7, 14, etc number of days
     List dataInRange = waterGoals.reversed.take(daysRange).toList();
+    dataInRange = dataInRange.reversed.toList();
+    
     return List.generate(dataInRange.length, (idx) {
       return FlSpot(
         (idx + 1).toDouble(),
-        waterGoals[idx].consumedVolume.toDouble(),
+        dataInRange[idx].consumedVolume.toDouble(),
       );
     });
   }

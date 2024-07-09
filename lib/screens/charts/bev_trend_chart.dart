@@ -30,7 +30,8 @@ class BeverageTrendChart extends StatelessWidget {
     return List.generate(beverages.length, (i) {
       final Beverage bev = beverages[i];
       final Map bevData = drinks[bev]!;
-      final dataInRange = bevData.values.toList().reversed.take(daysRange);
+      List dataInRange = bevData.keys.toList().reversed.take(daysRange).toList();
+      dataInRange = dataInRange.reversed.toList();
       final Color color = utils.toColor(bev.colorCode);
 
       return LineChartBarData(
@@ -47,7 +48,7 @@ class BeverageTrendChart extends StatelessWidget {
                   end: Alignment.bottomCenter)),
           // Generate a list of spots specific to each beverage
           spots: List.generate(dataInRange.length, (j) {
-            final DateTime date = bevData.keys.toList()[j];
+            final DateTime date = dataInRange[j];
             final volume = bevData[date];
             return FlSpot((j + 1).toDouble(), volume.toDouble());
           }));
