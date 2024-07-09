@@ -29,6 +29,12 @@ String getVolumeInText(int volume) {
   return "$volume mL";
 }
 
+String getTimeInText(int time) {
+  if (time > 12) return "${time - 12}:00 PM";
+  if (time == 12) return "12:00 PM";
+  return "$time:00 AM";
+}
+
 // Color Utilities
 Map<String, Color> defaultColors = {
   'pink': const Color(0xFFFF789C),

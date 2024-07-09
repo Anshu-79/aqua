@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:aqua/screens/user_profile/profile/edit_picture_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,6 +9,7 @@ import 'package:aqua/water_goals.dart';
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/screens/settings.dart';
 
+import 'package:aqua/screens/user_profile/edit_picture_dialog.dart';
 import 'package:aqua/screens/user_profile/sleeptime_edit_dialog.dart';
 import 'package:aqua/screens/user_profile/waketime_edit_dialog.dart';
 import 'package:aqua/screens/user_profile/age_edit_dialog.dart';
@@ -17,17 +17,13 @@ import 'package:aqua/screens/user_profile/height_edit_dialog.dart';
 import 'package:aqua/screens/user_profile/name_edit_dialog.dart';
 import 'package:aqua/screens/user_profile/weight_edit_dialog.dart';
 
-String getTimeText(int time) {
-  if (time > 12) return "${time - 12}:00 PM";
-  if (time == 12) return "12:00 PM";
-  return "$time:00 AM";
-}
+
 
 String getWakeTimeText(SharedPreferences prefs) =>
-    getTimeText(prefs.getInt('wakeTime')!);
+    utils.getTimeInText(prefs.getInt('wakeTime')!);
 
 String getSleepTimeText(SharedPreferences prefs) =>
-    getTimeText(prefs.getInt('sleepTime')!);
+    utils.getTimeInText(prefs.getInt('sleepTime')!);
 
 class ProfilePicture extends StatelessWidget {
   const ProfilePicture({super.key, required this.prefs});

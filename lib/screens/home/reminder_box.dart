@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/database/database.dart';
 import 'package:aqua/notifications.dart';
+import 'package:aqua/utils.dart' as utils;
 
 bool isSleepTime(SharedPreferences prefs) {
   int sleepTime = prefs.getInt('sleepTime') ?? 0;
@@ -18,6 +19,13 @@ bool isSleepTime(SharedPreferences prefs) {
 
   if (!beforeSleeping && !afterSleeping) return true;
   return false;
+}
+
+Future<bool> isGoalCompleted(Database db) async {
+  WaterGoal? goal = await db.getGoal(DateTime.now());
+  int consumed = goal!.consumedVolume;
+  int total = goal.totalVolume;
+  return consumed >= total;
 }
 
 Widget getStyledText(String prefix, String styledText, String suffix,
@@ -35,9 +43,14 @@ Widget getStyledText(String prefix, String styledText, String suffix,
 }
 
 class ReminderBox extends StatefulWidget {
-  const ReminderBox({super.key, required this.prefs, required this.db});
+  const ReminderBox(
+      {super.key,
+      required this.prefs,
+      required this.db,
+      required this.isGoalCompleted});
   final SharedPreferences prefs;
   final Database db;
+  final bool isGoalCompleted;
 
   @override
   State<ReminderBox> createState() => _ReminderBoxState();
@@ -46,14 +59,26 @@ class ReminderBox extends StatefulWidget {
 class _ReminderBoxState extends State<ReminderBox> {
   late bool remindersON;
   late bool isNotSleepTime;
+  late bool isGoalCompleted;
 
   @override
   void initState() {
-    bool userReminderPref = widget.prefs.getBool('reminders') ?? true;
     isNotSleepTime = !isSleepTime(widget.prefs);
 
-    remindersON = userReminderPref && isNotSleepTime;
+    remindersON = _getBoxState() == "ON";
     super.initState();
+  }
+
+  String _getBoxState() {
+    bool userReminderPref = widget.prefs.getBool('reminders') ?? true;
+
+    if (!isNotSleepTime) return "SLEEP";
+    if (widget.isGoalCompleted) return "COMPLETE";
+    if (userReminderPref) {
+      return "ON";
+    } else {
+      return "OFF";
+    }
   }
 
   void _toggled(bool b) async {
@@ -74,39 +99,79 @@ class _ReminderBoxState extends State<ReminderBox> {
     final Color canvasColor = Theme.of(context).canvasColor;
 
     ToggleStyle toggleStyle = ToggleStyle(
-      borderRadius: const BorderRadius.all(Radius.circular(50)),
-      backgroundColor: canvasColor,
-      borderColor: primaryColor,
-      indicatorBorderRadius: const BorderRadius.all(Radius.circular(20)),
-      indicatorColor: remindersON
-          ? Colors.green
-          : isNotSleepTime
-              ? Colors.red
-              : Colors.purple,
-    );
+        borderRadius: const BorderRadius.all(Radius.circular(50)),
+        backgroundColor: canvasColor,
+        borderColor: primaryColor,
+        indicatorBorderRadius: const BorderRadius.all(Radius.circular(20)),
+        indicatorColor: indicatorColorMap[_getBoxState()]);
     return AnimatedToggleSwitch.dual(
-      inactiveOpacity: 0.9,
-      fittingMode: FittingMode.none,
-      active: !isSleepTime(widget.prefs),
-      indicatorSize: const Size.fromWidth(100),
-      height: 120,
-      borderWidth: 4,
-      style: toggleStyle,
-      spacing: 110,
-      current: remindersON,
-      first: false,
-      second: true,
-      onChanged: (b) => _toggled(b),
-      iconBuilder: (b) => b
-          ? const Icon(Icons.notifications_active, size: 60)
-          : isNotSleepTime
-              ? const Icon(Icons.notifications_off, size: 60)
-              : const Icon(Icons.bedtime_sharp, size: 60),
-      textBuilder: (b) => b
-          ? ReminderONWidget(db: widget.db)
-          : isNotSleepTime
-              ? const ReminderOFFWidget()
-              : const SleepingWidget(),
+        inactiveOpacity: 0.9,
+        fittingMode: FittingMode.none,
+        active: !isSleepTime(widget.prefs) && !(widget.isGoalCompleted),
+        indicatorSize: const Size.fromWidth(100),
+        height: 120,
+        borderWidth: 4,
+        style: toggleStyle,
+        spacing: 110,
+        current: remindersON,
+        first: false,
+        second: true,
+        onChanged: (b) => _toggled(b),
+        iconBuilder: (b) => Icon(indicatorIconMap[_getBoxState()], size: 60),
+        textBuilder: (b) =>
+            getBoxWidget(widget.db, widget.prefs, _getBoxState()));
+  }
+}
+
+Map<String, Color> indicatorColorMap = {
+  "ON": Colors.green,
+  "OFF": Colors.red,
+  "SLEEP": Colors.purple,
+  "COMPLETE": Colors.yellow.shade800,
+};
+
+Map<String, IconData> indicatorIconMap = {
+  "ON": Icons.notifications_active,
+  "OFF": Icons.notifications_off,
+  "SLEEP": Icons.bedtime_sharp,
+  "COMPLETE": Icons.emoji_events_sharp
+};
+
+Widget getBoxWidget(Database db, SharedPreferences prefs, String boxState) {
+  Map<String, Widget> boxWidgetMap = {
+    "ON": ReminderONWidget(db: db),
+    "OFF": const ReminderOFFWidget(),
+    "SLEEP": const SleepingWidget(),
+    "COMPLETE": GoalCompletedWidget(prefs: prefs),
+  };
+
+  return boxWidgetMap[boxState]!;
+}
+
+class GoalCompletedWidget extends StatelessWidget {
+  const GoalCompletedWidget({super.key, required this.prefs});
+  final SharedPreferences prefs;
+
+  @override
+  Widget build(BuildContext context) {
+    final int wakeTime = prefs.getInt('wakeTime') ?? 8;
+
+    TextStyle subTextStyle =
+        const TextStyle(fontSize: 20, fontWeight: FontWeight.w900);
+
+    TextStyle styledTextStyle = TextStyle(
+        fontSize: 25,
+        fontWeight: FontWeight.w900,
+        color: Colors.yellow.shade800);
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Goal achieved!", style: subTextStyle),
+        Text("See you later", style: subTextStyle),
+        getStyledText("at", utils.getTimeInText(wakeTime), "", subTextStyle,
+            styledTextStyle)
+      ],
     );
   }
 }
