@@ -87,8 +87,10 @@ class _CircularFabState extends State<CircularFab> {
       ringDiameter: 425,
       ringWidth: 100,
       ringColor: Colors.transparent,
-      fabColor: Theme.of(context).splashColor,
-      fabOpenIcon: Icon(Icons.add, color: Theme.of(context).primaryColor),
+      fabColor: Theme.of(context).primaryColor,
+      fabOpenIcon: Icon(Icons.add, color: Theme.of(context).canvasColor),
+      fabCloseIcon: Icon(Icons.close, color: Theme.of(context).canvasColor),
+
       children: _loading
           ? List.generate(
               maxFabButtonsCount, (idx) => const CircularProgressIndicator())
