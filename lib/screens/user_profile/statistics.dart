@@ -18,7 +18,7 @@ class StatsWidget extends StatefulWidget {
 class _StatsWidgetState extends State<StatsWidget> {
   @override
   Widget build(BuildContext context) {
-    return Wrap(runSpacing: 20, children: [
+    return Wrap(runSpacing: 15, children: [
       Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         StatsSummary(
           color: utils.defaultColors['red']!,
