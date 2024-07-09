@@ -493,11 +493,11 @@ class UniversalFAB extends StatelessWidget {
       width: 70,
       child: FloatingActionButton(
         tooltip: tooltip,
-        backgroundColor: Theme.of(context).splashColor,
-        splashColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
+        splashColor: Theme.of(context).splashColor,
         shape: const CircleBorder(eccentricity: 0),
         onPressed: () => onPressed(),
-        child: Icon(Icons.add, color: Theme.of(context).primaryColor, size: 30),
+        child: Icon(Icons.add, color: Theme.of(context).canvasColor, size: 30),
       ),
     );
   }

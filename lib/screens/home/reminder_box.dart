@@ -117,7 +117,7 @@ class _ReminderBoxState extends State<ReminderBox> {
         first: false,
         second: true,
         onChanged: (b) => _toggled(b),
-        iconBuilder: (b) => Icon(indicatorIconMap[_getBoxState()], size: 60),
+        iconBuilder: (b) => Icon(indicatorIconMap[_getBoxState()], size: 60, color: Colors.white),
         textBuilder: (b) =>
             getBoxWidget(widget.db, widget.prefs, _getBoxState()));
   }
