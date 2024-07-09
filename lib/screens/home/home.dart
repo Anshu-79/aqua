@@ -1,3 +1,5 @@
+import 'package:aqua/screens/home/confetti.dart';
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,19 +23,35 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<WaterGoalWidgetState> _waterGoalWidgetKey =
       GlobalKey<WaterGoalWidgetState>();
 
+  late ConfettiController _confettiController;
+
+  @override
+  void initState() {
+    super.initState();
+    _confettiController =
+        ConfettiController(duration: const Duration(seconds: 1));
+  }
+
+  @override
+  void dispose() {
+    _confettiController.dispose();
+    super.dispose();
+  }
+
   final ValueNotifier<bool> _reminderBoxNotifier = ValueNotifier(false);
 
   void _triggerUpdate() =>
       _reminderBoxNotifier.value = !_reminderBoxNotifier.value;
 
+  void _blastConfetti() => _confettiController.play();
+
   // The first element of this function's output stores a WaterGoal? object
-  // the second stores an int
-  Future<List<dynamic>> _getGoal() async {
+
+  Future<WaterGoal> _getGoal() async {
     WaterGoal todaysGoal = await widget.database.setTodaysGoal();
     // set goal if not set already
 
-    int drinkSize = await widget.database.calcMedianDrinkSize();
-    return [todaysGoal, drinkSize];
+    return todaysGoal;
   }
 
   @override
@@ -41,10 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       appBar: const utils.UniversalHeader(title: "Today's Goal"),
-      body: FutureBuilder<List<dynamic>>(
+      body: FutureBuilder<WaterGoal>(
           future: _getGoal(),
           builder: (context, snapshot) {
-            List<dynamic>? snapshotData = snapshot.data;
+            WaterGoal? todaysGoal = snapshot.data;
 
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -52,23 +70,28 @@ class _HomeScreenState extends State<HomeScreen> {
             if (snapshot.hasError) {
               return Center(child: Text(snapshot.error.toString()));
             }
-            return Container(
-                margin: const EdgeInsets.all(20),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ValueListenableBuilder<bool>(
-                          valueListenable: _reminderBoxNotifier,
-                          builder: (context, value, child) {
-                            return ReminderBox(
-                                db: widget.database, prefs: widget.prefs);
-                          }),
-                      const SizedBox(height: 20),
-                      WaterGoalWidget(
-                          key: _waterGoalWidgetKey,
-                          consumedVol: snapshotData![0].consumedVolume,
-                          totalVol: snapshotData[0].totalVolume),
-                    ]));
+            return Stack(
+              children: [
+                Container(
+                    margin: const EdgeInsets.all(20),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ValueListenableBuilder<bool>(
+                              valueListenable: _reminderBoxNotifier,
+                              builder: (context, value, child) {
+                                return ReminderBox(
+                                    db: widget.database, prefs: widget.prefs);
+                              }),
+                          const SizedBox(height: 20),
+                          WaterGoalWidget(
+                              key: _waterGoalWidgetKey,
+                              consumedVol: todaysGoal!.consumedVolume,
+                              totalVol: todaysGoal.totalVolume),
+                        ])),
+                Confetti(controller: _confettiController)
+              ],
+            );
           }),
       floatingActionButton: CircularFab(
         db: widget.database,
@@ -76,6 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
         startFillAnimation: (consumedVol) {
           _waterGoalWidgetKey.currentState?.startFillAnimation(consumedVol);
         },
+        blastConfetti: _blastConfetti,
       ),
     );
   }

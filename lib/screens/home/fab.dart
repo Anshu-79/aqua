@@ -23,10 +23,12 @@ class CircularFab extends StatefulWidget {
       {super.key,
       required this.db,
       required this.startFillAnimation,
-      required this.notifyReminderBox});
+      required this.notifyReminderBox,
+      required this.blastConfetti});
   final Database db;
   final Function(double) startFillAnimation;
   final VoidCallback notifyReminderBox;
+  final VoidCallback blastConfetti;
 
   @override
   State<CircularFab> createState() => _CircularFabState();
@@ -56,6 +58,7 @@ class _CircularFabState extends State<CircularFab> {
         db: widget.db,
         startFillAnimation: widget.startFillAnimation,
         notifyReminderBox: widget.notifyReminderBox,
+        blastConfetti: widget.blastConfetti,
       );
     });
 
@@ -66,6 +69,7 @@ class _CircularFabState extends State<CircularFab> {
           db: widget.db,
           startFillAnimation: widget.startFillAnimation,
           notifyReminderBox: widget.notifyReminderBox,
+          blastConfetti: widget.blastConfetti,
         ));
 
     setState(() {
@@ -99,7 +103,8 @@ class CustomDrinkButton extends ExtendedFabButton {
       super.bev,
       required super.db,
       required super.startFillAnimation,
-      required super.notifyReminderBox});
+      required super.notifyReminderBox,
+      required super.blastConfetti});
 
   _showCustomDrinkDialog() async {
     List<Beverage> beverages = await db.getBeverages();
@@ -108,20 +113,11 @@ class CustomDrinkButton extends ExtendedFabButton {
       beverages: beverages,
       notifyParent: startFillAnimation,
     ));
-    await db.insertOrUpdateDrink(drink);
+
     Beverage bev = await db.getBeverage(drink.bevID.value);
 
-    double waterVol = drink.volume.value * bev.waterPercent / 100;
-
-    await db.updateConsumedVolume(waterVol.toInt());
-    startFillAnimation(waterVol);
-    notifyReminderBox();
-    showDrinkAddedSnackbar(drink, bev);
-
-    WaterGoal? todaysGoal = await db.getGoal(DateTime.now());
-    int medianDrinkSize = await db.calcMedianDrinkSize();
-    await NotificationsController.updateScheduledNotifications(
-        todaysGoal!.reminderGap, medianDrinkSize);
+    addDrink(
+        db, drink, bev, startFillAnimation, notifyReminderBox, blastConfetti);
   }
 
   @override
@@ -162,17 +158,45 @@ class CustomDrinkButton extends ExtendedFabButton {
   }
 }
 
+addDrink(
+    Database db,
+    DrinksCompanion drink,
+    Beverage bev,
+    Function(double) fillAnimation,
+    Function updateReminderBox,
+    Function blastConfetti) async {
+  await db.insertOrUpdateDrink(drink);
+
+  double waterVol = drink.volume.value * bev.waterPercent / 100;
+
+  await db.updateConsumedVolume(waterVol.toInt());
+  fillAnimation(waterVol);
+  updateReminderBox();
+
+  showDrinkAddedSnackbar(drink, bev);
+
+  WaterGoal? todaysGoal = await db.getGoal(DateTime.now());
+  int medianDrinkSize = await db.calcMedianDrinkSize();
+
+  if (todaysGoal!.consumedVolume >= todaysGoal.totalVolume) blastConfetti();
+
+  await NotificationsController.updateScheduledNotifications(
+      todaysGoal.reminderGap, medianDrinkSize);
+}
+
 class ExtendedFabButton extends StatelessWidget {
   const ExtendedFabButton(
       {super.key,
       this.bev,
       required this.db,
       required this.startFillAnimation,
-      required this.notifyReminderBox});
+      required this.notifyReminderBox,
+      required this.blastConfetti});
   final Beverage? bev;
   final Database db;
   final Function(double) startFillAnimation;
   final VoidCallback notifyReminderBox;
+  final VoidCallback blastConfetti;
 
   _addQuickDrink() async {
     DrinksCompanion drink = DrinksCompanion(
@@ -180,20 +204,9 @@ class ExtendedFabButton extends StatelessWidget {
         volume: const drift.Value(200),
         datetime: drift.Value(DateTime.now()),
         datetimeOffset: drift.Value(await SharedPrefUtils.getWakeTime()));
-    await db.insertOrUpdateDrink(drink);
 
-    double waterVol = drink.volume.value * bev!.waterPercent / 100;
-
-    await db.updateConsumedVolume(waterVol.toInt());
-    startFillAnimation(waterVol);
-    notifyReminderBox();
-
-    showDrinkAddedSnackbar(drink, bev!);
-
-    WaterGoal? todaysGoal = await db.getGoal(DateTime.now());
-    int medianDrinkSize = await db.calcMedianDrinkSize();
-    await NotificationsController.updateScheduledNotifications(
-        todaysGoal!.reminderGap, medianDrinkSize);
+    addDrink(
+        db, drink, bev!, startFillAnimation, notifyReminderBox, blastConfetti);
   }
 
   @override
