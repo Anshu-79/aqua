@@ -472,8 +472,8 @@ class UniversalHeader extends PreferredSize {
               ColorizeAnimatedText(
                 title,
                 textStyle: screenHeader,
-                speed: const Duration(milliseconds: 400),
-                colors: textColorizeColors,
+                speed: const Duration(milliseconds: 500),
+                colors: colorList.sublist(0, 9).reversed.toList(),
               )
             ],
           ),

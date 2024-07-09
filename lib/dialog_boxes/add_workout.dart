@@ -21,6 +21,8 @@ class AddWorkoutDialog extends StatefulWidget {
 }
 
 class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
+  ScrollController controller = ScrollController();
+
   refresh() => setState(() {});
 
   @override
@@ -31,8 +33,13 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
         child: Padding(
           padding: const EdgeInsets.only(top: 60, right: 10, left: 10),
           child: Scrollbar(
+            thickness: 20,
+            radius: const Radius.circular(10),
+            controller: controller,
+            interactive: true,
             trackVisibility: true,
             child: SearchableList<Activity>.async(
+              scrollController: controller,
               spaceBetweenSearchAndList: 10,
               displaySearchIcon: false,
               cursorColor: Theme.of(context).primaryColor,
@@ -65,7 +72,7 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                     splashColor: utils.getWorkoutColor(activity.id),
                     textColor: Theme.of(context).primaryColor,
                     tileColor:
-                        utils.getWorkoutColor(activity.id).withOpacity(0.3),
+                        utils.getWorkoutColor(activity.id).withOpacity(0.2),
                     leading: Icon(
                       utils.icomoonMap[activity.category]![0],
                       size: 35,
@@ -76,17 +83,17 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                     isThreeLine: true,
                     onTap: () async {
                       Navigator.pop(context);
-
+            
                       WorkoutsCompanion? addedWorkout =
                           await utils.GlobalNavigator.showAnimatedDialog(
                               CustomizeWorkout(activity: activity));
-
+            
                       await widget.db.insertOrUpdateWorkout(addedWorkout!);
-
+            
                       await widget.db
                           .updateTotalVolume(addedWorkout.waterLoss.value);
                       widget.notifyParent();
-
+            
                       // Update notification gap
                       WaterGoal? todaysGoal =
                           await widget.db.getGoal(DateTime.now());
@@ -118,11 +125,11 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                 labelStyle: utils.ThemeText.searchLabelText,
                 labelText: "Search Activity",
                 fillColor: Colors.white,
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10)),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: Colors.blue,
-                    width: 1.0,
-                  ),
+                  borderSide: BorderSide(
+                      color: utils.defaultColors['dark blue']!, width: 3.0),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
