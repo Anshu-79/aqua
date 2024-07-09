@@ -1,3 +1,4 @@
+import 'package:aqua/screens/user_profile/share_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,10 +22,11 @@ class _UserProfileState extends State<UserProfile> {
     return Scaffold(
         body: SingleChildScrollView(
           child: Wrap(
-                runSpacing: 20,
+                runSpacing: 15,
                 children: [
           ProfileWidget(prefs: widget.prefs, db: widget.database),
-          StatsWidget(prefs: widget.prefs, db: widget.database)
+          StatsWidget(prefs: widget.prefs, db: widget.database),
+          ShareWidget(prefs: widget.prefs, db: widget.database)
                 ],
               ),
         ));
