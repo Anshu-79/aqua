@@ -45,8 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _blastConfetti() => _confettiController.play();
 
-  // The first element of this function's output stores a WaterGoal? object
-
   Future<WaterGoal> _getGoal() async {
     WaterGoal todaysGoal = await widget.database.setTodaysGoal();
     // set goal if not set already
@@ -81,7 +79,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               valueListenable: _reminderBoxNotifier,
                               builder: (context, value, child) {
                                 return ReminderBox(
-                                    db: widget.database, prefs: widget.prefs);
+                                    db: widget.database,
+                                    prefs: widget.prefs,
+                                    isGoalCompleted:
+                                        todaysGoal!.consumedVolume >=
+                                            todaysGoal.totalVolume);
                               }),
                           const SizedBox(height: 20),
                           WaterGoalWidget(
