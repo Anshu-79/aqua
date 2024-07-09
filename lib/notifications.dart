@@ -112,6 +112,7 @@ class NotificationsController {
 
     else if (action.buttonKeyPressed == 'TURN OFF') {
       await SharedPrefUtils.saveBool('reminders', false);
+      Fluttertoast.showToast(msg: "Reminders turned off");
     }
   }
 

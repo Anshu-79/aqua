@@ -45,7 +45,7 @@ class _StatsScreenState extends State<StatsScreen> {
   @override
   void initState() {
     _waterGoals = widget.db.getWaterGoals();
-    _drinksData = widget.db.bevWiseDailyConsumption();
+    _drinksData = widget.db.bevWiseDailyConsumption(selectedRange!.value);
     _daywiseDrinksData = widget.db.daywiseAllBevsConsumption();
     _totalBevDistribution = widget.db.totalVolumePerBeverage();
     _workouts = widget.db.totalDurationPerActivity();

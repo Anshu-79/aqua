@@ -3,6 +3,7 @@ import 'package:aqua/shared_pref_utils.dart';
 import 'package:aqua/water_goals.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:flutter/material.dart' show DateUtils;
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/services.dart' show rootBundle;
@@ -175,15 +176,11 @@ class Database extends _$Database {
     return aggregatedData;
   }
 
-  Future<Drink> insertTempDrink(int bevID, int volume, DateTime dt) async {
-    return await into(drinks).insertReturning(DrinksCompanion(
-        bevID: Value(bevID),
-        volume: Value(volume),
-        datetime: Value(dt),
-        datetimeOffset: const Value(0)));
-  }
-
-  Future<Map<DateTime, int>> getDailyConsumption(int bevID) async {
+  Future<Map<DateTime, int>> getDailyConsumption(int bevID, int range) async {
+    DateTime endDate = await shiftToWakeTime(DateTime.now());
+    endDate = DateUtils.dateOnly(endDate);
+    DateTime startDate = endDate.subtract(Duration(days: range));
+    
     final query = selectOnly(drinks)
       ..addColumns([drinks.datetime.date, drinks.volume.sum()])
       ..where(drinks.bevID.equals(bevID))
@@ -193,6 +190,12 @@ class Database extends _$Database {
 
     final Map<DateTime, int> aggregatedData = {};
 
+    for (DateTime date = startDate;
+        date.isBefore(endDate) || date.isAtSameMomentAs(endDate);
+        date = date.add(const Duration(days: 1))) {
+      aggregatedData[date] = 0;
+    }
+
     for (final row in result) {
       final date = DateTime.parse(row.read(drinks.datetime.date)!);
       final totalVolume = row.read(drinks.volume.sum()) as int;
@@ -201,12 +204,12 @@ class Database extends _$Database {
     return aggregatedData;
   }
 
-  Future<Map<Beverage, Map>> bevWiseDailyConsumption() async {
+  Future<Map<Beverage, Map>> bevWiseDailyConsumption(int range) async {
     final beverages = await getBeverages();
 
     Map<Beverage, Map> aggregatedData = {};
     for (final bev in beverages) {
-      final bevsConsumptionList = await getDailyConsumption(bev.id);
+      final bevsConsumptionList = await getDailyConsumption(bev.id, range);
       aggregatedData[bev] = bevsConsumptionList;
     }
     return aggregatedData;
