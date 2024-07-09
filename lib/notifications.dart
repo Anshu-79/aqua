@@ -108,9 +108,7 @@ class NotificationsController {
       await db.insertWater(volume);
       await db.updateConsumedVolume(volume);
       db.close();
-    }
-
-    else if (action.buttonKeyPressed == 'TURN OFF') {
+    } else if (action.buttonKeyPressed == 'TURN OFF') {
       await SharedPrefUtils.saveBool('reminders', false);
       Fluttertoast.showToast(msg: "Reminders turned off");
     }
@@ -126,14 +124,26 @@ class NotificationsController {
   }
 
   static Future<void> killNotificationsDuringSleepTime() async {
-    int wakeTime = await SharedPrefUtils.getWakeTime();
-    int sleepTime = await SharedPrefUtils.getSleepTime();
+    int wakeHr = await SharedPrefUtils.getWakeTime();
+    int sleepHr = await SharedPrefUtils.getSleepTime();
 
-    int nowHr = DateTime.now().hour;
+    DateTime now = DateTime.now();
+    int nowHr = now.hour;
 
-    bool beforeSleeping = nowHr < min(wakeTime, sleepTime);
-    bool afterSleeping = nowHr > max(wakeTime, sleepTime);
+    bool beforeSleeping = nowHr < min(wakeHr, sleepHr);
+    bool afterSleeping = nowHr > max(wakeHr, sleepHr);
 
-    if (!beforeSleeping && !afterSleeping) await cancelScheduledNotifications();
+    if (!beforeSleeping && !afterSleeping) {
+
+      // Set the next reminder to the wakeTime of next day if 
+      // sleep time has started
+      DateTime wakeTime = DateTime(now.year, now.month, now.day, wakeHr);
+      if (wakeTime.isBefore(now)) {
+        wakeTime = wakeTime.add(const Duration(days: 1));
+      }
+
+      int minsToWake = wakeTime.difference(now).inMinutes;
+      await updateScheduledNotifications(minsToWake, 200);
+    }
   }
 }
