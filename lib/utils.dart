@@ -37,16 +37,16 @@ String getTimeInText(int time) {
 
 // Color Utilities
 Map<String, Color> defaultColors = {
-  'pink': const Color(0xFFFF789C),
-  'red': const Color(0xFFff595e),
-  'orange': const Color(0xffff924c),
-  'yellow': const Color(0xffffca3a),
-  'lime': const Color(0xFFCBD039),
-  'green': const Color(0xff8ac926),
-  'mint': const Color(0xFF4EA675),
-  'blue': const Color(0xFF44A4EE),
+  'pink': const Color(0xFFff4778),
+  'red': const Color(0xFFff333a),
+  'orange': const Color(0xFFff8133),
+  'yellow': const Color(0xFFffc31f),
+  'lime': const Color(0xFFc1c62f),
+  'green': const Color(0xFF82bc24),
+  'mint': const Color(0xFF48996c),
+  'blue': const Color(0xFF1f92ea),
   'dark blue': const Color(0xFF0264e1),
-  'violet': const Color(0xFF9042F0),
+  'violet': const Color(0xFF7a1ded),
 };
 
 List<Color> textColorizeColors = [
