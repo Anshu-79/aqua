@@ -13,7 +13,6 @@ import 'package:aqua/screens/charts/chart_model.dart';
 import 'package:aqua/screens/charts/total_intake_chart.dart';
 import 'package:aqua/screens/user_profile/profile_utils.dart';
 import 'package:aqua/screens/user_profile/statistics.dart';
-import 'package:aqua/shape_painter.dart';
 
 class SnapshotScreen extends StatefulWidget {
   final GlobalKey _widgetKey = GlobalKey();
@@ -30,31 +29,40 @@ class _SnapshotScreenState extends State<SnapshotScreen> {
   @override
   Widget build(BuildContext context) {
     Color primaryColor = Theme.of(context).primaryColor;
+    Color canvasColor = Theme.of(context).canvasColor;
+    Color splashColor = Theme.of(context).splashColor;
+    LinearGradient bgGradient = LinearGradient(
+        colors: [splashColor, canvasColor],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        stops: const [0, 0.40]);
 
     return Scaffold(
       body: RepaintBoundary(
         key: widget._widgetKey,
-        child: Stack(
-          children: [
-            ColoredShapesBackground(),
-            Container(
-              margin: const EdgeInsets.all(15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ProfilePicture(prefs: widget.prefs),
-                  NameWidget(prefs: widget.prefs),
-                  StatsWidget(prefs: widget.prefs, db: widget.db),
-                  GenericChart(
-                      headerText: "Hydration Chart",
-                      dataFuture: widget.db.getWaterGoals(),
-                      chartBuilder: (data) =>
-                          TotalWaterTrendChart(waterGoals: data, daysRange: 7))
-                ],
-              ),
-            ),
-          ],
+        child: Container(
+          decoration: BoxDecoration(gradient: bgGradient),
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: primaryColor, width: 5)),
+                  child: ProfilePicture(prefs: widget.prefs)),
+              const SizedBox(height: 10),
+              NameWidget(prefs: widget.prefs),
+              const SizedBox(height: 10),
+              StatsWidget(prefs: widget.prefs, db: widget.db),
+              GenericChart(
+                  headerText: "Hydration Chart",
+                  dataFuture: widget.db.getWaterGoals(),
+                  chartBuilder: (data) =>
+                      TotalWaterTrendChart(waterGoals: data, daysRange: 7))
+            ],
+          ),
         ),
       ),
       floatingActionButton: SizedBox(
@@ -65,7 +73,7 @@ class _SnapshotScreenState extends State<SnapshotScreen> {
               borderRadius: BorderRadius.circular(30),
               side: BorderSide(width: 3, color: primaryColor)),
           backgroundColor: Theme.of(context).splashColor,
-          onPressed: () => _captureAndSave(),
+          onPressed: () => _captureAndSave(context),
           child: const FABContent(),
         ),
       ),
@@ -73,7 +81,7 @@ class _SnapshotScreenState extends State<SnapshotScreen> {
     );
   }
 
-  Future<void> _captureAndSave() async {
+  Future<void> _captureAndSave(BuildContext context) async {
     try {
       RenderRepaintBoundary boundary = widget._widgetKey.currentContext!
           .findRenderObject() as RenderRepaintBoundary;
@@ -87,7 +95,10 @@ class _SnapshotScreenState extends State<SnapshotScreen> {
       final file = File(imagePath);
       await file.writeAsBytes(pngBytes);
 
-      await Share.shareXFiles([XFile(imagePath)], text: 'Check out my hydration progress on Aqua!');
+      await Share.shareXFiles([XFile(imagePath)],
+          text: 'Check out my hydration progress on Aqua!');
+
+      if (context.mounted) Navigator.pop(context);
     } catch (e) {
       print(e.toString());
     }
