@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils/colors.dart';import 'package:aqua/screens/user_profile/stat_utils.dart';
-import 'package:aqua/icomoon_icons.dart';
+import 'package:aqua/utils/icomoon_icons.dart';
 
 class StatsWidget extends StatefulWidget {
   const StatsWidget({super.key, required this.prefs, required this.db});

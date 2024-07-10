@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:aqua/database/database.dart';
 import 'package:aqua/screens/charts/charts.dart';
 import 'package:aqua/screens/home/home.dart';
 import 'package:aqua/screens/user_profile/user_profile.dart';
 import 'package:aqua/screens/beverage_menu.dart';
+import 'package:aqua/screens/activity_menu/activity_menu.dart';
+
+import 'package:aqua/database/database.dart';
 import 'package:aqua/utils/colors.dart';
-import 'package:aqua/screens/activity_menu.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key, required this.prefs});

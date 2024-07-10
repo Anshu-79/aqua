@@ -6,6 +6,7 @@ import 'package:numberpicker/numberpicker.dart';
 
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/database/database.dart';
+import 'package:aqua/screens/activity_menu/helpers.dart';
 
 class CustomizeWorkout extends StatefulWidget {
   const CustomizeWorkout({super.key, required this.activity});
@@ -21,7 +22,7 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: utils.getWorkoutColor(widget.activity!.id),
+      backgroundColor: getWorkoutColor(widget.activity!.id),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(40),
           side: BorderSide(width: 5, color: Theme.of(context).primaryColor)),
@@ -32,7 +33,7 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(utils.getWorkoutIcon(widget.activity!.id), size: 60),
+            Icon(getWorkoutIcon(widget.activity!.id), size: 60),
             FittedBox(
                 fit: BoxFit.contain,
                 child: Text(widget.activity!.category,
@@ -93,7 +94,7 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
 
                     if (context.mounted) Navigator.pop(context, workout);
                     utils.GlobalNavigator.showSnackBar("Activity Added",
-                        utils.getWorkoutColor(widget.activity!.id));
+                        getWorkoutColor(widget.activity!.id));
                   },
                 ),
                 utils.DialogActionButton(
