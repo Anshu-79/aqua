@@ -30,19 +30,19 @@ class _HeightEditDialogState extends State<HeightEditDialog> {
     Color primaryColor = Theme.of(context).primaryColor;
     Color canvasColor = Theme.of(context).canvasColor;
     return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 10),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(40),
           side: BorderSide(color: primaryColor, width: 3)),
       backgroundColor: canvasColor,
       child: Container(
-        height: 500,
+        height: 460,
         padding: const EdgeInsets.all(5),
-        width: MediaQuery.of(context).size.width,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            HeightPicker(height: height, notifyParent: refresh),
+            Icon(Icons.straighten_rounded,
+                size: 60, color: utils.defaultColors['dark blue']),
+            HeightPicker(height: height, textSize: 40, notifyParent: refresh),
             const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

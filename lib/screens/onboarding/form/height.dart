@@ -45,7 +45,7 @@ class _HeightInputScreenState extends State<HeightInputScreen> {
                   children: [
                     const utils.OnboardingQuestion(text: "How tall are you?"),
                     const SizedBox(height: 20),
-                    HeightPicker(height: height, notifyParent: refresh)
+                    HeightPicker(height: height, textSize: 75, notifyParent: refresh)
                   ]),
             ),
           ],

@@ -45,7 +45,8 @@ class _WeightInputScreenState extends State<WeightInputScreen> {
                   children: [
                     const utils.OnboardingQuestion(
                         text: "How much do you weigh?"),
-                    WeightPicker(weight: weight, notifyParent: refresh)
+                    WeightPicker(
+                        weight: weight, textSize: 100, notifyParent: refresh)
                   ]),
             ),
           ],
@@ -53,8 +54,8 @@ class _WeightInputScreenState extends State<WeightInputScreen> {
         bottomNavigationBar: NavButtons(navBack: () {
           context.flow<Profile>().update((profile) => profile.decrementPage());
         }, navForward: () {
-          context.flow<Profile>().update((profile) =>
-              profile.copyWith(weight: weight).incrementPage());
+          context.flow<Profile>().update(
+              (profile) => profile.copyWith(weight: weight).incrementPage());
         }));
   }
 }
