@@ -5,6 +5,7 @@ import 'package:numberpicker/numberpicker.dart';
 
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/database/database.dart';
+import 'package:aqua/utils/colors.dart';
 
 class AddDrinkDialog extends StatefulWidget {
   const AddDrinkDialog(
@@ -43,7 +44,7 @@ class _AddDrinkDialogState extends State<AddDrinkDialog> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40),
             side: BorderSide(width: 5, color: Theme.of(context).primaryColor)),
-        backgroundColor: utils.toColor(widget.beverages[_bevIndex].colorCode),
+        backgroundColor: widget.beverages[_bevIndex].colorCode.toColor(),
         child: Container(
           alignment: Alignment.bottomCenter,
           height: 400,

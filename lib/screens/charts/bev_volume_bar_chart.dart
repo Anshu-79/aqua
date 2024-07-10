@@ -3,12 +3,13 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/database/database.dart';
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
+
 
 Beverage water = Beverage(
     id: 1,
     name: 'Water',
-    colorCode: utils.toHexString(utils.defaultColors['blue']!),
+    colorCode: AquaColors.blue.toHexCode(),
     starred: true,
     waterPercent: 100);
 
@@ -74,7 +75,7 @@ class _BevDistributionBarChartState extends State<BevDistributionBarChart> {
               return BarChartRodStackItem(
                   prevVolume.toDouble(),
                   volume.toDouble() + prevVolume.toDouble(),
-                  utils.toColor(bev.colorCode),
+                  bev.colorCode.toColor(),
                   const BorderSide(color: Colors.white));
             })),
       ]);

@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 
 class ThemeNotifier extends InheritedWidget {
   final bool isDarkMode;
@@ -69,20 +69,20 @@ ThemeData lightTheme = ThemeData(
     fontFamily: 'CeraPro',
     primaryColor: Colors.black,
     canvasColor: Colors.white,
-    splashColor: utils.defaultColors['dark blue'],
+    splashColor: AquaColors.darkBlue,
     scaffoldBackgroundColor: Colors.white,
     brightness: Brightness.light,
     colorScheme: ColorScheme.fromSeed(
-        seedColor: utils.defaultColors['dark blue']!.toMaterialColor(),
+        seedColor: AquaColors.darkBlue.toMaterialColor(),
         brightness: Brightness.light));
 
 ThemeData darkTheme = ThemeData(
     fontFamily: 'CeraPro',
     primaryColor: Colors.white,
     canvasColor: Colors.black,
-    splashColor: utils.defaultColors['dark blue'],
+    splashColor: AquaColors.darkBlue,
     scaffoldBackgroundColor: Colors.black,
     brightness: Brightness.dark,
     colorScheme: ColorScheme.fromSeed(
-        seedColor: utils.defaultColors['dark blue']!.toMaterialColor(),
+        seedColor: AquaColors.darkBlue.toMaterialColor(),
         brightness: Brightness.dark));

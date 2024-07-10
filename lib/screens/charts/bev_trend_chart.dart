@@ -2,12 +2,12 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/database/database.dart';
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 
 Beverage water = Beverage(
     id: 1,
     name: 'Water',
-    colorCode: utils.toHexString(utils.defaultColors['blue']!),
+    colorCode: AquaColors.blue.toHexCode(),
     starred: true,
     waterPercent: 100);
 
@@ -32,7 +32,7 @@ class BeverageTrendChart extends StatelessWidget {
       final Map bevData = drinks[bev]!;
       List dataInRange = bevData.keys.toList().reversed.take(daysRange).toList();
       dataInRange = dataInRange.reversed.toList();
-      final Color color = utils.toColor(bev.colorCode);
+      final Color color = bev.colorCode.toColor();
 
       return LineChartBarData(
           color: color,

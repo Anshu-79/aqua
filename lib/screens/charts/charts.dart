@@ -9,6 +9,7 @@ import 'package:aqua/screens/charts/total_intake_chart.dart';
 import 'package:aqua/screens/charts/workout_duration_pie_chart.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 
 enum DaysRangeLabel {
   week('Last week', 7),
@@ -88,7 +89,7 @@ class _StatsScreenState extends State<StatsScreen> {
           styleBuilder: (b) => ToggleStyle(
             backgroundColor: Theme.of(context).canvasColor,
               indicatorColor:
-                  b ? utils.defaultColors['dark blue'] : Colors.grey.shade300),
+                  b ? AquaColors.darkBlue : Colors.grey.shade300),
           textBuilder: (value) => const Text('Water',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)));
     }

@@ -8,12 +8,13 @@ import 'package:aqua/database/database.dart';
 import 'package:aqua/dialog_boxes/add_drink.dart';
 import 'package:aqua/icomoon_icons.dart';
 import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 
 const double iconSize = 45;
 
 Future<void> showDrinkAddedSnackbar(DrinksCompanion drink, Beverage bev) async {
   String msg = "${drink.volume.value} mL of ${bev.name} added!";
-  Color color = utils.toColor(bev.colorCode);
+  Color color = bev.colorCode.toColor();
 
   utils.GlobalNavigator.showSnackBar(msg, color);
 }
@@ -215,7 +216,7 @@ class ExtendedFabButton extends StatelessWidget {
   Widget build(BuildContext context) {
     if (bev == null) return const SizedBox.shrink();
 
-    Color color = utils.toColor(bev!.colorCode);
+    Color color = bev!.colorCode.toColor();
     return SizedBox(
       child: TextButton(
           style: TextButton.styleFrom(

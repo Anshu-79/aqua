@@ -1,11 +1,12 @@
 import 'package:aqua/notifications.dart';
-import 'package:aqua/utils/blank_screen.dart';
+import 'package:aqua/utils/widgets/blank_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/dialog_boxes/customize_workout.dart';
+import 'package:aqua/utils/colors.dart';
 
 class AddWorkoutDialog extends StatefulWidget {
   const AddWorkoutDialog(
@@ -84,17 +85,17 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                     isThreeLine: true,
                     onTap: () async {
                       Navigator.pop(context);
-            
+
                       WorkoutsCompanion? addedWorkout =
                           await utils.GlobalNavigator.showAnimatedDialog(
                               CustomizeWorkout(activity: activity));
-            
+
                       await widget.db.insertOrUpdateWorkout(addedWorkout!);
-            
+
                       await widget.db
                           .updateTotalVolume(addedWorkout.waterLoss.value);
                       widget.notifyParent();
-            
+
                       // Update notification gap
                       WaterGoal? todaysGoal =
                           await widget.db.getGoal(DateTime.now());
@@ -117,11 +118,11 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                 labelStyle: utils.ThemeText.searchLabelText,
                 labelText: "Search Activity",
                 fillColor: Colors.white,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: utils.defaultColors['dark blue']!, width: 3.0),
+                  borderSide:
+                      const BorderSide(color: AquaColors.darkBlue, width: 3.0),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),

@@ -2,7 +2,7 @@ import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/screens/onboarding/form/profile.dart';
-import 'package:aqua/utils/height_picker.dart';
+import 'package:aqua/utils/widgets/height_picker.dart';
 import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/utils.dart' as utils;

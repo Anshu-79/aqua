@@ -2,11 +2,12 @@ import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 
-import 'package:aqua/utils/tooltip.dart';
+import 'package:aqua/utils/widgets/tooltip.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 
 String tooltipMessage =
     "Age is crucial for calculating AWI (Adequate Water Intake)";
@@ -31,14 +32,13 @@ class _DobInputScreenState extends State<DobInputScreen> {
       return CalendarDatePicker2(
         config: CalendarDatePicker2Config(
             daySplashColor: const Color(0x440264e1),
-            selectedDayHighlightColor: utils.defaultColors['dark blue'],
+            selectedDayHighlightColor: AquaColors.darkBlue,
             lastDate: _safeDate,
             firstDate: DateTime(1920, 1, 1),
             controlsTextStyle: const TextStyle(fontWeight: FontWeight.w900),
             dayTextStyle: const TextStyle(fontWeight: FontWeight.bold),
-            weekdayLabelTextStyle: TextStyle(
-                fontWeight: FontWeight.w900,
-                color: utils.defaultColors['dark blue'])),
+            weekdayLabelTextStyle: const TextStyle(
+                fontWeight: FontWeight.w900, color: AquaColors.darkBlue)),
         value: [selectedDate],
         onValueChanged: (dates) => selectedDate = dates[0]!,
       );

@@ -6,6 +6,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/shape_painter.dart';
+import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils.dart' as utils;
 
 class EmailInputField extends StatefulWidget {
@@ -64,7 +65,7 @@ class UserName extends StatelessWidget {
             textStyle:
                 const TextStyle(fontSize: 60, fontWeight: FontWeight.w900),
             textAlign: TextAlign.center,
-            colors: utils.textColorizeColors,
+            colors: textColorizeColors,
             speed: const Duration(milliseconds: 500),
           ),
         ],

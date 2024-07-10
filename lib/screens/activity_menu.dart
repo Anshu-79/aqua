@@ -1,4 +1,4 @@
-import 'package:aqua/utils/blank_screen.dart';
+import 'package:aqua/utils/widgets/blank_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/database/database.dart';

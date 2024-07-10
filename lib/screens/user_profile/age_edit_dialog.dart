@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 
 class AgeEditDialog extends StatefulWidget {
   const AgeEditDialog(
@@ -48,15 +49,14 @@ class _AgeEditDialogState extends State<AgeEditDialog> {
             CalendarDatePicker2(
               config: CalendarDatePicker2Config(
                   daySplashColor: const Color(0x440264e1),
-                  selectedDayHighlightColor: utils.defaultColors['dark blue'],
+                  selectedDayHighlightColor: AquaColors.darkBlue,
                   lastDate: _safeDate,
                   firstDate: DateTime(1920, 1, 1),
                   controlsTextStyle:
                       const TextStyle(fontWeight: FontWeight.w900),
                   dayTextStyle: const TextStyle(fontWeight: FontWeight.bold),
-                  weekdayLabelTextStyle: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      color: utils.defaultColors['dark blue'])),
+                  weekdayLabelTextStyle: const TextStyle(
+                      fontWeight: FontWeight.w900, color: AquaColors.darkBlue)),
               value: [dob],
               onValueChanged: (dates) => dob = dates[0]!,
             ),

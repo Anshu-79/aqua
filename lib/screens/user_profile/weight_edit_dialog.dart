@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:aqua/utils/weight_picker.dart';
+import 'package:aqua/utils/widgets/weight_picker.dart';
+import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils.dart' as utils;
 
 class WeightEditDialog extends StatefulWidget {
@@ -40,9 +41,9 @@ class _WeightEditDialogState extends State<WeightEditDialog> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.fitness_center_rounded,
-                size: 60, color: utils.defaultColors['dark blue']),
-                const SizedBox(height: 20),
+            const Icon(Icons.fitness_center_rounded,
+                size: 60, color: AquaColors.darkBlue),
+            const SizedBox(height: 20),
             WeightPicker(weight: weight, textSize: 50, notifyParent: refresh),
             const SizedBox(height: 30),
             Row(

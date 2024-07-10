@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/screens/user_profile/profile_utils.dart';
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget({super.key, required this.prefs, required this.db});
@@ -20,9 +20,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-      decoration: BoxDecoration(
-          color: utils.defaultColors['dark blue'],
-          borderRadius: const BorderRadius.all(Radius.circular(35))),
+      decoration: const BoxDecoration(
+          color: AquaColors.darkBlue,
+          borderRadius: BorderRadius.all(Radius.circular(35))),
       child: Column(children: [
         Stack(
           children: [

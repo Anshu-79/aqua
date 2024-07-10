@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key, required this.prefs});
@@ -84,9 +85,7 @@ class _SettingsPageState extends State<SettingsPage> {
       styleBuilder: (b) => ToggleStyle(
           backgroundColor: Theme.of(context).canvasColor,
           borderColor: Theme.of(context).primaryColor,
-          indicatorColor: b
-              ? utils.defaultColors['dark blue']
-              : utils.defaultColors['yellow']),
+          indicatorColor: b ? AquaColors.darkBlue : AquaColors.yellow),
     );
   }
 }
@@ -162,7 +161,7 @@ class FAQCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final border = ContinuousRectangleBorder(
         borderRadius: BorderRadius.circular(30),
-        side: BorderSide(color: utils.defaultColors['dark blue']!, width: 3));
+        side: const BorderSide(color: AquaColors.darkBlue, width: 3));
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),

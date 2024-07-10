@@ -2,7 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 import 'package:aqua/permission_handlers.dart';
 
 class ReminderScreen extends StatelessWidget {
@@ -11,6 +11,7 @@ class ReminderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     requestLocationPermission();
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -22,18 +23,14 @@ class ReminderScreen extends StatelessWidget {
                   tag: 'graphic',
                   child: Image.asset("assets/images/reminder.gif"))),
           AnimatedTextKit(repeatForever: true, animatedTexts: [
-            ColorizeAnimatedText(
-              "Friendly Reminders",
-              textAlign: TextAlign.center,
-              textStyle:
-                  const TextStyle(fontSize: 55, fontWeight: FontWeight.w900),
-              colors: utils.textColorizeColors,
-              speed: const Duration(milliseconds: 500),
-            )
+            ColorizeAnimatedText("Friendly Reminders",
+                textAlign: TextAlign.center,
+                colors: textColorizeColors,
+                speed: const Duration(milliseconds: 500),
+                textStyle:
+                    const TextStyle(fontSize: 55, fontWeight: FontWeight.w900))
           ]),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           const Text(
             "Receive friendly reminders to take a sip and reach your water goals.\nWe'll make sure you stay on top of your hydration game.",
             textAlign: TextAlign.center,

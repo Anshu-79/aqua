@@ -9,7 +9,7 @@ import 'package:aqua/screens/onboarding/reminders.dart';
 import 'package:aqua/screens/onboarding/welcome.dart';
 import 'package:aqua/screens/onboarding/location.dart';
 import 'package:aqua/screens/onboarding/form/form.dart';
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
@@ -110,39 +110,33 @@ class _OnboardingViewState extends State<OnboardingView>
     return SlideTransition(
       position: _animation,
       child: Tooltip(
-        message: 'Swipe down to continue',
-        child: Icon(
-          Icons.expand_more,
-          size: 70,
-          color: Theme.of(context).primaryColor,
-        ),
-      ),
+          message: 'Swipe down to continue',
+          child: Icon(Icons.expand_more,
+              size: 70, color: Theme.of(context).primaryColor)),
     );
   }
 
   Widget getStarted() {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: utils.defaultColors['dark blue']),
+          borderRadius: BorderRadius.circular(8), color: AquaColors.darkBlue),
       width: MediaQuery.of(context).size.width * .9,
       height: 55,
       child: TextButton(
-          onPressed: () async {
-            final profile =
-                await Navigator.of(context).push(OnboardingFlow.route());
-            if (!mounted) return;
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => LoadingScreen(
-                          profile: profile!,
-                        )));
-          },
-          child: const Text(
-            "Get started",
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          )),
+        child: const Text("Get started",
+            style: TextStyle(color: Colors.white, fontSize: 20)),
+        onPressed: () async {
+          final profile =
+              await Navigator.of(context).push(OnboardingFlow.route());
+          if (!mounted) return;
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => LoadingScreen(
+                        profile: profile!,
+                      )));
+        },
+      ),
     );
   }
 }

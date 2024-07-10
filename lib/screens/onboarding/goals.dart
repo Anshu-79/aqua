@@ -3,7 +3,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 
 class GoalScreen extends StatefulWidget {
   const GoalScreen({super.key});
@@ -53,28 +53,17 @@ class _GoalScreenState extends State<GoalScreen> {
           alignment: Alignment.center,
           children: [
             Positioned(
-              top: 130,
-              child: SizedBox(
-                height: 20,
-                child: Crab(
-                  tag: 'graphic',
-                  child: Image.asset(
-                    'assets/images/icon.png',
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ),
-            ),
-            Image.asset(
-              'assets/images/lamp.png',
-              width: 400,
-              height: 400,
-            ),
+                top: 130,
+                child: SizedBox(
+                    height: 20,
+                    child: Crab(
+                        tag: 'graphic',
+                        child: Image.asset('assets/images/icon.png',
+                            fit: BoxFit.contain)))),
+            Image.asset('assets/images/lamp.png', width: 400, height: 400),
             Column(
               children: [
-                const SizedBox(
-                  height: 190,
-                ),
+                const SizedBox(height: 190),
                 SizedBox(
                   height: 200,
                   child: PageView.builder(
@@ -91,22 +80,17 @@ class _GoalScreenState extends State<GoalScreen> {
                           }
                           return Center(
                             child: SizedBox(
-                              height: Curves.easeInOut.transform(value) * 300,
-                              width: Curves.easeInOut.transform(value) * 200,
-                              child: Transform.scale(
-                                scale: Curves.easeInOut.transform(value),
-                                child: Opacity(
-                                  opacity: value,
-                                  child: child,
-                                ),
-                              ),
-                            ),
+                                height: Curves.easeInOut.transform(value) * 300,
+                                width: Curves.easeInOut.transform(value) * 200,
+                                child: Transform.scale(
+                                  scale: Curves.easeInOut.transform(value),
+                                  child: Opacity(opacity: value, child: child),
+                                )),
                           );
                         },
                         child: Image.asset(
-                          'assets/images/person${index + 1}.png',
-                          fit: BoxFit.contain,
-                        ),
+                            'assets/images/person${index + 1}.png',
+                            fit: BoxFit.contain),
                       );
                     },
                   ),
@@ -115,20 +99,18 @@ class _GoalScreenState extends State<GoalScreen> {
             ),
           ],
         ),
-        const SizedBox(height: 30,),
+        const SizedBox(height: 30),
         AnimatedTextKit(repeatForever: true, animatedTexts: [
           ColorizeAnimatedText(
             "Tailored Goals",
             textAlign: TextAlign.center,
             textStyle:
                 const TextStyle(fontSize: 45, fontWeight: FontWeight.w900),
-            colors: utils.textColorizeColors,
+            colors: textColorizeColors,
             speed: const Duration(milliseconds: 500),
           )
         ]),
-        const SizedBox(
-          height: 20,
-        ),
+        const SizedBox(height: 20),
         const Text(
           "Everyone's hydration needs are unique. Tell us about yourself, and we'll create a personalized water intake goal for you.",
           textAlign: TextAlign.center,

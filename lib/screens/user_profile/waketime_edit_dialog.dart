@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:aqua/utils/time_picker.dart';
+import 'package:aqua/utils/colors.dart';
+import 'package:aqua/utils/widgets/time_picker.dart';
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/database/database.dart';
 
@@ -46,7 +47,7 @@ class _WaketimeEditDialogState extends State<WaketimeEditDialog> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Icon(Icons.sunny, color: utils.defaultColors['yellow'], size: 60),
+            const Icon(Icons.sunny, color: AquaColors.yellow, size: 60),
             TimePicker(time: wakeTime, notifyParent: refresh),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -65,7 +66,7 @@ class _WaketimeEditDialogState extends State<WaketimeEditDialog> {
                       } else {
                         utils.GlobalNavigator.showSnackBar(
                             'Sleeping Time & Wake-up Time cannot be same',
-                            utils.defaultColors['red']);
+                            AquaColors.red);
                       }
                     }),
                 utils.DialogActionButton(

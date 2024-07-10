@@ -2,7 +2,8 @@ import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_time_picker/progressive_time_picker.dart';
 
-import 'package:aqua/utils/tooltip.dart';
+import 'package:aqua/utils/colors.dart';
+import 'package:aqua/utils/widgets/tooltip.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
@@ -24,7 +25,7 @@ TimePickerDecoration decoration(textColor) {
           endNumber: 0),
       baseColor: const Color(0x440264e1),
       sweepDecoration: TimePickerSweepDecoration(
-          pickerColor: utils.defaultColors['dark blue'], pickerStrokeWidth: 40),
+          pickerColor: AquaColors.darkBlue, pickerStrokeWidth: 40),
       initHandlerDecoration: TimePickerHandlerDecoration(
           icon: const Icon(Icons.bedtime), color: Colors.transparent),
       endHandlerDecoration: TimePickerHandlerDecoration(

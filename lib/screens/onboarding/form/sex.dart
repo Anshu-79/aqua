@@ -1,10 +1,11 @@
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 
-import 'package:aqua/utils/tooltip.dart';
+import 'package:aqua/utils/widgets/tooltip.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 import 'package:aqua/shape_painter.dart';
 
 String tooltipMessage =
@@ -45,7 +46,7 @@ class _SexInputScreenState extends State<SexInputScreen> {
           onPressed: () => setState(() => selectedSex = value),
           iconSize: 100,
           style: IconButton.styleFrom(
-              backgroundColor: isSelected ? color : utils.lighten(color, 30),
+              backgroundColor: isSelected ? color : color.lighten(30),
               foregroundColor: Colors.white,
               side: BorderSide(color: color, width: 5)),
         ),
