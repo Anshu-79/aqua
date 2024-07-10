@@ -18,9 +18,13 @@ int toInch(int height) =>
 
 class HeightPicker extends StatefulWidget {
   const HeightPicker(
-      {super.key, required this.height, required this.notifyParent});
+      {super.key,
+      required this.height,
+      required this.notifyParent,
+      required this.textSize});
 
   final int height; // in cm
+  final int textSize;
   final Function notifyParent;
 
   @override
@@ -28,7 +32,7 @@ class HeightPicker extends StatefulWidget {
 }
 
 class _HeightPickerState extends State<HeightPicker> {
-  bool isMetric = true;
+  bool isMetric = false;
   late final Map<String, int> _height = {'cm': widget.height};
 
   @override
@@ -70,18 +74,19 @@ class _HeightPickerState extends State<HeightPicker> {
   }
 
   Widget heightPicker(String unit, int min, int max) {
-    double width = isMetric ? 150 : 120;
+    double width = isMetric ? widget.textSize * 2 : widget.textSize * 2 - 20;
 
     return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
       NumberPicker(
           infiniteLoop: true,
           zeroPad: true,
-          itemHeight: 100,
+          itemHeight: widget.textSize + 25,
           itemWidth: width,
-          textStyle: const TextStyle(fontWeight: FontWeight.w900, fontSize: 35),
+          textStyle:
+               TextStyle(fontWeight: FontWeight.w900, fontSize: widget.textSize / 2),
           selectedTextStyle: TextStyle(
               fontWeight: FontWeight.w900,
-              fontSize: 75,
+              fontSize: widget.textSize.toDouble(),
               color: utils.defaultColors['dark blue']),
           haptics: true,
           itemCount: 3,
@@ -107,7 +112,7 @@ class _HeightPickerState extends State<HeightPicker> {
   Widget metricHeightPicker() => heightPicker('cm', 61, 272);
 
   Widget imperialHeightPicker() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [heightPicker('ft', 2, 8), heightPicker('in', 0, 11)],
       );
 }

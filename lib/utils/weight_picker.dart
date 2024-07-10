@@ -11,9 +11,13 @@ int toKg(int lb) => (lb / 2.20462).round();
 
 class WeightPicker extends StatefulWidget {
   const WeightPicker(
-      {super.key, required this.weight, required this.notifyParent});
+      {super.key,
+      required this.weight,
+      required this.notifyParent,
+      required this.textSize});
 
   final int weight; // in kg
+  final int textSize;
   final Function notifyParent;
 
   @override
@@ -47,13 +51,13 @@ class _WeightPickerState extends State<WeightPicker> {
       children: [
         NumberPicker(
             infiniteLoop: true,
-            itemHeight: 120,
-            itemWidth: 250,
-            textStyle:
-                const TextStyle(fontWeight: FontWeight.w900, fontSize: 50),
+            itemHeight: widget.textSize + 10,
+            itemWidth: widget.textSize * 2.5,
+            textStyle: TextStyle(
+                fontWeight: FontWeight.w900, fontSize: widget.textSize / 2),
             selectedTextStyle: TextStyle(
                 fontWeight: FontWeight.w900,
-                fontSize: 100,
+                fontSize: widget.textSize.toDouble(),
                 color: utils.defaultColors['dark blue']),
             haptics: true,
             itemCount: 3,
@@ -71,7 +75,8 @@ class _WeightPickerState extends State<WeightPicker> {
                 })),
         Text(
           unit,
-          style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: widget.textSize / 2, fontWeight: FontWeight.bold),
         ),
       ],
     );

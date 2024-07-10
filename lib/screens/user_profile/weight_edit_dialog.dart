@@ -30,19 +30,20 @@ class _WeightEditDialogState extends State<WeightEditDialog> {
     Color primaryColor = Theme.of(context).primaryColor;
     Color canvasColor = Theme.of(context).canvasColor;
     return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 10),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(40),
           side: BorderSide(color: primaryColor, width: 3)),
       backgroundColor: canvasColor,
       child: Container(
-        height: 600,
-        padding: const EdgeInsets.all(5),
-        width: MediaQuery.of(context).size.width,
+        height: 470,
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            WeightPicker(weight: weight, notifyParent: refresh),
+            Icon(Icons.fitness_center_rounded,
+                size: 60, color: utils.defaultColors['dark blue']),
+                const SizedBox(height: 20),
+            WeightPicker(weight: weight, textSize: 50, notifyParent: refresh),
             const SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
