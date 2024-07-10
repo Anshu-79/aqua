@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'package:aqua/utils/textstyles.dart' show HomeScreenStyles;
 import 'package:aqua/utils.dart' as utils;
 
 String getGoalText(int vol) {
@@ -71,19 +73,19 @@ class WaterGoalForegroundState extends State<WaterGoalForeground>
               utils.BorderedText(
                   text: getGoalText(_consumedVol),
                   strokeWidth: 4,
-                  textStyle: utils.ThemeText.dailyGoalConsumed),
-              Text.rich(TextSpan(
-                  text: " L", style: utils.ThemeText.dailyGoalFillerText))
+                  textStyle: HomeScreenStyles.goalConsumed),
+              Text.rich(
+                  TextSpan(text: " L", style: HomeScreenStyles.goalSubtext))
             ],
           ),
-          Text("of", style: utils.ThemeText.dailyGoalFillerText),
+          Text("of", style: HomeScreenStyles.goalSubtext),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             utils.BorderedText(
                 text: getGoalText(widget.totalVol),
                 strokeWidth: 4,
-                textStyle: utils.ThemeText.dailyGoalTotal),
-            Text.rich(
-                TextSpan(text: " L", style: utils.ThemeText.dailyGoalFillerText)),
+                textStyle: HomeScreenStyles.goalTotal),
+            Text.rich(TextSpan(
+                text: " L", style: HomeScreenStyles.goalSubtext)),
           ]),
         ],
       ),

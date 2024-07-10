@@ -18,18 +18,21 @@ class NameInputField extends StatefulWidget {
 }
 
 class _NameInputFieldState extends State<NameInputField> {
+  TextStyle formHintStyle = const TextStyle(
+      fontSize: 40, fontWeight: FontWeight.bold, color: Colors.grey);
+
   @override
   Widget build(BuildContext context) {
     return Form(
         key: widget.formKey,
         child: TextFormField(
-            style: utils.ThemeText.nameInputField,
+            style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900),
             controller: widget.controller,
             textCapitalization: TextCapitalization.words,
             textAlign: TextAlign.center,
             decoration: InputDecoration(
               hintText: "Your Name",
-              hintStyle: utils.ThemeText.formHint,
+              hintStyle: formHintStyle,
               filled: false,
               border: UnderlineInputBorder(
                   borderSide:

@@ -1,3 +1,4 @@
+import 'package:aqua/utils/textstyles.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/utils.dart' as utils;
@@ -63,8 +64,8 @@ class _BeverageMenuState extends State<BeverageMenu> {
                 utils.GlobalNavigator.showSnackBar(
                     'This beverage already exists', null);
               } else {
-                utils.GlobalNavigator.showSnackBar('Beverage Added',
-                    addedBeverage.colorCode.value.toColor());
+                utils.GlobalNavigator.showSnackBar(
+                    'Beverage Added', addedBeverage.colorCode.value.toColor());
                 await widget.database.insertOrUpdateBeverage(addedBeverage);
               }
             }));
@@ -142,12 +143,10 @@ class _BeverageCardState extends State<BeverageCard> {
   }
 
   Text bevNameText() {
-    return Text(
-      widget.bvg.name,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      style: utils.ThemeText.beverageName,
-    );
+    return Text(widget.bvg.name,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: BeverageMenuStyles.nameStyle);
   }
 
   Icon filledStarIcon = const Icon(Icons.star, color: Colors.amber, size: 40);
@@ -164,8 +163,8 @@ class _BeverageCardState extends State<BeverageCard> {
           color: widget.bvg.colorCode.toColor().withOpacity(0.3),
           shape: RoundedRectangleBorder(
               borderRadius: const BorderRadius.all(Radius.circular(30)),
-              side: BorderSide(
-                  color: widget.bvg.colorCode.toColor(), width: 5)),
+              side:
+                  BorderSide(color: widget.bvg.colorCode.toColor(), width: 5)),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Row(
@@ -178,9 +177,9 @@ class _BeverageCardState extends State<BeverageCard> {
                     children: [
                       bevNameText(),
                       Text("Water Percentage",
-                          style: utils.ThemeText.beverageSubtext),
+                          style: BeverageMenuStyles.subtextStyle),
                       Text('${widget.bvg.waterPercent.toString()}%',
-                          style: utils.ThemeText.beverageWaterPercentage),
+                          style: BeverageMenuStyles.waterPercentStyle),
                     ],
                   ),
                 ),

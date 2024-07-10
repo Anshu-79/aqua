@@ -111,6 +111,9 @@ class BeverageName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle bevNameStyle = const TextStyle(
+        fontSize: 45, fontWeight: FontWeight.w900, color: Colors.black);
+
     return SizedBox(
       width: 150,
       height: 80,
@@ -118,17 +121,13 @@ class BeverageName extends StatelessWidget {
         fit: BoxFit.contain,
         clipBehavior: Clip.antiAlias,
         child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20), color: Colors.white),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Text(
-              bevName,
+          child: Text(bevName,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: utils.ThemeText.addDrinkBeverageName,
-            ),
-          ),
+              style: bevNameStyle),
         ),
       ),
     );
@@ -145,6 +144,9 @@ class VolumePicker extends StatefulWidget {
 }
 
 class _VolumePickerState extends State<VolumePicker> {
+  TextStyle subtextStyle = const TextStyle(
+      fontSize: 45, fontWeight: FontWeight.w900, color: Colors.black);
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -164,7 +166,7 @@ class _VolumePickerState extends State<VolumePicker> {
             value: widget.volume,
             onChanged: (value) => widget.changeVolume(value)),
         const SizedBox(width: 10),
-        Text("mL", style: utils.ThemeText.addDrinkDialogText)
+        Text("mL", style: subtextStyle)
       ],
     );
   }

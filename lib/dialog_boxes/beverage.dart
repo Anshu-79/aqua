@@ -7,6 +7,22 @@ import 'package:aqua/database/database.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils.dart' as utils;
 
+TextStyle dialogSubtext = const TextStyle(
+    fontSize: 40, fontWeight: FontWeight.w900, color: Colors.black);
+
+TextStyle textInput = const TextStyle(
+    fontSize: 35, fontWeight: FontWeight.w900, color: Colors.black);
+
+TextStyle textInputHint = const TextStyle(
+    fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey);
+
+Beverage defaultBeverage = Beverage(
+    id: 1,
+    name: '',
+    colorCode: AquaColors.blue.toHexCode(),
+    waterPercent: 50,
+    starred: false);
+
 class BeverageDialog extends StatefulWidget {
   const BeverageDialog(
       {super.key, required this.beverage, required this.notifyParent});
@@ -31,13 +47,7 @@ class _BeverageDialogState extends State<BeverageDialog> {
 
   @override
   void initState() {
-    final Beverage bev = widget.beverage ??
-        Beverage(
-            id: 1,
-            name: '',
-            colorCode: AquaColors.blue.toHexCode(),
-            waterPercent: 50,
-            starred: false);
+    final Beverage bev = widget.beverage ?? defaultBeverage;
 
     _waterPercent = bev.waterPercent;
     _currentColor = Color(int.parse('0x${bev.colorCode}'));
@@ -108,7 +118,7 @@ class _NameInputFieldState extends State<NameInputField> {
           controller: widget.controller,
           textCapitalization: TextCapitalization.words,
           textAlign: TextAlign.center,
-          style: utils.ThemeText.textInput,
+          style: textInput,
           cursorColor: Theme.of(context).primaryColor,
           decoration: InputDecoration(
             errorStyle: const TextStyle(color: Colors.white),
@@ -116,7 +126,7 @@ class _NameInputFieldState extends State<NameInputField> {
                 borderRadius: BorderRadius.circular(20),
                 borderSide: BorderSide.none),
             hintText: "Beverage Name",
-            hintStyle: utils.ThemeText.textInputHint,
+            hintStyle: textInputHint,
             fillColor: Colors.white,
             filled: true,
           ),
@@ -163,7 +173,7 @@ class _WaterPercentPickerState extends State<WaterPercentPicker> {
             onChanged: (newPercent) => widget.changeWaterPercent(newPercent)),
         Padding(
           padding: const EdgeInsets.only(top: 15, right: 10),
-          child: Text("% water", style: utils.ThemeText.dialogSubtext),
+          child: Text("% water", style: dialogSubtext),
         )
       ],
     );
