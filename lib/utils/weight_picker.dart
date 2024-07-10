@@ -88,6 +88,7 @@ class _WeightPickerState extends State<WeightPicker> {
       height: 50,
       onChanged: (b) => setState(() => isMetric = b),
       styleBuilder: (b) => ToggleStyle(
+          backgroundColor: Theme.of(context).canvasColor,
           indicatorColor: b
               ? utils.defaultColors['dark blue']
               : utils.defaultColors['red']),
