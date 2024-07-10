@@ -2,25 +2,14 @@ import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 
+import 'package:aqua/utils/tooltip.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/utils.dart' as utils;
 
-class AgeTooltip extends StatelessWidget {
-  const AgeTooltip({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-        tooltip: "Age is crucial for calculating Adequate Water Intake (AWI)",
-        style: IconButton.styleFrom(
-            backgroundColor: Theme.of(context).primaryColor,
-            foregroundColor: Theme.of(context).canvasColor),
-        onPressed: () {},
-        icon: const Icon(Icons.question_mark));
-  }
-}
+String tooltipMessage =
+    "Age is crucial for calculating AWI (Adequate Water Intake)";
 
 class DobInputScreen extends StatefulWidget {
   const DobInputScreen({super.key});
@@ -59,21 +48,14 @@ class _DobInputScreenState extends State<DobInputScreen> {
         body: Stack(
           children: [
             ColoredShapesBackground(),
+            TooltipOnTap(message: tooltipMessage),
             Container(
               margin: const EdgeInsets.all(10),
               width: MediaQuery.of(context).size.width,
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Row(
-                      children: [
-                        Expanded(
-                            child: utils.OnboardingQuestion(
-                          text: "When were you born?",
-                        )),
-                        AgeTooltip(),
-                      ],
-                    ),
+                    const utils.OnboardingQuestion(text: "When were you born?"),
                     const SizedBox(height: 40),
                     datePicker()
                   ]),

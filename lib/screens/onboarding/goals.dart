@@ -22,7 +22,7 @@ class _GoalScreenState extends State<GoalScreen> {
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 1500), (Timer timer) {
       if (_currentPage < _pageCount - 2) {
         _currentPage++;
       } else {

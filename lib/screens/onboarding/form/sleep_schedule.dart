@@ -2,10 +2,14 @@ import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:progressive_time_picker/progressive_time_picker.dart';
 
+import 'package:aqua/utils/tooltip.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/utils.dart' as utils;
+
+String tooltipMessage =
+    "Understanding your sleep schedule allows us to send hydration reminders only during your waking hours.";
 
 TimePickerDecoration decoration(textColor) {
   return TimePickerDecoration(
@@ -46,6 +50,7 @@ class _SleepScheduleInputScreenState extends State<SleepScheduleInputScreen> {
         body: Stack(
           children: [
             ColoredShapesBackground(),
+            TooltipOnTap(message: tooltipMessage),
             Container(
               margin: const EdgeInsets.all(10),
               width: MediaQuery.of(context).size.width,

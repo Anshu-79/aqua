@@ -1,10 +1,14 @@
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 
+import 'package:aqua/utils/tooltip.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/shape_painter.dart';
+
+String tooltipMessage =
+    "Research indicates that water requirements can vary by around 1 liter between genders.";
 
 class SexInputScreen extends StatefulWidget {
   const SexInputScreen({super.key});
@@ -52,6 +56,7 @@ class _SexInputScreenState extends State<SexInputScreen> {
         body: Stack(
           children: [
             ColoredShapesBackground(),
+            TooltipOnTap(message: tooltipMessage),
             Container(
               margin: const EdgeInsets.all(10),
               width: MediaQuery.of(context).size.width,
