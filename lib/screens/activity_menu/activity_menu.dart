@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:aqua/database/database.dart';
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/miscellaneous.dart' as utils;
 import 'package:aqua/utils/widgets/blank_screen.dart';
 import 'package:aqua/utils/widgets/global_navigator.dart';
 import 'package:aqua/utils/widgets/universal_fab.dart';

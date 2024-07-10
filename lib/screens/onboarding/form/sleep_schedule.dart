@@ -7,7 +7,7 @@ import 'package:aqua/utils/widgets/tooltip.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/miscellaneous.dart' as utils;
 
 String tooltipMessage =
     "Understanding your sleep schedule allows us to send hydration reminders only during your waking hours.";

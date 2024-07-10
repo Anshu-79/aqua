@@ -1,9 +1,9 @@
 import 'package:drift/drift.dart';
 
 import 'package:aqua/database/database.dart';
-import 'package:aqua/shared_pref_utils.dart';
-import 'package:aqua/utils.dart';
-import 'package:aqua/water_goals.dart';
+import 'package:aqua/utils/shared_pref_utils.dart';
+import 'package:aqua/utils/miscellaneous.dart';
+import 'package:aqua/intake_calculations.dart';
 
 extension WaterGoalQueries on Database {
   Future<List<WaterGoal>> getWaterGoals() async =>

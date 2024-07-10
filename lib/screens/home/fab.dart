@@ -2,10 +2,10 @@ import 'package:drift/drift.dart' as drift;
 import 'package:fab_circular_menu_plus/fab_circular_menu_plus.dart';
 import 'package:flutter/material.dart';
 
-import 'package:aqua/notifications.dart';
-import 'package:aqua/shared_pref_utils.dart';
+import 'package:aqua/utils/notifications.dart';
+import 'package:aqua/utils/shared_pref_utils.dart';
 import 'package:aqua/database/database.dart';
-import 'package:aqua/dialog_boxes/add_drink.dart';
+import 'package:aqua/screens/home/add_drink.dart';
 import 'package:aqua/utils/icomoon_icons.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils/widgets/global_navigator.dart';

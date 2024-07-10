@@ -3,7 +3,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:aqua/database/database.dart';
-import 'package:aqua/shared_pref_utils.dart';
+import 'package:aqua/utils/shared_pref_utils.dart';
 import 'package:aqua/permission_handlers.dart';
 import 'package:aqua/utils/colors.dart';
 

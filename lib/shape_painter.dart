@@ -62,8 +62,10 @@ class ShapePainter extends CustomPainter {
 }
 
 class ColoredShapesBackground extends StatefulWidget {
+  const ColoredShapesBackground({super.key});
+
   @override
-  _ColoredShapesBackgroundState createState() =>
+  State<ColoredShapesBackground> createState() =>
       _ColoredShapesBackgroundState();
 }
 
@@ -111,20 +113,18 @@ class _ColoredShapesBackgroundState extends State<ColoredShapesBackground>
       vsync: this,
     )..repeat();
 
-    _controller.addListener(() {
-      setState(() {
-        _updateShapePositions();
-      });
-    });
+    _controller.addListener(() => setState(() => _updateShapePositions()));
   }
 
   void _updateShapePositions() {
     for (var shape in shapes) {
       shape.position = shape.position
           .translate(shape.speed, 0); // Move horizontally with individual speed
-      if (shape.position.dx > 500)
-        shape.position =
-            Offset(0, shape.position.dy); // wrap around horizontally
+
+      // wrap around horizontally
+      if (shape.position.dx > 500) {
+        shape.position = Offset(0, shape.position.dy);
+      }
     }
   }
 

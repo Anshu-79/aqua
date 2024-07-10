@@ -1,4 +1,4 @@
-import 'package:aqua/shared_pref_utils.dart';
+import 'package:aqua/utils/shared_pref_utils.dart';
 
 Future<int> calcTodaysGoal() async {
   final int age = await getAge();

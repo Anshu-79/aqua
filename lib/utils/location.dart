@@ -4,7 +4,7 @@ import 'package:country_state_city_pro/country_state_city_pro.dart';
 import 'package:geocode/geocode.dart';
 
 import 'package:aqua/utils/colors.dart';
-import 'package:aqua/shared_pref_utils.dart';
+import 'package:aqua/utils/shared_pref_utils.dart';
 
 Future<List<double?>> getCurrentLocation() async {
   Location location = Location();

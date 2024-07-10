@@ -2,7 +2,7 @@ import 'package:weather/weather.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:location/location.dart';
 
-import 'package:aqua/shared_pref_utils.dart';
+import 'package:aqua/utils/shared_pref_utils.dart';
 
 // Safe API Key Storage Helper Functions
 getAndroidOptions() => const AndroidOptions(encryptedSharedPreferences: true);

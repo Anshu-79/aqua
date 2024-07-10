@@ -4,9 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/theme_manager.dart';
 import 'package:aqua/timers.dart';
-import 'package:aqua/weather_utils.dart';
+import 'package:aqua/utils/weather_utils.dart';
 import 'package:aqua/api_keys.dart';
-import 'package:aqua/notifications.dart';
+import 'package:aqua/utils/notifications.dart';
 import 'package:aqua/firebase_options.dart';
 import 'package:aqua/nav_bar.dart';
 

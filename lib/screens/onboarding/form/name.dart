@@ -1,7 +1,7 @@
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/miscellaneous.dart' as utils;
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 
