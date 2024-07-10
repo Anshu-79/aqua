@@ -1,15 +1,16 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
-import 'package:aqua/screens/charts/chart_model.dart';
 import 'package:flutter/material.dart';
+
+import 'package:aqua/utils/widgets/universal_header.dart';
+import 'package:aqua/database/database.dart';
+import 'package:aqua/utils/colors.dart';
 
 import 'package:aqua/screens/charts/bev_volume_bar_chart.dart';
 import 'package:aqua/screens/charts/bev_distribution_pie_chart.dart';
 import 'package:aqua/screens/charts/bev_trend_chart.dart';
 import 'package:aqua/screens/charts/total_intake_chart.dart';
 import 'package:aqua/screens/charts/workout_duration_pie_chart.dart';
-import 'package:aqua/database/database.dart';
-import 'package:aqua/utils.dart' as utils;
-import 'package:aqua/utils/colors.dart';
+import 'package:aqua/screens/charts/chart_model.dart';
 
 enum DaysRangeLabel {
   week('Last week', 7),
@@ -95,7 +96,7 @@ class _StatsScreenState extends State<StatsScreen> {
     }
 
     return Scaffold(
-      appBar: const utils.UniversalHeader(title: "Statistics"),
+      appBar: const UniversalHeader(title: "Statistics"),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 5),

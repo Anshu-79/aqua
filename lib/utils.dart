@@ -1,10 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import 'package:aqua/shared_pref_utils.dart';
-import 'package:aqua/utils/colors.dart';
-import 'package:aqua/main.dart';
 
 // Unit Utilities
 String getDurationInText(int duration) {
@@ -33,26 +30,6 @@ String getTimeInText(int time) {
   if (time > 12) return "${time - 12}:00 PM";
   if (time == 12) return "12:00 PM";
   return "$time:00 AM";
-}
-
-class DialogActionButton extends StatelessWidget {
-  const DialogActionButton(
-      {super.key, required this.icon, required this.function});
-  final Icon icon;
-  final Function function;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton.filled(
-      icon: icon,
-      iconSize: 50,
-      style: IconButton.styleFrom(
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Theme.of(context).canvasColor,
-      ),
-      onPressed: () => function(),
-    );
-  }
 }
 
 class BorderedText extends StatelessWidget {
@@ -84,100 +61,6 @@ class BorderedText extends StatelessWidget {
   }
 }
 
-class BorderedIcon extends StatelessWidget {
-  const BorderedIcon(
-      {super.key,
-      required this.iconData,
-      required this.color,
-      required this.size,
-      required this.borderColor});
-  final IconData iconData;
-  final Color color;
-  final Color borderColor;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        // Icon(iconData, size: size + 2, color: borderColor),
-        Icon(iconData, size: size, color: color)
-      ],
-    );
-  }
-}
-
-class GlobalNavigator {
-  static void showSnackBar(String text, Color? color) {
-    BuildContext context = navigatorKey.currentContext!;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        duration: const Duration(milliseconds: 1000),
-        content: Text(text,
-            style: TextStyle(
-              color: Theme.of(context).canvasColor,
-            )),
-        backgroundColor: color,
-        action: SnackBarAction(
-          label: 'Dismiss',
-          textColor: Theme.of(context).canvasColor,
-          onPressed: () {},
-        )));
-  }
-
-  static Future<dynamic>? showAlertDialog(
-      String text, Widget? backupData) async {
-    return await showDialog(
-        barrierDismissible: false,
-        context: navigatorKey.currentContext!,
-        builder: (context) {
-          return PopScope(
-            canPop: false,
-            child: AlertDialog(
-              title: const Text("Permission denied"),
-              content: Text(text),
-              actions: [
-                TextButton(
-                    onPressed: () async => await openAppSettings(),
-                    child: const Text("Open Settings")),
-                TextButton(
-                    onPressed: () async {
-                      if (backupData != null) {
-                        final val = await showDialog(
-                            barrierDismissible: false,
-                            context: context,
-                            builder: (context) {
-                              return PopScope(canPop: false, child: backupData);
-                            });
-                        if (context.mounted) Navigator.pop(context, val);
-                      } else {
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: const Text("Continue")),
-              ],
-            ),
-          );
-        });
-  }
-
-  static Future<dynamic>? showAnimatedDialog(Widget dialog) async {
-    return await showGeneralDialog(
-      context: navigatorKey.currentContext!,
-      transitionDuration: const Duration(milliseconds: 500),
-      barrierDismissible: true,
-      barrierLabel: '',
-      pageBuilder: (context, animation1, animation2) => const Placeholder(),
-      transitionBuilder: (context, a1, a2, widget) {
-        final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
-        return Transform(
-          transform: Matrix4.translationValues(0.0, curvedValue * -200, 0.0),
-          child: Opacity(opacity: a1.value, child: dialog),
-        );
-      },
-    );
-  }
-}
-
 class OnboardingQuestion extends StatelessWidget {
   const OnboardingQuestion({super.key, required this.text});
 
@@ -200,66 +83,6 @@ class OnboardingQuestion extends StatelessWidget {
   }
 }
 
-class UniversalHeader extends PreferredSize {
-  const UniversalHeader({super.key, required this.title})
-      : super(
-            preferredSize: const Size.fromHeight(60),
-            child: const Placeholder());
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    TextStyle screenHeader = TextStyle(
-        color: Theme.of(context).primaryColor,
-        fontSize: 45,
-        fontWeight: FontWeight.w900,
-        fontFamily: "CeraPro");
-
-    return AppBar(
-        backgroundColor: Theme.of(context).canvasColor,
-        elevation: 0,
-        centerTitle: true,
-        titleTextStyle: screenHeader,
-        title: FittedBox(
-          fit: BoxFit.contain,
-          child: AnimatedTextKit(
-            repeatForever: true,
-            animatedTexts: [
-              ColorizeAnimatedText(
-                title,
-                textStyle: screenHeader,
-                speed: const Duration(milliseconds: 500),
-                colors: AquaColors.allColors.sublist(0, 9).reversed.toList(),
-              )
-            ],
-          ),
-        ));
-  }
-}
-
-class UniversalFAB extends StatelessWidget {
-  const UniversalFAB(
-      {super.key, required this.tooltip, required this.onPressed});
-  final String tooltip;
-  final Function onPressed;
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 70,
-      width: 70,
-      child: FloatingActionButton(
-        tooltip: tooltip,
-        backgroundColor: Theme.of(context).primaryColor,
-        splashColor: Theme.of(context).splashColor,
-        shape: const CircleBorder(eccentricity: 0),
-        onPressed: () => onPressed(),
-        child: Icon(Icons.add, color: Theme.of(context).canvasColor, size: 30),
-      ),
-    );
-  }
-}
-
 // Manipulates a DateTime object into starting at the wakeTime of a user
 // ensuring that goal is reset at WakeTime instead of 12 AM
 // TL:DR - Shifts the point at which a new day starts to wakeTime
@@ -272,16 +95,6 @@ Future<DateTime> shiftToWakeTime(DateTime dt) async {
 
   if (dt.isBefore(wakeUpToday)) {
     dt = wakeUpToday.subtract(const Duration(days: 1));
-  }
-  return dt;
-}
-
-// Does the opposite of its twin shiftToWakeTime
-Future<DateTime> shiftToMidnight(DateTime dt, int offsetHrs) async {
-  DateTime wakeUpToday = DateTime(dt.year, dt.month, dt.day, offsetHrs);
-
-  if (dt.isBefore(wakeUpToday)) {
-    dt = wakeUpToday.add(const Duration(days: 1));
   }
   return dt;
 }

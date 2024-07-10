@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:numberpicker/numberpicker.dart';
 
-import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils/colors.dart';
+import 'package:aqua/utils/widgets/dialog_action_button.dart';
 
 class AddDrinkDialog extends StatefulWidget {
   const AddDrinkDialog(
@@ -182,7 +182,7 @@ class ActionButtons extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        utils.DialogActionButton(
+        DialogActionButton(
           icon: const Icon(Icons.check),
           function: () async {
             final drink = DrinksCompanion(
@@ -195,7 +195,7 @@ class ActionButtons extends StatelessWidget {
             if (context.mounted) Navigator.pop(context, drink);
           },
         ),
-        utils.DialogActionButton(
+        DialogActionButton(
             icon: const Icon(Icons.close),
             function: () => Navigator.of(context, rootNavigator: true).pop())
       ],

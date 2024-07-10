@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/widgets/dialog_action_button.dart';
 
 TextStyle textInputHint = const TextStyle(
     fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey);
@@ -71,7 +71,7 @@ class _NameEditDialogState extends State<NameEditDialog> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                utils.DialogActionButton(
+                DialogActionButton(
                   icon: const Icon(Icons.check),
                   function: () async {
                     if (formKey.currentState!.validate()) {
@@ -82,7 +82,7 @@ class _NameEditDialogState extends State<NameEditDialog> {
                     }
                   },
                 ),
-                utils.DialogActionButton(
+                DialogActionButton(
                   icon: const Icon(Icons.close),
                   function: () => Navigator.pop(context),
                 ),

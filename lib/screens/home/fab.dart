@@ -7,8 +7,9 @@ import 'package:aqua/shared_pref_utils.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/dialog_boxes/add_drink.dart';
 import 'package:aqua/utils/icomoon_icons.dart';
-import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/utils/colors.dart';
+import 'package:aqua/utils/widgets/global_navigator.dart';
+
 
 const double iconSize = 45;
 
@@ -16,7 +17,7 @@ Future<void> showDrinkAddedSnackbar(DrinksCompanion drink, Beverage bev) async {
   String msg = "${drink.volume.value} mL of ${bev.name} added!";
   Color color = bev.colorCode.toColor();
 
-  utils.GlobalNavigator.showSnackBar(msg, color);
+  GlobalNavigator.showSnackBar(msg, color);
 }
 
 class CircularFab extends StatefulWidget {
@@ -112,7 +113,7 @@ class CustomDrinkButton extends ExtendedFabButton {
   _showCustomDrinkDialog() async {
     List<Beverage> beverages = await db.getBeverages();
     DrinksCompanion drink =
-        await utils.GlobalNavigator.showAnimatedDialog(AddDrinkDialog(
+        await GlobalNavigator.showAnimatedDialog(AddDrinkDialog(
       beverages: beverages,
       notifyParent: startFillAnimation,
     ));

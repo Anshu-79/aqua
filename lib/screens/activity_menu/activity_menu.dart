@@ -1,8 +1,12 @@
-import 'package:aqua/utils/widgets/blank_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/widgets/blank_screen.dart';
+import 'package:aqua/utils/widgets/global_navigator.dart';
+import 'package:aqua/utils/widgets/universal_fab.dart';
+import 'package:aqua/utils/widgets/universal_header.dart';
+
 import 'package:aqua/screens/activity_menu/helpers.dart';
 import 'package:aqua/screens/activity_menu/add_workout.dart';
 
@@ -21,7 +25,7 @@ class _ActivityMenuState extends State<ActivityMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const utils.UniversalHeader(title: "Today's Activities"),
+      appBar: const UniversalHeader(title: "Today's Activities"),
       body: FutureBuilder<List<Workout>>(
         future: widget.database.getTodaysWorkouts(),
         builder: (context, snapshot) {
@@ -57,10 +61,10 @@ class _ActivityMenuState extends State<ActivityMenu> {
           }
         },
       ),
-      floatingActionButton: utils.UniversalFAB(
+      floatingActionButton: UniversalFAB(
         tooltip: "Add new workout",
         onPressed: () async {
-          await utils.GlobalNavigator.showAnimatedDialog(AddWorkoutDialog(
+          await GlobalNavigator.showAnimatedDialog(AddWorkoutDialog(
             db: widget.database,
             activities: widget.database.getActivities(),
             notifyParent: refresh,

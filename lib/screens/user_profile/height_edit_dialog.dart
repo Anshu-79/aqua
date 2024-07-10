@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/utils/widgets/height_picker.dart';
 import 'package:aqua/utils/colors.dart';
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/widgets/dialog_action_button.dart';
 
 class HeightEditDialog extends StatefulWidget {
   const HeightEditDialog(
@@ -48,14 +48,14 @@ class _HeightEditDialogState extends State<HeightEditDialog> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                utils.DialogActionButton(
+                DialogActionButton(
                     icon: const Icon(Icons.check),
                     function: () async {
                       widget.prefs.setInt('height', height);
                       Navigator.pop(context);
                       widget.notifyParent();
                     }),
-                utils.DialogActionButton(
+                DialogActionButton(
                   icon: const Icon(Icons.close),
                   function: () => Navigator.pop(context),
                 ),

@@ -1,7 +1,8 @@
+import 'package:permission_handler/permission_handler.dart';
+
 import 'package:aqua/location_utils.dart';
 import 'package:aqua/shared_pref_utils.dart';
-import 'package:aqua/utils.dart' as utils;
-import 'package:permission_handler/permission_handler.dart';
+import 'package:aqua/utils/widgets/global_navigator.dart';
 
 String reminderMsg =
     "Reminders are key to AQUA's functioning. Do you wish to continue without reminders?";
@@ -15,7 +16,7 @@ Future<void> requestNotificationPermission() async {
   } else if (status.isDenied) {
     // Permission is denied
     print('Notification permission denied.');
-    utils.GlobalNavigator.showAlertDialog(reminderMsg, null);
+    GlobalNavigator.showAlertDialog(reminderMsg, null);
   }
 }
 
@@ -27,7 +28,7 @@ Future<void> requestLocationPermission() async {
     // Permission is denied
     print('Location permission denied.');
 
-    final List<String> location = await utils.GlobalNavigator.showAlertDialog(
+    final List<String> location = await GlobalNavigator.showAlertDialog(
         reminderMsg, const PickCityDialog());
 
     String address = "${location[0]}, ${location[1]}, ${location[2]}";

@@ -5,8 +5,8 @@ import 'package:aqua/notifications.dart';
 import 'package:aqua/utils/icons.dart';
 import 'package:aqua/utils/widgets/blank_screen.dart';
 import 'package:aqua/database/database.dart';
-import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/screens/activity_menu/customize_workout.dart';
+import 'package:aqua/utils/widgets/global_navigator.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/screens/activity_menu/helpers.dart';
 
@@ -128,7 +128,7 @@ class _ActivityListState extends State<ActivityList> {
               Navigator.pop(context);
 
               WorkoutsCompanion? addedWorkout =
-                  await utils.GlobalNavigator.showAnimatedDialog(
+                  await GlobalNavigator.showAnimatedDialog(
                       CustomizeWorkout(activity: activity));
 
               await widget.db.insertOrUpdateWorkout(addedWorkout!);
