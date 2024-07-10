@@ -5,7 +5,7 @@ import 'package:numberpicker/numberpicker.dart';
 
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils/colors.dart';
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/widgets/dialog_action_button.dart';
 
 TextStyle dialogSubtext = const TextStyle(
     fontSize: 40, fontWeight: FontWeight.w900, color: Colors.black);
@@ -280,7 +280,7 @@ class _ActionButtonsState extends State<ActionButtons> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          utils.DialogActionButton(
+          DialogActionButton(
             icon: const Icon(Icons.check),
             function: () {
               if (widget.formKey.currentState!.validate()) {
@@ -302,7 +302,7 @@ class _ActionButtonsState extends State<ActionButtons> {
             },
           ),
           (widget.bev != null)
-              ? utils.DialogActionButton(
+              ? DialogActionButton(
                   icon: const Icon(Icons.delete_forever_outlined),
                   function: () {
                     Navigator.pop(context, ['delete', null]);
@@ -310,7 +310,7 @@ class _ActionButtonsState extends State<ActionButtons> {
                   },
                 )
               : const SizedBox.shrink(),
-          utils.DialogActionButton(
+          DialogActionButton(
               icon: const Icon(Icons.close),
               function: () => Navigator.pop(context, ['exit', null]))
         ],

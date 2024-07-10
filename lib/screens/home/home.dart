@@ -7,7 +7,7 @@ import 'package:aqua/screens/home/fab.dart';
 import 'package:aqua/screens/home/water_animation.dart';
 import 'package:aqua/screens/home/reminder_box.dart';
 import 'package:aqua/database/database.dart';
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/widgets/universal_header.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.database, required this.prefs});
@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      appBar: const utils.UniversalHeader(title: "Today's Goal"),
+      appBar: const UniversalHeader(title: "Today's Goal"),
       body: FutureBuilder<WaterGoal>(
           future: _getGoal(),
           builder: (context, snapshot) {

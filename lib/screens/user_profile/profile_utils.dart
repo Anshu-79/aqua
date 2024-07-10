@@ -8,6 +8,7 @@ import 'package:aqua/weather_utils.dart';
 import 'package:aqua/water_goals.dart';
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/screens/settings.dart';
+import 'package:aqua/utils/widgets/global_navigator.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils/textstyles.dart';
 
@@ -39,7 +40,7 @@ class ProfilePicture extends StatelessWidget {
     }
     FileImage img = FileImage(File(imgPath));
     return InkWell(
-      onTap: () => utils.GlobalNavigator.showAnimatedDialog(
+      onTap: () => GlobalNavigator.showAnimatedDialog(
           EditPictureDialog(prefs: prefs)),
       child: Align(
           alignment: Alignment.topCenter,
@@ -72,7 +73,7 @@ class _NameWidgetState extends State<NameWidget> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
       child: Text(name,
           style: ProfileScreenStyles.username, overflow: TextOverflow.ellipsis),
-      onPressed: () => utils.GlobalNavigator.showAnimatedDialog(NameEditDialog(
+      onPressed: () => GlobalNavigator.showAnimatedDialog(NameEditDialog(
           name: name, notifyParent: refresh, prefs: widget.prefs)),
     );
   }
@@ -101,12 +102,12 @@ class _LocationWidgetState extends State<LocationWidget> {
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.white),
             onPressed: () async {
-              utils.GlobalNavigator.showSnackBar(
+              GlobalNavigator.showSnackBar(
                   'Updating location...', AquaColors.darkBlue);
 
               await saveWeather();
               setState(() {});
-              utils.GlobalNavigator.showSnackBar(
+              GlobalNavigator.showSnackBar(
                   'Location updated', AquaColors.darkBlue);
             },
           )
@@ -227,17 +228,17 @@ class _BioButtonsRowState extends State<BioButtonsRow> {
       BiometricButton(
           metric: calculateAge(widget.prefs.getString('DOB')!),
           subtext: "Age",
-          callback: () => utils.GlobalNavigator.showAnimatedDialog(
+          callback: () => GlobalNavigator.showAnimatedDialog(
               AgeEditDialog(notifyParent: refresh, prefs: widget.prefs))),
       BiometricButton(
           metric: widget.prefs.getInt('height')!,
           subtext: "Height",
-          callback: () => utils.GlobalNavigator.showAnimatedDialog(
+          callback: () => GlobalNavigator.showAnimatedDialog(
               HeightEditDialog(notifyParent: refresh, prefs: widget.prefs))),
       BiometricButton(
           metric: widget.prefs.getInt('weight')!,
           subtext: "Weight",
-          callback: () => utils.GlobalNavigator.showAnimatedDialog(
+          callback: () => GlobalNavigator.showAnimatedDialog(
               WeightEditDialog(notifyParent: refresh, prefs: widget.prefs)))
     ]);
   }
@@ -264,13 +265,13 @@ class _SleepButtonsRowState extends State<SleepButtonsRow> {
               icon: const Icon(Icons.sunny, color: AquaColors.yellow),
               time: getWakeTimeText(widget.prefs),
               callback: () {
-                utils.GlobalNavigator.showAnimatedDialog(WaketimeEditDialog(
+                GlobalNavigator.showAnimatedDialog(WaketimeEditDialog(
                     prefs: widget.prefs, db: widget.db, notifyParent: refresh));
               }),
           SleepScheduleButton(
               icon: const Icon(Icons.bedtime, color: AquaColors.violet),
               time: getSleepTimeText(widget.prefs),
-              callback: () => utils.GlobalNavigator.showAnimatedDialog(
+              callback: () => GlobalNavigator.showAnimatedDialog(
                   SleeptimeEditDialog(
                       prefs: widget.prefs,
                       notifyParent: refresh,

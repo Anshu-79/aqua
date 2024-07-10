@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/utils/colors.dart';
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/widgets/global_navigator.dart';
 
 class EditPictureDialog extends StatefulWidget {
   const EditPictureDialog({super.key, required this.prefs});
@@ -28,9 +28,8 @@ class _EditPictureDialogState extends State<EditPictureDialog> {
 
     if (pickedFile != null) {
       await savePictureLocally(File(pickedFile.path), username);
-      utils.GlobalNavigator.showSnackBar(
-          "Picture will be updated soon!",
-          AquaColors.darkBlue);
+      GlobalNavigator.showSnackBar(
+          "Picture will be updated soon!", AquaColors.darkBlue);
     }
   }
 

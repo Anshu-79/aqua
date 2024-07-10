@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:numberpicker/numberpicker.dart';
 
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/widgets/dialog_action_button.dart';
+import 'package:aqua/utils/widgets/global_navigator.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/screens/activity_menu/helpers.dart';
 
@@ -78,7 +79,7 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                utils.DialogActionButton(
+                DialogActionButton(
                   icon: const Icon(Icons.check),
                   function: () async {
                     double swl =
@@ -93,11 +94,11 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
                     );
 
                     if (context.mounted) Navigator.pop(context, workout);
-                    utils.GlobalNavigator.showSnackBar("Activity Added",
+                    GlobalNavigator.showSnackBar("Activity Added",
                         getWorkoutColor(widget.activity!.id));
                   },
                 ),
-                utils.DialogActionButton(
+                DialogActionButton(
                     icon: const Icon(Icons.close),
                     function: () => Navigator.pop(context))
               ],

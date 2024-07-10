@@ -1,11 +1,14 @@
 import 'package:aqua/utils/textstyles.dart';
 import 'package:flutter/material.dart';
 
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/widgets/global_navigator.dart';
 import 'package:aqua/dialog_boxes/beverage.dart';
 import 'package:aqua/utils/icomoon_icons.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils/colors.dart';
+import 'package:aqua/utils/widgets/universal_header.dart';
+import 'package:aqua/utils/widgets/universal_fab.dart';
+
 
 class BeverageMenu extends StatefulWidget {
   const BeverageMenu({super.key, required this.database});
@@ -22,7 +25,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const utils.UniversalHeader(title: "My Beverages"),
+        appBar: const UniversalHeader(title: "My Beverages"),
         body: FutureBuilder<List<Beverage>>(
             future: widget.database.getBeverages(),
             builder: (context, snapshot) {
@@ -47,10 +50,10 @@ class _BeverageMenuState extends State<BeverageMenu> {
                   });
             }),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: utils.UniversalFAB(
+        floatingActionButton: UniversalFAB(
             tooltip: "Add new beverage",
             onPressed: () async {
-              final output = await utils.GlobalNavigator.showAnimatedDialog(
+              final output = await GlobalNavigator.showAnimatedDialog(
                   BeverageDialog(notifyParent: refresh, beverage: null));
 
               BeveragesCompanion? addedBeverage = output[1];
@@ -61,10 +64,10 @@ class _BeverageMenuState extends State<BeverageMenu> {
               List<String> names = bevList.map((bev) => bev.name).toList();
 
               if (names.contains(addedBeverage.name.value)) {
-                utils.GlobalNavigator.showSnackBar(
+                GlobalNavigator.showSnackBar(
                     'This beverage already exists', null);
               } else {
-                utils.GlobalNavigator.showSnackBar(
+                GlobalNavigator.showSnackBar(
                     'Beverage Added', addedBeverage.colorCode.value.toColor());
                 await widget.database.insertOrUpdateBeverage(addedBeverage);
               }
@@ -100,17 +103,17 @@ class _BeverageCardState extends State<BeverageCard> {
   void _conditionalActions(Beverage bvg) async {
     // Prevent changes to Water
     if (bvg.id == 1) {
-      return utils.GlobalNavigator.showSnackBar(
+      return GlobalNavigator.showSnackBar(
           '${bvg.name} cannot be edited', bvg.colorCode.toColor());
     }
 
-    List? output = await utils.GlobalNavigator.showAnimatedDialog(
+    List? output = await GlobalNavigator.showAnimatedDialog(
         BeverageDialog(notifyParent: refresh, beverage: widget.bvg));
 
     String choice = output![0];
 
     if (choice == 'delete') {
-      utils.GlobalNavigator.showSnackBar('Beverage Deleted', null);
+      GlobalNavigator.showSnackBar('Beverage Deleted', null);
       await widget.db.deleteBeverage(bvg.id);
       widget.notifyParent();
     } else if (choice == 'edit') {
@@ -126,13 +129,13 @@ class _BeverageCardState extends State<BeverageCard> {
       bool sameBev = bvg.name == updatedBev.name.value;
 
       if (bevNameAlreadyExists && !sameBev) {
-        return utils.GlobalNavigator.showSnackBar(
+        return GlobalNavigator.showSnackBar(
             "This beverage already exists", null);
       }
 
       await widget.db.insertOrUpdateBeverage(updatedBev);
       widget.notifyParent();
-      return utils.GlobalNavigator.showSnackBar(
+      return GlobalNavigator.showSnackBar(
           'Beverage Edited', updatedBev.colorCode.value.toColor());
     }
   }

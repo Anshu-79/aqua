@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/widgets/universal_header.dart';
 import 'package:aqua/utils/colors.dart';
 
 TextStyle headerStyle =
@@ -22,7 +22,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const utils.UniversalHeader(title: "Settings"),
+      appBar: const UniversalHeader(title: "Settings"),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.all(20),

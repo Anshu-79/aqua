@@ -2,7 +2,7 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/widgets/dialog_action_button.dart';
 import 'package:aqua/utils/colors.dart';
 
 class AgeEditDialog extends StatefulWidget {
@@ -63,14 +63,14 @@ class _AgeEditDialogState extends State<AgeEditDialog> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                utils.DialogActionButton(
+                DialogActionButton(
                     icon: const Icon(Icons.check),
                     function: () async {
                       widget.prefs.setString('DOB', dob.toIso8601String());
                       Navigator.pop(context);
                       widget.notifyParent();
                     }),
-                utils.DialogActionButton(
+                DialogActionButton(
                   icon: const Icon(Icons.close),
                   function: () => Navigator.pop(context),
                 ),
