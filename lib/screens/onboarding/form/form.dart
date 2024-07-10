@@ -15,7 +15,6 @@ List<Page<dynamic>> onGenerateProfilePages(
   Profile profile,
   List<Page<dynamic>> pages,
 ) {
-  print(profile);
   final pageList = [
     const NameInputScreen(),
     const EmailInputScreen(),

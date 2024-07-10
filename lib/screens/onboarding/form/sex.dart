@@ -56,7 +56,7 @@ class _SexInputScreenState extends State<SexInputScreen> {
     return Scaffold(
         body: Stack(
           children: [
-            ColoredShapesBackground(),
+            const ColoredShapesBackground(),
             TooltipOnTap(message: tooltipMessage),
             Container(
               margin: const EdgeInsets.all(10),

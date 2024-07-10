@@ -67,7 +67,7 @@ class _PictureInputScreenState extends State<PictureInputScreen> {
     return Scaffold(
         body: Stack(
           children: [
-            ColoredShapesBackground(),
+            const ColoredShapesBackground(),
             Container(
               margin: const EdgeInsets.all(10),
               width: MediaQuery.of(context).size.width,
