@@ -149,7 +149,7 @@ class BuyMeACoffeeCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                     color: Theme.of(context).primaryColor, width: 3)),
-            child: Image.asset('assets/images/buy_me_a_coffee.jpeg')));
+            child: Image.asset('assets/images/buy_me_a_coffee.jpg')));
   }
 }
 
@@ -209,6 +209,10 @@ List<FAQ> faqs = [
       answer:
           "The algorithm Aqua uses to send notifications is available in the below GitHub repository."),
   FAQ(
+      question: "Why does Aqua ask for my sleep schedule?",
+      answer:
+          "Aqua uses your sleep schedule timings to ensure that hydration reminders are only sent during waking hours."),
+  FAQ(
       question: "What effect do Activities have on my water goal?",
       answer:
           "Aqua calculates the amount of water lost due to the physical activity, and increases your goal by that amount."),
@@ -219,7 +223,10 @@ List<FAQ> faqs = [
       question: "Is my data secure?",
       answer:
           "Yes. All of your hydration data is stored locally on your device."),
-  FAQ(question: "How can I share my progress with my friends?", answer: ""),
+  FAQ(
+      question: "How can I share my progress with my friends?",
+      answer:
+          "Simply tap the Share Stats button located at the bottom of the profile screen"),
   FAQ(
       question: "How do I upgrade to the premium version?",
       answer:
