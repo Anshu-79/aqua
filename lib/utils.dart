@@ -260,10 +260,6 @@ abstract class ThemeText {
   static TextStyle userStatsSubtext =
       const TextStyle(fontSize: 10, fontWeight: FontWeight.bold);
 
-  // Workout Screen
-  static TextStyle emptyScreenText =
-      const TextStyle(fontSize: 20, fontWeight: FontWeight.w600);
-
   // Workout Dialog Boxes
   static TextStyle searchLabelText =
       const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);

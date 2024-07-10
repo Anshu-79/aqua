@@ -63,7 +63,7 @@ class _AquaState extends State<Aqua> {
             home: Builder(
                 builder: (context) => !(onboard)
                     ? const OnboardingView()
-                    : const OnboardingView()));
+                    : NavBar(prefs: widget.sharedPrefs)));
       }),
     );
   }
