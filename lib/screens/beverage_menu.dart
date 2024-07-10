@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/dialog_boxes/beverage.dart';
-import 'package:aqua/icomoon_icons.dart';
+import 'package:aqua/utils/icomoon_icons.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils/colors.dart';
 

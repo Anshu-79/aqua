@@ -1,12 +1,14 @@
-import 'package:aqua/notifications.dart';
-import 'package:aqua/utils/widgets/blank_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 
+import 'package:aqua/notifications.dart';
+import 'package:aqua/utils/icons.dart';
+import 'package:aqua/utils/widgets/blank_screen.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils.dart' as utils;
-import 'package:aqua/dialog_boxes/customize_workout.dart';
+import 'package:aqua/screens/activity_menu/customize_workout.dart';
 import 'package:aqua/utils/colors.dart';
+import 'package:aqua/screens/activity_menu/helpers.dart';
 
 class AddWorkoutDialog extends StatefulWidget {
   const AddWorkoutDialog(
@@ -68,15 +70,15 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                   child: ListTile(
                     shape: RoundedRectangleBorder(
                         side: BorderSide(
-                            color: utils.getWorkoutColor(activity.id),
+                            color: getWorkoutColor(activity.id),
                             width: 5),
                         borderRadius: BorderRadius.circular(30)),
-                    splashColor: utils.getWorkoutColor(activity.id),
+                    splashColor: getWorkoutColor(activity.id),
                     textColor: Theme.of(context).primaryColor,
                     tileColor:
-                        utils.getWorkoutColor(activity.id).withOpacity(0.2),
+                        getWorkoutColor(activity.id).withOpacity(0.2),
                     leading: Icon(
-                      utils.icomoonMap[activity.category]![0],
+                      workoutIconMap[activity.category]![0],
                       size: 35,
                     ),
                     title: Text(activity.category),

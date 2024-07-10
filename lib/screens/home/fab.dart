@@ -6,7 +6,7 @@ import 'package:aqua/notifications.dart';
 import 'package:aqua/shared_pref_utils.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/dialog_boxes/add_drink.dart';
-import 'package:aqua/icomoon_icons.dart';
+import 'package:aqua/utils/icomoon_icons.dart';
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/utils/colors.dart';
 

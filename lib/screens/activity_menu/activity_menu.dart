@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils.dart' as utils;
-import 'package:aqua/dialog_boxes/add_workout.dart';
+import 'package:aqua/screens/activity_menu/helpers.dart';
+import 'package:aqua/screens/activity_menu/add_workout.dart';
 
 class ActivityMenu extends StatefulWidget {
   const ActivityMenu({super.key, required this.database});
@@ -77,7 +78,7 @@ class WorkoutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color bgColor = utils.getWorkoutColor(workout.activityID);
+    Color bgColor = getWorkoutColor(workout.activityID);
     Color primaryColor = Theme.of(context).primaryColor;
 
     return Container(
@@ -91,11 +92,11 @@ class WorkoutCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(utils.getWorkoutIcon(workout.activityID),
+          Icon(getWorkoutIcon(workout.activityID),
               color: primaryColor, size: 50),
           FittedBox(
               fit: BoxFit.contain,
-              child: Text(utils.getWorkoutCategory(workout.activityID),
+              child: Text(getWorkoutCategory(workout.activityID),
                   style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.w900,

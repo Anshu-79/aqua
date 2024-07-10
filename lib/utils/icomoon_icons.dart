@@ -1,10 +1,3 @@
-// Place fonts/icomoon.ttf in your fonts/ directory and
-// add the following to your pubspec.yaml
-// flutter:
-//   fonts:
-//    - family: icomoon
-//      fonts:
-//       - asset: fonts/icomoon.ttf
 import 'package:flutter/widgets.dart';
 
 class Icomoon {
@@ -49,3 +42,4 @@ class Icomoon {
   static const IconData Home_Activities = IconData(0xe921, fontFamily: _fontFamily);
   static const IconData Home_Repair = IconData(0xe922, fontFamily: _fontFamily);
 }
+
