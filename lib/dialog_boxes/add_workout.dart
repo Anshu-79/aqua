@@ -1,4 +1,5 @@
 import 'package:aqua/notifications.dart';
+import 'package:aqua/utils/blank_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 
@@ -106,16 +107,7 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
                   ),
                 ),
               ),
-              emptyWidget: const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // TODO: Replace with mascot
-                    Icon(Icons.sentiment_dissatisfied_outlined, size: 60),
-                    Text("Nothing in here!"),
-                  ],
-                ),
-              ),
+              emptyWidget: const BlankScreen(message: "Nothing in here!"),
               onRefresh: () async {},
               onItemSelected: (Activity item) {},
               inputDecoration: InputDecoration(

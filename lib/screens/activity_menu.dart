@@ -1,3 +1,4 @@
+import 'package:aqua/utils/blank_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/database/database.dart';
@@ -50,35 +51,8 @@ class _ActivityMenuState extends State<ActivityMenu> {
               },
             );
           } else {
-            // TODO: Replace with mascot
-            return Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width - 150,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).primaryColor, width: 3),
-                    borderRadius: BorderRadius.circular(40)),
-                child: IntrinsicHeight(
-                  child: AspectRatio(
-                    aspectRatio: 1.0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.sentiment_dissatisfied, size: 80),
-                          Text(
-                            "No activities found.\nTry adding one!",
-                            textAlign: TextAlign.center,
-                            style: utils.ThemeText.emptyScreenText,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            );
+            return const BlankScreen(
+                message: "No activities found.\nTry adding one!");
           }
         },
       ),
