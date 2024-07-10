@@ -44,10 +44,10 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     final pages = [
       HomeScreen(database: _db, prefs: widget.prefs),
+      StatsScreen(db: _db),
       UserProfile(database: _db, prefs: widget.prefs),
       ActivityMenu(database: _db),
       BeverageMenu(database: _db),
-      StatsScreen(db: _db),
     ];
 
     return Scaffold(
@@ -71,6 +71,11 @@ class _NavBarState extends State<NavBar> {
             selectedIcon: Icon(Icons.home),
           ),
           NavigationDestination(
+            label: 'Statistics',
+            icon: Icon(Icons.insert_chart_outlined_rounded),
+            selectedIcon: Icon(Icons.insert_chart_rounded),
+          ),
+          NavigationDestination(
             label: 'Profile',
             icon: Icon(Icons.person_outline),
             selectedIcon: Icon(Icons.person),
@@ -84,11 +89,6 @@ class _NavBarState extends State<NavBar> {
             label: 'Beverages',
             icon: Icon(Icons.emoji_food_beverage_outlined),
             selectedIcon: Icon(Icons.emoji_food_beverage),
-          ),
-          NavigationDestination(
-            label: 'Statistics',
-            icon: Icon(Icons.insert_chart_outlined_rounded),
-            selectedIcon: Icon(Icons.insert_chart_rounded),
           ),
         ],
       ),
