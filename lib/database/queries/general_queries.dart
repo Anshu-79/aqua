@@ -1,5 +1,5 @@
 import 'package:aqua/database/database.dart';
-import 'package:aqua/shared_pref_utils.dart';
+import 'package:aqua/utils/shared_pref_utils.dart';
 
 extension GeneralQueries on Database {
   Future<int> calcMedianDrinkSize() async {

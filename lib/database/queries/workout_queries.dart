@@ -1,8 +1,8 @@
 import 'package:drift/drift.dart';
 
 import 'package:aqua/database/database.dart';
-import 'package:aqua/shared_pref_utils.dart';
-import 'package:aqua/utils.dart';
+import 'package:aqua/utils/shared_pref_utils.dart';
+import 'package:aqua/utils/miscellaneous.dart';
 
 extension WorkoutQueries on Database {
   Future<List<Workout>> getTodaysWorkouts() async {

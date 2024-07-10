@@ -1,7 +1,7 @@
 import 'package:permission_handler/permission_handler.dart';
 
-import 'package:aqua/location_utils.dart';
-import 'package:aqua/shared_pref_utils.dart';
+import 'package:aqua/utils/location.dart';
+import 'package:aqua/utils/shared_pref_utils.dart';
 import 'package:aqua/utils/widgets/global_navigator.dart';
 
 String reminderMsg =

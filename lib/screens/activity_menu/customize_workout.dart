@@ -1,5 +1,5 @@
-import 'package:aqua/shared_pref_utils.dart';
-import 'package:aqua/water_goals.dart';
+import 'package:aqua/utils/shared_pref_utils.dart';
+import 'package:aqua/intake_calculations.dart';
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:numberpicker/numberpicker.dart';

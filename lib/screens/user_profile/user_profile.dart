@@ -1,10 +1,11 @@
-import 'package:aqua/screens/user_profile/share_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:aqua/database/database.dart';
+
 import 'package:aqua/screens/user_profile/profile.dart';
 import 'package:aqua/screens/user_profile/statistics.dart';
-import 'package:aqua/database/database.dart';
+import 'package:aqua/screens/user_profile/share_widget.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key, required this.database, required this.prefs});

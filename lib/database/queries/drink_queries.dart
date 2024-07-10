@@ -2,8 +2,8 @@ import 'package:drift/drift.dart';
 import 'package:flutter/material.dart' show DateUtils;
 
 import 'package:aqua/database/database.dart';
-import 'package:aqua/utils.dart';
-import 'package:aqua/shared_pref_utils.dart';
+import 'package:aqua/utils/miscellaneous.dart';
+import 'package:aqua/utils/shared_pref_utils.dart';
 
 extension DrinkQueries on Database {
   Future<int> insertOrUpdateDrink(DrinksCompanion entity) async {

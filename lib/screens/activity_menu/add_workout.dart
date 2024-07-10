@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 
-import 'package:aqua/notifications.dart';
+import 'package:aqua/utils/notifications.dart';
 import 'package:aqua/utils/icons.dart';
 import 'package:aqua/utils/widgets/blank_screen.dart';
 import 'package:aqua/database/database.dart';

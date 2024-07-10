@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/database/database.dart';
-import 'package:aqua/notifications.dart';
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/notifications.dart';
+import 'package:aqua/utils/miscellaneous.dart' as utils;
 
 bool isSleepTime(SharedPreferences prefs) {
   int sleepTime = prefs.getInt('sleepTime') ?? 0;

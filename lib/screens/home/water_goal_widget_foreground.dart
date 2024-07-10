@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:aqua/utils/textstyles.dart' show HomeScreenStyles;
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/miscellaneous.dart' as utils;
 
 String getGoalText(int vol) {
   double litres = vol / 1000;

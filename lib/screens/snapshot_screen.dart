@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/screens/charts/chart_model.dart';
 import 'package:aqua/screens/charts/total_intake_chart.dart';
-import 'package:aqua/screens/user_profile/profile_utils.dart';
+import 'package:aqua/screens/user_profile/profile_picture.dart';
 import 'package:aqua/screens/user_profile/statistics.dart';
 
 class SnapshotScreen extends StatefulWidget {

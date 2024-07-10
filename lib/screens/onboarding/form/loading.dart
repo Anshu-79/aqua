@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 import 'package:aqua/nav_bar.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
-import 'package:aqua/firestore_utils.dart' as firestore;
-import 'package:aqua/shared_pref_utils.dart' as shared_prefs;
-import 'package:aqua/location_utils.dart';
+import 'package:aqua/utils/firestore_utils.dart' as firestore;
+import 'package:aqua/utils/shared_pref_utils.dart' as shared_prefs;
+import 'package:aqua/utils/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoadingScreen extends StatefulWidget {

@@ -1,7 +1,8 @@
-import 'package:aqua/database/database.dart';
-import 'package:aqua/screens/snapshot_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:aqua/database/database.dart';
+import 'package:aqua/screens/snapshot_screen.dart';
 
 class ShareWidget extends StatelessWidget {
   const ShareWidget({super.key, required this.db, required this.prefs});

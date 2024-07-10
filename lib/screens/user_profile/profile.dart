@@ -1,9 +1,14 @@
-import 'package:aqua/database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:aqua/screens/user_profile/profile_utils.dart';
 import 'package:aqua/utils/colors.dart';
+import 'package:aqua/database/database.dart';
+
+import 'package:aqua/screens/user_profile/profile_picture.dart';
+import 'package:aqua/screens/user_profile/buttons.dart';
+import 'package:aqua/screens/user_profile/profile_utils.dart';
+import 'package:aqua/screens/user_profile/name_widget.dart';
+import 'package:aqua/screens/user_profile/location_widget.dart';
 
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget({super.key, required this.prefs, required this.db});
