@@ -4,6 +4,7 @@ import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/dialog_boxes/beverage.dart';
 import 'package:aqua/icomoon_icons.dart';
 import 'package:aqua/database/database.dart';
+import 'package:aqua/utils/colors.dart';
 
 class BeverageMenu extends StatefulWidget {
   const BeverageMenu({super.key, required this.database});
@@ -63,7 +64,7 @@ class _BeverageMenuState extends State<BeverageMenu> {
                     'This beverage already exists', null);
               } else {
                 utils.GlobalNavigator.showSnackBar('Beverage Added',
-                    utils.toColor(addedBeverage.colorCode.value));
+                    addedBeverage.colorCode.value.toColor());
                 await widget.database.insertOrUpdateBeverage(addedBeverage);
               }
             }));
@@ -99,7 +100,7 @@ class _BeverageCardState extends State<BeverageCard> {
     // Prevent changes to Water
     if (bvg.id == 1) {
       return utils.GlobalNavigator.showSnackBar(
-          '${bvg.name} cannot be edited', utils.toColor(bvg.colorCode));
+          '${bvg.name} cannot be edited', bvg.colorCode.toColor());
     }
 
     List? output = await utils.GlobalNavigator.showAnimatedDialog(
@@ -131,13 +132,13 @@ class _BeverageCardState extends State<BeverageCard> {
       await widget.db.insertOrUpdateBeverage(updatedBev);
       widget.notifyParent();
       return utils.GlobalNavigator.showSnackBar(
-          'Beverage Edited', utils.toColor(updatedBev.colorCode.value));
+          'Beverage Edited', updatedBev.colorCode.value.toColor());
     }
   }
 
   Icon _beverageIcon() {
     return Icon(Icomoon.water_glass_pixelart,
-        color: utils.toColor(widget.bvg.colorCode), size: 60);
+        color: widget.bvg.colorCode.toColor(), size: 60);
   }
 
   Text bevNameText() {
@@ -160,11 +161,11 @@ class _BeverageCardState extends State<BeverageCard> {
       child: Card(
           elevation: 0,
           margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
-          color: utils.toColor(widget.bvg.colorCode).withOpacity(0.3),
+          color: widget.bvg.colorCode.toColor().withOpacity(0.3),
           shape: RoundedRectangleBorder(
               borderRadius: const BorderRadius.all(Radius.circular(30)),
               side: BorderSide(
-                  color: utils.toColor(widget.bvg.colorCode), width: 5)),
+                  color: widget.bvg.colorCode.toColor(), width: 5)),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Row(

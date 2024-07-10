@@ -2,7 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -14,34 +14,29 @@ class WelcomeScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: utils.defaultColors['dark blue']!, width: 5),
-          ),
-          height: 90,
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Crab(
-              tag: 'graphic',
-              child: Image.asset(
-                'assets/images/icon.png',
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
-        ),
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: AquaColors.darkBlue, width: 5)),
+            height: 90,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Crab(
+                  tag: 'graphic',
+                  child: Image.asset(
+                    'assets/images/icon.png',
+                    fit: BoxFit.contain,
+                  )),
+            )),
         AnimatedTextKit(repeatForever: true, animatedTexts: [
           ColorizeAnimatedText(
             "AQUA",
             textStyle:
                 const TextStyle(fontSize: 115, fontWeight: FontWeight.w900),
-            colors: utils.textColorizeColors,
+            colors: textColorizeColors,
             speed: const Duration(milliseconds: 1000),
           )
         ]),
-        const SizedBox(
-          height: 40,
-        ),
+        const SizedBox(height: 40),
         const Text(
           "Welcome to Aqua! We're here to help you prioritize your health by staying hydrated. Let's get started!",
           textAlign: TextAlign.center,

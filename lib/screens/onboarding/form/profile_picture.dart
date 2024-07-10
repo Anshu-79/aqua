@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
+import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils.dart' as utils;
 
 class PictureInputScreen extends StatefulWidget {
@@ -84,7 +85,7 @@ class _PictureInputScreenState extends State<PictureInputScreen> {
                     TextButton(
                         onPressed: () => showImageSourceDialog(),
                         style: TextButton.styleFrom(
-                            backgroundColor: utils.defaultColors['dark blue'],
+                            backgroundColor: AquaColors.darkBlue,
                             foregroundColor: Colors.white),
                         child: const Text("Choose a picture")),
                     const SizedBox(height: 20),

@@ -1,11 +1,11 @@
 import 'dart:math';
-import 'package:aqua/database/database.dart';
-import 'package:aqua/shared_pref_utils.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:aqua/database/database.dart';
+import 'package:aqua/shared_pref_utils.dart';
 import 'package:aqua/permission_handlers.dart';
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 
 List<String> notificationTitles = [
   "${Emojis.animals_swan} Don't Hate! Hydrate!",
@@ -49,7 +49,7 @@ class NotificationsController {
               channelName: 'Hydration notifications',
               channelDescription:
                   'Notification channel for Hydration reminders',
-              defaultColor: utils.defaultColors['dark blue'],
+              defaultColor: AquaColors.darkBlue,
               defaultPrivacy: NotificationPrivacy.Public,
               channelShowBadge: true,
               importance: NotificationImportance.Default,

@@ -1,21 +1,18 @@
-// shape_painter.dart
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 
-// Define the Shape class
 class Shape {
   Offset position;
   final Color color;
   final ShapeType type;
   final double size;
-  final double speed; // Add speed property
+  final double speed;
 
   Shape(this.position, this.color, this.type, this.size, this.speed);
 }
 
-// Define the ShapeType enum
 enum ShapeType { circle, rectangle, triangle }
 
 class ShapePainter extends CustomPainter {
@@ -47,8 +44,10 @@ class ShapePainter extends CustomPainter {
         case ShapeType.triangle:
           final path = Path();
           path.moveTo(shape.position.dx, shape.position.dy - shape.size);
-          path.lineTo(shape.position.dx + shape.size, shape.position.dy + shape.size);
-          path.lineTo(shape.position.dx - shape.size, shape.position.dy + shape.size);
+          path.lineTo(
+              shape.position.dx + shape.size, shape.position.dy + shape.size);
+          path.lineTo(
+              shape.position.dx - shape.size, shape.position.dy + shape.size);
           path.close();
           canvas.drawPath(path, paint);
           break;
@@ -64,11 +63,13 @@ class ShapePainter extends CustomPainter {
 
 class ColoredShapesBackground extends StatefulWidget {
   @override
-  _ColoredShapesBackgroundState createState() => _ColoredShapesBackgroundState();
+  _ColoredShapesBackgroundState createState() =>
+      _ColoredShapesBackgroundState();
 }
 
-class _ColoredShapesBackgroundState extends State<ColoredShapesBackground> with SingleTickerProviderStateMixin {
-  final List<Color> colorList = utils.shapeColors;
+class _ColoredShapesBackgroundState extends State<ColoredShapesBackground>
+    with SingleTickerProviderStateMixin {
+  final List<Color> colorList = shapeColors;
   final List<Shape> shapes = [];
   late AnimationController _controller;
   final Random random = Random();
@@ -79,21 +80,22 @@ class _ColoredShapesBackgroundState extends State<ColoredShapesBackground> with 
 
     // Initialize shapes
     while (shapes.length < 40) {
-      double size = random.nextDouble() * 30 + 10; // Decrease size
+      double size = random.nextDouble() * 30 + 10;
       double xPos = random.nextDouble() * 500;
       double yPos;
-      
+
       // Ensure shapes are placed at the top or bottom, not in the middle
       if (random.nextBool()) {
         yPos = random.nextDouble() * 200; // Top part
       } else {
         yPos = 600 + random.nextDouble() * 200; // Bottom part
       }
-      
+
       Offset newPosition = Offset(xPos, yPos);
-      ShapeType type = ShapeType.values[random.nextInt(ShapeType.values.length)];
+      ShapeType type =
+          ShapeType.values[random.nextInt(ShapeType.values.length)];
       Color color = colorList[random.nextInt(colorList.length)];
-      double speed = random.nextDouble() * 0.5 + 2; // Random speed between 1 and 3
+      double speed = random.nextDouble() * 0.5 + 2;
 
       Shape newShape = Shape(newPosition, color, type, size, speed);
 
@@ -118,8 +120,11 @@ class _ColoredShapesBackgroundState extends State<ColoredShapesBackground> with 
 
   void _updateShapePositions() {
     for (var shape in shapes) {
-      shape.position = shape.position.translate(shape.speed, 0); // Move horizontally with individual speed
-      if (shape.position.dx > 500) shape.position = Offset(0, shape.position.dy); // wrap around horizontally
+      shape.position = shape.position
+          .translate(shape.speed, 0); // Move horizontally with individual speed
+      if (shape.position.dx > 500)
+        shape.position =
+            Offset(0, shape.position.dy); // wrap around horizontally
     }
   }
 

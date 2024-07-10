@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:aqua/utils/height_picker.dart';
+import 'package:aqua/utils/widgets/height_picker.dart';
+import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils.dart' as utils;
 
 class HeightEditDialog extends StatefulWidget {
@@ -40,8 +41,8 @@ class _HeightEditDialogState extends State<HeightEditDialog> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.straighten_rounded,
-                size: 60, color: utils.defaultColors['dark blue']),
+            const Icon(Icons.straighten_rounded,
+                size: 60, color: AquaColors.darkBlue),
             HeightPicker(height: height, textSize: 40, notifyParent: refresh),
             const SizedBox(height: 30),
             Row(

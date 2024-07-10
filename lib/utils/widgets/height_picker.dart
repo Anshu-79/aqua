@@ -2,7 +2,7 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 
 // Helper functions
 int toCMs(int feet, int inches) {
@@ -64,9 +64,7 @@ class _HeightPickerState extends State<HeightPicker> {
       onChanged: (b) => setState(() => isMetric = b),
       styleBuilder: (b) => ToggleStyle(
           backgroundColor: Theme.of(context).canvasColor,
-          indicatorColor: b
-              ? utils.defaultColors['dark blue']
-              : utils.defaultColors['red']),
+          indicatorColor: b ? AquaColors.darkBlue : AquaColors.red),
       textBuilder: (value) => value
           ? const Center(child: Text('Metric'))
           : const Center(child: Text('Imperial')),
@@ -82,12 +80,12 @@ class _HeightPickerState extends State<HeightPicker> {
           zeroPad: true,
           itemHeight: widget.textSize + 25,
           itemWidth: width,
-          textStyle:
-               TextStyle(fontWeight: FontWeight.w900, fontSize: widget.textSize / 2),
+          textStyle: TextStyle(
+              fontWeight: FontWeight.w900, fontSize: widget.textSize / 2),
           selectedTextStyle: TextStyle(
               fontWeight: FontWeight.w900,
               fontSize: widget.textSize.toDouble(),
-              color: utils.defaultColors['dark blue']),
+              color: AquaColors.darkBlue),
           haptics: true,
           itemCount: 3,
           minValue: min,

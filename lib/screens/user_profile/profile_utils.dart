@@ -8,6 +8,7 @@ import 'package:aqua/weather_utils.dart';
 import 'package:aqua/water_goals.dart';
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/screens/settings.dart';
+import 'package:aqua/utils/colors.dart';
 
 import 'package:aqua/screens/user_profile/edit_picture_dialog.dart';
 import 'package:aqua/screens/user_profile/sleeptime_edit_dialog.dart';
@@ -16,8 +17,6 @@ import 'package:aqua/screens/user_profile/age_edit_dialog.dart';
 import 'package:aqua/screens/user_profile/height_edit_dialog.dart';
 import 'package:aqua/screens/user_profile/name_edit_dialog.dart';
 import 'package:aqua/screens/user_profile/weight_edit_dialog.dart';
-
-
 
 String getWakeTimeText(SharedPreferences prefs) =>
     utils.getTimeInText(prefs.getInt('wakeTime')!);
@@ -39,7 +38,8 @@ class ProfilePicture extends StatelessWidget {
     }
     FileImage img = FileImage(File(imgPath));
     return InkWell(
-      onTap: () => utils.GlobalNavigator.showAnimatedDialog(EditPictureDialog(prefs: prefs)),
+      onTap: () => utils.GlobalNavigator.showAnimatedDialog(
+          EditPictureDialog(prefs: prefs)),
       child: Align(
           alignment: Alignment.topCenter,
           child: CircleAvatar(radius: 60, backgroundImage: img)),
@@ -101,12 +101,12 @@ class _LocationWidgetState extends State<LocationWidget> {
             icon: const Icon(Icons.refresh, color: Colors.white),
             onPressed: () async {
               utils.GlobalNavigator.showSnackBar(
-                  'Updating location...', utils.defaultColors['dark blue']);
+                  'Updating location...', AquaColors.darkBlue);
 
               await saveWeather();
               setState(() {});
               utils.GlobalNavigator.showSnackBar(
-                  'Location updated', utils.defaultColors['dark blue']);
+                  'Location updated', AquaColors.darkBlue);
             },
           )
         ],
@@ -259,14 +259,14 @@ class _SleepButtonsRowState extends State<SleepButtonsRow> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SleepScheduleButton(
-              icon: Icon(Icons.sunny, color: utils.defaultColors['yellow']),
+              icon: const Icon(Icons.sunny, color: AquaColors.yellow),
               time: getWakeTimeText(widget.prefs),
               callback: () {
                 utils.GlobalNavigator.showAnimatedDialog(WaketimeEditDialog(
                     prefs: widget.prefs, db: widget.db, notifyParent: refresh));
               }),
           SleepScheduleButton(
-              icon: Icon(Icons.bedtime, color: utils.defaultColors['violet']),
+              icon: const Icon(Icons.bedtime, color: AquaColors.violet),
               time: getSleepTimeText(widget.prefs),
               callback: () => utils.GlobalNavigator.showAnimatedDialog(
                   SleeptimeEditDialog(

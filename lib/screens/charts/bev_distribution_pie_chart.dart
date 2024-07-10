@@ -2,13 +2,13 @@ import 'package:collection/collection.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import 'package:aqua/utils/colors.dart';
 import 'package:aqua/database/database.dart';
-import 'package:aqua/utils.dart' as utils;
 
 Beverage water = Beverage(
     id: 1,
     name: 'Water',
-    colorCode: utils.toHexString(utils.defaultColors['blue']!),
+    colorCode: AquaColors.blue.toHexCode(),
     starred: true,
     waterPercent: 100);
 
@@ -36,7 +36,7 @@ class _BevsPieChartState extends State<BevsPieChart> {
       final radius = isTouched ? 90.0 : 80.0;
 
       Beverage bev = beverages[i];
-      Color color = utils.toColor(bev.colorCode);
+      Color color = bev.colorCode.toColor();
 
       double volPercentage = 100 * bevMap[bev]! / bevMap.values.toList().sum;
       return PieChartSectionData(

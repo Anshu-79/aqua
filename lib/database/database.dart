@@ -1,6 +1,5 @@
 import 'dart:io';
-import 'package:aqua/shared_pref_utils.dart';
-import 'package:aqua/water_goals.dart';
+
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart' show DateUtils;
@@ -10,6 +9,9 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:sqlite3/sqlite3.dart';
 import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 
+import 'package:aqua/shared_pref_utils.dart';
+import 'package:aqua/utils/colors.dart';
+import 'package:aqua/water_goals.dart';
 import 'package:aqua/database/tables.dart';
 import 'package:aqua/utils.dart';
 part 'database.g.dart';
@@ -421,32 +423,32 @@ class Database extends _$Database {
           List<BeveragesCompanion> defaultBeverages = [
             BeveragesCompanion(
               name: const Value("Water"),
-              colorCode: Value(defaultColors['blue']!.value.toRadixString(16)),
+              colorCode: Value(AquaColors.blue.value.toRadixString(16)),
               waterPercent: const Value(100),
               starred: const Value(true),
             ),
             BeveragesCompanion(
               name: const Value("Soda"),
-              colorCode: Value(defaultColors['red']!.value.toRadixString(16)),
+              colorCode: Value(AquaColors.red.value.toRadixString(16)),
               waterPercent: const Value(90),
               starred: const Value(true),
             ),
             BeveragesCompanion(
               name: const Value("Coffee"),
               colorCode:
-                  Value(defaultColors['orange']!.value.toRadixString(16)),
+                  Value(AquaColors.orange.value.toRadixString(16)),
               waterPercent: const Value(50),
               starred: const Value(false),
             ),
             BeveragesCompanion(
               name: const Value("Tea"),
-              colorCode: Value(defaultColors['green']!.value.toRadixString(16)),
+              colorCode: Value(AquaColors.green.value.toRadixString(16)),
               waterPercent: const Value(75),
               starred: const Value(false),
             ),
             BeveragesCompanion(
               name: const Value("Milk"),
-              colorCode: Value(defaultColors['pink']!.value.toRadixString(16)),
+              colorCode: Value(AquaColors.pink.value.toRadixString(16)),
               waterPercent: const Value(88),
               starred: const Value(false),
             ),

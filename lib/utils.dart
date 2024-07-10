@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:aqua/shared_pref_utils.dart';
+import 'package:aqua/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -35,126 +36,30 @@ String getTimeInText(int time) {
   return "$time:00 AM";
 }
 
-// Color Utilities
-Map<String, Color> defaultColors = {
-  'pink': const Color(0xFFff4778),
-  'red': const Color(0xFFff333a),
-  'orange': const Color(0xFFff8133),
-  'yellow': const Color(0xFFffc31f),
-  'lime': const Color(0xFFc1c62f),
-  'green': const Color(0xFF82bc24),
-  'mint': const Color(0xFF48996c),
-  'blue': const Color(0xFF1f92ea),
-  'dark blue': const Color(0xFF0264e1),
-  'violet': const Color(0xFF7a1ded),
-};
-
-List<Color> textColorizeColors = [
-  defaultColors['dark blue']!,
-  Colors.purple,
-  Colors.pink,
-  Colors.red,
-  Colors.orange,
-  Colors.yellow,
-];
-
-List<Color> colorList = defaultColors.values.toList();
-
-List<Color> shapeColors = [
-  defaultColors['red']!,
-  defaultColors['yellow']!,
-  defaultColors['green']!,
-  defaultColors['blue']!,
-];
-
-Color toColor(String colorCode) => Color(int.parse('0x$colorCode'));
-
-String toHexString(Color color) => color.value.toRadixString(16);
-
-Color adjustColorContrast(Color color, double factor) {
-  int adjustChannel(int channel) {
-    double normalized = channel / 255.0;
-    double adjusted = ((normalized - 0.5) * factor + 0.5).clamp(0.0, 1.0);
-    return (adjusted * 255).round();
-  }
-
-  return Color.fromARGB(
-    color.alpha,
-    adjustChannel(color.red),
-    adjustChannel(color.green),
-    adjustChannel(color.blue),
-  );
-}
-
-Color visibilityCheck(Color color) =>
-    color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
-
-/// Lighten a color by [percent] amount (100 = white)
-Color lighten(Color c, [int percent = 10]) {
-  assert(1 <= percent && percent <= 100);
-  var p = percent / 100;
-  return Color.fromARGB(
-      c.alpha,
-      c.red + ((255 - c.red) * p).round(),
-      c.green + ((255 - c.green) * p).round(),
-      c.blue + ((255 - c.blue) * p).round());
-}
-
-extension ColorExt on Color {
-  MaterialColor toMaterialColor() {
-    final int red = this.red;
-    final int green = this.green;
-    final int blue = this.blue;
-
-    final Map<int, Color> shades = {
-      50: Color.fromRGBO(red, green, blue, .1),
-      100: Color.fromRGBO(red, green, blue, .2),
-      200: Color.fromRGBO(red, green, blue, .3),
-      300: Color.fromRGBO(red, green, blue, .4),
-      400: Color.fromRGBO(red, green, blue, .5),
-      500: Color.fromRGBO(red, green, blue, .6),
-      600: Color.fromRGBO(red, green, blue, .7),
-      700: Color.fromRGBO(red, green, blue, .8),
-      800: Color.fromRGBO(red, green, blue, .9),
-      900: Color.fromRGBO(red, green, blue, 1),
-    };
-    return MaterialColor(value, shades);
-  }
-}
-
 // Icon Utilities
 Map<String, List<dynamic>> icomoonMap = {
-  'Bicycling': [Icomoon.Bicycling, defaultColors['green']],
-  'Conditioning Exercise': [
-    Icomoon.Conditioning_Exercise,
-    defaultColors['blue']
-  ],
-  'Dancing': [Icomoon.Dancing, defaultColors['red']],
-  'Fishing & Hunting': [Icomoon.Fishing_and_Hunting, defaultColors['mint']],
-  'Home Activities': [Icomoon.Home_Activities, defaultColors['yellow']],
-  'Home Repair': [Icomoon.Home_Repair, defaultColors['red']],
-  'Inactivity': [Icomoon.Inactivity, defaultColors['lime']],
-  'Lawn & Garden': [Icomoon.Lawn_and_Garden, defaultColors['green']],
-  'Miscellaneous': [Icomoon.Miscellaneous, defaultColors['mint']],
-  'Music Playing': [Icomoon.Music_Playing, defaultColors['violet']],
-  'Occupation': [Icomoon.Occupation, defaultColors['dark blue']],
-  'Running': [Icomoon.Running, defaultColors['orange']],
-  'Self Care': [Icomoon.Self_Care, defaultColors['pink']],
-  'Sexual Activity': [Icomoon.Sexual_Activity, defaultColors['red']],
-  'Sports': [Icomoon.Sports, defaultColors['blue']],
-  'Transportation': [Icomoon.Transportation, defaultColors['yellow']],
-  'Walking': [Icomoon.Walking, defaultColors['green']],
-  'Water Activities': [Icomoon.Water_Activities, defaultColors['blue']],
-  'Winter Activities': [Icomoon.Winter_Activities, defaultColors['dark blue']],
-  'Religious Activities': [
-    Icomoon.Religious_Activities,
-    defaultColors['violet']
-  ],
-  'Volunteer Activities': [
-    Icomoon.Volunteer_Activities,
-    defaultColors['green']
-  ],
-  'Video Games': [Icomoon.Video_Games, defaultColors['blue']],
+  'Bicycling': [Icomoon.Bicycling, AquaColors.green],
+  'Conditioning Exercise': [Icomoon.Conditioning_Exercise, AquaColors.blue],
+  'Dancing': [Icomoon.Dancing, AquaColors.red],
+  'Fishing & Hunting': [Icomoon.Fishing_and_Hunting, AquaColors.mint],
+  'Home Activities': [Icomoon.Home_Activities, AquaColors.yellow],
+  'Home Repair': [Icomoon.Home_Repair, AquaColors.red],
+  'Inactivity': [Icomoon.Inactivity, AquaColors.lime],
+  'Lawn & Garden': [Icomoon.Lawn_and_Garden, AquaColors.green],
+  'Miscellaneous': [Icomoon.Miscellaneous, AquaColors.mint],
+  'Music Playing': [Icomoon.Music_Playing, AquaColors.violet],
+  'Occupation': [Icomoon.Occupation, AquaColors.darkBlue],
+  'Running': [Icomoon.Running, AquaColors.orange],
+  'Self Care': [Icomoon.Self_Care, AquaColors.pink],
+  'Sexual Activity': [Icomoon.Sexual_Activity, AquaColors.red],
+  'Sports': [Icomoon.Sports, AquaColors.blue],
+  'Transportation': [Icomoon.Transportation, AquaColors.yellow],
+  'Walking': [Icomoon.Walking, AquaColors.green],
+  'Water Activities': [Icomoon.Water_Activities, AquaColors.blue],
+  'Winter Activities': [Icomoon.Winter_Activities, AquaColors.darkBlue],
+  'Religious Activities': [Icomoon.Religious_Activities, AquaColors.violet],
+  'Volunteer Activities': [Icomoon.Volunteer_Activities, AquaColors.green],
+  'Video Games': [Icomoon.Video_Games, AquaColors.blue],
 };
 
 IconData getWorkoutIcon(int activityID) {
@@ -184,12 +89,10 @@ abstract class ThemeText {
 
   // Home Screen
   static TextStyle dailyGoalConsumed = TextStyle(
-      fontSize: 100,
-      fontWeight: FontWeight.w900,
-      color: defaultColors['dark blue']);
+      fontSize: 100, fontWeight: FontWeight.w900, color: AquaColors.darkBlue);
 
   static TextStyle dailyGoalTotal = TextStyle(
-      color: defaultColors['dark blue'],
+      color: AquaColors.darkBlue,
       fontSize: dailyGoalConsumed.fontSize,
       fontWeight: FontWeight.w900);
 
@@ -469,7 +372,7 @@ class UniversalHeader extends PreferredSize {
                 title,
                 textStyle: screenHeader,
                 speed: const Duration(milliseconds: 500),
-                colors: colorList.sublist(0, 9).reversed.toList(),
+                colors: AquaColors.allColors.sublist(0, 9).reversed.toList(),
               )
             ],
           ),

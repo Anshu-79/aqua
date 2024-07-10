@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:country_state_city_pro/country_state_city_pro.dart';
 import 'package:geocode/geocode.dart';
 
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 import 'package:aqua/shared_pref_utils.dart';
 
 Future<List<double?>> getCurrentLocation() async {
@@ -79,7 +79,7 @@ class _PickCityDialogState extends State<PickCityDialog> {
                 }
               },
               style: TextButton.styleFrom(
-                  backgroundColor: utils.defaultColors['dark blue']),
+                  backgroundColor: AquaColors.darkBlue),
               child: const Text(
                 "Continue",
                 style: TextStyle(color: Colors.white, fontSize: 20),

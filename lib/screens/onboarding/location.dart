@@ -3,7 +3,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key});
@@ -23,12 +23,8 @@ class _LocationScreenState extends State<LocationScreen>
   void initState() {
     super.initState();
     _rotationController = AnimationController(
-      vsync: this,
-      duration:
-          const Duration(milliseconds: 500), // Adjust the duration as needed
-    );
+        vsync: this, duration: const Duration(milliseconds: 500));
 
-    // Define the rotation animation
     _rotationAnimation = Tween(begin: 0.0, end: pi).animate(
         CurvedAnimation(parent: _rotationController, curve: Curves.easeInOut));
 
@@ -37,16 +33,9 @@ class _LocationScreenState extends State<LocationScreen>
       duration: const Duration(milliseconds: 250),
     );
 
-    // Define the position animation (from top to bottom)
-    _translationAnimation = Tween<Offset>(
-      begin: Offset.zero,
-      end:
-          const Offset(0.0, -1.0), // Adjust the end Offset for desired distance
-    ).animate(
-      CurvedAnimation(
-        parent: _translationController,
-        curve: Curves.easeIn, // Animation curve for position
-      ),
+    _translationAnimation =
+        Tween<Offset>(begin: Offset.zero, end: const Offset(0.0, -1.0)).animate(
+      CurvedAnimation(parent: _translationController, curve: Curves.easeIn),
     );
 
     _rotationController.forward().whenComplete(() {
@@ -81,12 +70,8 @@ class _LocationScreenState extends State<LocationScreen>
                     builder: (context, child) {
                       return FractionalTranslation(
                         translation: _translationAnimation.value,
-                        child: Image.asset(
-                          'assets/images/icon.png',
-                          fit: BoxFit.contain,
-                          width: 75,
-                          height: 75,
-                        ),
+                        child: Image.asset('assets/images/icon.png',
+                            fit: BoxFit.contain, width: 75, height: 75),
                       );
                     },
                   ),
@@ -95,18 +80,14 @@ class _LocationScreenState extends State<LocationScreen>
             ),
           ),
         ),
-        Image.asset(
-          'assets/images/globe.gif',
-        ),
-        const SizedBox(
-          height: 20,
-        ),
+        Image.asset('assets/images/globe.gif'),
+        const SizedBox(height: 20),
         AnimatedTextKit(repeatForever: true, animatedTexts: [
           ColorizeAnimatedText(
             "Weather Sense",
             textStyle:
                 const TextStyle(fontSize: 43, fontWeight: FontWeight.w900),
-            colors: utils.textColorizeColors,
+            colors: textColorizeColors,
             speed: const Duration(milliseconds: 1000),
           )
         ]),

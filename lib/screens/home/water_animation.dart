@@ -3,8 +3,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import 'package:aqua/utils/colors.dart';
 import 'package:aqua/screens/home/water_goal_widget_foreground.dart';
-import 'package:aqua/utils.dart' as utils;
 
 class WaterGoalWidget extends StatefulWidget {
   const WaterGoalWidget({
@@ -212,10 +212,7 @@ class WaterPainter extends CustomPainter {
     var gradient = LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
-      colors: [
-        utils.lighten(utils.defaultColors['dark blue']!, 50),
-        utils.defaultColors['dark blue']!
-      ],
+      colors: [AquaColors.darkBlue.lighten(50), AquaColors.darkBlue],
     );
 
     var rect =

@@ -4,6 +4,7 @@ import 'package:drift/drift.dart' as drift;
 import 'package:numberpicker/numberpicker.dart';
 
 import 'package:aqua/database/database.dart';
+import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils.dart' as utils;
 
 class BeverageDialog extends StatefulWidget {
@@ -34,7 +35,7 @@ class _BeverageDialogState extends State<BeverageDialog> {
         Beverage(
             id: 1,
             name: '',
-            colorCode: utils.toHexString(utils.defaultColors['blue']!),
+            colorCode: AquaColors.blue.toHexCode(),
             waterPercent: 50,
             starred: false);
 
@@ -233,7 +234,7 @@ class _ColorPickerState extends State<ColorPicker> {
       child: BlockPicker(
           layoutBuilder: pickerLayoutBuilder,
           itemBuilder: pickerItemBuilder,
-          availableColors: utils.colorList,
+          availableColors: AquaColors.allColors,
           pickerColor: widget.currentColor,
           onColorChanged: (color) => widget.changeColor(color)),
     );
@@ -278,7 +279,7 @@ class _ActionButtonsState extends State<ActionButtons> {
                       ? drift.Value(widget.bev!.id)
                       : const drift.Value.absent(),
                   name: drift.Value(widget.controller.text.trim()),
-                  colorCode: drift.Value(utils.toHexString(widget.color)),
+                  colorCode: drift.Value(widget.color.toHexCode()),
                   waterPercent: drift.Value(widget.waterPercent),
                   starred: (widget.bev != null)
                       ? drift.Value(widget.bev!.starred)

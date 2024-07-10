@@ -2,7 +2,7 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/colors.dart';
 
 // Helper functions
 int toLbs(int kg) => (kg * 2.20462).round();
@@ -58,7 +58,7 @@ class _WeightPickerState extends State<WeightPicker> {
             selectedTextStyle: TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: widget.textSize.toDouble(),
-                color: utils.defaultColors['dark blue']),
+                color: AquaColors.darkBlue),
             haptics: true,
             itemCount: 3,
             minValue: min,
@@ -94,9 +94,8 @@ class _WeightPickerState extends State<WeightPicker> {
       onChanged: (b) => setState(() => isMetric = b),
       styleBuilder: (b) => ToggleStyle(
           backgroundColor: Theme.of(context).canvasColor,
-          indicatorColor: b
-              ? utils.defaultColors['dark blue']
-              : utils.defaultColors['red']),
+          indicatorColor:
+              b ? AquaColors.darkBlue : AquaColors.red),
       textBuilder: (value) => value
           ? const Center(child: Text('Metric'))
           : const Center(child: Text('Imperial')),

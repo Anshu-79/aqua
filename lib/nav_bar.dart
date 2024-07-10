@@ -1,13 +1,12 @@
-import 'package:aqua/database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:aqua/utils.dart' as utils;
-
+import 'package:aqua/database/database.dart';
 import 'package:aqua/screens/charts/charts.dart';
 import 'package:aqua/screens/home/home.dart';
 import 'package:aqua/screens/user_profile/user_profile.dart';
 import 'package:aqua/screens/beverage_menu.dart';
+import 'package:aqua/utils/colors.dart';
 import 'package:aqua/screens/activity_menu.dart';
 
 class NavBar extends StatefulWidget {
@@ -59,10 +58,10 @@ class _NavBarState extends State<NavBar> {
         },
       ),
       bottomNavigationBar: NavigationBar(
-        surfaceTintColor: utils.defaultColors['dark blue'],
+        surfaceTintColor: AquaColors.darkBlue,
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         onDestinationSelected: _onItemTapped,
-        indicatorColor: utils.defaultColors['dark blue'],
+        indicatorColor: AquaColors.darkBlue,
         selectedIndex: selectedPage,
         destinations: const [
           NavigationDestination(
