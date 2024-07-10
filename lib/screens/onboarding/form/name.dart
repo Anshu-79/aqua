@@ -69,7 +69,7 @@ class _NameInputScreenState extends State<NameInputScreen> {
     return Scaffold(
         body: Stack(
           children: [
-            ColoredShapesBackground(),
+            const ColoredShapesBackground(),
             Container(
               margin: const EdgeInsets.all(20),
               child: Column(

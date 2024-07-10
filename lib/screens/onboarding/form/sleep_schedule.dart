@@ -50,7 +50,7 @@ class _SleepScheduleInputScreenState extends State<SleepScheduleInputScreen> {
     return Scaffold(
         body: Stack(
           children: [
-            ColoredShapesBackground(),
+            const ColoredShapesBackground(),
             TooltipOnTap(message: tooltipMessage),
             Container(
               margin: const EdgeInsets.all(10),

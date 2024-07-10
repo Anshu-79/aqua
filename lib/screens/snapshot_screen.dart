@@ -100,7 +100,7 @@ class _SnapshotScreenState extends State<SnapshotScreen> {
 
       if (context.mounted) Navigator.pop(context);
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 }

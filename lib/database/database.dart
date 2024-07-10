@@ -20,7 +20,6 @@ export 'package:aqua/database/queries/workout_queries.dart';
 
 part 'database.g.dart';
 
-
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
@@ -99,17 +98,14 @@ class Database extends _$Database {
           ];
 
           await m.createAll();
-          print("Database created...");
           for (final beverage in defaultBeverages) {
             await into(beverages).insert(beverage);
           }
         },
         beforeOpen: (details) async {
-          print("beforeOpen executed...");
           await customStatement("PRAGMA foreign_keys = ON");
         },
         onUpgrade: (m, from, to) async {
-          print("onUpgrade executed");
           await customStatement('PRAGMA foreign_keys = OFF');
         },
       );

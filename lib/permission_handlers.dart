@@ -12,10 +12,8 @@ String locationMsg =
 Future<void> requestNotificationPermission() async {
   var status = await Permission.notification.request();
   if (status.isGranted) {
-    print("Notification permission granted");
   } else if (status.isDenied) {
     // Permission is denied
-    print('Notification permission denied.');
     GlobalNavigator.showAlertDialog(reminderMsg, null);
   }
 }
@@ -23,10 +21,7 @@ Future<void> requestNotificationPermission() async {
 Future<void> requestLocationPermission() async {
   var status = await Permission.location.request();
   if (status.isGranted) {
-    print("Location permission granted");
   } else if (status.isDenied) {
-    // Permission is denied
-    print('Location permission denied.');
 
     final List<String> location = await GlobalNavigator.showAlertDialog(
         reminderMsg, const PickCityDialog());
