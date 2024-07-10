@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:aqua/database/database.dart';
-import 'package:aqua/utils.dart' as utils;
+import 'package:aqua/utils/textstyles.dart';
 
 class StatsSummary extends StatefulWidget {
   const StatsSummary(
@@ -45,9 +45,9 @@ class StatsSummaryState extends State<StatsSummary> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(snapshot.data!, style: utils.ThemeText.userStats),
+                    Text(snapshot.data!, style: ProfileScreenStyles.userStats),
                     Text(widget.statsSubtext,
-                        style: utils.ThemeText.userStatsSubtext)
+                        style: ProfileScreenStyles.userStatsSubtext)
                   ])
             ]));
       },

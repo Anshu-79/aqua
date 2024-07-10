@@ -3,6 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/utils.dart' as utils;
 
+TextStyle textInputHint = const TextStyle(
+    fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey);
+
 class NameEditDialog extends StatefulWidget {
   const NameEditDialog(
       {super.key,
@@ -55,7 +58,7 @@ class _NameEditDialogState extends State<NameEditDialog> {
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide.none),
                   hintText: "Your Name",
-                  hintStyle: utils.ThemeText.textInputHint,
+                  hintStyle: textInputHint,
                   fillColor: primaryColor,
                   filled: true,
                 ),

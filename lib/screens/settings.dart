@@ -7,6 +7,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/utils/colors.dart';
 
+TextStyle headerStyle =
+    const TextStyle(fontSize: 40, fontWeight: FontWeight.w900);
+
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key, required this.prefs});
   final SharedPreferences prefs;
@@ -27,11 +30,11 @@ class _SettingsPageState extends State<SettingsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text("Theme", style: utils.ThemeText.settingsHeader),
+                Text("Theme", style: headerStyle),
                 showThemeModeToggle()
               ]),
               const Divider(height: 30),
-              Text("FAQs", style: utils.ThemeText.settingsHeader),
+              Text("FAQs", style: headerStyle),
               ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -43,7 +46,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     return FAQCard(question: question, answer: answer);
                   }),
               const Divider(height: 30),
-              Text("About", style: utils.ThemeText.settingsHeader),
+              Text("About", style: headerStyle),
               const GitHubCard(),
               const SizedBox(height: 20),
               const BuyMeACoffeeCard(),
@@ -68,6 +71,9 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget showThemeModeToggle() {
     final themeNotifier = ThemeNotifier.of(context);
 
+    TextStyle themeToggleStyle =
+        const TextStyle(fontWeight: FontWeight.bold, fontSize: 17);
+
     return AnimatedToggleSwitch.dual(
       borderWidth: 3,
       current: themeNotifier.isDarkMode,
@@ -77,8 +83,8 @@ class _SettingsPageState extends State<SettingsPage> {
       height: 50,
       onChanged: (b) => themeNotifier.setTheme(b),
       textBuilder: (b) => b
-          ? Text('Dark', style: utils.ThemeText.themeToggle)
-          : Text('Light', style: utils.ThemeText.themeToggle),
+          ? Text('Dark', style: themeToggleStyle)
+          : Text('Light', style: themeToggleStyle),
       iconBuilder: (b) => b
           ? const Icon(Icons.bedtime, color: Colors.white)
           : const Icon(Icons.sunny, color: Colors.white),

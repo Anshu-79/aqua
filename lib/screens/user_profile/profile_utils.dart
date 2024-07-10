@@ -9,6 +9,7 @@ import 'package:aqua/water_goals.dart';
 import 'package:aqua/utils.dart' as utils;
 import 'package:aqua/screens/settings.dart';
 import 'package:aqua/utils/colors.dart';
+import 'package:aqua/utils/textstyles.dart';
 
 import 'package:aqua/screens/user_profile/edit_picture_dialog.dart';
 import 'package:aqua/screens/user_profile/sleeptime_edit_dialog.dart';
@@ -70,7 +71,7 @@ class _NameWidgetState extends State<NameWidget> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
       child: Text(name,
-          style: utils.ThemeText.username, overflow: TextOverflow.ellipsis),
+          style: ProfileScreenStyles.username, overflow: TextOverflow.ellipsis),
       onPressed: () => utils.GlobalNavigator.showAnimatedDialog(NameEditDialog(
           name: name, notifyParent: refresh, prefs: widget.prefs)),
     );
@@ -96,7 +97,7 @@ class _LocationWidgetState extends State<LocationWidget> {
         children: [
           const Icon(Icons.location_on, color: Colors.white),
           const SizedBox(width: 10),
-          Text(place, style: utils.ThemeText.userLocationSubtext),
+          Text(place, style: ProfileScreenStyles.userLocation),
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.white),
             onPressed: () async {
@@ -166,8 +167,9 @@ class _BiometricButtonState extends State<BiometricButton> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15))),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text(widget.metric.toString(), style: utils.ThemeText.biometricInfo),
-          Text(widget.subtext, style: utils.ThemeText.biometricInfoSubtext)
+          Text(widget.metric.toString(),
+              style: ProfileScreenStyles.biometricInfo),
+          Text(widget.subtext, style: ProfileScreenStyles.biometricInfoSubtext)
         ]));
   }
 }
@@ -204,7 +206,7 @@ class _SleepScheduleButtonState extends State<SleepScheduleButton> {
             children: [
               widget.icon,
               const SizedBox(width: 5),
-              Text(widget.time, style: utils.ThemeText.sleepInfo)
+              Text(widget.time, style: ProfileScreenStyles.sleepInfo)
             ]));
   }
 }

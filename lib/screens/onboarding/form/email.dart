@@ -7,7 +7,6 @@ import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/utils/colors.dart';
-import 'package:aqua/utils.dart' as utils;
 
 class EmailInputField extends StatefulWidget {
   const EmailInputField(
@@ -21,18 +20,21 @@ class EmailInputField extends StatefulWidget {
 }
 
 class _EmailInputFieldState extends State<EmailInputField> {
+  TextStyle formHintStyle = const TextStyle(
+      fontSize: 40, fontWeight: FontWeight.bold, color: Colors.grey);
+
   @override
   Widget build(BuildContext context) {
     return Form(
       key: widget.formKey,
       child: TextFormField(
         keyboardType: TextInputType.emailAddress,
-        style: utils.ThemeText.nameInputField,
+        style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900),
         controller: widget.controller,
         textAlign: TextAlign.center,
         decoration: InputDecoration(
           hintText: "Your Email",
-          hintStyle: utils.ThemeText.formHint,
+          hintStyle: formHintStyle,
           filled: false,
           border: UnderlineInputBorder(
               borderSide: BorderSide(color: Theme.of(context).primaryColor)),
@@ -114,8 +116,9 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
           context.flow<Profile>().update((profile) => profile.decrementPage());
         }, navForward: () {
           if (formKey.currentState!.validate()) {
-            context.flow<Profile>().update((profile) =>
-                profile.copyWith(email: emailController.text.trim()).incrementPage());
+            context.flow<Profile>().update((profile) => profile
+                .copyWith(email: emailController.text.trim())
+                .incrementPage());
           }
         }));
   }

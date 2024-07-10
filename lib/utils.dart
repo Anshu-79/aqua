@@ -1,9 +1,9 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:aqua/shared_pref_utils.dart';
-import 'package:aqua/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'package:aqua/shared_pref_utils.dart';
+import 'package:aqua/utils/colors.dart';
 import 'package:aqua/main.dart';
 
 // Unit Utilities
@@ -33,106 +33,6 @@ String getTimeInText(int time) {
   if (time > 12) return "${time - 12}:00 PM";
   if (time == 12) return "12:00 PM";
   return "$time:00 AM";
-}
-
-// Font Utilities
-abstract class ThemeText {
-  // Onboarding Screens
-
-  static const TextStyle nameInputField =
-      TextStyle(fontSize: 40, fontWeight: FontWeight.w900);
-
-  static TextStyle formHint = const TextStyle(
-      fontSize: 40, fontWeight: FontWeight.bold, color: Colors.grey);
-
-  // Home Screen
-  static TextStyle dailyGoalConsumed = TextStyle(
-      fontSize: 100, fontWeight: FontWeight.w900, color: AquaColors.darkBlue);
-
-  static TextStyle dailyGoalTotal = TextStyle(
-      color: AquaColors.darkBlue,
-      fontSize: dailyGoalConsumed.fontSize,
-      fontWeight: FontWeight.w900);
-
-  static TextStyle dailyGoalFillerText = const TextStyle(
-    fontSize: 35,
-    fontWeight: FontWeight.bold,
-  );
-
-  // Add Drink Dialog Box
-  static TextStyle dialogButtons =
-      const TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
-  static TextStyle addDrinkBeverageName = const TextStyle(
-    fontSize: 45,
-    fontWeight: FontWeight.w900,
-    color: Colors.black,
-  );
-
-  static TextStyle addDrinkDialogText = const TextStyle(
-      fontSize: 45, fontWeight: FontWeight.w900, color: Colors.black);
-
-  // List Beverage Dialog Box
-  static TextStyle ListBeverageName = const TextStyle(
-      fontSize: 45, fontWeight: FontWeight.w900, color: Colors.black);
-
-  static TextStyle ListBeverageTitle = const TextStyle(
-      fontSize: 30, fontWeight: FontWeight.bold, fontFamily: 'CeraPro');
-
-  // Beverage Dialog Boxes
-  static TextStyle dialogSubtext = const TextStyle(
-      fontSize: 40, fontWeight: FontWeight.w900, color: Colors.black);
-
-  static TextStyle textInput = const TextStyle(
-      fontSize: 35, fontWeight: FontWeight.w900, color: Colors.black);
-
-  static TextStyle textInputHint = const TextStyle(
-      fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey);
-
-  // Beverage Menu
-  static TextStyle beverageName =
-      const TextStyle(fontSize: 40, fontWeight: FontWeight.bold);
-
-  static TextStyle beverageSubtext =
-      const TextStyle(fontSize: 15, fontWeight: FontWeight.normal);
-
-  static TextStyle beverageWaterPercentage =
-      const TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
-  // User Profile
-  static TextStyle username = const TextStyle(
-      fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black);
-
-  static TextStyle userLocationSubtext = const TextStyle(
-      fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white);
-
-  static TextStyle biometricInfo = const TextStyle(
-      color: Colors.black, fontWeight: FontWeight.w900, fontSize: 30);
-
-  static TextStyle biometricInfoSubtext = const TextStyle(
-      color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12);
-
-  static TextStyle sleepInfo = const TextStyle(
-      color: Colors.black, fontWeight: FontWeight.w900, fontSize: 20);
-
-  static TextStyle userStats =
-      const TextStyle(fontSize: 24, fontWeight: FontWeight.w900);
-
-  static TextStyle userStatsSubtext =
-      const TextStyle(fontSize: 10, fontWeight: FontWeight.bold);
-
-  // Workout Dialog Boxes
-  static TextStyle searchLabelText =
-      const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
-
-  static TextStyle listTileTitle = const TextStyle(fontWeight: FontWeight.bold);
-
-  // Settings Page
-  static TextStyle themeToggle =
-      const TextStyle(fontWeight: FontWeight.bold, fontSize: 17);
-
-  static TextStyle settingsHeader =
-      const TextStyle(fontSize: 40, fontWeight: FontWeight.w900);
 }
 
 class DialogActionButton extends StatelessWidget {

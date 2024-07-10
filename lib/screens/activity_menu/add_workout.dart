@@ -37,116 +37,24 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
         child: Padding(
           padding: const EdgeInsets.only(top: 60, right: 10, left: 10),
           child: Scrollbar(
-            thickness: 20,
-            radius: const Radius.circular(10),
-            controller: controller,
-            interactive: true,
-            trackVisibility: true,
-            child: SearchableList<Activity>.async(
-              scrollController: controller,
-              spaceBetweenSearchAndList: 10,
-              displaySearchIcon: false,
-              cursorColor: Theme.of(context).primaryColor,
-              searchFieldEnabled: true,
-              asyncListCallback: () async {
-                return widget.activities;
-              },
-              asyncListFilter: (q, list) {
-                q = q.trim().toLowerCase();
-                return list
-                    .where((element) =>
-                        element.category.toLowerCase().contains(q) ||
-                        element.description.toLowerCase().contains(q))
-                    .toList();
-              },
-              itemBuilder: (Activity activity) => Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                // This Card Widget is wrapped over ListTile to prevent ListTiles
-                // from displaying over searchbar
-                child: Card(
-                  elevation: 1,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  child: ListTile(
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                            color: getWorkoutColor(activity.id),
-                            width: 5),
-                        borderRadius: BorderRadius.circular(30)),
-                    splashColor: getWorkoutColor(activity.id),
-                    textColor: Theme.of(context).primaryColor,
-                    tileColor:
-                        getWorkoutColor(activity.id).withOpacity(0.2),
-                    leading: Icon(
-                      workoutIconMap[activity.category]![0],
-                      size: 35,
-                    ),
-                    title: Text(activity.category),
-                    titleTextStyle: utils.ThemeText.listTileTitle,
-                    subtitle: Text(activity.description),
-                    isThreeLine: true,
-                    onTap: () async {
-                      Navigator.pop(context);
-
-                      WorkoutsCompanion? addedWorkout =
-                          await utils.GlobalNavigator.showAnimatedDialog(
-                              CustomizeWorkout(activity: activity));
-
-                      await widget.db.insertOrUpdateWorkout(addedWorkout!);
-
-                      await widget.db
-                          .updateTotalVolume(addedWorkout.waterLoss.value);
-                      widget.notifyParent();
-
-                      // Update notification gap
-                      WaterGoal? todaysGoal =
-                          await widget.db.getGoal(DateTime.now());
-                      int medianDrinkSize =
-                          await widget.db.calcMedianDrinkSize();
-                      await NotificationsController
-                          .updateScheduledNotifications(
-                              todaysGoal!.reminderGap, medianDrinkSize);
-                    },
-                  ),
-                ),
-              ),
-              emptyWidget: const BlankScreen(message: "Nothing in here!"),
-              onRefresh: () async {},
-              onItemSelected: (Activity item) {},
-              inputDecoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                floatingLabelStyle:
-                    TextStyle(color: Theme.of(context).primaryColor),
-                labelStyle: utils.ThemeText.searchLabelText,
-                labelText: "Search Activity",
-                fillColor: Colors.white,
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: AquaColors.darkBlue, width: 3.0),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-              errorWidget: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.error, color: Colors.red),
-                  SizedBox(height: 20),
-                  Text('Error while fetching activities')
-                ],
-              ),
-            ),
-          ),
+              thickness: 20,
+              radius: const Radius.circular(10),
+              controller: controller,
+              interactive: true,
+              trackVisibility: true,
+              child: ActivityList(
+                  db: widget.db,
+                  scrollController: controller,
+                  activities: widget.activities,
+                  notifyParent: widget.notifyParent)),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: SizedBox(
         height: 70,
         width: 70,
         child: FloatingActionButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
           tooltip: "Exit",
           backgroundColor: Theme.of(context).primaryColor,
           splashColor: Theme.of(context).splashColor,
@@ -155,7 +63,111 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
               Icon(Icons.close, color: Theme.of(context).canvasColor, size: 50),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+}
+
+class ActivityList extends StatefulWidget {
+  const ActivityList(
+      {super.key,
+      required this.db,
+      required this.scrollController,
+      required this.activities,
+      required this.notifyParent});
+
+  final Database db;
+  final ScrollController scrollController;
+  final Future<List<Activity>> activities;
+  final Function() notifyParent;
+
+  @override
+  State<ActivityList> createState() => _ActivityListState();
+}
+
+class _ActivityListState extends State<ActivityList> {
+  @override
+  Widget build(BuildContext context) {
+    return SearchableList<Activity>.async(
+      scrollController: widget.scrollController,
+      spaceBetweenSearchAndList: 10,
+      displaySearchIcon: false,
+      cursorColor: Theme.of(context).primaryColor,
+      searchFieldEnabled: true,
+      asyncListCallback: () async {
+        return widget.activities;
+      },
+      asyncListFilter: (q, list) {
+        q = q.trim().toLowerCase();
+        return list
+            .where((element) =>
+                element.category.toLowerCase().contains(q) ||
+                element.description.toLowerCase().contains(q))
+            .toList();
+      },
+      itemBuilder: (Activity activity) => Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        // This Card Widget is wrapped over ListTile to prevent ListTiles
+        // from displaying over searchbar
+        child: Card(
+          elevation: 1,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          child: ListTile(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: getWorkoutColor(activity.id), width: 5),
+                borderRadius: BorderRadius.circular(30)),
+            splashColor: getWorkoutColor(activity.id),
+            textColor: Theme.of(context).primaryColor,
+            tileColor: getWorkoutColor(activity.id).withOpacity(0.2),
+            leading: Icon(workoutIconMap[activity.category]![0], size: 35),
+            title: Text(activity.category),
+            titleTextStyle: const TextStyle(fontWeight: FontWeight.bold),
+            subtitle: Text(activity.description),
+            isThreeLine: true,
+            onTap: () async {
+              Navigator.pop(context);
+
+              WorkoutsCompanion? addedWorkout =
+                  await utils.GlobalNavigator.showAnimatedDialog(
+                      CustomizeWorkout(activity: activity));
+
+              await widget.db.insertOrUpdateWorkout(addedWorkout!);
+
+              await widget.db.updateTotalVolume(addedWorkout.waterLoss.value);
+              widget.notifyParent();
+
+              // Update notification gap
+              WaterGoal? todaysGoal = await widget.db.getGoal(DateTime.now());
+              int medianDrinkSize = await widget.db.calcMedianDrinkSize();
+              await NotificationsController.updateScheduledNotifications(
+                  todaysGoal!.reminderGap, medianDrinkSize);
+            },
+          ),
+        ),
+      ),
+      emptyWidget: const BlankScreen(message: "Nothing in here!"),
+      onRefresh: () async {},
+      onItemSelected: (Activity item) {},
+      inputDecoration: InputDecoration(
+        prefixIcon: const Icon(Icons.search),
+        floatingLabelStyle: TextStyle(color: Theme.of(context).primaryColor),
+        labelStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        labelText: "Search Activity",
+        fillColor: Colors.white,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: AquaColors.darkBlue, width: 3.0),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
+      errorWidget: const Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.error, color: Colors.red),
+          SizedBox(height: 20),
+          Text('Error while fetching activities')
+        ],
+      ),
     );
   }
 }
