@@ -1,4 +1,6 @@
 lib/api_keys.dart
+android/app/my-key.jks
+android/key.properties
 
 # Miscellaneous
 *.class

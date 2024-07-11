@@ -69,7 +69,7 @@ class DefaultFirebaseOptions {
     projectId: 'aqua-101',
     databaseURL: 'https://aqua-101-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'aqua-101.appspot.com',
-    iosBundleId: 'com.example.aqua',
+    iosBundleId: 'com.anshu79.aqua',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -79,6 +79,6 @@ class DefaultFirebaseOptions {
     projectId: 'aqua-101',
     databaseURL: 'https://aqua-101-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'aqua-101.appspot.com',
-    iosBundleId: 'com.example.aqua.RunnerTests',
+    iosBundleId: 'com.anshu79.aqua.RunnerTests',
   );
 }

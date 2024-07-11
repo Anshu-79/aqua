@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.aqua</string>
+	<string>com.anshu79.aqua</string>
 	<key>PROJECT_ID</key>
 	<string>aqua-101</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,7 +25,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1078552236233:ios:74e4758fcf7a1392d73d18</string>
+	<string>1:1078552236233:ios:e584ccc76a51ffa1d73d18</string>
 	<key>DATABASE_URL</key>
 	<string>https://aqua-101-default-rtdb.asia-southeast1.firebasedatabase.app</string>
 </dict>
