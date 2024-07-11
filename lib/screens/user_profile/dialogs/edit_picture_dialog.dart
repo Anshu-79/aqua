@@ -8,6 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils/widgets/global_navigator.dart';
 
+/// This widget allows user to update their profile picture
+/// It gives the option to either use the Camera or the Gallery
 class EditPictureDialog extends StatefulWidget {
   const EditPictureDialog({super.key, required this.prefs});
 

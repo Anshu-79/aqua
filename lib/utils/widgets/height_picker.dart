@@ -16,6 +16,8 @@ int toFeet(int height) => height * 0.3937008 ~/ 12;
 int toInch(int height) =>
     ((height * 0.3937008 / 12 - toFeet(height)) * 12).toInt();
 
+/// The [HeightPicker] widget consists of a [NumberPicker] & an [AnimatedToggleSwitch.dual]
+/// The toggle offers functionality to switch between metric & imperial systems
 class HeightPicker extends StatefulWidget {
   const HeightPicker(
       {super.key,
@@ -32,7 +34,7 @@ class HeightPicker extends StatefulWidget {
 }
 
 class _HeightPickerState extends State<HeightPicker> {
-  bool isMetric = false;
+  bool isMetric = false; // this bool is contolled by metricToggle
   late final Map<String, int> _height = {'cm': widget.height};
 
   @override
@@ -48,11 +50,11 @@ class _HeightPickerState extends State<HeightPicker> {
     return Column(children: [
       isMetric ? metricHeightPicker() : imperialHeightPicker(),
       const SizedBox(height: 20),
-      unitsToggle(),
+      metricToggle(),
     ]);
   }
 
-  Widget unitsToggle() {
+  Widget metricToggle() {
     return AnimatedToggleSwitch<bool>.dual(
       current: isMetric,
       first: false,
@@ -110,7 +112,6 @@ class _HeightPickerState extends State<HeightPicker> {
   Widget metricHeightPicker() => heightPicker('cm', 61, 272);
 
   Widget imperialHeightPicker() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [heightPicker('ft', 2, 8), heightPicker('in', 0, 11)],
-      );
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [heightPicker('ft', 2, 8), heightPicker('in', 0, 11)]);
 }

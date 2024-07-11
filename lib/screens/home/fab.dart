@@ -10,16 +10,13 @@ import 'package:aqua/utils/icomoon_icons.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils/widgets/global_navigator.dart';
 
-
 const double iconSize = 45;
 
-Future<void> showDrinkAddedSnackbar(DrinksCompanion drink, Beverage bev) async {
-  String msg = "${drink.volume.value} mL of ${bev.name} added!";
-  Color color = bev.colorCode.toColor();
-
-  GlobalNavigator.showSnackBar(msg, color);
-}
-
+/// A semi-circular FAB menu that shows a list of 2-4 buttons
+/// One of these buttons is the [CustomDrinkButton] which opens [AddDrinkDialog]
+/// The other buttons represent top few starred beverages
+/// Note that water is always displayed because it cannot be unstarred
+/// Each button when clicked on, adds a drink of 200 mL of the beverage
 class CircularFab extends StatefulWidget {
   const CircularFab(
       {super.key,
@@ -38,6 +35,9 @@ class CircularFab extends StatefulWidget {
 
 class _CircularFabState extends State<CircularFab> {
   late List<Widget> _fabButtons;
+
+  // this variable controls the max number of buttons on the cirular menu
+  // It is recommended to keep it between the range of 2-5
   final int maxFabButtonsCount = 4;
   bool _loading = true;
 
@@ -64,7 +64,7 @@ class _CircularFabState extends State<CircularFab> {
       );
     });
 
-    // Add CustomDrinkButton in the middle
+    // Add [CustomDrinkButton] in the middle
     widgets.insert(
         ((starDrinksCount + 1) / 2).floor(),
         CustomDrinkButton(
@@ -92,7 +92,6 @@ class _CircularFabState extends State<CircularFab> {
       fabColor: Theme.of(context).primaryColor,
       fabOpenIcon: Icon(Icons.add, color: Theme.of(context).canvasColor),
       fabCloseIcon: Icon(Icons.close, color: Theme.of(context).canvasColor),
-
       children: _loading
           ? List.generate(
               maxFabButtonsCount, (idx) => const CircularProgressIndicator())
@@ -162,6 +161,13 @@ class CustomDrinkButton extends ExtendedFabButton {
   }
 }
 
+/// A helper function used by [_addQuickDrink] & [_addCustomDrink]
+/// First: it adds a [Drink] to the database
+/// Second: it calculates the volume of water in it and increases [WaterGoal.consumedVolume] & [WaterGoal.reminderGap] accordingly
+/// Third: it starts the water filling animation
+/// Fourth: it updates the content of water container
+/// Fifth: it checks if today's goal was just completed. If yes, it blasts confetti
+/// Sixth: it reschedules all upcoming notifications to match the newly calculated reminderGap
 addDrink(
     Database db,
     DrinksCompanion drink,
@@ -176,8 +182,6 @@ addDrink(
   await db.updateConsumedVolume(waterVol.toInt());
   fillAnimation(waterVol);
   updateReminderBox();
-
-  showDrinkAddedSnackbar(drink, bev);
 
   WaterGoal? todaysGoal = await db.getGoal(DateTime.now());
   int medianDrinkSize = await db.calcMedianDrinkSize();

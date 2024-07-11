@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// The [NavButtons] are essentially a [Row] of two IconButtons
+/// They allow the user to go back and forth across the [OnboardingFlow]
 class NavButtons extends StatelessWidget {
   const NavButtons({
     super.key,

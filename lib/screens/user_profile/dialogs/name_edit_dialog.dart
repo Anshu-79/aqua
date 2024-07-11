@@ -6,6 +6,7 @@ import 'package:aqua/utils/widgets/dialog_action_button.dart';
 TextStyle textInputHint = const TextStyle(
     fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey);
 
+/// This widget displays a [TextFormField] for editing username
 class NameEditDialog extends StatefulWidget {
   const NameEditDialog(
       {super.key,

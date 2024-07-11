@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aqua/utils/widgets/dialog_action_button.dart';
 import 'package:aqua/utils/colors.dart';
 
+/// This dialog uses [CalendarDatePicker2] to pick user's DOB
 class AgeEditDialog extends StatefulWidget {
   const AgeEditDialog(
       {super.key, required this.notifyParent, required this.prefs});

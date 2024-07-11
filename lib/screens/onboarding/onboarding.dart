@@ -1,6 +1,8 @@
-import 'package:aqua/screens/onboarding/form/loading.dart';
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
+
+import 'package:aqua/screens/onboarding/loading.dart';
+import 'package:aqua/utils/colors.dart';
 
 import 'package:aqua/screens/onboarding/congrats.dart';
 import 'package:aqua/screens/onboarding/goals.dart';
@@ -9,8 +11,10 @@ import 'package:aqua/screens/onboarding/reminders.dart';
 import 'package:aqua/screens/onboarding/welcome.dart';
 import 'package:aqua/screens/onboarding/location.dart';
 import 'package:aqua/screens/onboarding/form/form.dart';
-import 'package:aqua/utils/colors.dart';
 
+/// The [OnboardingView] holds a [Coast] to simulate [Hero] widgets
+/// for a scrollable list
+/// It also precaches images to be used during the scroll
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
 
@@ -132,9 +136,7 @@ class _OnboardingViewState extends State<OnboardingView>
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => LoadingScreen(
-                        profile: profile!,
-                      )));
+                  builder: (context) => LoadingScreen(profile: profile!)));
         },
       ),
     );

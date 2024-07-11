@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:aqua/utils/colors.dart';
 
+/// This Screen is displayed during the Onboarding Scroll
 class GoalScreen extends StatefulWidget {
   const GoalScreen({super.key});
 

@@ -12,6 +12,8 @@ import 'package:aqua/utils/colors.dart';
 String tooltipMessage =
     "Age is crucial for calculating AWI (Adequate Water Intake)";
 
+
+/// The [DobInputScreen] displays a calendar for DOB entry
 class DobInputScreen extends StatefulWidget {
   const DobInputScreen({super.key});
 

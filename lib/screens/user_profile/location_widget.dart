@@ -6,6 +6,9 @@ import 'package:aqua/utils/textstyles.dart';
 import 'package:aqua/utils/widgets/global_navigator.dart';
 import 'package:aqua/utils/weather_utils.dart';
 
+/// This widget displays the user's location
+/// It uses the place obtained in the daily weather report
+/// The user can manually update the place using a refresh IconButton on this widget
 class LocationWidget extends StatefulWidget {
   const LocationWidget({super.key, required this.prefs});
   final SharedPreferences prefs;

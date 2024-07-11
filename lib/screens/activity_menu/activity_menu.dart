@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
 import 'package:aqua/database/database.dart';
-import 'package:aqua/utils/miscellaneous.dart' as utils;
 import 'package:aqua/utils/widgets/blank_screen.dart';
 import 'package:aqua/utils/widgets/global_navigator.dart';
 import 'package:aqua/utils/widgets/universal_fab.dart';
 import 'package:aqua/utils/widgets/universal_header.dart';
 
-import 'package:aqua/screens/activity_menu/helpers.dart';
+import 'package:aqua/screens/activity_menu/activity_card.dart';
 import 'package:aqua/screens/activity_menu/add_workout.dart';
 
+/// The [ActivityMenu] displays the physical activities of a user for the current date
+/// It uses a [FutureBuilder] to asynchronously fetch data from the database
+/// Then displays the fetched data using a grid of [WorkoutCard]
+/// The FAB opens [AddWorkoutDialog] which allows the user to choose an activity
 class ActivityMenu extends StatefulWidget {
   const ActivityMenu({super.key, required this.database});
 
@@ -33,15 +36,12 @@ class _ActivityMenuState extends State<ActivityMenu> {
 
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(
-              child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor),
-            );
+                child: CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor));
           }
 
           if (snapshot.hasError) {
-            return Center(
-              child: Text(snapshot.error.toString()),
-            );
+            return Center(child: Text(snapshot.error.toString()));
           }
 
           if (workouts != null && workouts.isNotEmpty) {
@@ -76,43 +76,3 @@ class _ActivityMenuState extends State<ActivityMenu> {
   }
 }
 
-class WorkoutCard extends StatelessWidget {
-  const WorkoutCard({super.key, required this.workout});
-  final Workout workout;
-
-  @override
-  Widget build(BuildContext context) {
-    Color bgColor = getWorkoutColor(workout.activityID);
-    Color primaryColor = Theme.of(context).primaryColor;
-
-    return Container(
-      margin: const EdgeInsets.all(8.0),
-      padding: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-          color: bgColor.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: bgColor, width: 5)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Icon(getWorkoutIcon(workout.activityID),
-              color: primaryColor, size: 50),
-          FittedBox(
-              fit: BoxFit.contain,
-              child: Text(getWorkoutCategory(workout.activityID),
-                  style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.w900,
-                      color: primaryColor))),
-          Text(utils.getDurationInText(workout.duration),
-              style:
-                  TextStyle(color: primaryColor, fontWeight: FontWeight.w900)),
-          Text(utils.getVolumeInText(workout.waterLoss),
-              style:
-                  TextStyle(color: primaryColor, fontWeight: FontWeight.bold)),
-        ],
-      ),
-    );
-  }
-}

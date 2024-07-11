@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/permission_handlers.dart';
 
+/// This Screen is displayed during the Onboarding Scroll
 class ProgressScreen extends StatelessWidget {
   const ProgressScreen({super.key});
 

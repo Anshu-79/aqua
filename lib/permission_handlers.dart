@@ -13,7 +13,6 @@ Future<void> requestNotificationPermission() async {
   var status = await Permission.notification.request();
   if (status.isGranted) {
   } else if (status.isDenied) {
-    // Permission is denied
     GlobalNavigator.showAlertDialog(reminderMsg, null);
   }
 }
@@ -23,6 +22,7 @@ Future<void> requestLocationPermission() async {
   if (status.isGranted) {
   } else if (status.isDenied) {
 
+    // Ask user to manually enter location if location permissions denied
     final List<String> location = await GlobalNavigator.showAlertDialog(
         reminderMsg, const PickCityDialog());
 

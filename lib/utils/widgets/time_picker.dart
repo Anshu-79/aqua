@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
+/// The [TimePicker] implements a [NumberPicker] to choose the hour of the day
+/// Note that only the hour can be changed because there are no necessities to
+/// pick minutes currently
 class TimePicker extends StatefulWidget {
   const TimePicker({super.key, required this.time, required this.notifyParent});
 
@@ -21,9 +24,9 @@ class _TimePickerState extends State<TimePicker> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         NumberPicker(
-          zeroPad: true,
-          infiniteLoop: true,
-          itemHeight: 70,
+            zeroPad: true,
+            infiniteLoop: true,
+            itemHeight: 70,
             minValue: 0,
             maxValue: 23,
             value: _time,

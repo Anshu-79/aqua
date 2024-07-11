@@ -10,15 +10,16 @@ Future<void> createUser(Profile profile, List<double?> location) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   final bool isDarkMode = PlatformDispatcher.instance.platformBrightness == Brightness.dark;
+  final DateTime dob = profile.dob ?? DateTime(2000, 1, 1);
 
-  prefs.setString('name', profile.name!);
-  prefs.setString('email', profile.email!);
-  prefs.setString('sex', profile.sex!);
-  prefs.setString('DOB', profile.dob!.toIso8601String());
-  prefs.setInt('height', profile.height!);
-  prefs.setInt('weight', profile.weight!);
-  prefs.setInt('sleepTime', profile.sleepTime!);
-  prefs.setInt('wakeTime', profile.wakeTime!);
+  prefs.setString('name', profile.name ?? "User Name");
+  prefs.setString('email', profile.email ?? "email@email.com");
+  prefs.setString('sex', profile.sex ?? 'M');
+  prefs.setString('DOB', dob.toIso8601String());
+  prefs.setInt('height', profile.height ?? 150);
+  prefs.setInt('weight', profile.weight ?? 60);
+  prefs.setInt('sleepTime', profile.sleepTime ?? 0);
+  prefs.setInt('wakeTime', profile.wakeTime ?? 8);
   prefs.setInt('streak', 0);
   prefs.setDouble('latitude', location[0]!);
   prefs.setDouble('longitude', location[1]!);

@@ -7,6 +7,8 @@ import 'package:aqua/database/database.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils/widgets/dialog_action_button.dart';
 
+/// This dialog is displayed when the user adds a drink using the [CustomDrinkButton]
+/// Provides functionality to switch between all stored beverages and set a volume
 class AddDrinkDialog extends StatefulWidget {
   const AddDrinkDialog(
       {super.key, required this.beverages, required this.notifyParent});

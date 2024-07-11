@@ -12,6 +12,8 @@ import 'package:aqua/screens/settings/faqs.dart';
 TextStyle headerStyle =
     const TextStyle(fontSize: 40, fontWeight: FontWeight.w900);
 
+/// The [SettingsPage] consists of a theme mode toggle, a [ListView] of FAQs
+/// A clickable GitHub card & a clickable BuyMeACoffee card
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key, required this.prefs});
   final SharedPreferences prefs;

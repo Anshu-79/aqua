@@ -9,6 +9,8 @@ import 'package:aqua/screens/home/reminder_box.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils/widgets/universal_header.dart';
 
+/// The [HomeScreen] consists of 3 main widgets: [ReminderBox], [WaterGoalWidget] & a cirular FAB.
+/// It acts as a way of communication between the 3 widgets, passing callbacks across them.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.database, required this.prefs});
 

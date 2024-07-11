@@ -6,6 +6,7 @@ import 'package:geocode/geocode.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils/shared_pref_utils.dart';
 
+/// Fetches the user's current location
 Future<List<double?>> getCurrentLocation() async {
   Location location = Location();
 
@@ -18,14 +19,18 @@ Future<List<double?>> getCurrentLocation() async {
   if (!serviceEnabled) serviceEnabled = await location.requestService();
 
   if (permission != PermissionStatus.granted) {
+    // If permission wasn't granted, return existing lat & long
     if (storedLat != null) return [storedLat, storedLong, 0];
+
     return [28.70405920, 77.10249020, 216]; // Coordinates of Delhi
   }
 
+  // If permission was granted, fetch location and return it
   LocationData locationData = await location.getLocation();
   return [locationData.latitude, locationData.longitude, locationData.altitude];
 }
 
+/// A geocoder that geocodes the address obtained from [PickCityDialog]
 Future<Coordinates> getCoordinates(String address) async {
   GeoCode geoCode = GeoCode();
   try {
@@ -36,6 +41,7 @@ Future<Coordinates> getCoordinates(String address) async {
   }
 }
 
+/// This dialog is displayed when the user refuses to give location permission
 class PickCityDialog extends StatefulWidget {
   const PickCityDialog({super.key});
 
@@ -78,8 +84,7 @@ class _PickCityDialogState extends State<PickCityDialog> {
                   Navigator.pop(context, address);
                 }
               },
-              style: TextButton.styleFrom(
-                  backgroundColor: AquaColors.darkBlue),
+              style: TextButton.styleFrom(backgroundColor: AquaColors.darkBlue),
               child: const Text(
                 "Continue",
                 style: TextStyle(color: Colors.white, fontSize: 20),

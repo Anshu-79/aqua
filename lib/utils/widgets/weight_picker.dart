@@ -9,6 +9,8 @@ int toLbs(int kg) => (kg * 2.20462).round();
 
 int toKg(int lb) => (lb / 2.20462).round();
 
+/// The [WeightPicker] widget consists of a [NumberPicker] & an [AnimatedToggleSwitch.dual]
+/// The toggle offers functionality to switch between metric & imperial systems
 class WeightPicker extends StatefulWidget {
   const WeightPicker(
       {super.key,

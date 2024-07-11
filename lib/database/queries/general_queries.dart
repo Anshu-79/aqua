@@ -1,7 +1,9 @@
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils/shared_pref_utils.dart';
 
+/// Extension on the `Database` class to provide some miscellaneous queries.
 extension GeneralQueries on Database {
+  /// Calculates the median of the last [sampleSize] drinks
   Future<int> calcMedianDrinkSize() async {
     int sampleSize = 20; // Number of recent drinks to calculate median
 
@@ -16,9 +18,11 @@ extension GeneralQueries on Database {
     return drinkSizes[drinkSizes.length ~/ 2]; // Median is at middle position
   }
 
-  // The input variables consumed & total are nullable since they
-  // don't need to be passed everytime. Currently, they are passed only when
-  // the function is called from setTodaysGoal()
+  /// Calculates the duration between each subsequent reminder from now
+  ///
+  /// The input variables [consumed] & [total] are nullable since they
+  /// don't need to be passed everytime. Currently, they are passed only when
+  /// the function is called from [setTodaysGoal]
   Future<int> calcReminderGap(int? consumed, int? total) async {
     DateTime now = DateTime.now();
 
@@ -44,7 +48,7 @@ extension GeneralQueries on Database {
     final int drinkSize = await calcMedianDrinkSize();
     int drinksNeeded = toDrink ~/ drinkSize;
 
-    // Assume a minimum of 1 drink
+    // Assumes a minimum of 1 drink
     if (drinksNeeded == 0) drinksNeeded = 1;
 
     final int sleepHour = await SharedPrefUtils.getSleepTime();
@@ -62,6 +66,7 @@ extension GeneralQueries on Database {
     return reminderGap.round();
   }
 
+  /// Fetches the [WaterGoal.reminderGap] of current day
   Future<int> getStoredReminderGap() async {
     WaterGoal? todaysGoal = await getGoal(DateTime.now());
     return todaysGoal!.reminderGap;

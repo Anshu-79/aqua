@@ -20,11 +20,15 @@ export 'package:aqua/database/queries/workout_queries.dart';
 
 part 'database.g.dart';
 
+/// Defines the [Database] object used throughout the app
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
+    // Set the filepath to save the database file
     final dbFolder = await getApplicationDocumentsDirectory();
     final file = File(path.join(dbFolder.path, 'aqua.sqlite'));
 
+    // If file doesn't exist (ie app running for the first time), pre-populate it with
+    // a db file containing the activities
     if (!await file.exists()) {
       // Extract the pre-populated database file from assets
       final blob = await rootBundle.load('assets/aqua.db');
@@ -64,6 +68,9 @@ class Database extends _$Database {
   @override
   MigrationStrategy get migration => MigrationStrategy(
         onCreate: (Migrator m) async {
+
+          /// A [List] of the default Beverages defined in Aqua
+          /// Except Water, all of these can be edited by the user
           List<BeveragesCompanion> defaultBeverages = [
             BeveragesCompanion(
               name: const Value("Water"),
@@ -97,6 +104,7 @@ class Database extends _$Database {
             ),
           ];
 
+          // Default beverages are inserted when the database is created
           await m.createAll();
           for (final beverage in defaultBeverages) {
             await into(beverages).insert(beverage);

@@ -7,6 +7,8 @@ import 'package:aqua/screens/user_profile/profile.dart';
 import 'package:aqua/screens/user_profile/statistics.dart';
 import 'package:aqua/screens/user_profile/share_widget.dart';
 
+/// The [UserProfile] screen is a composition of
+/// [ProfileWidget], [StatsWidget] & [ShareWidget]
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key, required this.database, required this.prefs});
 

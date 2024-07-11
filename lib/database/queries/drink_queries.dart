@@ -5,11 +5,23 @@ import 'package:aqua/database/database.dart';
 import 'package:aqua/utils/miscellaneous.dart';
 import 'package:aqua/utils/shared_pref_utils.dart';
 
+/// Extension on the `Database` class to provide drinks-related queries.
 extension DrinkQueries on Database {
+  /// Tries to insert an item into [drinks]
+  /// If failed due to conflict, it updates said [Drink]
   Future<int> insertOrUpdateDrink(DrinksCompanion entity) async {
     return await into(drinks).insert(entity);
   }
 
+  /// Returns a map of a date with the volume of [Beverage] with [bevID] drank on the day
+  /// 
+  /// For eg: 
+  /// ```dart
+  /// Map resultMap = await getDailyConsumption(1, 7);
+  /// ```
+  /// Then, resultMap will be:
+  /// ```dart
+  /// { "Water": {01-01-1970 00:00:00.000: 10, 02-01-1970 00:00:00.000: 20, ...}
   Future<Map<DateTime, int>> getDailyConsumption(int bevID, int range) async {
     DateTime endDate = await shiftToWakeTime(DateTime.now());
     endDate = DateUtils.dateOnly(endDate);
@@ -38,6 +50,7 @@ extension DrinkQueries on Database {
     return aggregatedData;
   }
 
+  /// Adds an item to [drinks] with [bevID] = 1 (ie Water)
   Future<int> insertWater(int volume) async {
     DrinksCompanion water = DrinksCompanion(
         bevID: const Value(1),
@@ -49,29 +62,20 @@ extension DrinkQueries on Database {
 
   Future<List<Drink>> getDrinks() async => await select(drinks).get();
 
+  /// Only fetches the items in [drinks] which are water (ie bevID = 1) 
   Future<List<Drink>> getWaterDrinks() async {
     final query = select(drinks)..where((tbl) => tbl.bevID.equals(1));
     return await query.get();
   }
 
-  Future<List<Drink>> getDrinksOfDay(DateTime date) async {
-    final startOfDay =
-        await shiftToWakeTime(DateTime(date.year, date.month, date.day));
-    final endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59, 999);
-
-    return (select(drinks)
-          ..where((d) =>
-              d.datetime.isBiggerOrEqualValue(startOfDay) &
-              d.datetime.isSmallerOrEqualValue(endOfDay)))
-        .get();
-  }
-
+  /// Fetches the number of items in [drinks]
   Future<int> getDrinkCount() async {
     return customSelect('SELECT COUNT(*) FROM drinks', readsFrom: {drinks})
         .map((row) => row.read<int>('COUNT(*)'))
         .getSingle();
   }
 
+  /// Fetches the last [n] items from [drinks]
   Future<List<Drink>?> getLastNDrinks(int n) async {
     if (await getDrinkCount() == 0) return null;
 

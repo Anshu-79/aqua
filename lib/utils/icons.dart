@@ -1,6 +1,7 @@
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils/icomoon_icons.dart';
 
+/// Provides the icon & color for a workout category
 Map<String, List<dynamic>> workoutIconMap = {
   'Bicycling': [Icomoon.Bicycling, AquaColors.green],
   'Conditioning Exercise': [Icomoon.Conditioning_Exercise, AquaColors.blue],
@@ -25,4 +26,3 @@ Map<String, List<dynamic>> workoutIconMap = {
   'Volunteer Activities': [Icomoon.Volunteer_Activities, AquaColors.green],
   'Video Games': [Icomoon.Video_Games, AquaColors.blue],
 };
-

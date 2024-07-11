@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils/icons.dart';
 
+/// Renders a [PieChart] showing the distribution of workout duration for activities
 class WorkoutDurationPieChart extends StatefulWidget {
   const WorkoutDurationPieChart({super.key, required this.workouts});
 

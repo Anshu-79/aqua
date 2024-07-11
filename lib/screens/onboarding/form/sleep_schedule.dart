@@ -32,6 +32,7 @@ TimePickerDecoration decoration(textColor) {
           icon: const Icon(Icons.wb_sunny), color: Colors.transparent));
 }
 
+/// The [SleepScheduleInputScreen] uses a [TimePicker] to select user's sleep schedule
 class SleepScheduleInputScreen extends StatefulWidget {
   const SleepScheduleInputScreen({super.key});
 

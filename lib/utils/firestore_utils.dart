@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:aqua/screens/onboarding/form/profile.dart';
 
+/// Uploads the profile generated during onboarding to FireStore
 Future<void> createUser(Profile profile, List<double?> location) async {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
 
@@ -24,6 +25,7 @@ Future<void> createUser(Profile profile, List<double?> location) async {
       (DocumentReference doc) async => await SharedPrefUtils.saveStr('uid', doc.id));
 }
 
+/// Uploads the Profile Picture selected to Firebase Storage
 Future<void> uploadProfilePicture(File? image, String username) async {
   final folderRef = FirebaseStorage.instance.ref().child('profile_pictures');
 

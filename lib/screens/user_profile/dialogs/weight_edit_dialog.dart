@@ -5,6 +5,7 @@ import 'package:aqua/utils/widgets/weight_picker.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils/widgets/dialog_action_button.dart';
 
+/// The [WeightEditDialog] uses the [WeightPicker] widget for height edits
 class WeightEditDialog extends StatefulWidget {
   const WeightEditDialog(
       {super.key, required this.notifyParent, required this.prefs});

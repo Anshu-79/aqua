@@ -15,18 +15,23 @@ import 'package:aqua/screens/onboarding/onboarding.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
+  // Firebase initialization
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  // SharedPreferences initialization
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
+  // If app is opened for the first time (ie onboard = false), API key is written onto device
   if (prefs.getBool('onboard') != true) writeAPIKey('weather', openWeatherKey);
 
+  // Notifications initialization
   await NotificationsController.initLocalNotifications();
 
   // Runs every time app is run but fetches weather only when day has changed
   await DailyTaskManager.checkAndRunTask(saveWeather);
 
+  // Kills notifications if sleeping time has started
   await DailyTaskManager.checkAndRunTask(
       NotificationsController.killNotificationsDuringSleepTime);
 

@@ -7,6 +7,7 @@ import 'package:aqua/database/database.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils/widgets/dialog_action_button.dart';
 
+/// TextStyles used throughout the dialog
 TextStyle dialogSubtext = const TextStyle(
     fontSize: 40, fontWeight: FontWeight.w900, color: Colors.black);
 
@@ -16,6 +17,7 @@ TextStyle textInput = const TextStyle(
 TextStyle textInputHint = const TextStyle(
     fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey);
 
+/// The placeholder data of the beverage to be displayed when a new beverage is to be added
 Beverage defaultBeverage = Beverage(
     id: 1,
     name: '',
@@ -23,6 +25,7 @@ Beverage defaultBeverage = Beverage(
     waterPercent: 50,
     starred: false);
 
+/// This dialog provides a [TextFormField] & a [NumberPicker] for the user to add/edit a beverage
 class BeverageDialog extends StatefulWidget {
   const BeverageDialog(
       {super.key, required this.beverage, required this.notifyParent});

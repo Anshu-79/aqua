@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// This class stores the theme colors of Aqua
 abstract class AquaColors {
   static const Color pink = Color(0xFFff4778);
   static const Color red = Color(0xFFff333a);
@@ -32,6 +33,7 @@ List<Color> shapeColors = [
   AquaColors.blue,
 ];
 
+/// An extension on [String] to convert a hex color code to a [Color] object 
 extension StringExt on String {
   Color toColor() => Color(int.parse('0x$this'));
 }
