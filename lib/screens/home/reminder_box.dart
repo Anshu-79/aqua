@@ -15,7 +15,7 @@ bool isSleepTime(SharedPreferences prefs) {
   int nowHr = DateTime.now().hour;
 
   bool beforeSleeping = nowHr < min(wakeTime, sleepTime);
-  bool afterSleeping = nowHr > max(wakeTime, sleepTime);
+  bool afterSleeping = nowHr >= max(wakeTime, sleepTime);
 
   if (!beforeSleeping && !afterSleeping) return true;
   return false;

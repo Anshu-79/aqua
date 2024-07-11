@@ -1,4 +1,4 @@
-package com.example.aqua
+package com.anshu79.aqua
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1078552236233:android:77d7db5413b64300d73d18",
+        "mobilesdk_app_id": "1:1078552236233:android:af2bf207d51cefbbd73d18",
         "android_client_info": {
-          "package_name": "com.example.aqua"
+          "package_name": "com.anshu79.aqua"
         }
       },
       "oauth_client": [],
