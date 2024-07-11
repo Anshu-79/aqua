@@ -28,6 +28,7 @@ Future<bool> isGoalCompleted(Database db) async {
   return consumed >= total;
 }
 
+/// A hacky solution to get a line of text with 2 different styles
 Widget getStyledText(String prefix, String styledText, String suffix,
     TextStyle subTextStyle, TextStyle styledTextStyle) {
   return Text.rich(
@@ -42,6 +43,15 @@ Widget getStyledText(String prefix, String styledText, String suffix,
   );
 }
 
+/// The [ReminderBox] is built on top of an [AnimatedToggleSwitch.dual]
+/// It has 4 different states: ON, OFF, COMPLETE & SLEEP.
+/// When set to ON, it displays the median drink size & reminder gap, indicating to the user the frequency of upcoming reminders
+/// When set to OFF, it turns off all upcoming reminders
+/// When set to SLEEP, no reminders are sent
+/// When set to COMPLETE, reminders are sent next day
+/// The user can turn the Switch ON or OFF, but it will automatically retain
+/// the SLEEP state when [isSleepTime] turns true
+/// A similar behaviour is observed for the COMPLETE state
 class ReminderBox extends StatefulWidget {
   const ReminderBox(
       {super.key,

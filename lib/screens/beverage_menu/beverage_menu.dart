@@ -9,6 +9,10 @@ import 'package:aqua/utils/widgets/global_navigator.dart';
 import 'package:aqua/screens/beverage_menu/beverage_dialog.dart';
 import 'package:aqua/screens/beverage_menu/beverage_card.dart';
 
+/// The [BeverageMenu] displays all the beverages
+/// It uses a [FutureBuilder] to asynchronously fetch data from the database
+/// Then displays the fetched data using a [ListView] of [BeverageCard]
+/// The FAB opens the [BeverageDialog] which null passed into the beverage parameter
 class BeverageMenu extends StatefulWidget {
   const BeverageMenu({super.key, required this.database});
 

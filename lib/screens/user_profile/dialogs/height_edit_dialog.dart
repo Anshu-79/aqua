@@ -5,6 +5,7 @@ import 'package:aqua/utils/widgets/height_picker.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils/widgets/dialog_action_button.dart';
 
+/// The [HeightEditDialog] uses the [HeightPicker] widget for height entry
 class HeightEditDialog extends StatefulWidget {
   const HeightEditDialog(
       {super.key, required this.notifyParent, required this.prefs});

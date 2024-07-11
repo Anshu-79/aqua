@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:aqua/utils/colors.dart';
 
+/// This Screen is displayed at the end of the Onboarding Scroll
+/// It consists of a simple GIF
 class CongratsScreen extends StatelessWidget {
   const CongratsScreen({super.key});
 

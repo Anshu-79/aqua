@@ -1,6 +1,8 @@
 import 'package:aqua/theme_manager.dart';
 import 'package:flutter/material.dart';
 
+/// This widget is displayed when there is nothing else to be displayed
+/// Currently, it is used on the Activity Menu
 class BlankScreen extends StatelessWidget {
   const BlankScreen({super.key, required this.message});
   final String message;

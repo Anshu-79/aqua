@@ -5,51 +5,7 @@ import 'package:aqua/utils/miscellaneous.dart' as utils;
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 
-// Text field to receive user input
-class NameInputField extends StatefulWidget {
-  const NameInputField(
-      {super.key, required this.formKey, required this.controller});
-
-  final GlobalKey<FormState> formKey;
-  final TextEditingController controller;
-
-  @override
-  State<NameInputField> createState() => _NameInputFieldState();
-}
-
-class _NameInputFieldState extends State<NameInputField> {
-  TextStyle formHintStyle = const TextStyle(
-      fontSize: 40, fontWeight: FontWeight.bold, color: Colors.grey);
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-        key: widget.formKey,
-        child: TextFormField(
-            style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900),
-            controller: widget.controller,
-            textCapitalization: TextCapitalization.words,
-            textAlign: TextAlign.center,
-            decoration: InputDecoration(
-              hintText: "Your Name",
-              hintStyle: formHintStyle,
-              filled: false,
-              border: UnderlineInputBorder(
-                  borderSide:
-                      BorderSide(color: Theme.of(context).primaryColor)),
-            ),
-            validator: (value) {
-              if (value!.trim().isEmpty) {
-                return "Name cannot be empty";
-              } else if (value.length > 100) {
-                return "Please enter a valid name";
-              } else {
-                return null;
-              }
-            }));
-  }
-}
-
+/// The [NameInputScreen] uses a [TextFormField] for name entry
 class NameInputScreen extends StatefulWidget {
   const NameInputScreen({super.key});
 
@@ -104,5 +60,50 @@ class _NameInputScreenState extends State<NameInputScreen> {
                         }
                       })
                 ])));
+  }
+}
+
+/// Text field to receive username
+class NameInputField extends StatefulWidget {
+  const NameInputField(
+      {super.key, required this.formKey, required this.controller});
+
+  final GlobalKey<FormState> formKey;
+  final TextEditingController controller;
+
+  @override
+  State<NameInputField> createState() => _NameInputFieldState();
+}
+
+class _NameInputFieldState extends State<NameInputField> {
+  TextStyle formHintStyle = const TextStyle(
+      fontSize: 40, fontWeight: FontWeight.bold, color: Colors.grey);
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+        key: widget.formKey,
+        child: TextFormField(
+            style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900),
+            controller: widget.controller,
+            textCapitalization: TextCapitalization.words,
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+              hintText: "Your Name",
+              hintStyle: formHintStyle,
+              filled: false,
+              border: UnderlineInputBorder(
+                  borderSide:
+                      BorderSide(color: Theme.of(context).primaryColor)),
+            ),
+            validator: (value) {
+              if (value!.trim().isEmpty) {
+                return "Name cannot be empty";
+              } else if (value.length > 100) {
+                return "Please enter a valid name";
+              } else {
+                return null;
+              }
+            }));
   }
 }

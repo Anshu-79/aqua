@@ -20,6 +20,7 @@ String getWakeTimeText(SharedPreferences prefs) =>
 String getSleepTimeText(SharedPreferences prefs) =>
     utils.getTimeInText(prefs.getInt('sleepTime')!);
 
+/// A [Row] of 3 [BiometricButton] for age, height & weight
 class BioButtonsRow extends StatefulWidget {
   const BioButtonsRow({super.key, required this.prefs});
   final SharedPreferences prefs;
@@ -52,6 +53,7 @@ class _BioButtonsRowState extends State<BioButtonsRow> {
   }
 }
 
+/// A [Row] of 2 [SleepScheduleButton] for sleepTime and wakeTime
 class SleepButtonsRow extends StatefulWidget {
   const SleepButtonsRow({super.key, required this.prefs, required this.db});
   final SharedPreferences prefs;

@@ -7,6 +7,7 @@ import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/utils/miscellaneous.dart' as utils;
 
+/// The [WeightInputScreen] uses the [WeightPicker] widget for height entry
 class WeightInputScreen extends StatefulWidget {
   const WeightInputScreen({super.key});
 

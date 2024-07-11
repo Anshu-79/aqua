@@ -7,6 +7,7 @@ import 'package:aqua/utils/icomoon_icons.dart';
 import 'package:aqua/utils/textstyles.dart';
 import 'package:aqua/utils/widgets/global_navigator.dart';
 
+/// Displays the name, waterPercent and starred status for a [Beverage]
 class BeverageCard extends StatefulWidget {
   const BeverageCard(
       {super.key,
@@ -32,6 +33,7 @@ class _BeverageCardState extends State<BeverageCard> {
     super.initState();
   }
 
+  /// Performs database actions after checking some conditions
   void _conditionalActions(Beverage bvg) async {
     // Prevent changes to Water
     if (bvg.id == 1) {

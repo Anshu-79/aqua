@@ -1,5 +1,7 @@
 import 'package:aqua/utils/shared_pref_utils.dart';
 
+/// The daily Water Goal is primarily set to the AWI
+/// It is then adjusted based on RWL which depends on altitude & temperature
 Future<int> calcTodaysGoal() async {
   final int age = await getAge();
   final String? sex = await SharedPrefUtils.readStr('sex');
@@ -26,7 +28,7 @@ Future<int> calcRespiratoryLoss() async {
 }
 
 Future<double> calcSweatLoss(double metVal, int duration) async {
-  double efficiency = 0.25;
+  double efficiency = 0.25; // Human efficiency to do physical tasks
 
   int? weight = await SharedPrefUtils.readInt('weight');
 
@@ -70,7 +72,7 @@ int getAWI(age, sex) {
   return 0;
 }
 
-// Calculates the Basal Metabolic Rate of a user
+/// Calculates the Basal Metabolic Rate of a user
 Future<double> getMR() async {
   int? weight = await SharedPrefUtils.readInt('weight');
   int? height = await SharedPrefUtils.readInt('height');

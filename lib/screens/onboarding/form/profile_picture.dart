@@ -10,6 +10,8 @@ import 'package:aqua/shape_painter.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils/miscellaneous.dart' as utils;
 
+/// The [PictureInputScreen] uses [ImagePicker] to select an [Image]
+/// A placeholder image (GIF) is displayed unless user selects an image
 class PictureInputScreen extends StatefulWidget {
   const PictureInputScreen({super.key});
 

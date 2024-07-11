@@ -3,8 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-// Draws a border around the chart
-// Displays a Progress Indicator while the chart loads
+/// Asynchronously loads a chart
+/// Displays a Progress Indicator while the chart loads
+/// Also draws a border around it
 class GenericChart<T> extends StatelessWidget {
   const GenericChart({
     super.key,

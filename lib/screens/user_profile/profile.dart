@@ -10,6 +10,7 @@ import 'package:aqua/screens/user_profile/profile_utils.dart';
 import 'package:aqua/screens/user_profile/name_widget.dart';
 import 'package:aqua/screens/user_profile/location_widget.dart';
 
+/// Encapsulates the profile section of the UserProfile page
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget({super.key, required this.prefs, required this.db});
 

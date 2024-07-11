@@ -32,6 +32,7 @@ String getTimeInText(int time) {
   return "$time:00 AM";
 }
 
+/// A simple widget which applies a border to the passed text
 class BorderedText extends StatelessWidget {
   const BorderedText(
       {super.key,
@@ -61,6 +62,7 @@ class BorderedText extends StatelessWidget {
   }
 }
 
+/// A [TypewriterAnimatedText] that displays questions during the Onboarding Flow
 class OnboardingQuestion extends StatelessWidget {
   const OnboardingQuestion({super.key, required this.text});
 

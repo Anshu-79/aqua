@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/screens/snapshot_screen.dart';
 
+/// Defines a clickable button that opens up the [SnapshotScreen]
 class ShareWidget extends StatelessWidget {
   const ShareWidget({super.key, required this.db, required this.prefs});
   final Database db;

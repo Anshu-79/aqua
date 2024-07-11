@@ -9,6 +9,9 @@ import 'package:aqua/utils/shared_pref_utils.dart' as shared_prefs;
 import 'package:aqua/utils/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// The [LoadingScreen] is displayed on the completion of the onboarding process
+/// It displays a GIF while the user data obtained is uploaded to firestore
+/// Profile Picture upload is carried out in the background after on-screen loading has completed
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key, required this.profile});
 

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:aqua/utils/colors.dart';
 
+/// The [UniversalHeader] generates a colorized Animated text
+/// that can be easily used as an appbar for a [Scaffold] 
 class UniversalHeader extends PreferredSize {
   const UniversalHeader({super.key, required this.title})
       : super(

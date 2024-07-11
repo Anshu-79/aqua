@@ -12,6 +12,7 @@ Beverage water = Beverage(
     starred: true,
     waterPercent: 100);
 
+/// Renders a [PieChart] showing the distribution of volume across beverages
 class BevsPieChart extends StatefulWidget {
   const BevsPieChart(
       {super.key, required this.bevMap, required this.showWater});

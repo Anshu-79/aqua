@@ -11,6 +11,10 @@ String getGoalText(int vol) {
   return litres.toStringAsFixed(2);
 }
 
+
+/// Renders the foreground of the Water Goal widget
+/// Uses a fade animation to transition to updated values
+/// when a callback from the FABs is received
 class WaterGoalForeground extends StatefulWidget {
   const WaterGoalForeground(
       {super.key, required this.consumedVol, required this.totalVol});

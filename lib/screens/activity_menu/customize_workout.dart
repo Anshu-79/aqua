@@ -9,6 +9,8 @@ import 'package:aqua/utils/widgets/global_navigator.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/screens/activity_menu/helpers.dart';
 
+/// This dialog is displayed when an [Activity] is clicked on [AddWorkoutDialog]
+/// Its primary objective is to set [Workout.duration]
 class CustomizeWorkout extends StatefulWidget {
   const CustomizeWorkout({super.key, required this.activity});
   final Activity? activity;
@@ -84,6 +86,8 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
                   function: () async {
                     double swl =
                         await calcSweatLoss(widget.activity!.met, _duration);
+
+                    // Generating a [WorkoutsCompanion] for the workout to be added
                     final workout = WorkoutsCompanion(
                       activityID: drift.Value(widget.activity!.id),
                       datetime: drift.Value(DateTime.now()),
@@ -94,8 +98,9 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
                     );
 
                     if (context.mounted) Navigator.pop(context, workout);
-                    GlobalNavigator.showSnackBar("Activity Added",
-                        getWorkoutColor(widget.activity!.id));
+
+                    GlobalNavigator.showSnackBar(
+                        "Activity Added", getWorkoutColor(widget.activity!.id));
                   },
                 ),
                 DialogActionButton(

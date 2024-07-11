@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:aqua/database/database.dart';
 
+/// Renders a [LineChart] with a single line
+/// The line tracks the [WaterGoal.consumedVolume] across multiple days
 class TotalWaterTrendChart extends StatelessWidget {
   const TotalWaterTrendChart({super.key, required this.waterGoals, required this.daysRange});
 

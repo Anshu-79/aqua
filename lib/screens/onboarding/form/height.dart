@@ -7,6 +7,7 @@ import 'package:aqua/screens/onboarding/form/nav_buttons.dart';
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/utils/miscellaneous.dart' as utils;
 
+/// The [HeightInputScreen] uses the [HeightPicker] widget for height entry
 class HeightInputScreen extends StatefulWidget {
   const HeightInputScreen({super.key});
 

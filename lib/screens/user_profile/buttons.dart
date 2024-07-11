@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aqua/utils/textstyles.dart';
 import 'package:aqua/screens/settings/settings.dart';
 
-
+/// This button opens the [SettingsPage] when clicked
 class SettingsButton extends StatelessWidget {
   const SettingsButton({super.key, required this.prefs});
 
@@ -29,6 +29,8 @@ class SettingsButton extends StatelessWidget {
   }
 }
 
+/// 3 instances of this button are used to display
+/// editable Age, Height & Weight on the profile screen
 class BiometricButton extends StatefulWidget {
   const BiometricButton(
       {super.key,
@@ -63,6 +65,8 @@ class _BiometricButtonState extends State<BiometricButton> {
   }
 }
 
+/// 2 occurences of this button are used to display
+/// editable Sleeping time & Wake-up time on the profile screen
 class SleepScheduleButton extends StatefulWidget {
   const SleepScheduleButton(
       {super.key,

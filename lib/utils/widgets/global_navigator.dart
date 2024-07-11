@@ -3,6 +3,9 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'package:aqua/main.dart';
 
+/// The [GlobalNavigator] class offers the functionality to 
+/// show a [SnackBar], a [Dialog] & an [AlertDialog] 
+/// without passing a [BuildContext] instance.
 class GlobalNavigator {
   static void showSnackBar(String text, Color? color) {
     BuildContext context = navigatorKey.currentContext!;
@@ -52,6 +55,7 @@ class GlobalNavigator {
         });
   }
 
+  // Displays the dialog with a subtle down-to-up animation
   static Future<dynamic>? showAnimatedDialog(Widget dialog) async {
     return await showGeneralDialog(
       context: navigatorKey.currentContext!,

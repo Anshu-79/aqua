@@ -14,6 +14,7 @@ import 'package:aqua/screens/charts/total_intake_chart.dart';
 import 'package:aqua/screens/user_profile/profile_picture.dart';
 import 'package:aqua/screens/user_profile/statistics.dart';
 
+/// Generates a Widget that will be rendered for progress sharing
 class SnapshotScreen extends StatefulWidget {
   final GlobalKey _widgetKey = GlobalKey();
 

@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/screens/home/water_goal_widget_foreground.dart';
 
+
+/// The [WaterGoalWidget] animates the background water waves
+/// It updates the water height based on a callback from the FABs
 class WaterGoalWidget extends StatefulWidget {
   const WaterGoalWidget({
     super.key,

@@ -11,6 +11,8 @@ Beverage water = Beverage(
     starred: true,
     waterPercent: 100);
 
+/// Renders a [LineChart] with each line representing a [Beverage]
+/// Each line plots the volume of [Beverage] drank on the day (on X-axis)
 class BeverageTrendChart extends StatelessWidget {
   const BeverageTrendChart(
       {super.key,

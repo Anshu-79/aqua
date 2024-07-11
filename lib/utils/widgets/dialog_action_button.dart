@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Instances of this button are used on every dialog box for actions
 class DialogActionButton extends StatelessWidget {
   const DialogActionButton(
       {super.key, required this.icon, required this.function});

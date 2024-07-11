@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:aqua/utils/colors.dart';
 
+/// This Screen is displayed during the Onboarding Scroll
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key});
 

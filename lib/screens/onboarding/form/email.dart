@@ -8,6 +8,57 @@ import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/shape_painter.dart';
 import 'package:aqua/utils/colors.dart';
 
+/// The [EmailInputScreen] inputs user email
+/// It uses a email validation package to check if entered email is valid
+/// It also displays the username entered in [NameInputScreen]
+class EmailInputScreen extends StatefulWidget {
+  const EmailInputScreen({super.key});
+
+  @override
+  State<EmailInputScreen> createState() => _EmailInputScreenState();
+}
+
+class _EmailInputScreenState extends State<EmailInputScreen> {
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    final Profile profile = context.flow<Profile>().state;
+    TextEditingController emailController =
+        TextEditingController(text: profile.email ?? "");
+
+    return Scaffold(
+        body: Stack(
+          children: [
+            const ColoredShapesBackground(),
+            Container(
+              margin: const EdgeInsets.all(10),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Nice to have you,",
+                        style: TextStyle(
+                            fontSize: 40, fontWeight: FontWeight.w900)),
+                    UserName(name: profile.name!),
+                    const SizedBox(height: 75),
+                    EmailInputField(
+                        formKey: formKey, controller: emailController),
+                  ]),
+            ),
+          ],
+        ),
+        bottomNavigationBar: NavButtons(navBack: () {
+          context.flow<Profile>().update((profile) => profile.decrementPage());
+        }, navForward: () {
+          if (formKey.currentState!.validate()) {
+            context.flow<Profile>().update((profile) => profile
+                .copyWith(email: emailController.text.trim())
+                .incrementPage());
+          }
+        }));
+  }
+}
+
 class EmailInputField extends StatefulWidget {
   const EmailInputField(
       {super.key, required this.formKey, required this.controller});
@@ -73,53 +124,5 @@ class UserName extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class EmailInputScreen extends StatefulWidget {
-  const EmailInputScreen({super.key});
-
-  @override
-  State<EmailInputScreen> createState() => _EmailInputScreenState();
-}
-
-class _EmailInputScreenState extends State<EmailInputScreen> {
-  final formKey = GlobalKey<FormState>();
-
-  @override
-  Widget build(BuildContext context) {
-    final Profile profile = context.flow<Profile>().state;
-    TextEditingController emailController =
-        TextEditingController(text: profile.email ?? "");
-
-    return Scaffold(
-        body: Stack(
-          children: [
-            const ColoredShapesBackground(),
-            Container(
-              margin: const EdgeInsets.all(10),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Nice to have you,",
-                        style: TextStyle(
-                            fontSize: 40, fontWeight: FontWeight.w900)),
-                    UserName(name: profile.name!),
-                    const SizedBox(height: 75),
-                    EmailInputField(
-                        formKey: formKey, controller: emailController),
-                  ]),
-            ),
-          ],
-        ),
-        bottomNavigationBar: NavButtons(navBack: () {
-          context.flow<Profile>().update((profile) => profile.decrementPage());
-        }, navForward: () {
-          if (formKey.currentState!.validate()) {
-            context.flow<Profile>().update((profile) => profile
-                .copyWith(email: emailController.text.trim())
-                .incrementPage());
-          }
-        }));
   }
 }

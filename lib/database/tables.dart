@@ -1,5 +1,7 @@
 import 'package:drift/drift.dart';
 
+/// The [Beverages] table stores the variety of beverages inputted by the user
+/// Its primary objective is to hold the [colorCode] & [waterPercent] for every [Drink]
 class Beverages extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text()();
@@ -8,6 +10,8 @@ class Beverages extends Table {
   BoolColumn get starred => boolean().withDefault(const Constant(false))();
 }
 
+/// The [Drinks] table stores all the drinks taken by the user
+/// It is linked with [Beverages] using [Beverages.id] 
 class Drinks extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get bevID => integer().references(Beverages, #id).named("bev_ID")();
@@ -16,6 +20,8 @@ class Drinks extends Table {
   IntColumn get datetimeOffset => integer()();
 }
 
+/// The [Activities] table stores the variety of physical activities a user can perform
+/// Its primary objective is to hold the [met] value & [category] of a workout
 class Activities extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get category => text().withLength(max: 25)();
@@ -23,6 +29,8 @@ class Activities extends Table {
   TextColumn get description => text()();
 }
 
+/// The [Workouts] table stores all the workouts carried out by the user
+/// It is linked with [Activities] using [Activities.id] 
 class Workouts extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get activityID =>
@@ -33,6 +41,8 @@ class Workouts extends Table {
   IntColumn get datetimeOffset => integer()();
 }
 
+/// The [WaterGoals] table stores the values related to intake goals of a day
+/// The date is used as a primary key
 class WaterGoals extends Table {
   DateTimeColumn get date => dateTime()();
   IntColumn get totalVolume => integer()();

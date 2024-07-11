@@ -10,6 +10,7 @@ import 'package:aqua/screens/activity_menu/activity_menu.dart';
 import 'package:aqua/database/database.dart';
 import 'package:aqua/utils/colors.dart';
 
+/// The [NavBar] widget passes database variables to all screens
 class NavBar extends StatefulWidget {
   const NavBar({super.key, required this.prefs});
 
@@ -36,9 +37,7 @@ class _NavBarState extends State<NavBar> {
     super.dispose();
   }
 
-  void _onItemTapped(int index) {
-    setState(() => selectedPage = index);
-  }
+  void _onItemTapped(int index) => setState(() => selectedPage = index);
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +51,11 @@ class _NavBarState extends State<NavBar> {
 
     return Scaffold(
       body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        child: pages[selectedPage],
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          return FadeTransition(opacity: animation, child: child);
-        },
-      ),
+          duration: const Duration(milliseconds: 300),
+          child: pages[selectedPage],
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(opacity: animation, child: child);
+          }),
       bottomNavigationBar: NavigationBar(
         surfaceTintColor: AquaColors.darkBlue,
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,

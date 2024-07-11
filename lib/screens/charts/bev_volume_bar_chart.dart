@@ -13,6 +13,8 @@ Beverage water = Beverage(
     starred: true,
     waterPercent: 100);
 
+/// Generates a [BarChart] with each bar representing a day
+/// Each bar's height is the total of beverage volume for that day
 class BevDistributionBarChart extends StatefulWidget {
   const BevDistributionBarChart(
       {super.key,

@@ -11,6 +11,7 @@ import 'package:aqua/shape_painter.dart';
 String tooltipMessage =
     "Research indicates that water requirements can vary by around 1 liter between genders.";
 
+/// The [SexInputScreen] uses some callback logic & 3 IconButtons for sex selection
 class SexInputScreen extends StatefulWidget {
   const SexInputScreen({super.key});
 

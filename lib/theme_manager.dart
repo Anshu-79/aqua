@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:aqua/utils/colors.dart';
 
+/// Controls the [Brightness] of app
 class ThemeNotifier extends InheritedWidget {
   final bool isDarkMode;
   final Function(bool) setTheme;
@@ -58,10 +59,7 @@ class _ThemeManagerState extends State<ThemeManager> {
   @override
   Widget build(BuildContext context) {
     return ThemeNotifier(
-      isDarkMode: isDarkMode,
-      setTheme: _setTheme,
-      child: widget.child,
-    );
+        isDarkMode: isDarkMode, setTheme: _setTheme, child: widget.child);
   }
 }
 

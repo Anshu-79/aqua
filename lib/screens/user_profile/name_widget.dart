@@ -5,6 +5,7 @@ import 'package:aqua/screens/user_profile/dialogs/name_edit_dialog.dart';
 import 'package:aqua/utils/textstyles.dart';
 import 'package:aqua/utils/widgets/global_navigator.dart';
 
+/// This widget is a simple [TextButton] that displays the username
 class NameWidget extends StatefulWidget {
   const NameWidget({super.key, required this.prefs});
   final SharedPreferences prefs;

@@ -24,7 +24,6 @@ enum DaysRangeLabel {
   final int value;
 }
 
-// Parent widget to hold all the charts
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key, required this.db});
   final Database db;

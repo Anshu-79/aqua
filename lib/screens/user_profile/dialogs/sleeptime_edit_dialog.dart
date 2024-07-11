@@ -7,6 +7,7 @@ import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils/widgets/global_navigator.dart';
 import 'package:aqua/utils/widgets/dialog_action_button.dart';
 
+/// This widget uses [TimePicker] to edit the sleep time of user
 class SleeptimeEditDialog extends StatefulWidget {
   const SleeptimeEditDialog(
       {super.key,

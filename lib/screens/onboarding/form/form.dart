@@ -32,6 +32,7 @@ List<Page<dynamic>> onGenerateProfilePages(
   ];
 }
 
+/// Defines a flow for user info entry during onboarding
 class OnboardingFlow extends StatelessWidget {
   const OnboardingFlow._();
 

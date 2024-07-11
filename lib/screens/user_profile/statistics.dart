@@ -6,6 +6,7 @@ import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils/icomoon_icons.dart';
 import 'package:aqua/screens/user_profile/stat_utils.dart';
 
+/// Encapsulates the statistics section of the UserProfile page
 class StatsWidget extends StatefulWidget {
   const StatsWidget({super.key, required this.prefs, required this.db});
   final SharedPreferences prefs;

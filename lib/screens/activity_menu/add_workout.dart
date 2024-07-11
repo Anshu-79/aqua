@@ -10,6 +10,9 @@ import 'package:aqua/utils/widgets/global_navigator.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/screens/activity_menu/helpers.dart';
 
+/// This dialog provides a [List] of [Activity] to choose from
+/// It uses a [SearchableList] to asynchronously load the activities
+/// The search box can be used to search either [Activity.category] or [Activity.description]
 class AddWorkoutDialog extends StatefulWidget {
   const AddWorkoutDialog(
       {super.key,
