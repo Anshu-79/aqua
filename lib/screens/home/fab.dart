@@ -90,7 +90,13 @@ class _CircularFabState extends State<CircularFab> {
       ringWidth: 100,
       ringColor: Colors.transparent,
       fabColor: Theme.of(context).primaryColor,
-      fabOpenIcon: Icon(Icons.add, color: Theme.of(context).canvasColor),
+      fabOpenIcon: GestureDetector(
+          onLongPress: () => showCustomDrinkDialog(
+              widget.db,
+              widget.startFillAnimation,
+              widget.notifyReminderBox,
+              widget.blastConfetti),
+          child: Icon(Icons.add, color: Theme.of(context).canvasColor)),
       fabCloseIcon: Icon(Icons.close, color: Theme.of(context).canvasColor),
       children: _loading
           ? List.generate(
@@ -98,6 +104,21 @@ class _CircularFabState extends State<CircularFab> {
           : _fabButtons,
     );
   }
+}
+
+showCustomDrinkDialog(
+    Database db, startFillAnimation, notifyReminderBox, blastConfetti) async {
+  List<Beverage> beverages = await db.getBeverages();
+  DrinksCompanion drink =
+      await GlobalNavigator.showAnimatedDialog(AddDrinkDialog(
+    beverages: beverages,
+    notifyParent: startFillAnimation,
+  ));
+
+  Beverage bev = await db.getBeverage(drink.bevID.value);
+
+  addDrink(
+      db, drink, bev, startFillAnimation, notifyReminderBox, blastConfetti);
 }
 
 class CustomDrinkButton extends ExtendedFabButton {
@@ -161,7 +182,7 @@ class CustomDrinkButton extends ExtendedFabButton {
   }
 }
 
-/// A helper function used by [_addQuickDrink] & [_addCustomDrink]
+/// A helper function used by [_addQuickDrink] & [_showCustomDrinkDialog]
 /// First: it adds a [Drink] to the database
 /// Second: it calculates the volume of water in it and increases [WaterGoal.consumedVolume] & [WaterGoal.reminderGap] accordingly
 /// Third: it starts the water filling animation

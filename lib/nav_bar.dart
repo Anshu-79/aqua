@@ -11,6 +11,7 @@ import 'package:aqua/database/database.dart';
 import 'package:aqua/utils/colors.dart';
 
 /// The [NavBar] widget passes database variables to all screens
+/// along with displaying a Material 3 [NavigationBar]
 class NavBar extends StatefulWidget {
   const NavBar({super.key, required this.prefs});
 
