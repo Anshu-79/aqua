@@ -35,7 +35,7 @@ class UniversalHeader extends PreferredSize {
                 title,
                 textStyle: screenHeader,
                 speed: const Duration(milliseconds: 500),
-                colors: AquaColors.allColors.sublist(0, 9).reversed.toList(),
+                colors: headerColors,
               )
             ],
           ),
