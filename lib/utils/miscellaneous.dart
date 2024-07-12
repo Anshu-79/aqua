@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:aqua/utils/shared_pref_utils.dart';
 
 // Unit Utilities
-String getDurationInText(int duration) {
+String getDurationInText(int duration, [breakLine = false]) {
   if (duration >= 60) {
     int hrs = duration ~/ 60;
     int minutes = duration % 60;
 
     if (minutes == 0) return "$hrs hrs";
 
+    if(breakLine) return "$hrs hrs\n$minutes mins";
+    
     return "$hrs hrs $minutes mins";
   }
 

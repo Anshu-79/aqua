@@ -29,10 +29,10 @@ class _ActivityMenuState extends State<ActivityMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const UniversalHeader(title: "Today's Activities"),
-      body: FutureBuilder<List<Workout>>(
+      body: FutureBuilder<Map<Workout, Activity>>(
         future: widget.database.getTodaysWorkouts(),
         builder: (context, snapshot) {
-          final List<Workout>? workouts = snapshot.data;
+          final Map<Workout, Activity>? data = snapshot.data;
 
           if (snapshot.connectionState != ConnectionState.done) {
             return Center(
@@ -44,15 +44,20 @@ class _ActivityMenuState extends State<ActivityMenu> {
             return Center(child: Text(snapshot.error.toString()));
           }
 
-          if (workouts != null && workouts.isNotEmpty) {
-            return GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2),
-              itemCount: workouts.length,
+          if (data != null && data.isNotEmpty) {
+            return ListView.builder(
+              itemCount: data.length,
               itemBuilder: (context, index) {
-                final workout = workouts[index];
+                final workout = data.keys.toList()[index];
 
-                return WorkoutCard(workout: workout);
+                return GestureDetector(
+                    onTap: () {
+                      GlobalNavigator.showSnackBar(
+                          "Activities cannot be edited",
+                          Theme.of(context).primaryColor);
+                    },
+                    child: WorkoutCard(
+                        workout: workout, activity: data[workout]!));
               },
             );
           } else {
@@ -75,4 +80,3 @@ class _ActivityMenuState extends State<ActivityMenu> {
     );
   }
 }
-
