@@ -17,7 +17,7 @@ class WorkoutCard extends StatelessWidget {
     Color primaryColor = Theme.of(context).primaryColor;
 
     return Container(
-        margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+        margin: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
             color: bgColor.withOpacity(0.2),

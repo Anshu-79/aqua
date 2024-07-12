@@ -40,7 +40,7 @@ abstract class ProfileScreenStyles {
 
 abstract class BeverageMenuStyles {
   static TextStyle nameStyle =
-      const TextStyle(fontSize: 40, fontWeight: FontWeight.bold);
+      const TextStyle(fontSize: 40, fontWeight: FontWeight.w900);
 
   static TextStyle subtextStyle =
       const TextStyle(fontSize: 15, fontWeight: FontWeight.normal);

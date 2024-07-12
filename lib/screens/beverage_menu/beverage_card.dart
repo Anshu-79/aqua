@@ -33,6 +33,53 @@ class _BeverageCardState extends State<BeverageCard> {
     super.initState();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async => _conditionalActions(widget.bvg),
+      child: Card(
+          elevation: 0,
+          margin: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+          color: widget.bvg.colorCode.toColor().withOpacity(0.3),
+          shape: RoundedRectangleBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(30)),
+              side:
+                  BorderSide(color: widget.bvg.colorCode.toColor(), width: 5)),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _beverageIcon(),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      bevNameText(),
+                      Text("Water Percentage",
+                          style: BeverageMenuStyles.subtextStyle),
+                      Text('${widget.bvg.waterPercent.toString()}%',
+                          style: BeverageMenuStyles.waterPercentStyle),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  icon: starred ? filledStarIcon : blankStarIcon,
+                  style: IconButton.styleFrom(
+                      backgroundColor:
+                          starred ? Colors.white : Colors.transparent),
+                  onPressed: () {
+                    if (widget.bvg.id == 1) return;
+                    widget.db.toggleBeverageStar(widget.bvg.id, starred);
+                    setState(() => starred = !starred);
+                  },
+                ),
+              ],
+            ),
+          )),
+    );
+  }
+
   /// Performs database actions after checking some conditions
   void _conditionalActions(Beverage bvg) async {
     // Prevent changes to Water
@@ -89,48 +136,4 @@ class _BeverageCardState extends State<BeverageCard> {
   Icon filledStarIcon = const Icon(Icons.star, color: Colors.amber, size: 40);
   Icon blankStarIcon =
       const Icon(Icons.star_border, color: Colors.amber, size: 40);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async => _conditionalActions(widget.bvg),
-      child: Card(
-          elevation: 0,
-          margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
-          color: widget.bvg.colorCode.toColor().withOpacity(0.3),
-          shape: RoundedRectangleBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(30)),
-              side:
-                  BorderSide(color: widget.bvg.colorCode.toColor(), width: 5)),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _beverageIcon(),
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      bevNameText(),
-                      Text("Water Percentage",
-                          style: BeverageMenuStyles.subtextStyle),
-                      Text('${widget.bvg.waterPercent.toString()}%',
-                          style: BeverageMenuStyles.waterPercentStyle),
-                    ],
-                  ),
-                ),
-                IconButton(
-                  icon: starred ? filledStarIcon : blankStarIcon,
-                  onPressed: () {
-                    if (widget.bvg.id == 1) return;
-                    widget.db.toggleBeverageStar(widget.bvg.id, starred);
-                    setState(() => starred = !starred);
-                  },
-                ),
-              ],
-            ),
-          )),
-    );
-  }
 }
