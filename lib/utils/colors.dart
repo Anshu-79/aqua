@@ -26,6 +26,18 @@ List<Color> textColorizeColors = [
   Colors.yellow,
 ];
 
+List<Color> headerColors = [
+  AquaColors.darkBlue,
+  AquaColors.violet,
+  AquaColors.blue,
+  AquaColors.mint,
+  AquaColors.green,
+  AquaColors.lime,
+  AquaColors.yellow,
+  AquaColors.orange,
+  AquaColors.red,
+];
+
 List<Color> shapeColors = [
   AquaColors.red,
   AquaColors.yellow,
