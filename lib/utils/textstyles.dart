@@ -48,3 +48,15 @@ abstract class BeverageMenuStyles {
   static TextStyle waterPercentStyle =
       const TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 }
+
+abstract class ActivityMenuStyle {
+  static TextStyle activityNameStyle =
+      const TextStyle(fontSize: 30, fontWeight: FontWeight.w900);
+  static TextStyle cardSubtext =
+      const TextStyle(fontSize: 15, fontWeight: FontWeight.w500);
+  static TextStyle activityDescriptionStyle = const TextStyle(fontSize: 15);
+  static TextStyle workoutDurationStyle =
+      const TextStyle(fontSize: 15, fontWeight: FontWeight.w900);
+  static TextStyle workoutWaterLossStyle =
+      const TextStyle(fontSize: 20, fontWeight: FontWeight.w900);
+}
