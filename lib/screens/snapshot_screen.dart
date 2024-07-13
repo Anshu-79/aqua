@@ -41,28 +41,31 @@ class _SnapshotScreenState extends State<SnapshotScreen> {
     return Scaffold(
       body: RepaintBoundary(
         key: widget._widgetKey,
-        child: Container(
-          decoration: BoxDecoration(gradient: bgGradient),
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: primaryColor, width: 5)),
-                  child: ProfilePicture(prefs: widget.prefs)),
-              const SizedBox(height: 10),
-              NameWidget(prefs: widget.prefs),
-              const SizedBox(height: 10),
-              StatsWidget(prefs: widget.prefs, db: widget.db),
-              GenericChart(
-                  headerText: "Hydration Chart",
-                  dataFuture: widget.db.getWaterGoals(),
-                  chartBuilder: (data) =>
-                      TotalWaterTrendChart(waterGoals: data, daysRange: 7))
-            ],
+        child: SingleChildScrollView(
+          child: Container(
+            decoration: BoxDecoration(gradient: bgGradient),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: primaryColor, width: 5)),
+                    child: ProfilePicture(prefs: widget.prefs)),
+                const SizedBox(height: 10),
+                NameWidget(prefs: widget.prefs),
+                const SizedBox(height: 10),
+                StatsWidget(prefs: widget.prefs, db: widget.db),
+                const SizedBox(height: 10),
+                GenericChart(
+                    headerText: "Hydration Chart",
+                    dataFuture: widget.db.getWaterGoals(),
+                    chartBuilder: (data) =>
+                        TotalWaterTrendChart(waterGoals: data, daysRange: 7))
+              ],
+            ),
           ),
         ),
       ),
@@ -125,7 +128,7 @@ class NameWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final String name = prefs.getString('name')!;
     TextStyle style = TextStyle(
-        fontSize: 100,
+        fontSize: 50,
         fontWeight: FontWeight.w900,
         color: Theme.of(context).primaryColor);
 
