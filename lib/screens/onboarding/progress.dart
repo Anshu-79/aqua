@@ -18,14 +18,16 @@ class ProgressScreen extends StatelessWidget {
       children: [
         Crab(tag: 'graphic', child: Image.asset("assets/images/progress.gif")),
         const SizedBox(height: 50),
-        AnimatedTextKit(repeatForever: true, animatedTexts: [
-          ColorizeAnimatedText("See Growth",
-              textAlign: TextAlign.center,
-              colors: textColorizeColors,
-              speed: const Duration(milliseconds: 500),
-              textStyle:
-                  const TextStyle(fontSize: 55, fontWeight: FontWeight.w900))
-        ]),
+        FittedBox(
+          child: AnimatedTextKit(repeatForever: true, animatedTexts: [
+            ColorizeAnimatedText("See Growth",
+                textAlign: TextAlign.center,
+                colors: textColorizeColors,
+                speed: const Duration(milliseconds: 500),
+                textStyle:
+                    const TextStyle(fontSize: 200, fontWeight: FontWeight.w900))
+          ]),
+        ),
         const SizedBox(height: 20),
         const Text(
           "Watch your progress unfold! Stay motivated and celebrate your achievements.",

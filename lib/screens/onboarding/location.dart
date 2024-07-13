@@ -58,40 +58,19 @@ class _LocationScreenState extends State<LocationScreen>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.all(10),
-          child: Crab(
-            tag: 'graphic',
-            child: AnimatedBuilder(
-              animation: _rotationController,
-              builder: (context, child) {
-                return Transform.rotate(
-                  angle: _rotationAnimation.value,
-                  child: AnimatedBuilder(
-                    animation: _translationController,
-                    builder: (context, child) {
-                      return FractionalTranslation(
-                        translation: _translationAnimation.value,
-                        child: Image.asset('assets/images/icon.png',
-                            fit: BoxFit.contain, width: 75, height: 75),
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
+            padding: const EdgeInsets.all(10),
+            child: Crab(tag: 'graphic', child: geotagAnimation())),
         Image.asset('assets/images/globe.gif'),
         const SizedBox(height: 20),
-        AnimatedTextKit(repeatForever: true, animatedTexts: [
-          ColorizeAnimatedText(
-            "Weather Sense",
-            textStyle:
-                const TextStyle(fontSize: 43, fontWeight: FontWeight.w900),
-            colors: textColorizeColors,
-            speed: const Duration(milliseconds: 1000),
-          )
-        ]),
+        FittedBox(
+          child: AnimatedTextKit(repeatForever: true, animatedTexts: [
+            ColorizeAnimatedText("Weather Sense",
+                textStyle:
+                    const TextStyle(fontSize: 200, fontWeight: FontWeight.w900),
+                colors: textColorizeColors,
+                speed: const Duration(milliseconds: 1000))
+          ]),
+        ),
         const Text(
           "We customize your water goals based on local weather for accurate recommendations tailored to your environment.",
           textAlign: TextAlign.center,
@@ -99,6 +78,27 @@ class _LocationScreenState extends State<LocationScreen>
               fontSize: 17, fontWeight: FontWeight.normal, color: Colors.grey),
         )
       ],
+    );
+  }
+
+  Widget geotagAnimation() {
+    return AnimatedBuilder(
+      animation: _rotationController,
+      builder: (context, child) {
+        return Transform.rotate(
+          angle: _rotationAnimation.value,
+          child: AnimatedBuilder(
+            animation: _translationController,
+            builder: (context, child) {
+              return FractionalTranslation(
+                translation: _translationAnimation.value,
+                child: Image.asset('assets/images/icon.png',
+                    fit: BoxFit.contain, width: 75, height: 75),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

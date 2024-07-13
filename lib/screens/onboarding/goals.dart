@@ -53,14 +53,7 @@ class _GoalScreenState extends State<GoalScreen> {
         Stack(
           alignment: Alignment.center,
           children: [
-            Positioned(
-                top: 130,
-                child: SizedBox(
-                    height: 20,
-                    child: Crab(
-                        tag: 'graphic',
-                        child: Image.asset('assets/images/icon.png',
-                            fit: BoxFit.contain)))),
+            lampBulb(),
             Image.asset('assets/images/lamp.png', width: 400, height: 400),
             Column(
               children: [
@@ -71,28 +64,7 @@ class _GoalScreenState extends State<GoalScreen> {
                     controller: _pageController,
                     itemCount: _pageCount,
                     itemBuilder: (context, index) {
-                      return AnimatedBuilder(
-                        animation: _pageController,
-                        builder: (context, child) {
-                          double value = 1.0;
-                          if (_pageController.position.haveDimensions) {
-                            value = _pageController.page! - index;
-                            value = (1 - (value.abs() * 0.3)).clamp(0.0, 1.0);
-                          }
-                          return Center(
-                            child: SizedBox(
-                                height: Curves.easeInOut.transform(value) * 300,
-                                width: Curves.easeInOut.transform(value) * 200,
-                                child: Transform.scale(
-                                  scale: Curves.easeInOut.transform(value),
-                                  child: Opacity(opacity: value, child: child),
-                                )),
-                          );
-                        },
-                        child: Image.asset(
-                            'assets/images/person${index + 1}.png',
-                            fit: BoxFit.contain),
-                      );
+                      return spotlightAnimation(index);
                     },
                   ),
                 ),
@@ -101,16 +73,18 @@ class _GoalScreenState extends State<GoalScreen> {
           ],
         ),
         const SizedBox(height: 30),
-        AnimatedTextKit(repeatForever: true, animatedTexts: [
-          ColorizeAnimatedText(
-            "Tailored Goals",
-            textAlign: TextAlign.center,
-            textStyle:
-                const TextStyle(fontSize: 45, fontWeight: FontWeight.w900),
-            colors: textColorizeColors,
-            speed: const Duration(milliseconds: 500),
-          )
-        ]),
+        FittedBox(
+          child: AnimatedTextKit(repeatForever: true, animatedTexts: [
+            ColorizeAnimatedText(
+              "Tailored Goals",
+              textAlign: TextAlign.center,
+              textStyle:
+                  const TextStyle(fontSize: 200, fontWeight: FontWeight.w900),
+              colors: textColorizeColors,
+              speed: const Duration(milliseconds: 500),
+            )
+          ]),
+        ),
         const SizedBox(height: 20),
         const Text(
           "Everyone's hydration needs are unique. Tell us about yourself, and we'll create a personalized water intake goal for you.",
@@ -119,6 +93,41 @@ class _GoalScreenState extends State<GoalScreen> {
               fontSize: 17, fontWeight: FontWeight.normal, color: Colors.grey),
         )
       ],
+    );
+  }
+
+  Widget lampBulb() {
+    return Positioned(
+        top: 130,
+        child: SizedBox(
+            height: 20,
+            child: Crab(
+                tag: 'graphic',
+                child: Image.asset('assets/images/icon.png',
+                    fit: BoxFit.contain))));
+  }
+
+  Widget spotlightAnimation(int index) {
+    return AnimatedBuilder(
+      animation: _pageController,
+      builder: (context, child) {
+        double value = 1.0;
+        if (_pageController.position.haveDimensions) {
+          value = _pageController.page! - index;
+          value = (1 - (value.abs() * 0.3)).clamp(0.0, 1.0);
+        }
+        return Center(
+          child: SizedBox(
+              height: Curves.easeInOut.transform(value) * 300,
+              width: Curves.easeInOut.transform(value) * 200,
+              child: Transform.scale(
+                scale: Curves.easeInOut.transform(value),
+                child: Opacity(opacity: value, child: child),
+              )),
+        );
+      },
+      child: Image.asset('assets/images/person${index + 1}.png',
+          fit: BoxFit.contain),
     );
   }
 }
