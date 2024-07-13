@@ -77,7 +77,7 @@ class _NameEditDialogState extends State<NameEditDialog> {
                   function: () async {
                     if (formKey.currentState!.validate()) {
                       final name = nameController.text;
-                      widget.prefs.setString('name', name);
+                      widget.prefs.setString('name', name.trim());
                       Navigator.pop(context);
                       widget.notifyParent();
                     }

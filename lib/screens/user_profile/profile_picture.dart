@@ -17,14 +17,23 @@ class ProfilePicture extends StatelessWidget {
   Widget build(BuildContext context) {
     String? imgPath = prefs.getString('photo_path');
 
+    return InkWell(
+        onTap: () =>
+            GlobalNavigator.showAnimatedDialog(EditPictureDialog(prefs: prefs)),
+        child: displayedPicture(imgPath));
+  }
+
+  Widget displayedPicture(String? imgPath) {
     if (imgPath == null) {
-      return const Icon(Icons.account_circle_rounded,
-          size: 120, color: Colors.white);
+      return const Center(
+          child: Icon(Icons.account_circle_rounded,
+              size: 120, color: Colors.white));
     }
+
     FileImage img = FileImage(File(imgPath));
     return InkWell(
-      onTap: () => GlobalNavigator.showAnimatedDialog(
-          EditPictureDialog(prefs: prefs)),
+      onTap: () =>
+          GlobalNavigator.showAnimatedDialog(EditPictureDialog(prefs: prefs)),
       child: Align(
           alignment: Alignment.topCenter,
           child: CircleAvatar(radius: 60, backgroundImage: img)),
