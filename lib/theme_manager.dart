@@ -27,8 +27,8 @@ class ThemeNotifier extends InheritedWidget {
 
 class ThemeManager extends StatefulWidget {
   final Widget child;
-
-  const ThemeManager({super.key, required this.child});
+  final SharedPreferences prefs;
+  const ThemeManager({super.key, required this.child, required this.prefs});
 
   @override
   State<ThemeManager> createState() => _ThemeManagerState();
@@ -40,15 +40,12 @@ class _ThemeManagerState extends State<ThemeManager> {
 
   @override
   void initState() {
-    super.initState();
-    _loadPreferences();
-  }
-
-  Future<void> _loadPreferences() async {
-    prefs = await SharedPreferences.getInstance();
     final bool systemDarkMode =
         PlatformDispatcher.instance.platformBrightness == Brightness.dark;
-    setState(() => isDarkMode = prefs.getBool('darkMode') ?? systemDarkMode);
+    setState(
+        () => isDarkMode = widget.prefs.getBool('darkMode') ?? systemDarkMode);
+
+    super.initState();
   }
 
   void _setTheme(bool value) {

@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:location/location.dart';
 
 import 'package:aqua/utils/shared_pref_utils.dart';
+import 'package:aqua/utils/location.dart';
 
 // Safe API Key Storage Helper Functions
 getAndroidOptions() => const AndroidOptions(encryptedSharedPreferences: true);
@@ -32,6 +33,7 @@ Future<String?> readAPIKey(String serviceName) async {
 // Call OpenWeatherAPI to get today's weather
 Future<Weather> getWeather() async {
   String? apiKey = await readAPIKey('weather');
+
   WeatherFactory wf = WeatherFactory(apiKey!);
 
   // First try to get current location's weather
@@ -49,9 +51,9 @@ Future<Weather> getWeather() async {
 
   // If current location not available, use stored location
   final savedLocation = await SharedPrefUtils.getLocation();
-  final lat = savedLocation[0];
-  final long = savedLocation[1];
-  return await wf.currentWeatherByLocation(lat!, long!);
+  final lat = savedLocation[0] ?? defaultCoordinates[0];
+  final long = savedLocation[1] ?? defaultCoordinates[1];
+  return await wf.currentWeatherByLocation(lat, long);
 }
 
 Future<void> saveWeather() async {

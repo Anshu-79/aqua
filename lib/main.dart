@@ -23,7 +23,7 @@ Future<void> main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   // If app is opened for the first time (ie onboard = false), API key is written onto device
-  if (prefs.getBool('onboard') != true) writeAPIKey('weather', openWeatherKey);
+  if (prefs.getBool('onboard') == null) writeAPIKey('weather', openWeatherKey);
 
   // Notifications initialization
   await NotificationsController.initLocalNotifications();
@@ -56,6 +56,7 @@ class _AquaState extends State<Aqua> {
     bool onboard = widget.sharedPrefs.getBool('onboard') ?? false;
 
     return ThemeManager(
+      prefs: widget.sharedPrefs,
       child: Builder(builder: (context) {
         final themeNotifier = ThemeNotifier.of(context);
         return MaterialApp(
