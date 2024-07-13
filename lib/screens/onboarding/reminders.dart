@@ -23,14 +23,16 @@ class ReminderScreen extends StatelessWidget {
               child: Crab(
                   tag: 'graphic',
                   child: Image.asset("assets/images/reminder.gif"))),
-          AnimatedTextKit(repeatForever: true, animatedTexts: [
-            ColorizeAnimatedText("Friendly Reminders",
-                textAlign: TextAlign.center,
-                colors: textColorizeColors,
-                speed: const Duration(milliseconds: 500),
-                textStyle:
-                    const TextStyle(fontSize: 55, fontWeight: FontWeight.w900))
-          ]),
+          FittedBox(
+            child: AnimatedTextKit(repeatForever: true, animatedTexts: [
+              ColorizeAnimatedText("Friendly\nReminders",
+                  textAlign: TextAlign.center,
+                  colors: textColorizeColors,
+                  speed: const Duration(milliseconds: 500),
+                  textStyle:
+                      const TextStyle(fontSize: 200, fontWeight: FontWeight.w900))
+            ]),
+          ),
           const SizedBox(height: 20),
           const Text(
             "Receive friendly reminders to take a sip and reach your water goals.\nWe'll make sure you stay on top of your hydration game.",

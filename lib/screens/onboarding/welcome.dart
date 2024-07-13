@@ -28,15 +28,17 @@ class WelcomeScreen extends StatelessWidget {
                     fit: BoxFit.contain,
                   )),
             )),
-        AnimatedTextKit(repeatForever: true, animatedTexts: [
-          ColorizeAnimatedText(
-            "AQUA",
-            textStyle:
-                const TextStyle(fontSize: 115, fontWeight: FontWeight.w900),
-            colors: textColorizeColors,
-            speed: const Duration(milliseconds: 1000),
-          )
-        ]),
+        FittedBox(
+          child: AnimatedTextKit(repeatForever: true, animatedTexts: [
+            ColorizeAnimatedText(
+              "AQUA",
+              textStyle:
+                  const TextStyle(fontSize: 200, fontWeight: FontWeight.w900),
+              colors: textColorizeColors,
+              speed: const Duration(milliseconds: 1000),
+            )
+          ]),
+        ),
         const SizedBox(height: 40),
         const Text(
           "Welcome to Aqua! We're here to help you prioritize your health by staying hydrated. Let's get started!",
