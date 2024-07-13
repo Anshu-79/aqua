@@ -6,6 +6,7 @@ import 'package:aqua/database/database.dart';
 import 'package:aqua/utils/shared_pref_utils.dart';
 import 'package:aqua/permission_handlers.dart';
 import 'package:aqua/utils/colors.dart';
+import 'package:aqua/utils/miscellaneous.dart' as utils;
 
 List<String> notificationTitles = [
   "${Emojis.animals_swan} Don't Hate! Hydrate!",
@@ -130,13 +131,10 @@ class NotificationsController {
     DateTime now = DateTime.now();
     int nowHr = now.hour;
 
-    bool beforeSleeping = nowHr < min(wakeHr, sleepHr);
-    bool afterSleeping = nowHr > max(wakeHr, sleepHr);
+    bool isSleeping = utils.isHourBetween(nowHr, sleepHr, wakeHr);
 
-    if (!beforeSleeping && !afterSleeping) {
-
-      // Set the next reminder to the wakeTime of next day if 
-      // sleep time has started
+    if (isSleeping) {
+      // Set the next reminder to the wakeTime of next day
       DateTime wakeTime = DateTime(now.year, now.month, now.day, wakeHr);
       if (wakeTime.isBefore(now)) {
         wakeTime = wakeTime.add(const Duration(days: 1));

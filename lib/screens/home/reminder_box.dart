@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,11 +12,7 @@ bool isSleepTime(SharedPreferences prefs) {
 
   int nowHr = DateTime.now().hour;
 
-  bool beforeSleeping = nowHr < min(wakeTime, sleepTime);
-  bool afterSleeping = nowHr >= max(wakeTime, sleepTime);
-
-  if (!beforeSleeping && !afterSleeping) return true;
-  return false;
+  return utils.isHourBetween(nowHr, sleepTime, wakeTime);
 }
 
 Future<bool> isGoalCompleted(Database db) async {
@@ -127,7 +121,8 @@ class _ReminderBoxState extends State<ReminderBox> {
         first: false,
         second: true,
         onChanged: (b) => _toggled(b),
-        iconBuilder: (b) => Icon(indicatorIconMap[_getBoxState()], size: 60, color: Colors.white),
+        iconBuilder: (b) => Icon(indicatorIconMap[_getBoxState()],
+            size: 60, color: Colors.white),
         textBuilder: (b) =>
             getBoxWidget(widget.db, widget.prefs, _getBoxState()));
   }

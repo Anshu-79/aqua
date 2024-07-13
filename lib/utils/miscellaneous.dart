@@ -11,8 +11,8 @@ String getDurationInText(int duration, [breakLine = false]) {
 
     if (minutes == 0) return "$hrs hrs";
 
-    if(breakLine) return "$hrs hrs\n$minutes mins";
-    
+    if (breakLine) return "$hrs hrs\n$minutes mins";
+
     return "$hrs hrs $minutes mins";
   }
 
@@ -32,6 +32,16 @@ String getTimeInText(int time) {
   if (time > 12) return "${time - 12}:00 PM";
   if (time == 12) return "12:00 PM";
   return "$time:00 AM";
+}
+
+bool isHourBetween(int hourToCheck, int startHour, int endHour) {
+  if (startHour <= endHour) {
+    // Check within the same day
+    return hourToCheck >= startHour && hourToCheck < endHour;
+  } else {
+    // Check across midnight
+    return hourToCheck >= startHour || hourToCheck < endHour;
+  }
 }
 
 /// A simple widget which applies a border to the passed text
