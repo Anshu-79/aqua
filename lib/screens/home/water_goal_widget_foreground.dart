@@ -66,32 +66,36 @@ class WaterGoalForegroundState extends State<WaterGoalForeground>
 
   @override
   Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _fadeAnimation,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
+    return Center(
+      child: FittedBox(
+        child: FadeTransition(
+          opacity: _fadeAnimation,
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              utils.BorderedText(
-                  text: getGoalText(_consumedVol),
-                  strokeWidth: 4,
-                  textStyle: HomeScreenStyles.goalConsumed),
-              Text.rich(
-                  TextSpan(text: " L", style: HomeScreenStyles.goalSubtext))
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  utils.BorderedText(
+                      text: getGoalText(_consumedVol),
+                      strokeWidth: 4,
+                      textStyle: HomeScreenStyles.goalConsumed),
+                  Text.rich(
+                      TextSpan(text: " L", style: HomeScreenStyles.goalSubtext))
+                ],
+              ),
+              Text("of", style: HomeScreenStyles.goalSubtext),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                utils.BorderedText(
+                    text: getGoalText(widget.totalVol),
+                    strokeWidth: 4,
+                    textStyle: HomeScreenStyles.goalTotal),
+                Text.rich(TextSpan(
+                    text: " L", style: HomeScreenStyles.goalSubtext)),
+              ]),
             ],
           ),
-          Text("of", style: HomeScreenStyles.goalSubtext),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            utils.BorderedText(
-                text: getGoalText(widget.totalVol),
-                strokeWidth: 4,
-                textStyle: HomeScreenStyles.goalTotal),
-            Text.rich(TextSpan(
-                text: " L", style: HomeScreenStyles.goalSubtext)),
-          ]),
-        ],
+        ),
       ),
     );
   }

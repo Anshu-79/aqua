@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/screens/home/water_goal_widget_foreground.dart';
 
-
 /// The [WaterGoalWidget] animates the background water waves
 /// It updates the water height based on a callback from the FABs
 class WaterGoalWidget extends StatefulWidget {
@@ -168,31 +167,32 @@ class WaterGoalWidgetState extends State<WaterGoalWidget>
   Widget build(BuildContext context) {
     double currentFillValue = _fillAnimation.value.clamp(0.0, 1.0);
 
-    return Container(
-      height: 425,
-      decoration: BoxDecoration(
-          border: Border.all(width: 4, color: Theme.of(context).primaryColor),
-          borderRadius: const BorderRadius.all(Radius.circular(50))),
-      child: Stack(
-        children: [
-          ClipRRect(
-              borderRadius: BorderRadius.circular(45),
-              child: CustomPaint(
-                painter: WaterPainter(
-                    firstAnimation.value,
-                    secondAnimation.value,
-                    thirdAnimation.value,
-                    fourthAnimation.value,
-                    currentFillValue),
-                child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width),
-              )),
-          WaterGoalForeground(
-              key: _waterGoalForegroundKey,
-              consumedVol: widget.consumedVol,
-              totalVol: widget.totalVol),
-        ],
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+            border: Border.all(width: 4, color: Theme.of(context).primaryColor),
+            borderRadius: const BorderRadius.all(Radius.circular(50))),
+        child: Stack(
+          children: [
+            ClipRRect(
+                borderRadius: BorderRadius.circular(45),
+                child: CustomPaint(
+                  painter: WaterPainter(
+                      firstAnimation.value,
+                      secondAnimation.value,
+                      thirdAnimation.value,
+                      fourthAnimation.value,
+                      currentFillValue),
+                  child: SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width),
+                )),
+            WaterGoalForeground(
+                key: _waterGoalForegroundKey,
+                consumedVol: widget.consumedVol,
+                totalVol: widget.totalVol),
+          ],
+        ),
       ),
     );
   }
