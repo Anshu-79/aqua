@@ -6,6 +6,9 @@ import 'package:geocode/geocode.dart';
 import 'package:aqua/utils/colors.dart';
 import 'package:aqua/utils/shared_pref_utils.dart';
 
+/// Uses coordinates of Mumbai, IN by default
+List<double> defaultCoordinates = [19.07283000, 72.88261000, 18];
+
 /// Fetches the user's current location
 Future<List<double?>> getCurrentLocation() async {
   Location location = Location();
@@ -22,7 +25,7 @@ Future<List<double?>> getCurrentLocation() async {
     // If permission wasn't granted, return existing lat & long
     if (storedLat != null) return [storedLat, storedLong, 0];
 
-    return [28.70405920, 77.10249020, 216]; // Coordinates of Delhi
+    return defaultCoordinates;
   }
 
   // If permission was granted, fetch location and return it
