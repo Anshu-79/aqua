@@ -21,28 +21,38 @@ class _LocationWidgetState extends State<LocationWidget> {
   Widget build(BuildContext context) {
     String place = widget.prefs.getString('place')!;
 
-    return TextButton(
-      onPressed: () {},
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.location_on, color: Colors.white),
-          const SizedBox(width: 10),
-          Text(place, style: ProfileScreenStyles.userLocation),
-          IconButton(
-            icon: const Icon(Icons.refresh, color: Colors.white),
-            onPressed: () async {
-              GlobalNavigator.showSnackBar(
-                  'Updating location...', AquaColors.darkBlue);
+    return LayoutBuilder(builder: (context, constraints) {
+      final availableWidth = constraints.maxWidth - 50;
+      double iconSize = availableWidth / 3;
 
-              await saveWeather();
-              setState(() {});
-              GlobalNavigator.showSnackBar(
-                  'Location updated', AquaColors.darkBlue);
-            },
-          )
-        ],
-      ),
-    );
+      if (iconSize < 20) iconSize = 20;
+
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
+        child: FittedBox(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.location_on, color: Colors.white, size: iconSize),
+              const SizedBox(width: 10),
+              Text(place, style: ProfileScreenStyles.userLocation, maxLines: 1),
+              const SizedBox(width: 10),
+              IconButton(
+                icon: Icon(Icons.refresh, color: Colors.white, size: iconSize),
+                onPressed: () async {
+                  GlobalNavigator.showSnackBar(
+                      'Updating location...', AquaColors.darkBlue);
+        
+                  await saveWeather();
+                  setState(() {});
+                  GlobalNavigator.showSnackBar(
+                      'Location updated', AquaColors.darkBlue);
+                },
+              )
+            ],
+          ),
+        ),
+      );
+    });
   }
 }

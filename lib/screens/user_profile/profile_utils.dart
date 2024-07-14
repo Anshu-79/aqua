@@ -33,23 +33,28 @@ class _BioButtonsRowState extends State<BioButtonsRow> {
   refresh() => setState(() {});
   @override
   Widget build(BuildContext context) {
-    return Wrap(alignment: WrapAlignment.center, spacing: 20, children: [
-      BiometricButton(
-          metric: calculateAge(widget.prefs.getString('DOB')!),
-          subtext: "Age",
-          callback: () => GlobalNavigator.showAnimatedDialog(
-              AgeEditDialog(notifyParent: refresh, prefs: widget.prefs))),
-      BiometricButton(
-          metric: widget.prefs.getInt('height')!,
-          subtext: "Height",
-          callback: () => GlobalNavigator.showAnimatedDialog(
-              HeightEditDialog(notifyParent: refresh, prefs: widget.prefs))),
-      BiometricButton(
-          metric: widget.prefs.getInt('weight')!,
-          subtext: "Weight",
-          callback: () => GlobalNavigator.showAnimatedDialog(
-              WeightEditDialog(notifyParent: refresh, prefs: widget.prefs)))
-    ]);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        BiometricButton(
+            metric: calculateAge(widget.prefs.getString('DOB')!),
+            subtext: "Age",
+            callback: () => GlobalNavigator.showAnimatedDialog(
+                AgeEditDialog(notifyParent: refresh, prefs: widget.prefs))),
+        const SizedBox(width: 25),
+        BiometricButton(
+            metric: widget.prefs.getInt('height')!,
+            subtext: "Height",
+            callback: () => GlobalNavigator.showAnimatedDialog(
+                HeightEditDialog(notifyParent: refresh, prefs: widget.prefs))),
+        const SizedBox(width: 25),
+        BiometricButton(
+            metric: widget.prefs.getInt('weight')!,
+            subtext: "Weight",
+            callback: () => GlobalNavigator.showAnimatedDialog(
+                WeightEditDialog(notifyParent: refresh, prefs: widget.prefs)))
+      ]),
+    );
   }
 }
 
@@ -67,21 +72,24 @@ class _SleepButtonsRowState extends State<SleepButtonsRow> {
   refresh() => setState(() {});
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      SleepScheduleButton(
-          icon: const Icon(Icons.sunny, color: AquaColors.yellow),
-          time: getWakeTimeText(widget.prefs),
-          callback: () {
-            GlobalNavigator.showAnimatedDialog(WaketimeEditDialog(
-                prefs: widget.prefs, db: widget.db, notifyParent: refresh));
-          }),
-      const SizedBox(width: 20),
-      SleepScheduleButton(
-          icon: const Icon(Icons.bedtime, color: AquaColors.violet),
-          time: getSleepTimeText(widget.prefs),
-          callback: () => GlobalNavigator.showAnimatedDialog(
-              SleeptimeEditDialog(
-                  prefs: widget.prefs, notifyParent: refresh, db: widget.db)))
-    ]);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        SleepScheduleButton(
+            icon: const Icon(Icons.sunny, color: AquaColors.yellow, size: 20),
+            time: getWakeTimeText(widget.prefs),
+            callback: () {
+              GlobalNavigator.showAnimatedDialog(WaketimeEditDialog(
+                  prefs: widget.prefs, db: widget.db, notifyParent: refresh));
+            }),
+        const SizedBox(width: 20),
+        SleepScheduleButton(
+            icon: const Icon(Icons.bedtime, color: AquaColors.violet, size: 20),
+            time: getSleepTimeText(widget.prefs),
+            callback: () => GlobalNavigator.showAnimatedDialog(
+                SleeptimeEditDialog(
+                    prefs: widget.prefs, notifyParent: refresh, db: widget.db)))
+      ]),
+    );
   }
 }

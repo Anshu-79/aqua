@@ -24,29 +24,26 @@ class ProfileWidget extends StatefulWidget {
 class _ProfileWidgetState extends State<ProfileWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
-      decoration: const BoxDecoration(
-          color: AquaColors.darkBlue,
-          borderRadius: BorderRadius.all(Radius.circular(35))),
-      child:
-          Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        const SizedBox(height: 10),
-        Stack(
-          children: [
-            ProfilePicture(prefs: widget.prefs),
-            SettingsButton(prefs: widget.prefs),
-          ],
-        ),
-        const SizedBox(height: 10),
-        NameWidget(prefs: widget.prefs),
-        const SizedBox(height: 10),
-        LocationWidget(prefs: widget.prefs),
-        const SizedBox(height: 10),
-        BioButtonsRow(prefs: widget.prefs),
-        const SizedBox(height: 30),
-        SleepButtonsRow(prefs: widget.prefs, db: widget.db),
-      ]),
-    );
+    return Stack(children: [
+      Container(
+        padding: const EdgeInsets.symmetric(vertical: 30),
+        decoration: const BoxDecoration(
+            color: AquaColors.darkBlue,
+            borderRadius: BorderRadius.all(Radius.circular(35))),
+        child: Wrap(
+            runAlignment: WrapAlignment.spaceEvenly,
+            runSpacing: 25,
+            children: [
+              ProfilePicture(prefs: widget.prefs),
+              NameWidget(prefs: widget.prefs),
+              LocationWidget(prefs: widget.prefs),
+              BioButtonsRow(prefs: widget.prefs),
+              SleepButtonsRow(prefs: widget.prefs, db: widget.db),
+            ]),
+      ),
+      Padding(
+          padding: const EdgeInsets.only(right: 10, top: 20),
+          child: SettingsButton(prefs: widget.prefs)),
+    ]);
   }
 }
