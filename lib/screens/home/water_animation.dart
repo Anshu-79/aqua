@@ -168,6 +168,7 @@ class WaterGoalWidgetState extends State<WaterGoalWidget>
     double currentFillValue = _fillAnimation.value.clamp(0.0, 1.0);
 
     return Expanded(
+      flex: 3,
       child: Container(
         decoration: BoxDecoration(
             border: Border.all(width: 4, color: Theme.of(context).primaryColor),
