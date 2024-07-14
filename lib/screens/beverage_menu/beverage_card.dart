@@ -40,7 +40,7 @@ class _BeverageCardState extends State<BeverageCard> {
       child: Card(
           elevation: 0,
           margin: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          color: widget.bvg.colorCode.toColor().withOpacity(0.3),
+          color: widget.bvg.colorCode.toColor().withOpacity(0.2),
           shape: RoundedRectangleBorder(
               borderRadius: const BorderRadius.all(Radius.circular(30)),
               side:

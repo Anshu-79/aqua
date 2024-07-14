@@ -121,7 +121,7 @@ class _ActivityListState extends State<ActivityList> {
                 borderRadius: BorderRadius.circular(30)),
             splashColor: getWorkoutColor(activity.id),
             textColor: Theme.of(context).primaryColor,
-            tileColor: getWorkoutColor(activity.id).withOpacity(0.2),
+            tileColor: getWorkoutColor(activity.id).withOpacity(0.1),
             leading: Icon(workoutIconMap[activity.category]![0], size: 35),
             title: Text(activity.category),
             titleTextStyle: const TextStyle(fontWeight: FontWeight.bold),
