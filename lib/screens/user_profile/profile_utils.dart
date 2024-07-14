@@ -33,7 +33,7 @@ class _BioButtonsRowState extends State<BioButtonsRow> {
   refresh() => setState(() {});
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+    return Wrap(alignment: WrapAlignment.center, spacing: 20, children: [
       BiometricButton(
           metric: calculateAge(widget.prefs.getString('DOB')!),
           subtext: "Age",
@@ -67,25 +67,21 @@ class _SleepButtonsRowState extends State<SleepButtonsRow> {
   refresh() => setState(() {});
   @override
   Widget build(BuildContext context) {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SleepScheduleButton(
-              icon: const Icon(Icons.sunny, color: AquaColors.yellow),
-              time: getWakeTimeText(widget.prefs),
-              callback: () {
-                GlobalNavigator.showAnimatedDialog(WaketimeEditDialog(
-                    prefs: widget.prefs, db: widget.db, notifyParent: refresh));
-              }),
-          SleepScheduleButton(
-              icon: const Icon(Icons.bedtime, color: AquaColors.violet),
-              time: getSleepTimeText(widget.prefs),
-              callback: () => GlobalNavigator.showAnimatedDialog(
-                  SleeptimeEditDialog(
-                      prefs: widget.prefs,
-                      notifyParent: refresh,
-                      db: widget.db)))
-        ]);
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      SleepScheduleButton(
+          icon: const Icon(Icons.sunny, color: AquaColors.yellow),
+          time: getWakeTimeText(widget.prefs),
+          callback: () {
+            GlobalNavigator.showAnimatedDialog(WaketimeEditDialog(
+                prefs: widget.prefs, db: widget.db, notifyParent: refresh));
+          }),
+      const SizedBox(width: 20),
+      SleepScheduleButton(
+          icon: const Icon(Icons.bedtime, color: AquaColors.violet),
+          time: getSleepTimeText(widget.prefs),
+          callback: () => GlobalNavigator.showAnimatedDialog(
+              SleeptimeEditDialog(
+                  prefs: widget.prefs, notifyParent: refresh, db: widget.db)))
+    ]);
   }
 }

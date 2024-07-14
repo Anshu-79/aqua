@@ -24,8 +24,8 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
-          child: Wrap(
-                runSpacing: 15,
+          child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
           ProfileWidget(prefs: widget.prefs, db: widget.database),
           StatsWidget(prefs: widget.prefs, db: widget.database),
