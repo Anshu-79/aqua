@@ -1,4 +1,5 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,21 +21,6 @@ Future<bool> isGoalCompleted(Database db) async {
   int consumed = goal!.consumedVolume;
   int total = goal.totalVolume;
   return consumed >= total;
-}
-
-/// A hacky solution to get a line of text with 2 different styles
-Widget getStyledText(String prefix, String styledText, String suffix,
-    TextStyle subTextStyle, TextStyle styledTextStyle) {
-  return Text.rich(
-    TextSpan(
-      text: "$prefix ",
-      style: subTextStyle,
-      children: <TextSpan>[
-        TextSpan(text: styledText, style: styledTextStyle),
-        TextSpan(text: ' $suffix', style: subTextStyle),
-      ],
-    ),
-  );
 }
 
 /// The [ReminderBox] is built on top of an [AnimatedToggleSwitch.dual]
@@ -101,6 +87,7 @@ class _ReminderBoxState extends State<ReminderBox> {
   Widget build(BuildContext context) {
     final Color primaryColor = Theme.of(context).primaryColor;
     final Color canvasColor = Theme.of(context).canvasColor;
+    final double screenWidth = MediaQuery.of(context).size.width;
 
     ToggleStyle toggleStyle = ToggleStyle(
         borderRadius: const BorderRadius.all(Radius.circular(50)),
@@ -112,21 +99,21 @@ class _ReminderBoxState extends State<ReminderBox> {
       child: AspectRatio(
         aspectRatio: 2.5,
         child: AnimatedToggleSwitch.dual(
-            inactiveOpacity: 0.9,
-            fittingMode: FittingMode.none,
-            active: !isSleepTime(widget.prefs) && !(widget.isGoalCompleted),
-            indicatorSize: const Size.fromWidth(100),
-            // height: 120,
-            borderWidth: 4,
-            style: toggleStyle,
-            current: remindersON,
-            first: false,
-            second: true,
-            onChanged: (b) => _toggled(b),
-            iconBuilder: (b) => Icon(indicatorIconMap[_getBoxState()],
-                size: 60, color: Colors.white),
-            textBuilder: (b) =>
-                getBoxWidget(widget.db, widget.prefs, _getBoxState())),
+          inactiveOpacity: 0.9,
+          fittingMode: FittingMode.none,
+          active: !isSleepTime(widget.prefs) && !(widget.isGoalCompleted),
+          indicatorSize: Size.fromWidth(screenWidth / 3.6),
+          borderWidth: 4,
+          style: toggleStyle,
+          current: remindersON,
+          first: false,
+          second: true,
+          onChanged: (b) => _toggled(b),
+          iconBuilder: (b) => Icon(indicatorIconMap[_getBoxState()],
+              size: 60, color: Colors.white),
+          textBuilder: (b) =>
+              getBoxWidget(widget.db, widget.prefs, _getBoxState()),
+        ),
       ),
     );
   }
@@ -157,6 +144,23 @@ Widget getBoxWidget(Database db, SharedPreferences prefs, String boxState) {
   return boxWidgetMap[boxState]!;
 }
 
+/// A hacky solution to get a line of text with 2 different styles
+Widget getStyledText(String prefix, String styledText, String suffix,
+    TextStyle subTextStyle, TextStyle styledTextStyle,
+    [AutoSizeGroup? group]) {
+  return AutoSizeText.rich(
+    maxLines: 1,
+    style: const TextStyle(fontSize: 200),
+    TextSpan(
+      children: <TextSpan>[
+        TextSpan(text: '$prefix ', style: subTextStyle),
+        TextSpan(text: styledText, style: styledTextStyle),
+        TextSpan(text: ' $suffix', style: subTextStyle),
+      ],
+    ),
+  );
+}
+
 class GoalCompletedWidget extends StatelessWidget {
   const GoalCompletedWidget({super.key, required this.prefs});
   final SharedPreferences prefs;
@@ -165,13 +169,10 @@ class GoalCompletedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final int wakeTime = prefs.getInt('wakeTime') ?? 8;
 
-    TextStyle subTextStyle =
-        const TextStyle(fontSize: 20, fontWeight: FontWeight.w900);
+    TextStyle subTextStyle = const TextStyle(fontWeight: FontWeight.w900);
 
-    TextStyle styledTextStyle = TextStyle(
-        fontSize: 25,
-        fontWeight: FontWeight.w900,
-        color: Colors.yellow.shade800);
+    TextStyle styledTextStyle =
+        TextStyle(fontWeight: FontWeight.w900, color: Colors.yellow.shade800);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -190,11 +191,10 @@ class ReminderOFFWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle subTextStyle =
-        const TextStyle(fontSize: 25, fontWeight: FontWeight.w900);
+    TextStyle subTextStyle = const TextStyle(fontWeight: FontWeight.w900);
 
-    TextStyle styledTextStyle = const TextStyle(
-        fontSize: 30, fontWeight: FontWeight.w900, color: Colors.red);
+    TextStyle styledTextStyle =
+        const TextStyle(fontWeight: FontWeight.w900, color: Colors.red);
 
     return getStyledText("Reminders", "Off", "", subTextStyle, styledTextStyle);
   }
@@ -205,11 +205,10 @@ class SleepingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle subTextStyle =
-        const TextStyle(fontSize: 20, fontWeight: FontWeight.w900);
+    TextStyle subTextStyle = const TextStyle(fontWeight: FontWeight.w900);
 
-    TextStyle styledTextStyle = const TextStyle(
-        fontSize: 25, fontWeight: FontWeight.w900, color: Colors.purple);
+    TextStyle styledTextStyle =
+        const TextStyle(fontWeight: FontWeight.w900, color: Colors.purple);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -254,17 +253,16 @@ class _ReminderONWidgetState extends State<ReminderONWidget> {
 }
 
 Widget textForReminder(int volume, int reminderGap) {
-  TextStyle subTextStyle =
-      const TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+  TextStyle subTextStyle = const TextStyle(fontWeight: FontWeight.bold);
 
-  TextStyle styledTextStyle = const TextStyle(
-      fontSize: 25, fontWeight: FontWeight.w900, color: Colors.green);
+  TextStyle styledTextStyle =
+      const TextStyle(fontWeight: FontWeight.w900, color: Colors.green);
 
   return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("Reminders set for", style: subTextStyle),
+        AutoSizeText("Reminders set for", style: subTextStyle, maxLines: 1),
         getStyledText("", "$volume mL", "water", subTextStyle, styledTextStyle),
         getStyledText("every", getDurationInText(reminderGap), "", subTextStyle,
             styledTextStyle),
