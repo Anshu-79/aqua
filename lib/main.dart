@@ -31,9 +31,7 @@ Future<void> main() async {
   // Runs every time app is run but fetches weather only when day has changed
   await DailyTaskManager.checkAndRunTask(saveWeather);
 
-  // Kills notifications if sleeping time has started
-  await DailyTaskManager.checkAndRunTask(
-      NotificationsController.killNotificationsDuringSleepTime);
+  NotificationsController.shiftNotificationsIfSleeping();
 
   runApp(Aqua(sharedPrefs: prefs));
 }

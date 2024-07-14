@@ -63,6 +63,8 @@ class NotificationsController {
       if (!isAllowed) requestNotificationPermission();
     });
     AwesomeNotifications().setListeners(
+        onNotificationDisplayedMethod:
+            NotificationsController.onDisplayedMethod,
         onActionReceivedMethod: NotificationsController.onActionReceivedMethod);
   }
 
@@ -99,6 +101,10 @@ class NotificationsController {
   }
 
   @pragma("vm:entry-point")
+  static Future<void> onDisplayedMethod(ReceivedNotification received) async =>
+      await shiftNotificationsIfSleeping();
+
+  @pragma("vm:entry-point")
   static Future<void> onActionReceivedMethod(ReceivedAction action) async {
     if (action.buttonKeyPressed == 'ADD') {
       String vol = action.payload!['volume']!;
@@ -124,7 +130,7 @@ class NotificationsController {
     await createHydrationNotification(minutes, volume);
   }
 
-  static Future<void> killNotificationsDuringSleepTime() async {
+  static Future<void> shiftNotificationsIfSleeping() async {
     int wakeHr = await SharedPrefUtils.getWakeTime();
     int sleepHr = await SharedPrefUtils.getSleepTime();
 

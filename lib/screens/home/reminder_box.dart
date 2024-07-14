@@ -55,6 +55,8 @@ class _ReminderBoxState extends State<ReminderBox> {
   void initState() {
     isNotSleepTime = !isSleepTime(widget.prefs);
 
+    if (!isNotSleepTime) NotificationsController.shiftNotificationsIfSleeping();
+
     remindersON = _getBoxState() == "ON";
     super.initState();
   }
