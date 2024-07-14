@@ -23,6 +23,7 @@ class _NameWidgetState extends State<NameWidget> {
 
     return TextButton(
       style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 5),
           elevation: 5,
           shadowColor: Colors.black,
           backgroundColor: Colors.white,

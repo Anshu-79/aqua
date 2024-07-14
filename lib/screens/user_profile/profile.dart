@@ -29,7 +29,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       decoration: const BoxDecoration(
           color: AquaColors.darkBlue,
           borderRadius: BorderRadius.all(Radius.circular(35))),
-      child: Column(children: [
+      child:
+          Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        const SizedBox(height: 10),
         Stack(
           children: [
             ProfilePicture(prefs: widget.prefs),
