@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/utils/textstyles.dart' show HomeScreenStyles;
@@ -10,7 +11,6 @@ String getGoalText(int vol) {
 
   return litres.toStringAsFixed(2);
 }
-
 
 /// Renders the foreground of the Water Goal widget
 /// Uses a fade animation to transition to updated values
@@ -70,30 +70,31 @@ class WaterGoalForegroundState extends State<WaterGoalForeground>
       child: FittedBox(
         child: FadeTransition(
           opacity: _fadeAnimation,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 50),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    utils.BorderedText(
+                        text: getGoalText(_consumedVol),
+                        textStyle: HomeScreenStyles.goal
+                      ),
+                    AutoSizeText(" L",
+                        style: HomeScreenStyles.goalSubtext)
+                  ],
+                ),
+                AutoSizeText("of", style: HomeScreenStyles.goalSubtext),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   utils.BorderedText(
-                      text: getGoalText(_consumedVol),
-                      strokeWidth: 4,
-                      textStyle: HomeScreenStyles.goalConsumed),
-                  Text.rich(
-                      TextSpan(text: " L", style: HomeScreenStyles.goalSubtext))
-                ],
-              ),
-              Text("of", style: HomeScreenStyles.goalSubtext),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                utils.BorderedText(
-                    text: getGoalText(widget.totalVol),
-                    strokeWidth: 4,
-                    textStyle: HomeScreenStyles.goalTotal),
-                Text.rich(TextSpan(
-                    text: " L", style: HomeScreenStyles.goalSubtext)),
-              ]),
-            ],
+                      text: getGoalText(widget.totalVol),
+                      textStyle: HomeScreenStyles.goal),
+                  AutoSizeText(" L", style: HomeScreenStyles.goalSubtext),
+                ]),
+              ],
+            ),
           ),
         ),
       ),
