@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/utils/shared_pref_utils.dart';
@@ -45,32 +46,59 @@ bool isHourBetween(int hourToCheck, int startHour, int endHour) {
 }
 
 /// A simple widget which applies a border to the passed text
-class BorderedText extends StatelessWidget {
-  const BorderedText(
-      {super.key,
-      required this.text,
-      required this.textStyle,
-      required this.strokeWidth});
+/// If strokeWidth is not passed, it is set to be 1/30th of the displayed font size
+class BorderedText extends StatefulWidget {
+  const BorderedText({
+    super.key,
+    required this.text,
+    required this.textStyle,
+    this.strokeWidth,
+  });
   final String text;
   final TextStyle textStyle;
-  final double strokeWidth;
+  final double? strokeWidth;
+
+  @override
+  State<BorderedText> createState() => _BorderedTextState();
+}
+
+class _BorderedTextState extends State<BorderedText> {
+  double strokeWidth = 5;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      double measuredHeight = _measureText();
+      setState(() => strokeWidth = widget.strokeWidth ?? measuredHeight / 30);
+    });
+    super.initState();
+  }
+
+  double _measureText() {
+    final textPainter = TextPainter(
+        text: TextSpan(text: widget.text, style: widget.textStyle),
+        maxLines: 1,
+        textDirection: TextDirection.ltr);
+
+    textPainter.layout(maxWidth: MediaQuery.of(context).size.width);
+
+    return textPainter.size.height;
+  }
 
   @override
   Widget build(BuildContext context) {
-    TextStyle dailyGoalBorder = TextStyle(
-        fontSize: textStyle.fontSize,
-        fontWeight: textStyle.fontWeight,
+    AutoSizeText goal = AutoSizeText(widget.text, style: widget.textStyle);
+
+    TextStyle goalBorder = TextStyle(
+        fontSize: widget.textStyle.fontSize,
+        fontWeight: widget.textStyle.fontWeight,
         foreground: Paint()
           ..style = PaintingStyle.stroke
-          ..strokeWidth = strokeWidth
+          ..strokeWidth = widget.strokeWidth ?? strokeWidth
           ..color = Colors.black);
 
-    return Stack(children: [
-      Text.rich(TextSpan(children: [
-        TextSpan(text: text, style: dailyGoalBorder),
-      ])),
-      Text.rich(TextSpan(children: [TextSpan(text: text, style: textStyle)])),
-    ]);
+    AutoSizeText goalBorderText = AutoSizeText(widget.text, style: goalBorder);
+    return Stack(children: [goalBorderText, goal]);
   }
 }
 

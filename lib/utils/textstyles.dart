@@ -3,16 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:aqua/utils/colors.dart';
 
 abstract class HomeScreenStyles {
-  static TextStyle goalConsumed = const TextStyle(
-      fontSize: 100, fontWeight: FontWeight.w900, color: AquaColors.darkBlue);
-
-  static TextStyle goalTotal = TextStyle(
-      color: AquaColors.darkBlue,
-      fontSize: goalConsumed.fontSize,
-      fontWeight: FontWeight.w900);
+  static TextStyle goal = const TextStyle(
+      fontWeight: FontWeight.w900, color: AquaColors.darkBlue, fontSize: 400);
 
   static TextStyle goalSubtext =
-      const TextStyle(fontSize: 35, fontWeight: FontWeight.bold);
+      TextStyle(fontWeight: FontWeight.bold, fontSize: goal.fontSize! / 4);
 }
 
 abstract class ProfileScreenStyles {
