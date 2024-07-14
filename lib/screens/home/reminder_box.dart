@@ -108,23 +108,27 @@ class _ReminderBoxState extends State<ReminderBox> {
         borderColor: primaryColor,
         indicatorBorderRadius: const BorderRadius.all(Radius.circular(20)),
         indicatorColor: indicatorColorMap[_getBoxState()]);
-    return AnimatedToggleSwitch.dual(
-        inactiveOpacity: 0.9,
-        fittingMode: FittingMode.none,
-        active: !isSleepTime(widget.prefs) && !(widget.isGoalCompleted),
-        indicatorSize: const Size.fromWidth(100),
-        height: 120,
-        borderWidth: 4,
-        style: toggleStyle,
-        spacing: 110,
-        current: remindersON,
-        first: false,
-        second: true,
-        onChanged: (b) => _toggled(b),
-        iconBuilder: (b) => Icon(indicatorIconMap[_getBoxState()],
-            size: 60, color: Colors.white),
-        textBuilder: (b) =>
-            getBoxWidget(widget.db, widget.prefs, _getBoxState()));
+    return Expanded(
+      child: AspectRatio(
+        aspectRatio: 2.5,
+        child: AnimatedToggleSwitch.dual(
+            inactiveOpacity: 0.9,
+            fittingMode: FittingMode.none,
+            active: !isSleepTime(widget.prefs) && !(widget.isGoalCompleted),
+            indicatorSize: const Size.fromWidth(100),
+            // height: 120,
+            borderWidth: 4,
+            style: toggleStyle,
+            current: remindersON,
+            first: false,
+            second: true,
+            onChanged: (b) => _toggled(b),
+            iconBuilder: (b) => Icon(indicatorIconMap[_getBoxState()],
+                size: 60, color: Colors.white),
+            textBuilder: (b) =>
+                getBoxWidget(widget.db, widget.prefs, _getBoxState())),
+      ),
+    );
   }
 }
 
@@ -258,7 +262,7 @@ Widget textForReminder(int volume, int reminderGap) {
 
   return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text("Reminders set for", style: subTextStyle),
         getStyledText("", "$volume mL", "water", subTextStyle, styledTextStyle),
