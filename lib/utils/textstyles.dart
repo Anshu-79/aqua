@@ -12,19 +12,19 @@ abstract class HomeScreenStyles {
 
 abstract class ProfileScreenStyles {
   static TextStyle username = const TextStyle(
-      fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black);
+      fontSize: 100, fontWeight: FontWeight.bold, color: Colors.black);
 
   static TextStyle userLocation = const TextStyle(
-      fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white);
+      fontSize: 100, fontWeight: FontWeight.bold, color: Colors.white);
 
   static TextStyle biometricInfo = const TextStyle(
-      color: Colors.black, fontWeight: FontWeight.w900, fontSize: 30);
+      color: Colors.black, fontWeight: FontWeight.w900, fontSize: 60);
 
   static TextStyle biometricInfoSubtext = const TextStyle(
-      color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12);
+      color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25);
 
   static TextStyle sleepInfo = const TextStyle(
-      color: Colors.black, fontWeight: FontWeight.w900, fontSize: 20);
+      color: Colors.black, fontWeight: FontWeight.w900, fontSize: 50);
 
   static TextStyle userStats =
       const TextStyle(fontSize: 24, fontWeight: FontWeight.w900);

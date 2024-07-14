@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -49,19 +50,28 @@ class BiometricButton extends StatefulWidget {
 class _BiometricButtonState extends State<BiometricButton> {
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-        onPressed: widget.callback,
-        style: TextButton.styleFrom(
-            elevation: 3,
-            shadowColor: Colors.black,
-            backgroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15))),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text(widget.metric.toString(),
-              style: ProfileScreenStyles.biometricInfo),
-          Text(widget.subtext, style: ProfileScreenStyles.biometricInfoSubtext)
-        ]));
+    return Expanded(
+      child: AspectRatio(
+        aspectRatio: 0.8,
+        child: TextButton(
+            onPressed: widget.callback,
+            style: TextButton.styleFrom(
+                elevation: 3,
+                shadowColor: Colors.black,
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15))),
+            child: Expanded(
+              child: FittedBox(
+                child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Text(widget.metric.toString(),
+                      style: ProfileScreenStyles.biometricInfo, maxLines: 1),
+                  Text(widget.subtext, style: ProfileScreenStyles.biometricInfoSubtext, maxLines: 1)
+                ]),
+              ),
+            )),
+      ),
+    );
   }
 }
 
@@ -85,21 +95,22 @@ class SleepScheduleButton extends StatefulWidget {
 class _SleepScheduleButtonState extends State<SleepScheduleButton> {
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-        onPressed: widget.callback,
-        style: TextButton.styleFrom(
-            backgroundColor: Colors.white,
-            elevation: 3,
-            shadowColor: Colors.black,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15))),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              widget.icon,
-              const SizedBox(width: 5),
-              Text(widget.time, style: ProfileScreenStyles.sleepInfo)
-            ]));
+    return Expanded(
+      child: TextButton(
+          onPressed: widget.callback,
+          style: TextButton.styleFrom(
+              backgroundColor: Colors.white,
+              elevation: 3,
+              shadowColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50))),
+          child: Row(children: [
+            widget.icon,
+            const SizedBox(width: 5),
+            Expanded(
+                child: AutoSizeText(widget.time,
+                    style: ProfileScreenStyles.sleepInfo, maxLines: 1))
+          ])),
+    );
   }
 }

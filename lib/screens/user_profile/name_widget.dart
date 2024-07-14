@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,18 +22,25 @@ class _NameWidgetState extends State<NameWidget> {
   Widget build(BuildContext context) {
     final String name = widget.prefs.getString('name')!;
 
-    return TextButton(
-      style: TextButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 5),
-          elevation: 5,
-          shadowColor: Colors.black,
-          backgroundColor: Colors.white,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
-      child: Text(name,
-          style: ProfileScreenStyles.username, overflow: TextOverflow.ellipsis),
-      onPressed: () => GlobalNavigator.showAnimatedDialog(NameEditDialog(
-          name: name, notifyParent: refresh, prefs: widget.prefs)),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 50),
+      child: TextButton(
+        style: TextButton.styleFrom(
+            elevation: 5,
+            padding: const EdgeInsets.symmetric(horizontal: 50),
+            shadowColor: Colors.black,
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50))),
+        child: Center(
+          child: AutoSizeText(name,
+              style: ProfileScreenStyles.username,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1),
+        ),
+        onPressed: () => GlobalNavigator.showAnimatedDialog(NameEditDialog(
+            name: name, notifyParent: refresh, prefs: widget.prefs)),
+      ),
     );
   }
 }
