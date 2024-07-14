@@ -24,14 +24,14 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
-          child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
           ProfileWidget(prefs: widget.prefs, db: widget.database),
           StatsWidget(prefs: widget.prefs, db: widget.database),
           ShareWidget(prefs: widget.prefs, db: widget.database)
-                ],
-              ),
-        ));
+        ],
+      ),
+    ));
   }
 }

@@ -71,8 +71,8 @@ class _BeverageDialogState extends State<BeverageDialog> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(40),
           side: BorderSide(width: 5, color: Theme.of(context).primaryColor)),
-      child: SizedBox(
-        height: 435,
+      child: AspectRatio(
+        aspectRatio: 0.6,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Column(
