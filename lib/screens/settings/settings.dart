@@ -113,28 +113,34 @@ class GitHubCard extends StatelessWidget {
 
     return GestureDetector(
         onTap: openPage,
-        child: Container(
-            padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xFF28A745),
-                      Color(0xFF0366D6),
-                      Color(0xFF6F42C1),
-                    ]),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                    color: Theme.of(context).primaryColor, width: 3)),
-            child: Row(children: [
-              Image.asset('assets/images/github_logo.png', height: 90),
-              const Text("github.com/Anshu-79/aqua",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16))
-            ])));
+        child: AspectRatio(
+          aspectRatio: 2.75,
+          child: Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xFF28A745),
+                        Color(0xFF0366D6),
+                        Color(0xFF6F42C1),
+                      ]),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                      color: Theme.of(context).primaryColor, width: 3)),
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: Column(children: [
+                  Image.asset('assets/images/github_logo.png', height: 100),
+                  const Text("github.com/Anshu-79/aqua",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 25))
+                ]),
+              )),
+        ));
   }
 }
 
@@ -151,14 +157,17 @@ class BuyMeACoffeeCard extends StatelessWidget {
 
     return GestureDetector(
         onTap: openPage,
-        child: Container(
-            padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                color: const Color(0xFFffde59),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                    color: Theme.of(context).primaryColor, width: 3)),
-            child: Image.asset('assets/images/buy_me_a_coffee.jpg')));
+        child: AspectRatio(
+          aspectRatio: 2.75,
+          child: Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                  color: const Color(0xFFffde59),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                      color: Theme.of(context).primaryColor, width: 3)),
+              child: Image.asset('assets/images/buy_me_a_coffee.jpg')),
+        ));
   }
 }
 

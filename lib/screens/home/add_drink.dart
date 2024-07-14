@@ -42,15 +42,13 @@ class _AddDrinkDialogState extends State<AddDrinkDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-        insetPadding: const EdgeInsets.only(top: 150),
+        insetPadding: const EdgeInsets.fromLTRB(40, 150, 40, 0),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40),
             side: BorderSide(width: 5, color: Theme.of(context).primaryColor)),
         backgroundColor: widget.beverages[_bevIndex].colorCode.toColor(),
-        child: Container(
-          alignment: Alignment.bottomCenter,
-          height: 400,
-          width: 150,
+        child: AspectRatio(
+        aspectRatio: 0.7,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 5),
             child: Column(
