@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aqua/database/database.dart';
@@ -30,26 +31,38 @@ class StatsSummaryState extends State<StatsSummary> {
           return const CircularProgressIndicator();
         }
 
-        return Container(
-            padding: const EdgeInsets.all(5),
-            height: 65,
-            width: 150,
-            decoration: BoxDecoration(
-                color: widget.color.withOpacity(0.4),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: widget.color, width: 3)),
-            child: Row(children: [
-              Icon(widget.icondata, size: 30, color: widget.color),
-              const SizedBox(width: 10),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        return Expanded(
+          child: AspectRatio(
+              aspectRatio: 2.31,
+              child: Container(
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: widget.color.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: widget.color, width: 3)),
+                child: Row(mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(snapshot.data!, style: ProfileScreenStyles.userStats),
-                    Text(widget.statsSubtext,
-                        style: ProfileScreenStyles.userStatsSubtext)
-                  ])
-            ]));
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: FittedBox(child: Icon(widget.icondata, size: 50, color: widget.color)),
+                  ),
+                  Expanded(
+                    child: FittedBox(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            AutoSizeText(snapshot.data!,
+                                style: ProfileScreenStyles.userStats,
+                                maxLines: 1),
+                            AutoSizeText(widget.statsSubtext,
+                                style: ProfileScreenStyles.userStatsSubtext,
+                                maxLines: 1)
+                          ]),
+                    ),
+                  )
+                ]),
+              )),
+        );
       },
     );
   }

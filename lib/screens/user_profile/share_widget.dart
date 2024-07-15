@@ -17,8 +17,8 @@ class ShareWidget extends StatelessWidget {
             onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        SnapshotScreen(prefs: prefs, db: db))),
+                  builder: (context) => SnapshotScreen(prefs: prefs, db: db),
+                )),
             child: const ButtonContent()));
   }
 }
@@ -31,24 +31,35 @@ class ButtonContent extends StatelessWidget {
     Color color = Colors.pink.shade600;
     Color primaryColor = Theme.of(context).primaryColor;
 
-    return Container(
-      height: 50,
-      width: 200,
-      decoration: BoxDecoration(
-          color: color.withOpacity(0.4),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: color, width: 3)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.share_rounded, color: primaryColor),
-          const SizedBox(width: 10),
-          Text(
-            "Share stats",
-            style: TextStyle(
-                fontSize: 24, fontWeight: FontWeight.w900, color: primaryColor),
-          )
-        ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 50),
+      child: AspectRatio(
+        aspectRatio: 4.0,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          decoration: BoxDecoration(
+              color: color.withOpacity(0.4),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: color, width: 3)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.share_rounded, color: primaryColor),
+              const SizedBox(width: 10),
+              Expanded(
+                child: FittedBox(
+                  child: Text(
+                    "Share stats",
+                    style: TextStyle(
+                        fontSize: 100,
+                        fontWeight: FontWeight.w900,
+                        color: primaryColor),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

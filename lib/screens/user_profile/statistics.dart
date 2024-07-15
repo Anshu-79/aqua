@@ -20,7 +20,7 @@ class _StatsWidgetState extends State<StatsWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       child: Wrap(runSpacing: 15, children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
           StatsSummary(
@@ -29,6 +29,7 @@ class _StatsWidgetState extends State<StatsWidget> {
             statsSubtext: "Day Streak",
             icondata: Icons.whatshot_sharp,
           ),
+          const SizedBox(width: 30),
           StatsSummary(
               color: AquaColors.yellow,
               stats: getLongestStreak(widget.db),
@@ -41,6 +42,7 @@ class _StatsWidgetState extends State<StatsWidget> {
               stats: getLastWeekWaterIntake(widget.db),
               statsSubtext: "Water this Week",
               icondata: Icomoon.water_bottle),
+          const SizedBox(width: 30),
           StatsSummary(
               color: AquaColors.mint,
               stats: getTotalHydration(widget.db),
