@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:aqua/nav_bar.dart';
 import 'package:aqua/screens/onboarding/form/profile.dart';
 import 'package:aqua/utils/firestore_utils.dart' as firestore;
-import 'package:aqua/utils/shared_pref_utils.dart' as shared_prefs;
+import 'package:aqua/utils/weather_utils.dart';
 import 'package:aqua/utils/location.dart';
+import 'package:aqua/utils/shared_pref_utils.dart' as shared_prefs;
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// The [LoadingScreen] is displayed on the completion of the onboarding process
@@ -45,9 +46,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
     await shared_prefs.savePictureLocally(
         widget.profile.picture, widget.profile.name!);
 
-    await firestore.createUser(widget.profile, location);
+    await firestore.createUser(widget.profile, location); 
 
-    Future.delayed(const Duration(milliseconds: 1000));
+    /// Sets the weather for the first time
+    /// Has to be done separately initially since we cannot run it
+    /// from main() due to the restriction against asking multiple 
+    /// permissions on app startup
+    await saveWeather();
+
+    Future.delayed(const Duration(milliseconds: 500));
     setState(() => _loaded = true);
   }
 
