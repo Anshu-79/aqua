@@ -50,9 +50,9 @@ class BiometricButton extends StatefulWidget {
 class _BiometricButtonState extends State<BiometricButton> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Flexible(
       child: AspectRatio(
-        aspectRatio: 0.8,
+        aspectRatio: 0.9,
         child: TextButton(
             onPressed: widget.callback,
             style: TextButton.styleFrom(
@@ -61,14 +61,12 @@ class _BiometricButtonState extends State<BiometricButton> {
                 backgroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15))),
-            child: Expanded(
-              child: FittedBox(
-                child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Text(widget.metric.toString(),
-                      style: ProfileScreenStyles.biometricInfo, maxLines: 1),
-                  Text(widget.subtext, style: ProfileScreenStyles.biometricInfoSubtext, maxLines: 1)
-                ]),
-              ),
+            child: FittedBox(
+              child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(widget.metric.toString(),
+                    style: ProfileScreenStyles.biometricInfo, maxLines: 1),
+                Text(widget.subtext, style: ProfileScreenStyles.biometricInfoSubtext, maxLines: 1)
+              ]),
             )),
       ),
     );
@@ -95,7 +93,7 @@ class SleepScheduleButton extends StatefulWidget {
 class _SleepScheduleButtonState extends State<SleepScheduleButton> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Flexible(
       child: TextButton(
           onPressed: widget.callback,
           style: TextButton.styleFrom(

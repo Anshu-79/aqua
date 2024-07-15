@@ -28,7 +28,7 @@ class _LocationWidgetState extends State<LocationWidget> {
       if (iconSize < 20) iconSize = 20;
 
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
+        padding: const EdgeInsets.symmetric(horizontal: 50),
         child: FittedBox(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

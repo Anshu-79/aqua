@@ -27,10 +27,10 @@ abstract class ProfileScreenStyles {
       color: Colors.black, fontWeight: FontWeight.w900, fontSize: 50);
 
   static TextStyle userStats =
-      const TextStyle(fontSize: 24, fontWeight: FontWeight.w900);
+      const TextStyle(fontSize: 100, fontWeight: FontWeight.w900);
 
   static TextStyle userStatsSubtext =
-      const TextStyle(fontSize: 10, fontWeight: FontWeight.bold);
+      const TextStyle(fontSize: 50, fontWeight: FontWeight.bold);
 }
 
 abstract class BeverageMenuStyles {
