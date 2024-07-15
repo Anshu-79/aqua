@@ -36,34 +36,36 @@ class _WeightEditDialogState extends State<WeightEditDialog> {
           borderRadius: BorderRadius.circular(40),
           side: BorderSide(color: primaryColor, width: 3)),
       backgroundColor: canvasColor,
-      child: Container(
-        height: 470,
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.fitness_center_rounded,
-                size: 60, color: AquaColors.darkBlue),
-            const SizedBox(height: 20),
-            WeightPicker(weight: weight, textSize: 50, notifyParent: refresh),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                DialogActionButton(
-                    icon: const Icon(Icons.check),
-                    function: () async {
-                      widget.prefs.setInt('weight', weight);
-                      Navigator.pop(context);
-                      widget.notifyParent();
-                    }),
-                DialogActionButton(
-                  icon: const Icon(Icons.close),
-                  function: () => Navigator.pop(context),
-                ),
-              ],
-            )
-          ],
+      child: AspectRatio(
+        aspectRatio: 0.6,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.fitness_center_rounded,
+                  size: 60, color: AquaColors.darkBlue),
+              const SizedBox(height: 20),
+              WeightPicker(weight: weight, textSize: 50, notifyParent: refresh),
+              const SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  DialogActionButton(
+                      icon: const Icon(Icons.check),
+                      function: () async {
+                        widget.prefs.setInt('weight', weight);
+                        Navigator.pop(context);
+                        widget.notifyParent();
+                      }),
+                  DialogActionButton(
+                    icon: const Icon(Icons.close),
+                    function: () => Navigator.pop(context),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

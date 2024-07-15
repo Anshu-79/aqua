@@ -36,33 +36,35 @@ class _HeightEditDialogState extends State<HeightEditDialog> {
           borderRadius: BorderRadius.circular(40),
           side: BorderSide(color: primaryColor, width: 3)),
       backgroundColor: canvasColor,
-      child: Container(
-        height: 460,
-        padding: const EdgeInsets.all(5),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.straighten_rounded,
-                size: 60, color: AquaColors.darkBlue),
-            HeightPicker(height: height, textSize: 40, notifyParent: refresh),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                DialogActionButton(
-                    icon: const Icon(Icons.check),
-                    function: () async {
-                      widget.prefs.setInt('height', height);
-                      Navigator.pop(context);
-                      widget.notifyParent();
-                    }),
-                DialogActionButton(
-                  icon: const Icon(Icons.close),
-                  function: () => Navigator.pop(context),
-                ),
-              ],
-            )
-          ],
+      child: AspectRatio(
+        aspectRatio: 0.6,
+        child: Padding(
+          padding: const EdgeInsets.all(5),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.straighten_rounded,
+                  size: 60, color: AquaColors.darkBlue),
+              HeightPicker(height: height, textSize: 40, notifyParent: refresh),
+              const SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  DialogActionButton(
+                      icon: const Icon(Icons.check),
+                      function: () async {
+                        widget.prefs.setInt('height', height);
+                        Navigator.pop(context);
+                        widget.notifyParent();
+                      }),
+                  DialogActionButton(
+                    icon: const Icon(Icons.close),
+                    function: () => Navigator.pop(context),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

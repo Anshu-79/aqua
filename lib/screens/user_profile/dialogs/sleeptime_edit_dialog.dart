@@ -43,41 +43,43 @@ class _SleeptimeEditDialogState extends State<SleeptimeEditDialog> {
           borderRadius: BorderRadius.circular(40),
           side: BorderSide(color: primaryColor, width: 3)),
       backgroundColor: canvasColor,
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        height: 400,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const Icon(Icons.bedtime, color: AquaColors.violet, size: 60),
-            TimePicker(time: sleepTime, notifyParent: refresh),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                DialogActionButton(
-                    icon: const Icon(Icons.check),
-                    function: () async {
-                      int wakeTime = widget.prefs.getInt('wakeTime')!;
-                      if (sleepTime != wakeTime) {
-                        widget.prefs.setInt('sleepTime', sleepTime);
-                        Navigator.pop(context);
-                        widget.notifyParent();
-
-                        // Update Daily goal to change reminder gap
-                        await widget.db.updateConsumedVolume(0);
-                      } else {
-                        GlobalNavigator.showSnackBar(
-                            'Sleeping Time & Wake-up Time cannot be same',
-                            AquaColors.red);
-                      }
-                    }),
-                DialogActionButton(
-                  icon: const Icon(Icons.close),
-                  function: () => Navigator.pop(context),
-                ),
-              ],
-            )
-          ],
+      child: AspectRatio(
+        aspectRatio: 0.7,
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Icon(Icons.bedtime, color: AquaColors.violet, size: 60),
+              TimePicker(time: sleepTime, notifyParent: refresh),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  DialogActionButton(
+                      icon: const Icon(Icons.check),
+                      function: () async {
+                        int wakeTime = widget.prefs.getInt('wakeTime')!;
+                        if (sleepTime != wakeTime) {
+                          widget.prefs.setInt('sleepTime', sleepTime);
+                          Navigator.pop(context);
+                          widget.notifyParent();
+        
+                          // Update Daily goal to change reminder gap
+                          await widget.db.updateConsumedVolume(0);
+                        } else {
+                          GlobalNavigator.showSnackBar(
+                              'Sleeping Time & Wake-up Time cannot be same',
+                              AquaColors.red);
+                        }
+                      }),
+                  DialogActionButton(
+                    icon: const Icon(Icons.close),
+                    function: () => Navigator.pop(context),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

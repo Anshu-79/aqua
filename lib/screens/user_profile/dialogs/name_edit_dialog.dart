@@ -38,58 +38,60 @@ class _NameEditDialogState extends State<NameEditDialog> {
           borderRadius: BorderRadius.circular(40),
           side: BorderSide(color: primaryColor, width: 3)),
       backgroundColor: canvasColor,
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        height: 225,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Form(
-              key: formKey,
-              child: TextFormField(
-                controller: nameController,
-                textCapitalization: TextCapitalization.words,
-                textAlign: TextAlign.center,
-                cursorColor: Theme.of(context).splashColor,
-                style:
-                    TextStyle(color: canvasColor, fontWeight: FontWeight.w500),
-                decoration: InputDecoration(
-                  errorStyle: TextStyle(color: primaryColor),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide.none),
-                  hintText: "Your Name",
-                  hintStyle: textInputHint,
-                  fillColor: primaryColor,
-                  filled: true,
-                ),
-                validator: (value) {
-                  if (value!.trim().isEmpty) return "Name cannot be empty";
-                  return null;
-                },
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                DialogActionButton(
-                  icon: const Icon(Icons.check),
-                  function: () async {
-                    if (formKey.currentState!.validate()) {
-                      final name = nameController.text;
-                      widget.prefs.setString('name', name.trim());
-                      Navigator.pop(context);
-                      widget.notifyParent();
-                    }
+      child: AspectRatio(
+        aspectRatio: 1.25,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Form(
+                key: formKey,
+                child: TextFormField(
+                  controller: nameController,
+                  textCapitalization: TextCapitalization.words,
+                  textAlign: TextAlign.center,
+                  cursorColor: Theme.of(context).splashColor,
+                  style:
+                      TextStyle(color: canvasColor, fontWeight: FontWeight.w500),
+                  decoration: InputDecoration(
+                    errorStyle: TextStyle(color: primaryColor),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none),
+                    hintText: "Your Name",
+                    hintStyle: textInputHint,
+                    fillColor: primaryColor,
+                    filled: true,
+                  ),
+                  validator: (value) {
+                    if (value!.trim().isEmpty) return "Name cannot be empty";
+                    return null;
                   },
                 ),
-                DialogActionButton(
-                  icon: const Icon(Icons.close),
-                  function: () => Navigator.pop(context),
-                ),
-              ],
-            )
-          ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  DialogActionButton(
+                    icon: const Icon(Icons.check),
+                    function: () async {
+                      if (formKey.currentState!.validate()) {
+                        final name = nameController.text;
+                        widget.prefs.setString('name', name.trim());
+                        Navigator.pop(context);
+                        widget.notifyParent();
+                      }
+                    },
+                  ),
+                  DialogActionButton(
+                    icon: const Icon(Icons.close),
+                    function: () => Navigator.pop(context),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

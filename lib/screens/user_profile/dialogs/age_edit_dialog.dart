@@ -40,44 +40,45 @@ class _AgeEditDialogState extends State<AgeEditDialog> {
           borderRadius: BorderRadius.circular(40),
           side: BorderSide(color: primaryColor, width: 3)),
       backgroundColor: canvasColor,
-      child: Container(
-        height: 500,
-        padding: const EdgeInsets.all(5),
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CalendarDatePicker2(
-              config: CalendarDatePicker2Config(
-                  daySplashColor: const Color(0x440264e1),
-                  selectedDayHighlightColor: AquaColors.darkBlue,
-                  lastDate: _safeDate,
-                  firstDate: DateTime(1920, 1, 1),
-                  controlsTextStyle:
-                      const TextStyle(fontWeight: FontWeight.w900),
-                  dayTextStyle: const TextStyle(fontWeight: FontWeight.bold),
-                  weekdayLabelTextStyle: const TextStyle(
-                      fontWeight: FontWeight.w900, color: AquaColors.darkBlue)),
-              value: [dob],
-              onValueChanged: (dates) => dob = dates[0]!,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                DialogActionButton(
-                    icon: const Icon(Icons.check),
-                    function: () async {
-                      widget.prefs.setString('DOB', dob.toIso8601String());
-                      Navigator.pop(context);
-                      widget.notifyParent();
-                    }),
-                DialogActionButton(
-                  icon: const Icon(Icons.close),
-                  function: () => Navigator.pop(context),
-                ),
-              ],
-            )
-          ],
+      child: AspectRatio(
+        aspectRatio: 0.7,
+        child: Padding(
+          padding: const EdgeInsets.all(5),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CalendarDatePicker2(
+                config: CalendarDatePicker2Config(
+                    daySplashColor: const Color(0x440264e1),
+                    selectedDayHighlightColor: AquaColors.darkBlue,
+                    lastDate: _safeDate,
+                    firstDate: DateTime(1920, 1, 1),
+                    controlsTextStyle:
+                        const TextStyle(fontWeight: FontWeight.w900),
+                    dayTextStyle: const TextStyle(fontWeight: FontWeight.bold),
+                    weekdayLabelTextStyle: const TextStyle(
+                        fontWeight: FontWeight.w900, color: AquaColors.darkBlue)),
+                value: [dob],
+                onValueChanged: (dates) => dob = dates[0]!,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  DialogActionButton(
+                      icon: const Icon(Icons.check),
+                      function: () async {
+                        widget.prefs.setString('DOB', dob.toIso8601String());
+                        Navigator.pop(context);
+                        widget.notifyParent();
+                      }),
+                  DialogActionButton(
+                    icon: const Icon(Icons.close),
+                    function: () => Navigator.pop(context),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
