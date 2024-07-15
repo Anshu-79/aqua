@@ -34,7 +34,7 @@ class _BioButtonsRowState extends State<BioButtonsRow> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
+      padding: const EdgeInsets.symmetric(horizontal: 60),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         BiometricButton(
             metric: calculateAge(widget.prefs.getString('DOB')!),
@@ -73,7 +73,7 @@ class _SleepButtonsRowState extends State<SleepButtonsRow> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         SleepScheduleButton(
             icon: const Icon(Icons.sunny, color: AquaColors.yellow, size: 20),

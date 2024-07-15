@@ -32,7 +32,7 @@ class ButtonContent extends StatelessWidget {
     Color primaryColor = Theme.of(context).primaryColor;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50),
+      padding: const EdgeInsets.symmetric(horizontal: 70),
       child: AspectRatio(
         aspectRatio: 4.0,
         child: Container(

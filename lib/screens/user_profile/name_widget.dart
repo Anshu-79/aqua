@@ -23,11 +23,11 @@ class _NameWidgetState extends State<NameWidget> {
     final String name = widget.prefs.getString('name')!;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50),
+      padding: const EdgeInsets.symmetric(horizontal: 60),
       child: TextButton(
         style: TextButton.styleFrom(
             elevation: 5,
-            padding: const EdgeInsets.symmetric(horizontal: 50),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             shadowColor: Colors.black,
             backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
@@ -36,7 +36,8 @@ class _NameWidgetState extends State<NameWidget> {
           child: AutoSizeText(name,
               style: ProfileScreenStyles.username,
               overflow: TextOverflow.ellipsis,
-              maxLines: 1),
+              maxLines: 1,
+              maxFontSize: 40),
         ),
         onPressed: () => GlobalNavigator.showAnimatedDialog(NameEditDialog(
             name: name, notifyParent: refresh, prefs: widget.prefs)),

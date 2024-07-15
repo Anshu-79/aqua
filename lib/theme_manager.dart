@@ -50,7 +50,7 @@ class _ThemeManagerState extends State<ThemeManager> {
 
   void _setTheme(bool value) {
     setState(() => isDarkMode = value);
-    prefs.setBool('darkMode', value);
+    widget.prefs.setBool('darkMode', value);
   }
 
   @override
