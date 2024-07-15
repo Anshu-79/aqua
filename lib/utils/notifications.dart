@@ -33,6 +33,7 @@ String getNotificationBody(int volume) {
     "Stay refreshed! Drink $volume mL more!",
     "Top off your hydration with $volume mL more!",
     "Don't stop now! $volume mL more!",
+    "Simon says: Drink $volume mL water!",
   ];
   int randomIdx = Random().nextInt(notificationBodies.length);
   return notificationBodies[randomIdx];

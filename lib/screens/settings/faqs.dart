@@ -1,4 +1,3 @@
-
 class FAQ {
   final String question;
   final String answer;
@@ -42,6 +41,10 @@ List<FAQ> faqs = [
       question: "Is my data secure?",
       answer:
           "Yes. All of your hydration data is stored locally on your device."),
+  FAQ(
+      question: "How can I edit my profile?",
+      answer:
+          "You can tap the buttons on the profile screen to edit your name, age, height, weight, etc."),
   FAQ(
       question: "How can I share my progress with my friends?",
       answer:
