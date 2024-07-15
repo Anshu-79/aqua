@@ -55,8 +55,8 @@ class _EditPictureDialogState extends State<EditPictureDialog> {
           borderRadius: BorderRadius.circular(40),
           side: BorderSide(color: primaryColor, width: 3)),
       backgroundColor: canvasColor,
-      child: SizedBox(
-        height: 400,
+      child: AspectRatio(
+        aspectRatio: 0.75,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

@@ -32,7 +32,7 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
       child: AspectRatio(
         aspectRatio: 0.6,
         child: Container(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -42,7 +42,7 @@ class _CustomizeWorkoutState extends State<CustomizeWorkout> {
                   fit: BoxFit.contain,
                   child: Text(widget.activity!.category,
                       style: const TextStyle(
-                          fontSize: 40,
+                          fontSize: 100,
                           fontWeight: FontWeight.w900,
                           color: Colors.black))),
               Text(widget.activity!.description,
