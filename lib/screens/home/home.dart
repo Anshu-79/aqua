@@ -1,4 +1,5 @@
 import 'package:aqua/screens/home/confetti.dart';
+import 'package:aqua/screens/home/todays_drinks_dialog.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -92,7 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               key: _waterGoalWidgetKey,
                               consumedVol: todaysGoal!.consumedVolume,
                               totalVol: todaysGoal.totalVolume),
-                        ])),
+                        ]),
+                        ),
                 Confetti(controller: _confettiController)
               ],
             );
@@ -100,9 +102,8 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: CircularFab(
         db: widget.database,
         notifyReminderBox: _triggerUpdate,
-        startFillAnimation: (consumedVol) {
-          _waterGoalWidgetKey.currentState?.startFillAnimation(consumedVol);
-        },
+        startFillAnimation: (consumedVol) =>
+            _waterGoalWidgetKey.currentState?.startFillAnimation(consumedVol),
         blastConfetti: _blastConfetti,
       ),
     );

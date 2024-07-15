@@ -29,7 +29,11 @@ List<FAQ> faqs = [
   FAQ(
       question: "Why does Aqua ask for my sleep schedule?",
       answer:
-          "Aqua uses your sleep schedule timings to ensure that hydration reminders are only sent during waking hours."),
+          "Aqua uses your sleep schedule timings to ensure that hydration reminders are only sent during waking hours. Your hydration day starts when you wake up and ends when you sleep."),
+  FAQ(
+      question: "What does 'Water Percent' of a beverage mean?",
+      answer:
+          "Water Percent is used as a measure of how much a beverage contributes to your hydration. For eg: If you drink 100 mL of a beverage with water percent = 10, it will count as 10 mL."),
   FAQ(
       question: "What effect do Activities have on my water goal?",
       answer:
