@@ -29,7 +29,9 @@ Future<void> main() async {
   await NotificationsController.initLocalNotifications();
 
   // Runs every time app is run but fetches weather only when day has changed
-  await DailyTaskManager.checkAndRunTask(saveWeather);
+  // Does a check on onboard to not fetch weather when app is run for the first time
+  // This was done to prevent asking multiple permissions at once.
+  if (prefs.getBool('onboard') != null) await DailyTaskManager.checkAndRunTask(saveWeather);
 
   NotificationsController.shiftNotificationsIfSleeping();
 
