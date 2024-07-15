@@ -12,7 +12,7 @@ abstract class HomeScreenStyles {
 
 abstract class ProfileScreenStyles {
   static TextStyle username = const TextStyle(
-      fontSize: 100, fontWeight: FontWeight.bold, color: Colors.black);
+      fontSize: 100, fontWeight: FontWeight.w900, color: Colors.black);
 
   static TextStyle userLocation = const TextStyle(
       fontSize: 100, fontWeight: FontWeight.bold, color: Colors.white);
