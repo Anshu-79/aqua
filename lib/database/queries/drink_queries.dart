@@ -76,6 +76,12 @@ extension DrinkQueries on Database {
     return aggregatedData;
   }
 
+  /// Deletes a [Drink] containing [id]
+  Future<int> deleteDrink(int id) async {
+    return await (delete(drinks)..where((tbl) => tbl.id.equals(id))).go();
+  }
+
+
   /// Adds an item to [drinks] with [bevID] = 1 (ie Water)
   Future<int> insertWater(int volume) async {
     DrinksCompanion water = DrinksCompanion(

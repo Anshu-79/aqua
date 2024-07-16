@@ -29,6 +29,7 @@ class WaterGoalForeground extends StatefulWidget {
 class WaterGoalForegroundState extends State<WaterGoalForeground>
     with SingleTickerProviderStateMixin {
   late int _consumedVol;
+  late int _totalVol;
 
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
@@ -37,6 +38,7 @@ class WaterGoalForegroundState extends State<WaterGoalForeground>
   void initState() {
     super.initState();
     _consumedVol = widget.consumedVol;
+    _totalVol = widget.totalVol;
 
     _fadeController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500));
@@ -80,16 +82,14 @@ class WaterGoalForegroundState extends State<WaterGoalForeground>
                   children: [
                     utils.BorderedText(
                         text: getGoalText(_consumedVol),
-                        textStyle: HomeScreenStyles.goal
-                      ),
-                    AutoSizeText(" L",
-                        style: HomeScreenStyles.goalSubtext)
+                        textStyle: HomeScreenStyles.goal),
+                    AutoSizeText(" L", style: HomeScreenStyles.goalSubtext)
                   ],
                 ),
                 AutoSizeText("of", style: HomeScreenStyles.goalSubtext),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   utils.BorderedText(
-                      text: getGoalText(widget.totalVol),
+                      text: getGoalText(_totalVol),
                       textStyle: HomeScreenStyles.goal),
                   AutoSizeText(" L", style: HomeScreenStyles.goalSubtext),
                 ]),
