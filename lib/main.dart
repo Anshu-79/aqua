@@ -22,18 +22,19 @@ Future<void> main() async {
   // SharedPreferences initialization
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  // If app is opened for the first time (ie onboard = false), API key is written onto device
+  // If app is opened for the first time (ie onboard = null), API key is written onto device
   if (prefs.getBool('onboard') == null) writeAPIKey('weather', openWeatherKey);
 
   // Notifications initialization
   await NotificationsController.initLocalNotifications();
 
   // Runs every time app is run but fetches weather only when day has changed
-  // Does a check on onboard to not fetch weather when app is run for the first time
-  // This was done to prevent asking multiple permissions at once.
-  if (prefs.getBool('onboard') != null) await DailyTaskManager.checkAndRunTask(saveWeather);
+  // when app is run for the first time, it sets the place to the default location
+  // (Mumbai, IN) and temperature to 20.
+  // This was done to prevent asking multiple permissions (notifications & location) at once.
+  DailyTaskManager.checkAndRunTask(saveWeather);
 
-  NotificationsController.shiftNotificationsIfSleeping();
+  if (prefs.getBool('onboard') != null) NotificationsController.shiftNotificationsIfSleeping();
 
   runApp(Aqua(sharedPrefs: prefs));
 }

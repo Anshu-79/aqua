@@ -31,10 +31,15 @@ Future<String?> readAPIKey(String serviceName) async {
 }
 
 // Call OpenWeatherAPI to get today's weather
-Future<Weather> getWeather() async {
+Future<Weather?> getWeather() async {
+  if (await SharedPrefUtils.readBool('onboard') == null) return null;
+
   String? apiKey = await readAPIKey('weather');
 
   WeatherFactory wf = WeatherFactory(apiKey!);
+
+  double defaultLat = defaultCoordinates[0];
+  double defaultLong = defaultCoordinates[1];
 
   // First try to get current location's weather
   final location = Location();
@@ -51,13 +56,22 @@ Future<Weather> getWeather() async {
 
   // If current location not available, use stored location
   final savedLocation = await SharedPrefUtils.getLocation();
-  final lat = savedLocation[0] ?? defaultCoordinates[0];
-  final long = savedLocation[1] ?? defaultCoordinates[1];
+  final lat = savedLocation[0] ?? defaultLat;
+  final long = savedLocation[1] ?? defaultLong;
   return await wf.currentWeatherByLocation(lat, long);
 }
 
 Future<void> saveWeather() async {
-  Weather w = await getWeather();
-  SharedPrefUtils.saveStr('place', "${w.areaName!}, ${w.country!}");
-  SharedPrefUtils.saveDouble('temperature', w.temperature!.celsius!);
+  Weather? w = await getWeather();
+
+  String place = "Mumbai, IN";
+  double temperature = 20;
+
+  if (w != null) {
+    place = "${w.areaName!}, ${w.country!}";
+    temperature = w.temperature!.celsius!;
+  }
+
+  await SharedPrefUtils.saveStr('place', place);
+  await SharedPrefUtils.saveDouble('temperature', temperature);
 }
