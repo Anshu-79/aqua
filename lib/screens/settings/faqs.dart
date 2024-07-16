@@ -31,6 +31,10 @@ List<FAQ> faqs = [
       answer:
           "Aqua uses your sleep schedule timings to ensure that hydration reminders are only sent during waking hours. Your hydration day starts when you wake up and ends when you sleep."),
   FAQ(
+      question: "I accidentally added a drink. How can I remove it?",
+      answer:
+          "You can view and delete drinks of the current day by clicking on the water container on Home page"),
+  FAQ(
       question: "What does 'Water Percent' of a beverage mean?",
       answer:
           "Water Percent is used as a measure of how much a beverage contributes to your hydration. For eg: If you drink 100 mL of a beverage with water percent = 10, it will count as 10 mL."),

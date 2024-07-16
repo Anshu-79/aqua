@@ -55,7 +55,7 @@ class _TodaysDrinksDialogState extends State<TodaysDrinksDialog> {
                         notifyParent: refresh);
                   });
             } else {
-              String blankText = "No drinks logged today.\nTry adding one!";
+              String blankText = "No drinks logged.\nTry adding one!";
               return BlankScreen(message: blankText);
             }
           },
