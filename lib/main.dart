@@ -54,7 +54,6 @@ class _AquaState extends State<Aqua> {
   Widget build(BuildContext context) {
     // if the app is running for the first time, onboard key will be null
     bool onboard = widget.sharedPrefs.getBool('onboard') ?? false;
-    print(widget.sharedPrefs.getBool('darkMode'));
     return ThemeManager(
       prefs: widget.sharedPrefs,
       child: Builder(builder: (context) {

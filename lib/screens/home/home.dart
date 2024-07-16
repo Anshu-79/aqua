@@ -71,41 +71,63 @@ class _HomeScreenState extends State<HomeScreen> {
             if (snapshot.hasError) {
               return Center(child: Text(snapshot.error.toString()));
             }
-            return Stack(
-              children: [
-                Container(
-                    margin: const EdgeInsets.all(20),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          ValueListenableBuilder<bool>(
-                              valueListenable: _reminderBoxNotifier,
-                              builder: (context, value, child) {
-                                return ReminderBox(
-                                    db: widget.database,
-                                    prefs: widget.prefs,
-                                    isGoalCompleted:
-                                        todaysGoal!.consumedVolume >=
-                                            todaysGoal.totalVolume);
-                              }),
-                          const SizedBox(height: 20),
-                          WaterGoalWidget(
-                              key: _waterGoalWidgetKey,
-                              consumedVol: todaysGoal!.consumedVolume,
-                              totalVol: todaysGoal.totalVolume),
-                        ]),
-                        ),
-                Confetti(controller: _confettiController)
-              ],
-            );
+            return homeScreen(
+                todaysGoal!.consumedVolume, todaysGoal.totalVolume);
           }),
-      floatingActionButton: CircularFab(
-        db: widget.database,
-        notifyReminderBox: _triggerUpdate,
-        startFillAnimation: (consumedVol) =>
-            _waterGoalWidgetKey.currentState?.startFillAnimation(consumedVol),
-        blastConfetti: _blastConfetti,
+      floatingActionButton: homeScreenFAB(),
+    );
+  }
+
+  Widget homeScreen(int consumed, int total) {
+    return Stack(
+      children: [
+        Container(
+          margin: const EdgeInsets.all(20),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            reminderBoxWidget(consumed, total),
+            const SizedBox(height: 20),
+            waterBoxWidget(consumed, total)
+          ]),
+        ),
+        Confetti(controller: _confettiController)
+      ],
+    );
+  }
+
+  Widget reminderBoxWidget(int consumed, int total) {
+    return ValueListenableBuilder<bool>(
+        valueListenable: _reminderBoxNotifier,
+        builder: (context, value, child) {
+          return ReminderBox(
+              db: widget.database,
+              prefs: widget.prefs,
+              isGoalCompleted: consumed >= total);
+        });
+  }
+
+  Widget waterBoxWidget(int consumed, int total) {
+    MaterialPageRoute todaysDrinksRoute = MaterialPageRoute(
+        builder: (context) => TodaysDrinksDialog(db: widget.database));
+
+    return Expanded(
+      flex: 3,
+      child: GestureDetector(
+        onTap: () => Navigator.push(context, todaysDrinksRoute)
+            .then((_) => setState(() {})),
+        child: WaterGoalWidget(
+            key: _waterGoalWidgetKey, consumedVol: consumed, totalVol: total),
       ),
+    );
+  }
+
+  Widget homeScreenFAB() {
+    return CircularFab(
+      db: widget.database,
+      notifyReminderBox: _triggerUpdate,
+      startFillAnimation: (consumedVol) =>
+          _waterGoalWidgetKey.currentState?.startFillAnimation(consumedVol),
+      blastConfetti: _blastConfetti,
     );
   }
 }
