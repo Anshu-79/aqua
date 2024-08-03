@@ -47,11 +47,11 @@ Track daily, weekly, and monthly hydration stats to monitor your progress and id
 ## App Screenshots
 
 <div align="center">
-    <img alt="Beverage Screen" src="promotional/beverages.png" height="300px" style="margin: 10px;">
-    <img alt="Profile Screen" src="promotional/goals.png" height="300px" style="margin: 10px;">
-    <img alt="Workout Screen" src="promotional/workouts.png" height="300px" style="margin: 10px;">
-    <img alt="Home Screen" src="promotional/reminders.png" height="300px" style="margin: 10px;">
-    <img alt="Progress Screen" src="promotional/progress.png" height="300px" style="margin: 10px;">
+    <img alt="Beverage Screen" src="promotional/beverages.png" height="225px" style="margin: 10px;">
+    <img alt="Profile Screen" src="promotional/goals.png" height="225px" style="margin: 10px;">
+    <img alt="Workout Screen" src="promotional/workouts.png" height="225px" style="margin: 10px;">
+    <img alt="Home Screen" src="promotional/reminders.png" height="225px" style="margin: 10px;">
+    <img alt="Progress Screen" src="promotional/progress.png" height="225px" style="margin: 10px;">
 </div>
 
 
