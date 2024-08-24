@@ -1,4 +1,5 @@
 lib/api_keys.dart
+lib/firebase_options.dart
 android/app/my-key.jks
 android/key.properties
 
